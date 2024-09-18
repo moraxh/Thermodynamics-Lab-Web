@@ -1,0 +1,19 @@
+{
+  "name": "thermodynamic-lab-web",
+  "version": "1.0.0",
+  "description": "Website of the thermodynamic systems laboratory of the Engineering Division Campus Irapuato Salamanca",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moraxh/Thermodynamic-Lab-Web.git"
+  },
+  "author": "Hadassah Garcia & Jorge Mora",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moraxh/Thermodynamic-Lab-Web/issues"
+  },
+  "homepage": "https://github.com/moraxh/Thermodynamic-Lab-Web#readme"
+}
