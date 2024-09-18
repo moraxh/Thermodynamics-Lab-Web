@@ -4,7 +4,11 @@
   "description": "Website of the thermodynamic systems laboratory of the Engineering Division Campus Irapuato Salamanca",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "nodemon --legacy-watch server.js",
+    "docker-build": "docker-compose up --build",
+    "docker-up": "docker-compose up",
+    "docker-down": "docker-compose down"
   },
   "repository": {
     "type": "git",
@@ -15,5 +19,12 @@
   "bugs": {
     "url": "https://github.com/moraxh/Thermodynamic-Lab-Web/issues"
   },
-  "homepage": "https://github.com/moraxh/Thermodynamic-Lab-Web#readme"
+  "homepage": "https://github.com/moraxh/Thermodynamic-Lab-Web#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.5"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "mysql2": "^3.11.3"
+  }
 }
