@@ -24,7 +24,7 @@ services:
       - MYSQL_USER=${DATABASE_USER}
       - MYSQL_PASSWORD=${DATABASE_PASSWORD}
     ports:
-      - "${DB_PORT}:3306"
+      - "${DATABASE_PORT}:3306"
     volumes:
       - thermodynamic_web_db:/var/lib/mysql
 volumes:

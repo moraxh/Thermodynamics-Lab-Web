@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Website of the thermodynamic systems laboratory of the Engineering Division Campus Irapuato Salamanca",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon --legacy-watch server.js",
@@ -21,10 +22,15 @@
   },
   "homepage": "https://github.com/moraxh/Thermodynamic-Lab-Web#readme",
   "devDependencies": {
+    "@eslint/js": "^9.10.0",
+    "eslint": "^9.10.0",
+    "globals": "^15.9.0",
     "nodemon": "^3.1.5"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "mysql2": "^3.11.3"
+    "mysql2": "^3.11.3",
+    "serve-favicon": "^2.5.0"
   }
 }

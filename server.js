@@ -1,14 +1,23 @@
-const express = require('express');
+import express from 'express'
+import favicon from 'serve-favicon'
+import dotenv from 'dotenv';
+import process from 'node:process';
+
+dotenv.config();
+
 const env = process.env;
 const app = express();
-const port =  env.PORT || 3000;
+const port = env.PORT || 3000;
 
+// Favicon
+app.use(favicon("./public/favicon.ico"));
 
 app.get('/', (req, res) => {
-    res.send("holaa");
+    res.send("hola");
 });
 
-app.use((req, res, next) => {
+app.use((req, res) => {
+    // TODO -- Redirect to a 404 page
     res.status(404).send('Page not found');
 });
 
