@@ -13,6 +13,9 @@ const port      = env.PORT || 3000;
 
 dotenv.config();
 
+// Static files
+app.use(express.static(locpath.public_('')));
+
 // Favicon
 app.use(favicon(locpath.public_('/favicon.ico')));
 
