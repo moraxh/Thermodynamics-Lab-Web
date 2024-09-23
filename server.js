@@ -5,31 +5,13 @@ import process from 'node:process';
 
 import { locpath } from './utils/locpath.js';
 import { getDirname } from './utils/dirname.js';
-// import { hotreload  } from './utils/hotreload.js';
 
 const __dirname = getDirname(import.meta.url);
+const env       = process.env;
+const app       = express();
+const port      = env.PORT || 3000;
 
 dotenv.config();
-
-const env = process.env;
-const app = express();
-const port = env.PORT || 3000;
-
-// hotreload(app, __dirname);
-
-import livereload from "livereload";
-import connectLiveReload from "connect-livereload";
-
-const liveReloadServer = livereload.createServer();
-
-liveReloadServer.watch(__dirname);
-app.use(connectLiveReload());
-
-liveReloadServer.server.once("connection", () => {
-  setTimeout(() => {
-    liveReloadServer.refresh("/");
-  }, 100);
-});
 
 // Favicon
 app.use(favicon(locpath.public_('/favicon.ico')));

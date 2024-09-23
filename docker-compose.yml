@@ -4,7 +4,7 @@ services:
   app:
     build: .
     volumes:
-      - ./:/app/
+      - .:/app
     ports:
       - "${PORT}:3000"
     environment:
