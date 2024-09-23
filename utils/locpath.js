@@ -1,8 +1,8 @@
-const view       = (path) => "./src/views" + path;
-const controller = (path) => "./controllers" + path;
-const model      = (path) => "./models" + path;
-const util       = (path) => "./utils" + path;
-const public_    = (path) => "./public" + path;
+const view       = (path) => `./src/views/${path}`;
+const controller = (path) => `./src/controllers/${path}`;
+const model      = (path) => `./src/models/${path}`;
+const util       = (path) => `./src/utils/${path}`;
+const public_    = (path) => `./public/${path}`;
 
 export const locpath = {
     view,

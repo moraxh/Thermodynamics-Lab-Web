@@ -4,9 +4,9 @@ import dotenv from 'dotenv';
 import process from 'node:process';
 
 import { locpath } from './utils/locpath.js';
-import { getDirname } from './utils/dirname.js';
+// import { getDirname } from './utils/dirname.js';
 
-const __dirname = getDirname(import.meta.url);
+// const __dirname = getDirname(import.meta.url);
 const env       = process.env;
 const app       = express();
 const port      = env.PORT || 3000;
@@ -17,10 +17,16 @@ dotenv.config();
 app.use('/public', express.static(locpath.public_('')));
 
 // Favicon
-app.use(favicon(locpath.public_('/favicon.ico')));
+app.use(favicon(locpath.public_('favicon.ico')));
+
+// Use view engine
+app.set('view engine', 'ejs');
+
+// Set views directory
+app.set('views', locpath.view(''));
 
 app.get('/', (req, res) => {
-    res.sendFile(locpath.view('/home.html'), { root: __dirname });
+  res.render('pages/home');
 });
 
 app.use((req, res) => {
