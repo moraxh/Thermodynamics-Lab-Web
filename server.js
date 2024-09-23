@@ -2,11 +2,11 @@ import express from 'express'
 import favicon from 'serve-favicon'
 import dotenv from 'dotenv';
 import process from 'node:process';
+import expressLayouts from 'express-ejs-layouts';
 
+// Utils
 import { locpath } from './utils/locpath.js';
-// import { getDirname } from './utils/dirname.js';
 
-// const __dirname = getDirname(import.meta.url);
 const env       = process.env;
 const app       = express();
 const port      = env.PORT || 3000;
@@ -15,6 +15,9 @@ dotenv.config();
 
 // Static files
 app.use('/public', express.static(locpath.public_('')));
+
+// Express layouts
+app.use(expressLayouts);
 
 // Favicon
 app.use(favicon(locpath.public_('favicon.ico')));
@@ -25,8 +28,12 @@ app.set('view engine', 'ejs');
 // Set views directory
 app.set('views', locpath.view(''));
 
+// 
+// Routes
+//
+
 app.get('/', (req, res) => {
-  res.render('pages/home');
+  return res.render('pages/home', { title: 'Laboratorio de Sistemas Termodinamicos' });
 });
 
 app.use((req, res) => {
