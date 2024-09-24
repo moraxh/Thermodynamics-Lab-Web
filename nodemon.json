@@ -1,5 +1,4 @@
 {
-    "ext": "*",
     "ignore": [
         "node_modules"
     ]

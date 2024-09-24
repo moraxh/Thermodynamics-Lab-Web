@@ -1,1 +1,98 @@
-Juaaaan
+<!-- <div style="display: flex; align-items: center; justify-content: space-evenly; flex-wrap: wrap; max-width: 95%; margin: 0 auto;">
+    <div style="width: min-content;">
+        <h1 id="mainTitle">¿QUIÉNES <br> SOMOS?</h1>
+    </div>
+
+</div> -->
+
+<div class="hero">
+    <div class="content">
+        <div class="text">
+            <h1>¿QUIÉNES SOMOS?</h1>
+            <p>
+                Somos una <strong>unidad de investigación</strong> de la Universidad de Guanajuato.
+                Enfocada principalmente en el análisis avanzado de <strong>sistemas termodinámicos</strong>.
+            </p>
+        </div>
+    </div>
+
+    <img src="public/images/bg/bg1.webp">
+</div>
+
+<style>
+    .hero {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        max-width: 95%;
+        margin: 0 auto;
+        margin-top: -4%;
+    }
+
+    .hero .content {
+        flex: 1 1 50%;
+    }
+
+    .hero .text {
+        width: min-content;
+    }
+
+    .hero img {
+        width: 100%;
+        flex: 1 1 50%;
+        mix-blend-mode: difference;
+        pointer-events: none;
+    }
+
+    .hero h1 {
+        font-family: Montserrat;
+        color: var(--accent-color);
+        font-weight: bold;
+        font-size: clamp(0.7rem, 8vw ,8rem);
+        width: min-content;
+        margin: 0;
+    }
+
+    .hero p {
+        font-size: clamp(0.5rem, 2vw, 1.5rem);
+        font-family: Lato;
+        font-weight: bold;
+        color: var(--gray3);
+        text-align: justify;
+        margin: 0;
+    }
+
+    .hero p strong {
+        color: var(--accent-color);
+        font-weight: bolder;
+    }
+
+    @media only screen and (max-width: 1076px) {
+        .hero {
+            margin-top: 0;
+        }
+
+        .hero .content {
+            text-align: center;
+            max-width: unset;
+        }
+
+        .hero .text {
+            width: unset;
+        }
+
+        .hero img {
+            scale: .8;
+        }
+
+        .hero h1 {
+            margin: 0 auto;
+            width: unset;
+        }
+
+        .hero p {
+            text-align: center;
+        }
+    } 
+</style>

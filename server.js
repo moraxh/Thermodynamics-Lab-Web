@@ -15,7 +15,7 @@ const app       = express();
 const port      = env.PORT || 3000;
 
 dotenv.config();
-hotreload(app, __dirname);
+// hotreload(app, __dirname);
 
 // Static files
 app.use('/public', express.static(locpath.public_('')));
