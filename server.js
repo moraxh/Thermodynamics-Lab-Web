@@ -6,12 +6,16 @@ import expressLayouts from 'express-ejs-layouts';
 
 // Utils
 import { locpath } from './utils/locpath.js';
+import { getDirname } from './utils/dirname.js';
+import { hotreload } from './utils/hotreload.js';
 
+const __dirname = getDirname(import.meta.url);
 const env       = process.env;
 const app       = express();
 const port      = env.PORT || 3000;
 
 dotenv.config();
+hotreload(app, __dirname);
 
 // Static files
 app.use('/public', express.static(locpath.public_('')));

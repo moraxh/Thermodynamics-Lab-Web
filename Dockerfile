@@ -14,6 +14,7 @@ RUN npm install --save-dev nodemon
 
 # Expose the port
 EXPOSE 3000
+EXPOSE 35729
 
 # Startup command
 CMD ["npm", "run", "dev"]
