@@ -108,5 +108,76 @@ header {
 
     #burger-menu {
         display: block !important;
+    }}
+    
+  /*  #navbar2 h6 {
+        margin-top: -4px;
+        font-family: 'Lato';
+        font-weight: 10;
+        font-size: 6px;
+        text-align: left;  Alinea el texto al centro 
+    }*/
+    footer {
+
+        display: flex;
+        justify-content: space-around; /* Distribuye los elementos de manera uniforme */
+        align-items: center;
+        background: linear-gradient(to bottom, rgb(22 26 37), rgb(0 0 0 / 0));
+        padding: 5px 10px; 
+        color: white; 
+        font-family: 'Lato', sans-serif;
+        font-size: 5px;
     }
-}
+    
+    footer div {
+        text-align: center; 
+    }
+    
+    footer h5 {
+        color: #F6C308; 
+        font-size: 12px; 
+        margin-bottom: 15px;
+    }
+    
+    footer p, footer a {
+        color: white; 
+        font-size: 10px;
+        margin: 0;
+    }
+    
+    footer .footer-column {
+        flex: 1; /* Hace que cada columna ocupe el mismo espacio */
+        padding: 0 25px; /* Espaciado lateral para mayor separación */
+    }
+    
+    footer .footer-bottom {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        border-top: 1px solid #666;
+        font-size: 12px;
+        color: #7B848D;
+        margin-top: auto;
+        position: absolute;
+        bottom: -260px;
+        left: -20px;
+        
+    }
+    
+    .footer-social-icons a {
+        color: #7B848D; 
+        margin: 0 8px;
+        font-size: 12px;
+        position: relative;
+        top: -13px;
+        right: -500px;
+
+        
+
+    }
+    
+
+
+
+
+
