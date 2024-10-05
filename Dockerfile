@@ -5,12 +5,10 @@ FROM node:18
 WORKDIR /app
 
 # Copy files
-COPY package*.json ./
-RUN npm install
 COPY . .
 
-# Install nodemon
-RUN npm install --save-dev nodemon
+# Install dependencies
+RUN npm install
 
 # Expose the port
 EXPOSE 3000
