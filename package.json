@@ -5,11 +5,10 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
     "dev": "nodemon -L server.js",
-    "docker-build": "docker-compose up --build",
-    "docker-up": "docker-compose up",
-    "docker-down": "docker-compose down"
+    "build": "docker-compose up --build",
+    "start": "docker-compose up",
+    "down": "docker-compose down"
   },
   "repository": {
     "type": "git",
