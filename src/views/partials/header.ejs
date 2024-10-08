@@ -1,11 +1,11 @@
 <header>
     <img src="public/images/logo/logo_full.webp" style="width: 18rem; min-width: 5rem;">
     <nav id="navbar">
-        <a href="">Inicio</a>
-        <a href="">Publicaciones</a>
-        <a href="">Divulgación</a>
-        <a href="">Nosotros</a>
-        <a href="">Contacto</a>
+        <a class="anchor-hover" href="">Inicio</a>
+        <a class="anchor-hover" href="">Publicaciones</a>
+        <a class="anchor-hover" href="">Divulgación</a>
+        <a class="anchor-hover" href="">Nosotros</a>
+        <a class="anchor-hover" href="">Contacto</a>
     </nav>
     <div id="burger-menu"">
         <button id="menu-button">
@@ -13,3 +13,69 @@
         </button>
     </div>
 </header>
+
+<style>
+    header {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 100;
+        height: 134px;
+        gap: 15%;
+        display: flex;
+        padding-left: min(5%, 62px);
+        padding-right: min(5%, 62px);
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(to bottom, rgb(22 26 37), rgb(0 0 0 / 0));
+        backdrop-filter: blur(5px);
+    }
+
+    #navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: min(80%, 700px);
+        width: 60%;
+        font-family: 'Lato';
+        font-weight: 500;
+        font-size: clamp(1.2rem, 2vw, 1.5rem);
+    }
+
+    #menu-button {
+        color: white;
+        background-color: black;
+        border: 2px solid white;
+        width: 45px;
+        height: 40px;
+        border-radius: 5px;
+        transition: color .2s ease-in-out, background-color .2s ease-in-out;
+    }
+
+    #menu-button:hover {
+        background-color: white;
+        color: black;
+        cursor: pointer;
+    }
+
+    @media only screen and (min-width: 900px) {
+        #navbar {
+            display: flex !important;
+        }
+
+        #burger-menu {
+            display: none !important;
+        }
+    }
+
+    @media only screen and (max-width: 900px) {
+        #navbar {
+            display: none !important;
+        }
+
+        #burger-menu {
+            display: block !important;
+        }
+    }
+</style>

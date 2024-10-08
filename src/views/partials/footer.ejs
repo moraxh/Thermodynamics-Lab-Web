@@ -1,49 +1,256 @@
-
 <footer>
-    <div class="footer-column footer-logo">
-        <img src="public/images/logo/logo_full.webp" style="width: 8rem; height: 3rem;">
-        <p style="font-family: playfair;">"Que la imaginación sea tu único límite."</p>
-    </div>
-    
-    <div class="footer-column">
-        <h5>¿Quiénes somos?</h5>
-        <p>Somos una unidad de investigación de la Universidad de Guanajuato. Enfocada principalmente en el análisis avanzado de sistemas termodinámicos.</p>
-    </div>
-
-    <div class="footer-column">
-        <h5>Links</h5>
-        <a href="#">Inicio</a><br>
-        <a href="#">Publicaciones</a><br>
-        <a href="#">Nosotros</a><br>
-        <a href="#">Contacto</a>
-    </div>
-
-    <div class="footer-column">
-        <h5>Contacto</h5>
-        <p>example@gmail.com</p>
-        <p>+52 123 456 7890</p>
-        <p>Carretera Salamanca, Salamanca, Gto, México</p>
-    </div>
-
-    <div class="footer-column">
-        <h5>Newsletter</h5>
-        <p>Suscríbete a nuestro Newsletter</p>
-        <form>
-            <input type="email" placeholder="example@gmail.com">
-            <button type="submit">></button>
-        </form>
-    </div>
-
-    <div class="footer-bottom">
-        <p style="color: #7B848D;">© 2024 Copyright Todos los derechos reservados | Página web creada por Hadassah García, Aranza Miravalles y Jorge Mora</p>
-        <div class="footer-social-icons">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-tiktok"></i></a>
-            <a href="#"><i class="fab fa-youtube"></i></a>
+    <div class="footer-columns">
+        <div class="col col-logo" style="min-width: 317px;">
+            <img src="public/images/logo/logo_full.webp">
+            <p>"Que la imaginación sea tu único límite."</p>
         </div>
+        
+        <div class="col" style="min-width: 250px;">
+            <h5>¿Quiénes somos?</h5>
+            <p class="who">Somos una unidad de investigación de la Universidad de Guanajuato. Enfocada principalmente en el análisis avanzado de sistemas termodinámicos.</p>
+        </div>
+
+        <div class="col">
+            <h5>Links</h5>
+            <a class="anchor-hover" href="#">Publicaciones</a>
+            <a class="anchor-hover" href="#">Divulgación</a>
+            <a class="anchor-hover" href="#">Nosotros</a>
+            <a class="anchor-hover" href="#">Contacto</a>
+        </div>
+
+        <div class="col col-contact">
+            <h5>Contacto</h5>
+            <p>
+                <i class="fa-solid fa-envelope"></i>
+                example@gmail.com
+            </p>
+            <p>
+                <i class="fa-solid fa-phone"></i>
+                +52 123 456 7890
+            </p>
+            <p>
+                <i class="fa-solid fa-location-dot"></i>
+                Carretera Salamanca - Valle de Santiago km 3.5 + 1.8 Comunidad de Palo Blanco, 36885 Salamanca, Gto, México
+            </p>
+        </div>
+
+        <div class="col">
+            <h5>Newsletter</h5>
+            <p>Suscríbete a nuestro Newsletter</p>
+            <form>
+                <input type="email" placeholder="example@gmail.com">
+                <button type="submit">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <section>
+            <p>© 2024 Copyright Todos los derechos reservados | Página web creada por Hadassah García, Aranza Miravalles y Jorge Mora</p>
+            <div class="footer-social-icons">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="#"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+        </section>
     </div>
 </footer>
 
+<style>
+    footer {
+        background: linear-gradient(to top, rgb(22 26 37), rgb(22 26 37 / 0));
+        min-height: 100px;
+        font-family: 'Lato';
+        padding: 27px;
+        font-size: 20px;
+    }
 
+    footer p {
+        margin: 0;
+    }
 
+    .footer-columns {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: start;
+        max-width: 90%;
+        margin: 0 auto 30px auto;
+        column-gap: 50px;
+        row-gap: 30px;
+    }
+
+    .footer-columns .col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        row-gap: 15px;
+        max-width: 320px;
+        justify-content: center;
+    }
+
+    .footer-columns .col a {
+        width: fit-content;
+        font-weight: bold;
+        font-size: 22px;
+    }
+
+    .footer-columns .col a:hover {
+        color: var(--accent-color);
+    }
+
+    .footer-columns .col-logo {
+        flex: 1.3;
+        text-align: center;
+    }
+
+    .footer-columns .col h5 {
+        margin: 0;
+        font-size: 27px;
+        font-style: italic;
+        font-family: 'Montserrat';
+        color: var(--accent-color);
+        margin-bottom: 10px;
+    }
+
+    .footer-columns .col-logo img {
+        width: 100%;
+        height: auto;
+    }
+
+    .footer-columns .col-logo p {
+        font-family: Playfair;
+        font-style: italic;
+        font-size: 18px;
+    }
+
+    .footer-columns .col .who {
+        text-align: justify;
+    }
+
+    .footer-columns .col-contact p {
+        display: flex;
+    }
+
+    .footer-columns .col-contact i {
+        font-size: 23px;
+        color: var(--gray2);
+        margin-right: 15px;
+    }
+
+    .footer-columns .col form {
+        display: flex;
+        width: 100%;
+        height: 40px;
+        background-color: var(--gray0);
+        border-radius: 7px;
+        padding: 2px;
+    }
+
+    .footer-columns .col form input {
+        flex: 5;
+        background-color: transparent;
+        padding-left: 10px;
+        border: none;
+        color: white;
+    }
+
+    .footer-columns .col form input::placeholder {
+        color: var(--gray2);
+    }
+
+    .footer-columns .col form input:focus-visible {
+        outline: none;
+    }
+
+    .footer-columns .col form button {
+        margin: 4px;
+        width: 34px;
+        height: 34px;
+        background-color: var(--gray2);
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .footer-columns .col form button i {
+        position: relative;
+        color: white;
+        left: 0px;
+        transition: .2s left;
+    }
+
+    .footer-columns .col form button:hover i {
+        left: 2px;
+    }
+
+    .footer-bottom section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 90%;
+        margin: 0 auto;
+        font-size: 20px;
+        flex-wrap: wrap;
+        column-gap: 50px;
+        row-gap: 10px;
+    }
+
+    .footer-bottom::before {
+        content: '';
+        display: block;
+        width: 90%;
+        margin: 0 auto;
+        height: 5px;
+        background-color: #272D39;
+        border-radius: 50px;
+        margin-bottom: 20px;
+    }
+
+    .footer-bottom p {
+        text-align: center;
+        color: var(--gray3);
+        margin: 0 auto;
+    }
+
+    .footer-social-icons {
+        display: flex;
+        justify-content: center;;
+        gap: 20px;
+        font-size: 25px;
+        margin: auto;
+    }
+
+    .footer-social-icons a {
+        transition: .2s scale;
+    }
+
+    .footer-social-icons a:hover {
+        scale: 1.3;
+    }
+
+    .footer-social-icons .fa-facebook-f {
+        color: #0866FF;
+    }
+
+    .footer-social-icons .fa-tiktok {
+        color: white;
+    }
+
+    .footer-social-icons .fa-youtube {
+        font-size: 30px;
+        color: red;
+    }
+
+    .footer-social-icons .fa-instagram {
+        font-size: 30px;
+        background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+        -webkit-background-clip: text;
+                background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    
+</style>
