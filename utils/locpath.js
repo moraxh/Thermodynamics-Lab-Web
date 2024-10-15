@@ -1,13 +1,18 @@
-const view       = (path) => `./src/views/${path}`;
-const controller = (path) => `./src/controllers/${path}`;
-const model      = (path) => `./src/models/${path}`;
-const util       = (path) => `./src/utils/${path}`;
-const public_    = (path) => `./public/${path}`;
+import path from 'node:path'
+import { getDirname } from './dirname.js'
+
+const __dirname = getDirname(import.meta.url)
+
+const view = (_path) => path.join(__dirname, '../src/views', _path)
+const controller = (_path) => path.join(__dirname, '../src/controllers', _path)
+const model = (_path) => path.join(__dirname, '../src/models', _path)
+const util = (_path) => path.join(__dirname, '../src/utils', _path)
+const public_ = (_path) => path.join(__dirname, '../public', _path)
 
 export const locpath = {
-    view,
-    controller,
-    model,
-    util,
-    public_,
+  view,
+  controller,
+  model,
+  util,
+  public_
 }

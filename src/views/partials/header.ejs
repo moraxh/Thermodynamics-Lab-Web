@@ -1,11 +1,11 @@
 <header>
     <img src="public/images/logo/logo_full.webp" style="width: 18rem; min-width: 5rem;">
     <nav id="navbar">
-        <a id="nav_home" class="anchor-hover" href="">Inicio</a>
-        <a id="nav_publications" class="anchor-hover" href="">Publicaciones</a>
-        <a id="nav_divulgation" class="anchor-hover" href="">Divulgación</a>
-        <a id="nav_us" class="anchor-hover" href="">Nosotros</a>
-        <a id="nav_contact" class="anchor-hover" href="">Contacto</a>
+        <a id="nav_home" class="anchor-hover" href="/">Inicio</a>
+        <a id="nav_publications" class="anchor-hover" href="/publications">Publicaciones</a>
+        <a id="nav_divulgation" class="anchor-hover" href="/divulgation">Divulgación</a>
+        <a id="nav_us" class="anchor-hover" href="/us">Nosotros</a>
+        <a id="nav_contact" class="anchor-hover" href="/contact">Contacto</a>
     </nav>
     <div id="burger-menu"">
         <button id="menu-button">
@@ -83,7 +83,7 @@
         cursor: pointer;
     }
 
-    @media only screen and (min-width: 900px) {
+    @media only screen and (min-width: 950px) {
         #navbar {
             display: flex !important;
         }
@@ -93,7 +93,7 @@
         }
     }
 
-    @media only screen and (max-width: 900px) {
+    @media only screen and (max-width: 950px) {
         #navbar {
             display: none !important;
         }
