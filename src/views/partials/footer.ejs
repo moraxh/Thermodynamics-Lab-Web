@@ -10,14 +10,6 @@
             <p class="who">Somos una unidad de investigación de la Universidad de Guanajuato. Enfocada principalmente en el análisis avanzado de sistemas termodinámicos.</p>
         </div>
 
-        <div class="col">
-            <h5>Links</h5>
-            <a class="anchor-hover" href="#">Publicaciones</a>
-            <a class="anchor-hover" href="#">Divulgación</a>
-            <a class="anchor-hover" href="#">Nosotros</a>
-            <a class="anchor-hover" href="#">Contacto</a>
-        </div>
-
         <div class="col col-contact">
             <h5>Contacto</h5>
             <p>
@@ -64,7 +56,7 @@
         min-height: 100px;
         font-family: 'Lato';
         padding: 27px;
-        font-size: 20px;
+        font-size: clamp(0.8rem, 2vw, 1.2rem);
     }
 
     footer p {
@@ -74,18 +66,20 @@
     .footer-columns {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
         align-items: start;
         max-width: 90%;
         margin: 0 auto 30px auto;
         column-gap: 50px;
         row-gap: 30px;
+        text-align: center;
+        justify-content: center;
     }
 
     .footer-columns .col {
         flex: 1;
         display: flex;
         flex-direction: column;
+        align-items: center;
         row-gap: 15px;
         max-width: 320px;
         justify-content: center;
@@ -94,7 +88,6 @@
     .footer-columns .col a {
         width: fit-content;
         font-weight: bold;
-        font-size: 22px;
     }
 
     .footer-columns .col a:hover {
@@ -112,7 +105,6 @@
         font-style: italic;
         font-family: 'Montserrat';
         color: var(--accent-color);
-        margin-bottom: 10px;
     }
 
     .footer-columns .col-logo img {
@@ -128,6 +120,7 @@
 
     .footer-columns .col .who {
         text-align: justify;
+        text-align-last: center;;
     }
 
     .footer-columns .col-contact p {
@@ -251,6 +244,4 @@
                 background-clip: text;
         -webkit-text-fill-color: transparent;
     }
-
-    
 </style>
