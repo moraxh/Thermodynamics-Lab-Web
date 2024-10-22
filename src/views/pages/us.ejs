@@ -1,0 +1,98 @@
+<!-- BG Image -->
+<div id="bgImg">
+  <div class="gradient"></div>
+  <img src="public/images/bg/us.webp">
+</div>
+
+<!-- Welcome -->
+<div id="welcome">
+  <h1>¡Bienvenido a <strong>LabInst</strong>!</h1>
+  <br>
+  <p>
+    Somos el Laboratorio de Investigación en Sistemas Termodinámicos de la Universidad de Guanajuato, fundado por los doctores <strong>Sergio Cano Andrade</strong> y <strong>César Eduardo Damián Ascencio</strong>. Nos especializamos en el análisis avanzado de sistemas termodinámicos, aplicando la innovadora teoría de la "Steepest-Entropy-Ascent Quantum Thermodynamics" y la optimización de ciclos de potencia.
+    <br><br>
+    En Labinst valoramos la colaboración interdisciplinaria, por lo que estamos abiertos a trabajar en diversas áreas del conocimiento. Creemos en la ciencia como un esfuerzo colectivo y siempre buscamos un enfoque integral en nuestras investigaciones. ¡Te invitamos a ser parte de este emocionante viaje científico!
+  </p>
+</div>
+
+<!-- Investigation Areas -->
+<div id="investigationAreas">
+  <h1 class="title">Areas de Investigación</h1>
+  <div>
+
+  </div>
+</div>
+
+<style>
+  main {
+    align-items: unset;
+    flex-direction: column;
+    text-align: center;
+    gap: 5rem;
+  }
+
+  #bgImg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    opacity: 28%;
+  }
+
+  #bgImg img {
+    width: 100%;
+    min-height: 600px;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  #bgImg .gradient {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to bottom, rgb(0 0 0 / 0) 78%, rgb(0 0 0 / 1) 100%);
+  }
+
+  #welcome {
+    margin-top: 5rem;
+    height: fit-content;
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid var(--gray1);
+    background-color: rgb(22  26  37 / .5);
+    backdrop-filter: blur(10px);
+    z-index: 2;
+  }
+
+  #welcome h1 {
+    text-align: center;
+    font-weight: normal;
+    font-style: italic;
+    font-family: 'Lato';
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--accent-color);
+    margin: 0;
+  }
+
+
+  #welcome p {
+    font-size: clamp(1rem, 1.7vw, 1.5rem);
+    font-weight: 300;
+    font-family: 'Lato';
+    text-align: justify;
+    margin: 0;
+  }
+
+  #welcome p strong {
+    color: var(--accent-color);
+  }
+
+  .title {
+    color: var(--accent-color);
+    font-size: clamp(2.5rem, 4vw, 4rem);
+  }
+</style>

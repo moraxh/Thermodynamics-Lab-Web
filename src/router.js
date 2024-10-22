@@ -10,6 +10,10 @@ export const initRoutes = (app) => {
     return res.render('pages/home', { title: 'Laboratorio de Sistemas Termodinamicos' })
   })
 
+  app.get('/us', (req, res) => {
+    return res.render('pages/us', { title: 'Laboratorio de Sistemas Termodinamicos' })
+  })
+
   app.use((req, res) => {
     // TODO -- Redirect to a 404 page
     res.status(404).send('Page not found')
