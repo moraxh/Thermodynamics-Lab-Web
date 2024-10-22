@@ -1,5 +1,7 @@
 <header>
-    <img src="public/images/logo/logo_full.webp" style="width: 18rem; min-width: 5rem;">
+    <a id="logo" href="/">
+        <img src="public/images/logo/logo_full.webp">
+    </a>
     <nav id="navbar">
         <a id="nav_home" class="anchor-hover" href="/">Inicio</a>
         <a id="nav_publications" class="anchor-hover" href="/publications">Publicaciones</a>
@@ -35,6 +37,15 @@
 </script>
 
 <style>
+    #logo {
+        width: 18rem; 
+        min-width: 5rem;
+    }
+
+    #logo img {
+        width: 100%;
+    }
+
     header {
         position: fixed;
         top: 0;
