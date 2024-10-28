@@ -18,9 +18,66 @@
 <!-- Investigation Areas -->
 <div id="investigationAreas">
   <h1 class="title">Areas de Investigación</h1>
-  <div>
-
+  <div id="areasWrapper">
+    <div>
+      <img src="public/images/investigationAreas/area_1.webp" alt="">
+      <p>Termodinámica fuera de equilibrio</p>
+    </div>
+    <div>
+      <img src="public/images/investigationAreas/area_2.webp" alt="">
+      <p>Reconocimiento de patrones</p>
+    </div>
+    <div>
+      <img src="public/images/investigationAreas/area_3.webp" alt="">
+      <p>Energía renovables</p>
+    </div>
+    <div>
+      <img src="public/images/investigationAreas/area_4.webp" alt="">
+      <p>Simulación de transferencia de calor</p>
+    </div>
   </div>
+</div>
+
+<div>
+  <h1 class="title">Fundadores</h1>
+    <div class="members">
+      <div>
+        <img src="public/images/members/default.webp" alt="">
+        <p>Dr. Sergio Cano Andrade</p>
+        <small>Profesor de Tiempo Completo</small>
+      </div>
+      <div>
+        <img src="public/images/members/default.webp" alt="">
+        <p>Dr. César Eduardo Damián Ascencio</p>
+        <small>Profesor de Tiempo Completo</small>
+      </div>
+    </div>
+  <h1 class="title">Miembros</h1>
+    <div class="members">
+      <div>
+        <img src="public/images/members/default.webp" alt="">
+        <p>Dr. Sergio Cano Andrade</p>
+        <small>Profesor de Tiempo Completo</small>
+      </div>
+      <div>
+        <img src="public/images/members/default.webp" alt="">
+        <p>Dr. César Eduardo Damián Ascencio</p>
+        <small>Profesor de Tiempo Completo</small>
+      </div>
+    </div>
+  <h1 class="title">Colaboradores</h1>
+    <div class="members">
+      <div>
+        <img src="public/images/members/default.webp" alt="">
+        <p>Dr. Sergio Cano Andrade</p>
+        <small>Profesor de Tiempo Completo</small>
+      </div>
+      <div>
+        <img src="public/images/members/default.webp" alt="">
+        <p>Dr. César Eduardo Damián Ascencio</p>
+        <small>Profesor de Tiempo Completo</small>
+      </div>
+    </div>
 </div>
 
 <style>
@@ -38,6 +95,7 @@
     width: 100%;
     height: auto;
     opacity: 28%;
+    z-index: -1;
   }
 
   #bgImg img {
@@ -93,6 +151,92 @@
 
   .title {
     color: var(--accent-color);
+    font-style: italic;
     font-size: clamp(2.5rem, 4vw, 4rem);
+  }
+
+  #areasWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+
+  #areasWrapper > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(22 26 37 / .5);
+    border: 1px solid var(--gray1);
+    border-radius: .5rem;
+    padding: 1.5rem;
+    width: 15rem;
+    height: 17rem;
+    overflow: hidden;
+    transition: scale .6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #areasWrapper > div:hover {
+    scale: 1.03;
+  }
+
+  #areasWrapper img {
+    width: 90%;
+    aspect-ratio: 1;
+    border: 2px solid var(--accent-color);
+    border-radius: .5rem;
+    object-fit: cover;
+    margin-bottom: 1rem;
+  }
+
+  #areasWrapper p {
+    font-family: 'Lato';
+    font-style: italic;
+    color: var(--gray3);
+    font-size: 1.1rem;
+    display: block;
+    max-width: 80%;
+    margin: auto 0;
+  }
+
+  .members {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5rem;
+  }
+
+  .members > div {
+    width: 13rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+  }
+
+  .members img {
+    width: 10rem;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: 1px solid var(--gray3);
+    border-radius: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .members p {
+    font-family: 'Lato';
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--accent-color);
+    margin: 0;
+  }
+
+  .members small {
+    font-family: 'Lato';
+    font-style: italic;
+    font-size: .9rem;
+    color: var(--gray3);
+    margin: 0;
   }
 </style>
