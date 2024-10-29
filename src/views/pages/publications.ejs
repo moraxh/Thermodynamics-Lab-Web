@@ -1,0 +1,152 @@
+
+
+
+<div class="contenedor">
+    
+    <div class="menu-lateral">
+        <h2>Año de Publicación</h2>
+        <ul>
+            <li><a href="#" data-year="2012">2012</a></li>
+            <li><a href="#" data-year="2013">2013</a></li>
+            <li><a href="#" data-year="2014">2014</a></li>
+            <li><a href="#" data-year="2015">2015</a></li>
+            <li><a href="#" data-year="2016">2016</a></li>
+            <li><a href="#" data-year="2017">2017</a></li>
+            <li><a href="#" data-year="2018">2018</a></li>
+            <li><a href="#" data-year="2019">2019</a></li>
+        </ul>
+    </div>
+   
+    
+    <div class="lista-publicaciones">
+        <div class="publicacion">
+            <img src="public/images/articulo.png" alt="Imagen Publicación">
+            <div class="info-publicacion">
+                <p class="titulo">Lorem ipsum dolor sit amet</p>
+                <p class="fecha">15 Abril 2016</p>
+                <p class="autores">Autor 1, Autor 2, Autor 3</p>
+            </div>
+        </div>
+        
+        <div class="publicacion">
+            <img src="public/images/articulo.png" alt="Imagen Publicación">
+            <div class="info-publicacion">
+                <p class="titulo">Lorem ipsum dolor sit amet</p>
+                <p class="fecha">15 Abril 2016</p>
+                <p class="autores">Autor 1, Autor 2, Autor 3</p>
+            </div>
+        </div>
+        <div class="publicacion">
+            <img src="public/images/articulo.png" alt="Imagen Publicación">
+            <div class="info-publicacion">
+                <p class="titulo">Lorem ipsum dolor sit amet</p>
+                <p class="fecha">15 Abril 2016</p>
+                <p class="autores">Autor 1, Autor 2, Autor 3</p>
+                            </div>
+            
+    </div>
+    
+</div>
+
+<style>
+.contenedor {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    gap: 50px;
+}
+
+
+.menu-lateral {
+    width: 20%;
+    background-color: #161A25;
+    padding: 20px;
+    color: #f1c40f;
+    border-radius: 10px;
+    width: 50%;
+    text-align: center;
+    height: 300px; /* Define la altura máxima del contenedor */
+    overflow-y: auto;
+}
+/* Personaliza el estilo del scrollbar */
+.menu-lateral::-webkit-scrollbar {
+    width: 8px;
+}
+
+.menu-lateral::-webkit-scrollbar-thumb {
+    background-color: #272D39;
+    border-radius: 10px;
+}
+
+.menu-lateral::-webkit-scrollbar-track {
+    background-color: #161A25;
+    border-radius: 10px;
+}
+
+.menu-lateral h2 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.menu-lateral ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.menu-lateral ul li {
+    margin: 10px 0;
+}
+
+.menu-lateral ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.2em;
+    padding: 10px;
+    display: block;
+}
+
+.menu-lateral ul li a.active {
+    background-color: #f1c40f;
+    color: #333;
+    border-radius: 5px;
+}
+
+/* Lista de publicaciones */
+.lista-publicaciones {
+    width: 75%;
+}
+
+.publicacion {
+    display: flex;
+    align-items: center;
+    background-color: rgb(22 26 37 / 50%);
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.publicacion img {
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+    border-radius: 5px;
+}
+
+.info-publicacion {
+    color: white;
+}
+
+.info-publicacion.titulo {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.info-publicacion.fecha,
+.info-publicacion.autores {
+    font-size: 0.9em;
+    color: #ccc;
+}
+</style>
+
+
