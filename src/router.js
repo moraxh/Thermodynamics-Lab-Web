@@ -11,7 +11,11 @@ export const initRoutes = (app) => {
   })
 
   app.get('/us', (req, res) => {
-    return res.render('pages/us', { title: 'Laboratorio de Sistemas Termodinamicos' })
+    return res.render('pages/us', { title: 'Nosotros' })
+  })
+
+  app.get('/contact', (req, res) => {
+    return res.render('pages/contact', { title: 'Contacto' })
   })
   
   app.get('/publications', (req, res) => {
