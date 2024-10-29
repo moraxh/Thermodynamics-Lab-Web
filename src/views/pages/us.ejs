@@ -6,7 +6,7 @@
 
 <!-- Welcome -->
 <div id="welcome">
-  <h1>¡Bienvenido a <strong>LabInst</strong>!</h1>
+  <h1>¡Bienvenid@ a <strong>LisTer</strong>!</h1>
   <br>
   <p>
     Somos el Laboratorio de Investigación en Sistemas Termodinámicos de la Universidad de Guanajuato, fundado por los doctores <strong>Sergio Cano Andrade</strong> y <strong>César Eduardo Damián Ascencio</strong>. Nos especializamos en el análisis avanzado de sistemas termodinámicos, aplicando la innovadora teoría de la "Steepest-Entropy-Ascent Quantum Thermodynamics" y la optimización de ciclos de potencia.
@@ -16,7 +16,7 @@
 </div>
 
 <!-- Investigation Areas -->
-<div id="investigationAreas">
+<div>
   <h1 class="title">Areas de Investigación</h1>
   <div id="areasWrapper">
     <div>
@@ -85,7 +85,6 @@
     align-items: unset;
     flex-direction: column;
     text-align: center;
-    gap: 5rem;
   }
 
   #bgImg {
@@ -117,6 +116,7 @@
 
   #welcome {
     margin-top: 5rem;
+    margin: 0;
     height: fit-content;
     padding: 30px;
     border-radius: 10px;
@@ -128,18 +128,17 @@
 
   #welcome h1 {
     text-align: center;
-    font-weight: normal;
+    font-weight: bold;
     font-style: italic;
     font-family: 'Lato';
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(2rem, 7vw, 3.5rem);
     color: var(--accent-color);
     margin: 0;
   }
 
-
   #welcome p {
-    font-size: clamp(1rem, 1.7vw, 1.5rem);
-    font-weight: 300;
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    font-weight: 400;
     font-family: 'Lato';
     text-align: justify;
     margin: 0;

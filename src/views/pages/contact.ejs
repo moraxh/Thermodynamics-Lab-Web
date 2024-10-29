@@ -1,0 +1,144 @@
+<!-- BG Image -->
+<div id="bgImg">
+  <div class="gradient"></div>
+  <img src="public/images/bg/contact.webp">
+</div>
+
+<div id="contact">
+  <h1>Contáctanos</h1>
+  <p>
+    En <strong>LisTer</strong> estamos comprometidos con la investigación y el desarrollo en el campo de la termodinámica aplicada, buscando soluciones innovadoras y sostenibles para los retos energéticos y tecnológicos actuales. Nos apasiona colaborar con estudiantes, investigadores, y profesionales que compartan nuestro interés en el avance de la ciencia y la ingeniería térmica.
+    <br><br>
+    Si deseas obtener más información sobre nuestras investigaciones, proyectos activos o colaborar con nosotros en el desarrollo de nuevas ideas, no dudes en comunicarte. Estamos aquí para resolver tus preguntas y explorar oportunidades de colaboración.
+  </p>
+  <div>
+    <!-- Youtube -->
+    <a>
+      <i class="fa-brands fa-youtube" style="color: red;"></i>
+      <p>Quantum UG</p>
+    </a>
+    <!-- Facebook -->
+    <a>
+      <i class="fa-brands fa-facebook" style="color: 	#1877F2;"></i>
+      <p>Quantum UG</p>
+    </a>
+    <!-- Email -->
+    <a>
+      <i class="fa-solid fa-envelope"></i>
+      <p>example@gmail.com</p>
+    </a>
+    <!-- Phone -->
+    <a>
+      <i class="fa-solid fa-phone" style="color: #00aa55;"></i>
+      <p>+52 123 456 7890</p>
+    </a>
+  </div>
+</div>
+
+<style>
+  main {
+    align-items: unset;
+    flex-direction: column;
+    text-align: center;
+    gap: 5rem;
+  }
+
+  #bgImg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    opacity: 28%;
+    z-index: -1;
+  }
+
+  #bgImg img {
+    width: 100%;
+    min-height: 600px;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  #bgImg .gradient {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to bottom, rgb(0 0 0 / 0) 78%, rgb(0 0 0 / 1) 100%);
+  }
+
+  #contact {
+    border: 1px solid var(--gray2);
+    border-radius: .7rem;
+    background-color: rgb(22 26 37 / .5);
+    backdrop-filter: blur(5px);
+    padding: 1.5rem;
+    width: min(70rem, 80%);
+    margin: 0 auto;
+    max-width: 95%;
+  }
+
+  #contact > h1 {
+    font-size: clamp(2rem, 5vw, 5rem);
+    font-family: 'Montserrat';
+    font-style: italic;
+    color: var(--accent-color);
+    margin: 0;
+  }
+
+  #contact > p {
+    font-size: 1.4rem;
+    font-weight: 400;
+    font-family: 'Lato';
+    text-align: justify;
+  }
+
+  #contact > p > strong {
+    color: var(--accent-color);
+  }
+
+  #contact > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 2rem;
+    gap: 2rem;
+  }
+
+  #contact > div > a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 13rem;
+    height: 13rem;
+    border: 1px solid var(--gray2);
+    background-color: var(--gray0);
+    border-radius: .5rem;
+    transition: scale .2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #contact > div > a:hover {
+    cursor: pointer;
+    scale: 1.05;
+  }
+
+  #contact > div > a > i {
+    display: block;
+    color: var(--gray3);
+    font-size: 4rem;
+  }
+
+  #contact > div > a > p {
+    display: block;
+    font-family: 'Lato';
+    font-weight: bold ;
+    font-style: italic;
+    color: var(--accent-color);
+    margin: 1rem auto;
+    max-width: 80%;
+  }
+</style>
