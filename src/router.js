@@ -17,6 +17,10 @@ export const initRoutes = (app) => {
   app.get('/contact', (req, res) => {
     return res.render('pages/contact', { title: 'Contacto' })
   })
+  
+  app.get('/publications', (req, res) => {
+    return res.render('pages/publications', { title: 'Laboratorio de Sistemas Termodinamicos' })
+  })
 
   app.use((req, res) => {
     // TODO -- Redirect to a 404 page
