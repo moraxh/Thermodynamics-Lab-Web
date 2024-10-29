@@ -13,6 +13,10 @@ export const initRoutes = (app) => {
   app.get('/us', (req, res) => {
     return res.render('pages/us', { title: 'Laboratorio de Sistemas Termodinamicos' })
   })
+  
+  app.get('/publications', (req, res) => {
+    return res.render('pages/publications', { title: 'Laboratorio de Sistemas Termodinamicos' })
+  })
 
   app.use((req, res) => {
     // TODO -- Redirect to a 404 page
