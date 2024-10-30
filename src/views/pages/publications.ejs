@@ -1,10 +1,11 @@
-
-
-
+<div id="bgImg">
+    <div class="gradient"></div>
+    <img src="public/images/bg/bg2.png">
+  </div>
 <div class="contenedor">
     
     <div class="menu-lateral">
-        <h2 class="tittle-stick">Año de Publicación</h2>
+       <div class="tittle-stick"><h2>Año de Publicación</h2></div> 
         <div >
             <ul>
                 <li class="year"><a href="#" data-year="2012">2012</a></li>
@@ -22,15 +23,12 @@
                 <li class="year"><a href="#" data-year="2024">2024</a></li>
             </ul>
         </div>
-        
     </div>
-   
-    
     <div class="lista-publicaciones">
         <div class="publicacion">
             <img src="public/images/articulo.png" alt="Imagen Publicación">
             <div class="info-publicacion">
-                <p class="titulo">Lorem ipsum dolor sit amet</p>
+                <h2 class="titulo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu magna commodo</h2>
                 <p class="fecha">15 Abril 2016</p>
                 <p class="autores">Autor 1, Autor 2, Autor 3</p>
             </div>
@@ -39,7 +37,7 @@
         <div class="publicacion">
             <img src="public/images/articulo.png" alt="Imagen Publicación">
             <div class="info-publicacion">
-                <p class="titulo">Lorem ipsum dolor sit amet</p>
+                <h2 class="titulo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu magna commodo</h2>
                 <p class="fecha">15 Abril 2016</p>
                 <p class="autores">Autor 1, Autor 2, Autor 3</p>
             </div>
@@ -47,7 +45,31 @@
         <div class="publicacion">
             <img src="public/images/articulo.png" alt="Imagen Publicación">
             <div class="info-publicacion">
-                <p class="titulo">Lorem ipsum dolor sit amet</p>
+                <h2 class="titulo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu magna commodo</h2>
+                <p class="fecha">15 Abril 2016</p>
+                <p class="autores">Autor 1, Autor 2, Autor 3</p>
+            </div>
+        </div>
+        <div class="publicacion">
+            <img src="public/images/articulo.png" alt="Imagen Publicación">
+            <div class="info-publicacion">
+                <h2 class="titulo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu magna commodo</h2>
+                <p class="fecha">15 Abril 2016</p>
+                <p class="autores">Autor 1, Autor 2, Autor 3</p>
+            </div>
+        </div>
+        <div class="publicacion">
+            <img src="public/images/articulo.png" alt="Imagen Publicación">
+            <div class="info-publicacion">
+                <h2 class="titulo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu magna commodo</h2>
+                <p class="fecha">15 Abril 2016</p>
+                <p class="autores">Autor 1, Autor 2, Autor 3</p>
+            </div>
+        </div>
+        <div class="publicacion">
+            <img src="public/images/articulo.png" alt="Imagen Publicación">
+            <div class="info-publicacion">
+                <h2 class="titulo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu magna commodo</h2>
                 <p class="fecha">15 Abril 2016</p>
                 <p class="autores">Autor 1, Autor 2, Autor 3</p>
             </div>
@@ -55,71 +77,106 @@
     </div>
 </div>
 <style>
+.autores{
+    text-align: justify;
+    color: #7B848D;
+}
+.titulo{
+    text-align: justify;
+}
+.fecha{
+    text-align: justify;
+    color: #444B53;
+}
+ main {
+    align-items: unset;
+    flex-direction: column;
+    text-align: center;
+}
+  #bgImg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: -1;
+  }
+  #bgImg img {
+    width: 100%;
+    min-height: 600px;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+    overflow-y: none;
+  }
 .year{
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
     background-color: #272D39;
+    transition: all 0.3s ease;
 }
-
+.year:hover{
+    background-color: #f1c40f; /* Color cuando el ratón está encima */
+    color: black;
+    transform: scale(1.1); /* Aumenta el tamaño del recuadro */
+}
 .tittle-stick{
-    display: flex;
     position: sticky;
     background-color: #161A25; 
     top: 0;
-    z-index: 10; 
+    z-index: 10;
+    font-size: 18px;
+    width: 100%;
+    display: flex;
     justify-content: center;
-    padding: 30px;
-    font-size: 60px;
-
+    align-items:center;
+    font-size: 22px;
 }
 .contenedor {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-    gap: 70px;
+    padding: 5px;
+    gap: 50px;
+    width: 100%;
+    height: 100% ;
+    overflow-x: hidden;
+    
 }
 .menu-lateral {
     background-color: #161A25;
-    padding: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 40px;
     color: #f1c40f;
-    border-radius: 10px;
-    width: 60%;
-    text-align: center;
-    height: 300px; /* Define la altura máxima del contenedor */
-    overflow-y: auto;
+    overflow-y: auto; 
+    border-radius: 20px;
+    width: 25%;
+    max-height: 450px;
 }
-/* Personaliza el estilo del scrollbar */
 .menu-lateral::-webkit-scrollbar {
     width: 8px;
 }
-
 .menu-lateral::-webkit-scrollbar-thumb {
     background-color: #272D39;
     border-radius: 10px;
 }
-
 .menu-lateral::-webkit-scrollbar-track {
     background-color: #161A25;
     border-radius: 10px;
 }
-
 .menu-lateral h2 {
     margin-bottom: 20px;
     font-size: 1.5em;
 }
-
 .menu-lateral ul {
     list-style-type: none;
     padding: 0;
 }
-
 .menu-lateral ul li {
     margin: 10px 0;
 }
-
 .menu-lateral ul li a {
     text-decoration: none;
     color: white;
@@ -127,57 +184,61 @@
     padding: 10px;
     display: block;
 }
-
 .menu-lateral ul li a.active {
     background-color: #f1c40f;
     color: #333;
     border-radius: 5px;
 }
-
-/* Lista de publicaciones */
 .lista-publicaciones {
     display: flex;
-    width: 60%;
     gap: 20px;
     flex-direction: column;
-    height: auto;
-    margin-left: 50px;
-
-    
+    height: 500px;
+    width: 70%; 
+    overflow-y: auto; 
+    padding-right: 10px; 
 }
-
 .publicacion {
     display: flex;
     align-items: center;
     background-color: rgb(22 26 37 / 50%);
-    padding: 15px;
     border-radius: 10px;
-    width: 700px;
-    height: 100px;
-   
+    width: 90%;
+    height: 150px;
+    margin-left: 50px;
+    transition: all 0.3s ease;
+    padding-right: 7px;
 }
-
+.publicacion:hover {
+    transform: scale(1.05); 
+    background-color: #161A25; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+}
 .publicacion img {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     margin-right: 20px;
     border-radius: 5px;
+    align-items: center;
+    margin-left: 10px;
+}
+.lista-publicaciones::-webkit-scrollbar {
+    width: 8px;
 }
 
-.info-publicacion {
-    color: white;
+.lista-publicaciones::-webkit-scrollbar-thumb {
+    background-color: #272D39;
+    border-radius: 10px;
 }
 
-.info-publicacion.titulo {
-    font-size: 1.5em;
-    margin-bottom: 10px;
+.lista-publicaciones::-webkit-scrollbar-track {
+    background-color: #161A25;
+    border-radius: 10px;
 }
 
-.info-publicacion.fecha,
-.info-publicacion.autores {
-    font-size: 0.9em;
-    color: #ccc;
-}
+
+
+
 </style>
 
 
