@@ -43,15 +43,20 @@ main {
     display: block;
     background-color: var(--accent-color);
     height: 2px;
-    width: 100%;
-    margin-left: -100%;
+    width: 80%;
+    margin-left: -200%;
     transition: margin-left .2s ease-in-out;
 }
 
 .anchor-hover:hover::after {
-    margin-left: 0%;
+    margin-left: 10%;
 }
 
 .anchor-hover:hover {
     color: var(--accent-color);
+}
+
+@keyframes show {
+    0% { opacity: 0;}
+    100% { opacity: 1;}
 }

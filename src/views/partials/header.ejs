@@ -17,6 +17,11 @@
 </header>
 
 <script>
+    document.getElementById("menu-button").addEventListener("click", (e) => {
+        e.preventDefault();
+        document.getElementById("navbar").classList.toggle("open");
+    })
+
     switch (window.location.pathname) {
         case "/":
             document.getElementById("nav_home").classList.add("navbar-actual");
@@ -106,11 +111,39 @@
 
     @media only screen and (max-width: 950px) {
         #navbar {
-            display: none !important;
+            display: none;
+        }
+
+        #navbar.open {
+            display: flex !important;
+            flex-direction: column;
+            position: absolute;
+            top: 100px;
+            right: 0;
+            margin-right: min(5%, 62px);
+            width: 10rem;
+            padding: .7rem;
+            gap: .7rem;
+            background-color: var(--gray0);
+            border: 1px solid var(--gray1);
+            border-radius: .5rem;
+            animation-name: show;
+            animation-duration: .2s;
+            animation-timing-function: ease-in-out;
+        }
+
+        #navbar.open a {
+            background-color: var(--gray1);
+            width: 100%;
+            padding: .5rem 0;
+            text-align: center;
+            border-radius: .3rem;
+            min-height: fit-content;
         }
 
         #burger-menu {
             display: block !important;
         }
     }
+
 </style>
