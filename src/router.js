@@ -1,8 +1,5 @@
-import dotenv from 'dotenv'
 import process from 'node:process'
 import { galleryController } from './controllers/galleryController.js'
-
-dotenv.config()
 
 const port = process.env.PORT || 3000
 

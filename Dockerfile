@@ -16,7 +16,7 @@ COPY . .
 RUN npx eslint
 
 # Expose the port
-EXPOSE 3000
+EXPOSE 3000 3001 4000
 
 # Startup command
 CMD ["npm", "run", "dev"]
