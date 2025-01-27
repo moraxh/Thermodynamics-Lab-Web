@@ -3,6 +3,7 @@
 	import '../styles/global.css';
 
 	import TopBar from '../components/common/TopBar.astro';
+	import BottomBar from '../components/common/BottomBar.astro';
 ---
 
 <!doctype html>
@@ -13,9 +14,10 @@
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<title>{title}</title>
 	</head>
-	<body class="bg-background">
+	<body class="flex flex-col justify-between bg-background">
 		<TopBar />
 		<slot />
+		<BottomBar />
 	</body>
 </html>
 

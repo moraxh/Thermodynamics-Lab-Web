@@ -1,0 +1,24 @@
+---
+  import Icon from "./Icon.astro"
+---
+
+<footer class="pb-5 px-14 bg-gradient-to-t from-gray0 to-transparent mt-auto">
+  <section class="flex flex-wrap justify-center items-center ">
+    <p id="footer-legend" class="text-center text-gray3"></p>
+    <nav class="flex gap-3 justify-center items-end">
+      <Icon class="h-8" name="facebook" />
+      <Icon class="h-6" name="instagram" />
+      <Icon class="h-6" name="tiktok" />
+      <Icon class="h-6" name="youtube" />
+    </nav>
+  </section>
+</footer>
+
+<script>
+  const footer = `© ${(new Date).getFullYear()} Copyright Todos los derechos reservados | Página web creada por Hadassah Garcia, Aranza Miravalles y Jorge Mora`
+  const footerLegend = document.getElementById('footer-legend');
+
+  if (footerLegend) {
+    footerLegend.innerHTML = footer;
+  }
+</script>
