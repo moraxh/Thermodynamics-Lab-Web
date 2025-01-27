@@ -9,8 +9,11 @@
     --accent-color: #F6C308;
     --gray0: #161A25;
     --gray1: #272D39;
+    --gray1-50: rgb(39 45 57 / .5);
     --gray2: #444B53;
+    --gray2-50: rgb(68 75 83 / .5);
     --gray3: #7B848D;
+    --gray3-50: rgb(123 132 141 / .5);
 }
 
 body {
@@ -54,6 +57,45 @@ main {
 
 .anchor-hover:hover {
     color: var(--accent-color);
+}
+
+input {
+    background-color: var(--gray1);
+    border: none;
+    border-radius: .5rem;
+    padding: .5rem;
+    font-size: 1.2rem;
+    font-family: Montserrat;
+    color: white;
+}
+
+input::placeholder {
+    color: var(--gray3);
+    opacity: .5;
+}
+
+button {
+    display: flex;
+    justify-content: center;
+    background-color: var(--accent-color);
+    color: var(--gray0);
+    border-radius: .5rem;
+    border: none;
+    outline: none;
+    padding: .5rem 1rem;
+    font-family: Montserrat;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(0.8);
+}
+
+button:disabled {
+    pointer-events: none;
+    opacity: .2;
 }
 
 @keyframes show {

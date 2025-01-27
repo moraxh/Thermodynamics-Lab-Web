@@ -16,6 +16,9 @@ export const initMiddleware = (app) => {
   // Use view engine
   app.set('view engine', 'ejs')
 
+  // Set default layout
+  app.set('layout', 'layouts/main')
+
   // Set views directory
   app.set('views', path.join(process.cwd(), 'src/views'))
 }

@@ -1,0 +1,77 @@
+<section>
+  <img src="/public/images/logo/logo_full.webp" alt="logo">
+  <div>
+    <input type="text" name="user" id="user" placeholder="Usuario">
+    <input type="password" name="password" id="password" placeholder="Contraseña">
+    <button id="submit" disabled>Iniciar Sesión</button>
+  </div>
+</section>
+
+<script>
+  const inputs = document.querySelectorAll('div > input')
+  const submit = document.querySelector('#submit')
+
+  const validateForm = () => {
+    const isValid = Array.from(inputs).every(input => input.value != "" && input.value != null)  
+
+    if (isValid) {
+      submit.disabled = false
+      return true
+    }
+
+    submit.disabled = true
+    return false
+  }
+
+  inputs.forEach((input) => {
+    input.addEventListener('input', validateForm)
+  })
+
+  submit.addEventListener('click', () => {
+    if (!validateForm()) {
+      customAlert.error('Credenciales faltantes', 'Por favor, rellena todos los campos')
+      return
+    }
+    
+    fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user: user.value,
+        password: password.value
+      })
+    })
+  })
+</script>
+
+
+<style>
+  section {
+    width: min(90%, 22rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--gray0);
+    box-shadow: 0 0 2rem 0.5rem var(--gray2-50);
+    border: 1px solid var(--gray1);
+    padding: 1.7rem;
+    border-radius: 1rem;
+    margin: auto;
+    gap: 1rem;
+  }
+
+  section > img {
+    width: 100%;
+  }
+
+  section > div {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+  }
+</style>

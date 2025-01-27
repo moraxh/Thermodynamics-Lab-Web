@@ -8,10 +8,18 @@
     <title><%= title %></title>
 </head>
 <body>
-    <%- include('partials/header') %>
-    <main>
-        <%- body %>
-    </main>
-    <%- include('partials/footer') %>
+    <%- include('./../components/alert') %>
+    <%- body %>
 </body>
 </html>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        max-width: 90%;
+        margin: auto;
+    }
+</style>
