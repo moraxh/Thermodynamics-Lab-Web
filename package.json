@@ -1,41 +1,16 @@
 {
-  "name": "thermodynamic-lab-web",
-  "version": "1.0.0",
-  "description": "Website of the thermodynamic systems laboratory of the Engineering Division Campus Irapuato Salamanca",
-  "main": "server.js",
+  "name": "astro-latest",
   "type": "module",
+  "version": "0.0.1",
   "scripts": {
-    "start": "node server.js",
-    "dev": "npx nodemon -L server.js",
-    "build": "docker-compose up --build",
-    "up": "docker-compose up",
-    "down": "docker-compose down"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/moraxh/Thermodynamic-Lab-Web.git"
-  },
-  "author": "Hadassah Garcia & Jorge Mora",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/moraxh/Thermodynamic-Lab-Web/issues"
-  },
-  "homepage": "https://github.com/moraxh/Thermodynamic-Lab-Web#readme",
-  "devDependencies": {
-    "browser-sync": "^3.0.3",
-    "nodemon": "^3.1.7",
-    "standard": "^17.1.2"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
   "dependencies": {
-    "dotenv": "^16.4.5",
-    "ejs": "^3.1.10",
-    "express": "^4.21.0",
-    "express-ejs-layouts": "^2.5.1",
-    "mysql2": "^3.11.3",
-    "serve-favicon": "^2.5.0",
-    "url": "^0.11.4"
-  },
-  "eslintConfig": {
-    "extends": "./node_modules/standard/eslintrc.json"
+    "@astrojs/tailwind": "^5.1.5",
+    "astro": "^5.1.10",
+    "tailwindcss": "^3.4.17"
   }
 }

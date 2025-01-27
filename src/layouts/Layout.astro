@@ -1,0 +1,29 @@
+---
+	const { title, ...rest } = Astro.props;
+	import '../styles/global.css';
+
+	import TopBar from '../components/common/TopBar.astro';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<title>{title}</title>
+	</head>
+	<body class="bg-background">
+		<TopBar />
+		<slot />
+	</body>
+</html>
+
+<style>
+	html,
+	body {
+		margin: 0;
+		width: 100%;
+		height: 100%;
+	}
+</style>
