@@ -2,17 +2,99 @@
   import Icon from "./Icon.astro"
 ---
 
-<footer class="pb-5 px-14 bg-gradient-to-t from-gray0 to-transparent mt-auto">
-  <section class="flex flex-wrap justify-center items-center ">
-    <p id="footer-legend" class="text-center text-gray3"></p>
-    <nav class="flex gap-3 justify-center items-end">
-      <Icon class="h-8" name="facebook" />
-      <Icon class="h-6" name="instagram" />
-      <Icon class="h-6" name="tiktok" />
-      <Icon class="h-6" name="youtube" />
+<footer class="flex flex-col justify-center items-center pb-5 px-14 bg-gradient-to-t from-gray0 to-transparent mt-auto">
+  <div class="flex flex-wrap justify-between items-start p-6 w-full max-w-[80%] mx-auto gap-x-12 gap-y-8">
+    <!-- Logo & legend -->
+    <article class="!gap-y-0">
+      <img class="h-32 object-contain min-w-[230px]" src="/images/logo/logo_med.webp" alt="logo">
+      <i>¡Que la imaginación sea tu único limite!</i>
+    </article>
+
+    <!-- Who we are -->
+    <article>
+      <h3>¿Quién somos?</h3>
+      <p class="text-justify">
+        Somos una unidad de investigación de la <strong>Universidad de Guanajuato</strong>. Enfocada principalmente en el análisis avanzado de <strong>sistemas termodinámicos</strong>.
+      </p>
+    </article>
+
+    <!-- Contact -->
+    <article>
+      <h3>Contáctanos</h3>
+      <section class="flex flex-col gap-y-2 w-fit mx-auto text-start">
+        <!-- Email -->
+        <div class="contact-section">
+          <a target="_blank" href="mailto:test@gmail.com">
+            <Icon name="email" class="min-w-7 w-7 h-6 object-contain fill-gray2"/>
+          </a>
+          <p>example@gmail.com</p>
+        </div>
+        <!-- Phone -->
+        <div class="contact-section">
+          <a target="_blank" href="tel:052-123-456-7890">
+            <Icon name="phone" class="min-w-7 w-7 h-6 object-contain fill-gray2"/>
+          </a>
+          <p>+52 123 456 7890</p>
+        </div>
+        <!-- Location -->
+        <div class="contact-section">
+          <a target="_blank" href="https://maps.app.goo.gl/H2XMtkisHDdv7ED69">
+            <Icon name="landmark" class="min-w-7 w-7 h-6 object-contain fill-gray2"/>
+          </a>
+          <p>DICIS, Salamanca, Gto, México</p>
+        </div>
+      </section>
+    </article>
+
+    <!-- Newsletter -->
+    <article>
+      <h3>Newsletter</h3>
+      <section class="flex flex-col gap-y-2">
+        <p>Suscríbete a nuestro newsletter</p>
+        <div class="flex justify-between items-center bg-gray1 rounded-lg gap-x-4 p-2 ps-4">
+          <input class="bg-transparent outline-none active:outline-none focus:outline-none w-full" placeholder="test@gmail.com" type="text" name="" id="">
+          <button class="min-w-10 w-10 h-10 bg-gray2 rounded-lg hover:brightness-125 flex justify-center items-center hover:*:-right-1" type="submit">
+            <Icon name="right_arrow" class="w-5 h-5 fill-white relative right-0" />
+          </button>
+        </div>
+      </section>
+    </article>
+  </div>
+  <!-- Separation Line -->
+  <span class="w-full h-1 bg-gray1 my-4 max-w-[80%] rounded-full"></span>
+  <!-- CopyRight & Social Media Links -->
+  <section class="flex flex-wrap justify-between items-center gap-x-7 max-w-[80%] w-full">
+    <p id="footer-legend" class="text-center text-gray3 m-auto"></p>
+    <nav class="flex gap-3 justify-center items-end m-auto">
+      <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-6" name="facebook" />
+      <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-5" name="instagram" />
+      <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-5" name="tiktok" />
+      <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-5" name="youtube" />
     </nav>
   </section>
 </footer>
+
+<style>
+  h3 {
+    @apply text-accent text-3xl font-bold;
+  }
+
+  p {
+    @apply text-lg;
+  }
+
+  article {
+    @apply flex flex-col justify-center gap-y-5 flex-1 text-center min-w-[250px] max-w-[300px] mx-auto;
+  }
+
+  strong {
+    @apply text-accent;
+  }
+
+  .contact-section { 
+    @apply flex justify-start items-start gap-x-3;
+  }
+</style>
 
 <script>
   const footer = `© ${(new Date).getFullYear()} Copyright Todos los derechos reservados | Página web creada por Hadassah Garcia, Aranza Miravalles y Jorge Mora`
