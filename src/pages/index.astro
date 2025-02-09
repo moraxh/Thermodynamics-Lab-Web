@@ -1,7 +1,37 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+import { Image } from 'astro:assets';
+
+import bgImage from '../assets/images/bg/home.webp'
+import bgImage2 from '../assets/images/bg/home_2.webp'
+
+const imageRandom = Math.floor(Math.random() * 2)
 ---
 
-<Layout title="Laboratorio de Sistemas Termodinamicos">
-  
+<Layout title="Laboratorio de Sistemas Termodinamicos"> 
+  <section class="w-full max-w-[80%] mx-auto">
+    <div class="flex flex-col justify-center h-[700px] max-w-full lg:max-w-[430px] xl:max-w-[500px] mx-auto text-center lg:text-start lg:mx-0">
+      <h1 class="font-bold text-accent text-4xl sm:text-7xl md:text-8xl font-serif">
+        ¿QUIÉNES<br>SOMOS?
+      </h1>
+      <p class="text-justify text-gray3 text-xl sm:text-2xl lg:text-xl">
+        Somos una <strong>unidad de investigación</strong> de la Universidad de Guanajuato. Enfocada principalmente en el análisis avanzado de <strong>sistemas termodinámicos</strong>.
+      </p>
+    </div>
+  </section>
+
+    <Image class="-z-10 top-0 w-auto object-contain -translate-x-1/2 absolute blur-sm brightness-50 h-[700px] left-1/2 lg:blur-0 lg:brightness-100 lg:left-3/4 lg:h-[900px]" src={bgImage2} alt="bg" />
+  <!-- {imageRandom == 0 ? (
+    <Image class="absolute -z-10 top-0 right-0 w-auto h-[900px] object-contain" src={bgImage} alt="bg" />
+  ) : (
+  )} -->
 </Layout>
+
+<style>
+  @reference "../styles/global.css";
+
+  strong {
+    @apply text-accent;
+  }
+</style>

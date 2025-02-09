@@ -1,4 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-background: #010101;
+  --color-text: #ffffff;
+  --color-primary: #2e3192;
+  --color-accent: #f6c308;
+  --color-gray0: #161a25;
+  --color-gray1: #272d39;
+  --color-gray2: #444b53;
+  --color-gray3: #7b848d;
+
+  --font-sans: lato, sans-serif;
+  --font-serif: montserrat, serif;
+}
 
 * {
   @apply text-text duration-300 ease-in-out;

@@ -1,12 +1,16 @@
 ---
   import Icon from "./Icon.astro"
+
+  import { Image } from 'astro:assets';
+
+  import logo from '../../assets/images/logo/logo_med.webp'
 ---
 
 <footer class="flex flex-col justify-center items-center pb-5 px-14 bg-gradient-to-t from-gray0 to-transparent mt-auto">
   <div class="flex flex-wrap justify-between items-start p-6 w-full max-w-[80%] mx-auto gap-x-12 gap-y-8">
     <!-- Logo & legend -->
     <article class="!gap-y-0">
-      <img class="h-32 object-contain min-w-[230px]" src="/images/logo/logo_med.webp" alt="logo">
+      <Image class="h-32 object-contain min-w-[230px]" src={logo} alt="logo" />
       <i>¡Que la imaginación sea tu único limite!</i>
     </article>
 
@@ -53,7 +57,7 @@
         <p>Suscríbete a nuestro newsletter</p>
         <div class="flex justify-between items-center bg-gray1 rounded-lg gap-x-4 p-2 ps-4">
           <input class="bg-transparent outline-none active:outline-none focus:outline-none w-full" placeholder="test@gmail.com" type="text" name="" id="">
-          <button class="min-w-10 w-10 h-10 bg-gray2 rounded-lg hover:brightness-125 flex justify-center items-center hover:*:-right-1" type="submit">
+          <button class="min-w-8 w-8 h-8 bg-gray2 rounded-lg hover:brightness-125 flex justify-center items-center hover:*:-right-1" type="submit">
             <Icon name="right_arrow" class="w-5 h-5 fill-white relative right-0" />
           </button>
         </div>
@@ -75,8 +79,10 @@
 </footer>
 
 <style>
+  @reference "../../styles/global.css";
+
   h3 {
-    @apply text-accent text-3xl font-bold;
+    @apply text-accent text-3xl font-bold font-serif;
   }
 
   p {

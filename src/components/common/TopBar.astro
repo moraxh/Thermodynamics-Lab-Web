@@ -1,10 +1,14 @@
 ---
   const pages = ['/', '/publications', '/divulgation', '/us', '/contact'];
+
+  import { Image } from 'astro:assets';
+
+  import logo from '../../assets/images/logo/logo_full.webp'
 ---
 
-<header class="from-gray0 to-40% to-transparent bg-gradient-to-b flex justify-between items-center gap-24 pt-3 px-14">
+<header class="sticky top-0 from-gray0 to-transparent bg-gradient-to-b flex justify-between items-center gap-12 sm:gap-24 pt-3 px-5 sm:px-14 backdrop-blur-sm">
   <a href="/">
-    <img class="w-72 min-w-52" src="/images/logo/logo_full.webp" alt="logo">
+    <Image class="w-72 min-w-32" src={logo} alt="logo" />
   </a>
 
   <nav class="flex justify-between gap-10 text-2xl">
@@ -15,8 +19,8 @@
     <a href={pages[4]}>Contacto</a>
   </nav>
 
-  <button id="nav-menu" class="hidden hover:bg-gray2 border-gray2 border-2 w-12 aspect-square rounded-md">
-    <span class="text-xl">☰</span>
+  <button id="nav-menu" class="hidden hover:bg-gray2 border-gray2 border-2 min-w-10 sm:min-w-12 w-12 aspect-square rounded-md">
+    <span class="text-lg sm:text-xl">☰</span>
     <span class="text-3xl">×</span>
   </button>
 </header>
@@ -38,6 +42,8 @@
 </script>
 
 <style>
+  @reference "../../styles/global.css";
+
   header > nav > a {
     @apply overflow-hidden
   }
@@ -59,7 +65,7 @@
     @apply hidden;
   }
 
-  @media (max-width: 1240px) {
+  @media (max-width: 1267px) {
     header.active {
       @apply fixed left-0 right-0 bottom-0 top-0 bg-gray0/50 backdrop-blur-md flex flex-col gap-12 items-center justify-start;
     }
