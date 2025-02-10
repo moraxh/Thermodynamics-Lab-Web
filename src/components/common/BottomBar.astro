@@ -6,11 +6,11 @@
   import logo from '../../assets/images/logo/logo_med.webp'
 ---
 
-<footer class="flex flex-col justify-center items-center pb-5 px-14 bg-gradient-to-t from-gray0 to-transparent mt-auto">
-  <div class="flex flex-wrap justify-between items-start p-6 w-full max-w-[80%] mx-auto gap-x-12 gap-y-8">
+<footer class="flex flex-col justify-center items-center pb-5 px-4 xs:px-14 bg-gradient-to-t from-gray0 to-transparent mt-auto">
+  <div class="flex flex-wrap justify-between items-start p-0 xs:p-6 w-full max-w-[80%] mx-auto gap-x-12 gap-y-8">
     <!-- Logo & legend -->
     <article class="!gap-y-0">
-      <Image class="h-32 object-contain min-w-[230px]" src={logo} alt="logo" />
+      <Image class="h-32 object-contain w-full" src={logo} alt="logo" />
       <i>¡Que la imaginación sea tu único limite!</i>
     </article>
 
@@ -90,7 +90,7 @@
   }
 
   article {
-    @apply flex flex-col justify-center gap-y-5 flex-1 text-center min-w-[250px] max-w-[300px] mx-auto;
+    @apply flex flex-col justify-center gap-y-5 flex-1 text-center min-w-[200px] xs:min-w-[250px] max-w-[300px] mx-auto;
   }
 
   strong {

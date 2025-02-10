@@ -12,8 +12,6 @@
 
   --font-sans: lato, sans-serif;
   --font-serif: montserrat, serif;
-}
 
-* {
-  @apply text-text duration-300 ease-in-out;
+  --breakpoint-xs: 425px;
 }

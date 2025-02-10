@@ -17,14 +17,21 @@
 	</head>
 	<body class="flex flex-col justify-between bg-background overflow-x-hidden">
 		<TopBar />
-		<main class="flex flex-col justify-center items-center m-5 sm:m-10">
+		<main class="flex flex-col justify-center items-center m-3 sm:m-10">
 			<slot />
 		</main>
-		<!-- <BottomBar /> -->
+		<BottomBar />
 	</body>
 </html>
 
 <style>
+	@reference "../styles/global.css";
+
+	* {
+		@apply duration-300 ease-in-out;
+		color: white;
+	}
+
 	html,
 	body {
 		margin: 0;

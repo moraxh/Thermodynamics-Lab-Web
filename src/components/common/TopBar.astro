@@ -6,7 +6,7 @@
   import logo from '../../assets/images/logo/logo_full.webp'
 ---
 
-<header class="sticky top-0 from-gray0 to-transparent bg-gradient-to-b flex justify-between items-center gap-12 sm:gap-24 pt-3 px-5 sm:px-14 backdrop-blur-sm">
+<header class="sticky top-0 from-gray0 to-transparent bg-gradient-to-b flex justify-between items-center gap-12 sm:gap-24 pt-3 px-5 sm:px-14 backdrop-blur-xs">
   <a href="/">
     <Image class="w-72 min-w-32" src={logo} alt="logo" />
   </a>
@@ -19,7 +19,7 @@
     <a href={pages[4]}>Contacto</a>
   </nav>
 
-  <button id="nav-menu" class="hidden hover:bg-gray2 border-gray2 border-2 min-w-10 sm:min-w-12 w-12 aspect-square rounded-md">
+  <button id="nav-menu" class="hidden hover:bg-gray2 border-gray2 border-2 min-w-5 sm:min-w-12 w-12 aspect-square rounded-md">
     <span class="text-lg sm:text-xl">☰</span>
     <span class="text-3xl">×</span>
   </button>
@@ -67,23 +67,27 @@
 
   @media (max-width: 1267px) {
     header.active {
-      @apply fixed left-0 right-0 bottom-0 top-0 bg-gray0/50 backdrop-blur-md flex flex-col gap-12 items-center justify-start;
+      @apply fixed left-0 right-0 bottom-0 top-0 bg-gray0/50 flex flex-col gap-12 items-center justify-start;
+    }
+
+    header.active > a {
+      @apply fixed top-12 left-5 xs:left-12 z-50;
     }
     
     header.active > a > img {
-      @apply w-80;
+      @apply w-44 xs:w-60;
     }
 
     header.active > nav {
-      @apply bg-gray0 border border-gray1 px-20 py-12 rounded-lg flex-col w-fit gap-12 items-center;
+      @apply bg-gray0 border border-gray1 w-full xs:w-fit px-7 xs:px-20 py-12 rounded-lg flex-col gap-12 items-center mt-36 xs:mt-52;
     }
     
     header.active > nav > a {
-      @apply w-fit text-3xl;
+      @apply w-fit text-2xl xs:text-3xl;
     }
 
     header.active > button {
-      @apply fixed top-12 right-12 z-50;
+      @apply fixed top-12 right-5 xs:right-12 z-50 xs:translate-y-4;
     }
 
     header.active > button > :nth-child(2) {
