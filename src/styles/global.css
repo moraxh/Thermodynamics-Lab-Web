@@ -15,3 +15,25 @@
 
   --breakpoint-xs: 425px;
 }
+
+.bgImage {
+  @apply -z-50 brightness-30 absolute top-0 w-full;
+  -webkit-mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) 90%,
+      rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) 90%,
+      rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.contact-icon {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+.contact-section:hover > .contact-icon {
+  @apply !fill-accent;
+}
