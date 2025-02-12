@@ -1,0 +1,65 @@
+---
+  import { Image } from "astro:assets";
+
+  import area1 from "@assets/images/investigationAreas/area_1.webp"
+  import area2 from "@assets/images/investigationAreas/area_2.webp"
+  import area3 from "@assets/images/investigationAreas/area_3.webp"
+  import area4 from "@assets/images/investigationAreas/area_4.webp"
+---
+
+<section class="flex flex-col justify-center gap-3 w-full max-w-7xl">
+  <h2 class="text-accent text-4xl xs:text-6xl italic font-sans text-center">Áreas de Investigación</h2>
+  <div class="flex flex-wrap justify-between gap-10 w-full">
+    <span>
+      <div>
+        <Image src={area1} alt="Termodinamica fuera de equilibrio" />
+      </div>
+      <p>Termodinamica fuera de equilibrio</p>
+    </span>
+
+    <span>
+      <div>
+        <Image src={area2} alt="Reconocimiento de patrones" />
+      </div>
+      <p>Reconocimiento de patrones</p>
+    </span>
+
+    <span>
+      <div>
+        <Image src={area3} alt="Energías renovables" />
+      </div>
+      <p>Energías renovables</p>
+    </span>
+
+    <span>
+      <div>
+        <Image src={area4} alt="Simulación de transferencia de calor" />
+      </div>
+      <p>Simulación de transferencia de calor</p>
+    </span>
+  </div>
+</section>
+
+<style>
+  @reference "../../../styles/global.css";
+
+  span {
+    @apply flex flex-col gap-2 w-fit h-80 rounded-md p-8 bg-gray0/50 border border-gray1 mx-auto;
+  }
+
+  span > div {
+    @apply min-w-52 min-h-52 w-52 aspect-square rounded-md border-2 border-accent overflow-hidden;
+  }
+
+  span > div > img {
+    @apply w-52 h-52 object-cover scale-100 transition-all duration-300 ease-in-out;
+  }
+
+  span:hover > div > img {
+    @apply scale-110;
+  }
+
+  span > p {
+    @apply max-w-52 text-center font-medium text-lg text-balance text-gray3 italic;
+  }
+</style>

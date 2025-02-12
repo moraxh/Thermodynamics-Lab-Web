@@ -1,0 +1,18 @@
+---
+  const { name, position, image, class: className, ...rest } = Astro.props;
+
+  import { Image } from "astro:assets";
+
+  const img = await import(`../../../assets/images/team/${image}.webp`);
+---
+
+<div class:list={[
+  "flex flex-col gap-2 justify-center items-center w-fit h-fit p-6",
+  className,
+  ]}>
+  <Image class="w-52 h-52 object-cover rounded-full border border-gray1" src={img.default} alt="member image" /> 
+  <span class="text-center">
+    <p class="text-center text-2xl italic text-accent">{name}</p>
+    <small class="text-base text-gray3 italic">{position}</small>
+  </span>
+</div>

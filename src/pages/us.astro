@@ -1,0 +1,27 @@
+---
+  import Layout from "@layouts/Layout.astro"
+  import Hero from "@components/pages/us/Hero.astro"
+  import InvestigationAreas from "@components/pages/us/InvestigationAreas.astro"
+  import Team from "@components/pages/us/Team.astro"
+
+  import { Image } from "astro:assets"
+
+  import bgImage from "@assets/images/bg/us.webp"
+---
+
+<Layout title="Sobre Nosotros | Labinst">
+  <!-- Bg Image -->
+  <Image class="bgImage" src={bgImage} alt="bg" />
+
+  <Hero />
+
+  <InvestigationAreas />
+
+  <Team />
+</Layout>
+
+<style>
+  @reference "../styles/global.css";
+
+
+</style>
