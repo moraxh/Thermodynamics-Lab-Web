@@ -6,7 +6,7 @@
   import logo from '../../assets/images/logo/logo_full.webp'
 ---
 
-<header class="sticky top-0 from-gray0 to-transparent bg-gradient-to-b flex justify-between items-center gap-12 sm:gap-24 pt-3 px-5 sm:px-14 backdrop-blur-xs">
+<header transition:persist class="sticky top-0 from-gray0 to-transparent bg-gradient-to-b flex justify-between items-center gap-12 sm:gap-24 pt-3 px-5 sm:px-14 backdrop-blur-xs z-10">
   <a href="/">
     <Image class="w-72 min-w-32" src={logo} alt="logo" />
   </a>
@@ -26,7 +26,6 @@
 </header>
 
 <script define:vars={{ pages }}>
-  const pathname = location.pathname;
   const navMenu = document.getElementById('nav-menu');
 
   if (navMenu) {
@@ -35,10 +34,22 @@
     });
   }
 
-  if (pages.find(page => page === pathname)) {
-    document.querySelectorAll(`a[href="${pathname}"]`)?.forEach(el => el.classList.add('text-accent'));
-    document.querySelectorAll(`a[href="${pathname}"]`)?.forEach(el => el.classList.add('font-bold'));
-  }
+  // Close menu on page load
+  document.querySelectorAll('header > nav > a')?.forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelector('header')?.classList.remove('active');
+    });
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    const pathname = location.pathname;
+
+    document.querySelectorAll('header > nav > a')?.forEach(el => el.classList.remove('text-accent'));
+
+    if (pages.find(page => page === pathname)) {
+      document.querySelectorAll(`a[href="${pathname}"]`)?.forEach(el => el.classList.add('text-accent'));
+    }
+  })
 </script>
 
 <style>

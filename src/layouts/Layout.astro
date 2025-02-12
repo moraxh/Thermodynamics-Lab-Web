@@ -1,9 +1,11 @@
 ---
-	const { title, ...rest } = Astro.props;
+	const { title, class: className, ...rest } = Astro.props;
 	import '../styles/global.css';
 
 	import TopBar from '@components/common/TopBar.astro';
 	import BottomBar from '@components/common/BottomBar.astro';
+
+	import { ClientRouter } from 'astro:transitions';
 ---
 
 <!doctype html>
@@ -14,10 +16,14 @@
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<link rel="preload" as="font" crossorigin href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" />
 		<title>{title}</title>
+		<ClientRouter />
 	</head>
 	<body class="flex flex-col justify-between bg-background overflow-x-hidden">
 		<TopBar />
-		<main class="flex flex-col justify-center items-center m-3 sm:m-10">
+		<main class:list={[
+			"flex flex-col justify-center items-center gap-10 m-3 sm:m-10 min-h-[700px]",
+			className
+			]}>
 			<slot />
 		</main>
 		<BottomBar />

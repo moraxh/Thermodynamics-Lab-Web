@@ -24,7 +24,7 @@ import bgImage2 from '@assets/images/bg/home_2.webp'
 </Layout>
  
 <script defer>
-  const bgImages = document.querySelectorAll('.bg-images');
+  var bgImages = document.querySelectorAll('.bg-images');
 
   if (bgImages) {
     bgImages[Math.floor(Math.random() * bgImages.length)].classList.remove('hidden');
