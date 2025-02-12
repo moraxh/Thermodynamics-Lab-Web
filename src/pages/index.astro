@@ -4,33 +4,23 @@ import Layout from '@layouts/Layout.astro';
 import { Image } from 'astro:assets';
 
 import bgImage from '@assets/images/bg/home.webp'
-import bgImage2 from '@assets/images/bg/home_2.webp'
 ---
 
 <Layout title="Laboratorio de Sistemas Termodinamicos"> 
   <section class="w-full max-w-[80%] mx-auto">
-    <div class="flex flex-col justify-center h-[700px] max-w-full lg:max-w-[430px] xl:max-w-[500px] mx-auto text-center lg:text-start lg:mx-0">
-      <h1 class="font-bold text-accent text-4xl xs:text-6xl sm:text-7xl md:text-8xl font-serif">
+    <div class="flex flex-col justify-center h-[700px] max-w-full lg:max-w-[430px] xl:max-w-[650px] mx-auto text-center lg:text-start lg:mx-0">
+      <h1 class="font-bold text-accent text-4xl xs:text-6xl sm:text-7xl md:text-8xl xl:text-9xl font-serif">
         ¿QUIÉNES<br>SOMOS?
       </h1>
-      <p class="text-justify text-gray3 text-xl sm:text-2xl lg:text-xl">
+      <p class="text-justify text-gray3 text-xl sm:text-2xl lg:text-2xl">
         Somos una <strong>unidad de investigación</strong> de la Universidad de Guanajuato. Enfocada principalmente en el análisis avanzado de <strong>sistemas termodinámicos</strong>.
       </p>
     </div>
   </section>
 
-  <Image class="bg-images hidden -z-10 top-10 w-auto object-contain absolute translate-y-1/2 xs:translate-y-1/4 sm:translate-y-1/7 md:translate-y-0 lg:translate-y-1/2 xl:translate-y-1/7 2xl:translate-y-0 blur-xs lg:blur-none brightness-[20%] lg:brightness-100 right-1/2 translate-x-1/2 lg:translate-x-0 lg:right-0 lg:h-[400px] xl:h-[700px] 2xl:h-[900px]" src={bgImage} alt="bg" />
-  <Image class="bg-images hidden -z-10 top-5 w-auto object-contain -translate-x-1/2 absolute blur-xs brightness-[20%] h-[700px] left-1/2 lg:blur-none lg:brightness-100 lg:left-3/4 lg:h-[900px]" src={bgImage2} alt="bg" />
+  <Image class="bg-images -z-10 top-5 w-auto object-contain -translate-x-1/2 absolute blur-xs brightness-[20%] h-[700px] left-1/2 lg:blur-none lg:brightness-100 lg:left-3/4 lg:h-[900px]" src={bgImage} alt="bg" />
 </Layout>
  
-<script defer>
-  var bgImages = document.querySelectorAll('.bg-images');
-
-  if (bgImages) {
-    bgImages[Math.floor(Math.random() * bgImages.length)].classList.remove('hidden');
-  }
-</script>
-
 <style>
   @reference "../styles/global.css";
 

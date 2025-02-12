@@ -21,7 +21,7 @@
 	<body class="flex flex-col justify-between bg-background overflow-x-hidden">
 		<TopBar />
 		<main class:list={[
-			"flex flex-col justify-center items-center gap-10 m-3 sm:m-10 min-h-[700px]",
+			"flex flex-col justify-center items-center gap-10 m-3 sm:m-10",
 			className
 			]}>
 			<slot />
@@ -34,7 +34,6 @@
 	@reference "../styles/global.css";
 
 	* {
-		@apply duration-300 ease-in-out;
 		color: white;
 	}
 

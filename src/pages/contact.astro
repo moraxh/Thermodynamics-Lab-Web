@@ -8,14 +8,16 @@
 import ContactSection from '@components/ContactSection.astro';
 ---
 
-<Layout title="Contacto | Labinst">
+<Layout class="min-h-[700px]" title="Contacto | Labinst">
   <!-- Bg Image -->
   <Image class="bgImage" src={bgImage} alt="bg" />
 
-  <section class="flex flex-col justify-start gap-3 px-16 py-7 bg-gray0/50 border border-gray1 rounded-lg backdrop-blur-sm m-auto">
-    <h1 class="text-accent italic font-medium text-8xl">Contacto</h1>
+  <section class="flex flex-col justify-start gap-3 px-14 py-7 bg-gray0/50 border border-gray1 rounded-xl backdrop-blur-sm m-auto">
+    <h1 class="text-accent italic font-medium text-7xl">Contacto</h1>
     <p class="text-2xl text-balance">
-      ¿Tienes alguna pregunta o necesitas ayuda? <strong>¡Estamos aquí para ti!</strong>
+      ¿Tienes alguna pregunta o necesitas ayuda?
+      <br>
+      <strong>¡Estamos aquí para ti!</strong>
     </p>
     <ContactSection class="contact-card !m-0 !my-6 !gap-5" />
   </section>
@@ -25,7 +27,7 @@ import ContactSection from '@components/ContactSection.astro';
   @reference "../styles/global.css";
 
   .contact-card .contact-icon {
-    @apply !min-w-13 !w-13 h-12;
+    @apply !min-w-12 !w-12 h-11;
   }
 
   .contact-card .contact-section {
@@ -33,7 +35,7 @@ import ContactSection from '@components/ContactSection.astro';
   }
 
   .contact-card .contact-section > p {
-    @apply !text-2xl;
+    @apply !text-xl;
   }
 
 </style>
