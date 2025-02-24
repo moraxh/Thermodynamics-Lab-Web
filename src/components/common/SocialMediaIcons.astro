@@ -1,8 +1,9 @@
 ---
+  const { class: className, ...rest } = Astro.props;
   import Icon from "@components/common/Icon.astro"
 ---
 
-<nav class="flex gap-3 justify-center items-end m-auto">
+<nav class:list={[className]} class="">
   <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-6" name="facebook" />
   <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-5" name="instagram" />
   <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-5" name="tiktok" />

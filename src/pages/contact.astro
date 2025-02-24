@@ -4,7 +4,8 @@
   import { Image } from 'astro:assets';
 
   import bgImage from "@assets/images/bg/contact.webp"
-import ContactSection from '@components/ContactSection.astro';
+  import ContactSection from '@components/ContactSection.astro';
+  import SocialMediaIcons from '@components/common/SocialMediaIcons.astro';
 ---
 
 <Layout class="min-h-[700px]" title="Contacto | Labinst">
@@ -19,6 +20,10 @@ import ContactSection from '@components/ContactSection.astro';
       <strong>¡Estamos aquí para ti!</strong>
     </p>
     <ContactSection class="contact-card !m-0 !my-6 !gap-5" />
+    <p class="text-xl">
+      Síguenos en nuestras redes sociales
+    </p>
+    <SocialMediaIcons class="flex gap-5 justify-start items-center *:!h-8" />
   </section>
 </Layout>
 
