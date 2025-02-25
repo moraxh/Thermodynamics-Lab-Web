@@ -1,0 +1,89 @@
+---
+ import Empty from "@layouts/Empty.astro";
+ import Icon from "@components/common/Icon.astro";
+ import { Image } from 'astro:assets';
+
+ import bg from "@assets/images/bg/login.png"
+ import logo from "@assets/images/logo/logo_full.webp"
+---
+
+<Empty class="min-h-[700px]" title="Iniciar Sesión">
+  <!-- BG -->
+  <Image src={bg} alt="bg" class="fixed top-1/2 -translate-y-1/2 left-0 right-0 w-full min-h-96 -z-10 object-cover bg-blend-screen opacity-50 blur-[2px]" />
+
+  <!-- Wrapper -->
+  <section class="bg-gray0/80 border-2 border-gray1 backdrop-blur-2xl m-auto p-5 rounded-xl max-w-[90%]">
+    <!-- Img -->
+    <a class="p-8" aria-label="Volver al inicio" href="/">
+      <Image class="w-80 max-w-full" src={logo} alt="logo" />
+    </a>
+    <form class="flex flex-col justify-center items-center gap-5" action="/login" method="POST">
+      <!-- User -->
+      <input type="text" class="input-field" name="user" placeholder="Usuario">
+
+      <!-- Password -->
+      <div class="w-full relative">
+        <input class="input-field !pe-12" type="password" name="password" placeholder="Contraseña">
+        <button type="button" id="passwordToggle" class="absolute right-0 top-1/2 -translate-y-1/2 me-3 hover:cursor-pointer hover:brightness-75 transition-all aspect-square">
+          <span id="passwordEye">
+            <Icon name="eye" class="w-6 h-auto" />
+          </span>
+          <span id="passwordEyeOff" hidden>
+            <Icon name="eyeOff" class="w-6 h-auto" />
+          </span>
+        </button>
+      </div>
+
+      <!-- Submit -->
+      <button disabled type="submit" class="text-black bg-accent w-full py-3 text-2xl font-bold rounded-full hover:saturate-50 hover:cursor-pointer disabled:opacity-20 disabled:pointer-events-none">
+        Iniciar Sesión
+      </button>
+    </form>
+  </section>
+</Empty>
+
+<style>
+  @reference "../styles/global.css";
+
+  .input-field {
+    @apply bg-gray1 p-2.5 px-4 w-full rounded-lg text-xl active:outline-accent focus:outline-accent focus-visible:outline-accent focus-visible:border-accent;
+  }
+
+</style>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const user = document.querySelector('input[name="user"]') as HTMLInputElement;
+    const password = document.querySelector('input[name="password"]') as HTMLInputElement;
+    const button = document.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    const validateFrom = () => {
+      if (user.value !== '' && password.value !== '') {
+        button.removeAttribute('disabled');
+      } else {
+        button.setAttribute('disabled', '');
+      }
+    }
+
+    user.addEventListener('input', validateFrom);
+    password.addEventListener('input', validateFrom);
+  })
+
+  const passwordToggleBtn = document.getElementById('passwordToggle') as HTMLButtonElement;
+  const passwordInput = document.querySelector('input[name="password"]') as HTMLInputElement;
+  const passwordEye = document.getElementById('passwordEye') as HTMLSpanElement;
+  const passwordEyeOff = document.getElementById('passwordEyeOff') as HTMLSpanElement;
+
+  passwordToggleBtn.addEventListener('click', () => {
+    console.log('hola')
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      passwordEye.hidden = true;
+      passwordEyeOff.hidden = false;
+    } else {
+      passwordInput.type = 'password';
+      passwordEye.hidden = false; 
+      passwordEyeOff.hidden = true;
+    }
+  })
+</script>

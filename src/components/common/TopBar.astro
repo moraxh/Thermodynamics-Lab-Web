@@ -1,9 +1,10 @@
 ---
-  const pages = ['/', '/publications', '/divulgation', '/us', '/contact'];
+  const pages = ['/', '/publications', '/divulgation', '/us', '/contact', '/login'];
 
   import { Image } from 'astro:assets';
 
   import logo from '@assets/images/logo/logo_full.webp'
+import Icon from './Icon.astro';
 ---
 
 <header transition:persist class="sticky top-0 from-gray0 to-transparent bg-gradient-to-b flex justify-between items-center gap-12 sm:gap-24 pt-3 px-5 sm:px-14 backdrop-blur-xs z-10">
@@ -17,6 +18,9 @@
     <a href={pages[2]}>Divulgación</a>
     <a href={pages[3]}>Sobre nosotros</a>
     <a href={pages[4]}>Contacto</a>
+    <a class="translate-y-[10%]" href={pages[5]}>
+      <Icon name="user" class="h-6 w-auto fill-text" />
+    </a>
   </nav>
 
   <button id="nav-menu" class="hidden hover:bg-gray2 border-gray2 border-2 min-w-5 sm:min-w-12 w-12 aspect-square rounded-md">
@@ -60,7 +64,7 @@
   }
 
   header > nav > a:hover {
-    @apply text-accent;
+    @apply text-accent *:fill-accent;
   }
   
   header > nav > a::after {
@@ -76,7 +80,7 @@
     @apply hidden;
   }
 
-  @media (max-width: 1267px) {
+  @media (max-width: 1325px) {
     header.active {
       @apply fixed left-0 right-0 bottom-0 top-0 bg-gray0/50 flex flex-col gap-12 items-center justify-start;
     }

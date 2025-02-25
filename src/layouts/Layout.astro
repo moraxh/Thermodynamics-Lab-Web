@@ -1,46 +1,18 @@
 ---
 	const { title, class: className, ...rest } = Astro.props;
-	import '../styles/global.css';
 
-	import TopBar from '@components/common/TopBar.astro';
-	import BottomBar from '@components/common/BottomBar.astro';
-
-	import { ClientRouter } from 'astro:transitions';
+	import BottomBar from "@components/common/BottomBar.astro"
+	import TopBar from "@components/common/TopBar.astro"
+	import Empty from "@layouts/Empty.astro"
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-		<link rel="preload" as="font" crossorigin href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" />
-		<title>{title}</title>
-		<ClientRouter />
-	</head>
-	<body class="flex flex-col justify-between bg-background overflow-x-hidden">
-		<TopBar />
-		<main class:list={[
-			"flex flex-col justify-center items-center gap-10 m-3 sm:m-10",
-			className
-			]}>
-			<slot />
-		</main>
-		<BottomBar />
-	</body>
-</html>
-
-<style>
-	@reference "../styles/global.css";
-
-	* {
-		color: white;
-	}
-
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+<Empty title={title}>
+	<TopBar />
+	<main class:list={[
+		"flex flex-col justify-center items-center gap-10 m-3 sm:m-10",
+		className
+		]}>
+		<slot />
+	</main>
+	<BottomBar />
+</Empty>
