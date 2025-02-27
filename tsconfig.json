@@ -5,15 +5,24 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@db/*": [
+        "db/*"
+      ],
+      "@src/*": [
+        "./src/*"
+      ],
       "@components/*": [
-        "src/components/*"
+        "./src/components/*"
       ],
       "@layouts/*": [
-        "src/layouts/*"
+        "./src/layouts/*"
       ],
       "@assets/*": [
-        "src/assets/*"
+        "./src/assets/*"
       ],
+      "@api/*": [
+        "src/pages/api/*"
+      ]
     }
   }
 }

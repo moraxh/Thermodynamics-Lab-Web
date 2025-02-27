@@ -1,15 +1,17 @@
 ---
- import Empty from "@layouts/Empty.astro";
- import Icon from "@components/common/Icon.astro";
- import { Image } from 'astro:assets';
+  import Empty from "@layouts/Empty.astro"
+  import Icon from "@components/common/Icon.astro"
+  import { Image } from 'astro:assets'
 
- import bg from "@assets/images/bg/login.png"
- import logo from "@assets/images/logo/logo_full.webp"
+  import bg from "@assets/images/bg/login.png"
+  import logo from "@assets/images/logo/logo_full.webp"
+
+  export const prerender = false
 ---
 
 <Empty class="min-h-[700px]" title="Iniciar Sesión">
   <!-- BG -->
-  <Image src={bg} alt="bg" class="fixed top-1/2 -translate-y-1/2 left-0 right-0 w-full min-h-96 -z-10 object-cover bg-blend-screen opacity-50 blur-[2px]" />
+  <Image src={bg} alt="bg" class="fixed top-1/2 -translate-y-1/2 left-0 right-0 w-full min-h-96 -z-10 object-cover bg-blend-screen opacity-30 blur-xs" />
 
   <!-- Wrapper -->
   <section class="bg-gray0/80 border-2 border-gray1 backdrop-blur-2xl m-auto p-5 rounded-xl max-w-[90%]">
@@ -17,9 +19,9 @@
     <a class="p-8" aria-label="Volver al inicio" href="/">
       <Image class="w-80 max-w-full" src={logo} alt="logo" />
     </a>
-    <form class="flex flex-col justify-center items-center gap-5" action="/login" method="POST">
+    <form class="flex flex-col justify-center items-center gap-5" action="/api/login" method="post">
       <!-- User -->
-      <input type="text" class="input-field" name="user" placeholder="Usuario">
+      <input type="text" class="input-field" name="username" placeholder="Usuario">
 
       <!-- Password -->
       <div class="w-full relative">
@@ -45,15 +47,19 @@
 <style>
   @reference "../styles/global.css";
 
-  .input-field {
+  .input-field,
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
     @apply bg-gray1 p-2.5 px-4 w-full rounded-lg text-xl active:outline-accent focus:outline-accent focus-visible:outline-accent focus-visible:border-accent;
+    transition: all 5000s ease-in-out 0s;
   }
-
 </style>
 
 <script>
   window.addEventListener('DOMContentLoaded', () => {
-    const user = document.querySelector('input[name="user"]') as HTMLInputElement;
+    const user = document.querySelector('input[name="username"]') as HTMLInputElement;
     const password = document.querySelector('input[name="password"]') as HTMLInputElement;
     const button = document.querySelector('button[type="submit"]') as HTMLButtonElement;
 
@@ -75,7 +81,6 @@
   const passwordEyeOff = document.getElementById('passwordEyeOff') as HTMLSpanElement;
 
   passwordToggleBtn.addEventListener('click', () => {
-    console.log('hola')
     if (passwordInput.type === 'password') {
       passwordInput.type = 'text';
       passwordEye.hidden = true;
