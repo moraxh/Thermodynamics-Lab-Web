@@ -1,6 +1,7 @@
 ---
   import Empty from "@layouts/Empty.astro"
   import Icon from "@components/common/Icon.astro"
+  import CustomAlert from "@src/components/common/CustomAlert.astro"
   import { Image } from 'astro:assets'
 
   import bg from "@assets/images/bg/login.png"
@@ -13,10 +14,10 @@
 
 <Empty class="min-h-[700px]" title="Iniciar Sesión">
   <!-- BG -->
-  <Image src={bg} alt="bg" class="fixed top-1/2 -translate-y-1/2 left-0 right-0 w-full min-h-96 -z-10 object-cover bg-blend-screen opacity-30 blur-xs" />
+  <Image src={bg} alt="bg" class="fixed top-1/2 -translate-y-1/2 left-0 right-0 w-full min-h-[500px] -z-10 object-cover bg-blend-screen opacity-50 blur-xs" />
 
   <!-- Wrapper -->
-  <section class="bg-gray0/80 border-2 border-gray1 backdrop-blur-2xl m-auto p-5 rounded-xl max-w-[90%]">
+  <section class="bg-gray0/80 border-2 border-gray1 backdrop-blur-2xl m-auto py-7 p-10 rounded-3xl max-w-[90%]">
     <!-- Img -->
     <a class="p-8" aria-label="Volver al inicio" href="/">
       <Image class="w-80 max-w-full" src={logo} alt="logo" />
@@ -46,6 +47,8 @@
   </section>
 </Empty>
 
+<CustomAlert />
+
 <style>
   @reference "../styles/global.css";
 
@@ -60,55 +63,60 @@
 </style>
 
 <script>
-  // Form Validation
-  const user = document.querySelector('input[name="username"]') as HTMLInputElement;
-  const password = document.querySelector('input[name="password"]') as HTMLInputElement;
-  const button = document.querySelector('button[type="submit"]') as HTMLButtonElement;
+  window.addEventListener('load', () => {
+    // Form Validation
+    const user = document.querySelector('input[name="username"]') as HTMLInputElement;
+    const password = document.querySelector('input[name="password"]') as HTMLInputElement;
+    const button = document.querySelector('button[type="submit"]') as HTMLButtonElement;
 
-  const validateFrom = () => {
-    if (user.value !== '' && password.value !== '') {
-      button.removeAttribute('disabled');
-    } else {
-      button.setAttribute('disabled', '');
-    }
-  }
-
-  user.addEventListener('input', validateFrom);
-  password.addEventListener('input', validateFrom);
-
-  // Password Toggle
-  const passwordToggleBtn = document.getElementById('passwordToggle') as HTMLButtonElement;
-  const passwordInput = document.querySelector('input[name="password"]') as HTMLInputElement;
-  const passwordEye = document.getElementById('passwordEye') as HTMLSpanElement;
-  const passwordEyeOff = document.getElementById('passwordEyeOff') as HTMLSpanElement;
-
-  passwordToggleBtn.addEventListener('click', () => {
-    if (passwordInput.type === 'password') {
-      passwordInput.type = 'text';
-      passwordEye.hidden = true;
-      passwordEyeOff.hidden = false;
-    } else {
-      passwordInput.type = 'password';
-      passwordEye.hidden = false; 
-      passwordEyeOff.hidden = true;
-    }
-  })
-
-  // Login send data
-  const form = document.querySelector('form') as HTMLFormElement;
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const formData = new FormData(form);
-    fetch('/api/login', {
-      method: 'POST',
-      body: formData
-    }).then(res => res.json()).then(data => {
-      if (data.error) {
-        alert(data.error);
+    const validateFrom = () => {
+      if (user.value !== '' && password.value !== '') {
+        button.removeAttribute('disabled');
       } else {
-        window.location.href = '/admin';
+        button.setAttribute('disabled', '');
       }
+    }
+
+    user.addEventListener('input', validateFrom);
+    password.addEventListener('input', validateFrom);
+
+    // Password Toggle
+    const passwordToggleBtn = document.getElementById('passwordToggle') as HTMLButtonElement;
+    const passwordInput = document.querySelector('input[name="password"]') as HTMLInputElement;
+    const passwordEye = document.getElementById('passwordEye') as HTMLSpanElement;
+    const passwordEyeOff = document.getElementById('passwordEyeOff') as HTMLSpanElement;
+
+    passwordToggleBtn.addEventListener('click', () => {
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordEye.hidden = true;
+        passwordEyeOff.hidden = false;
+      } else {
+        passwordInput.type = 'password';
+        passwordEye.hidden = false; 
+        passwordEyeOff.hidden = true;
+      }
+    })
+
+    // Login send data
+    const form = document.querySelector('form') as HTMLFormElement;
+    const submit = document.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      submit.disabled = true;
+      const formData = new FormData(form);
+      fetch('/api/login', {
+        method: 'POST',
+        body: formData
+      }).then(res => res.json()).then(data => {
+        submit.disabled = false;
+        if (data.error) {
+          window.customAlert.error.show('Error', data.error);
+        } else {
+          window.location.href = '/admin';
+        }
+      })
     })
   })
 </script>

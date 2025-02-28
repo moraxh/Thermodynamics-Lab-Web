@@ -29,7 +29,7 @@ export async function POST(context: APIContext):Promise<Response> {
 
     if (!validationResult.success) {
       return new Response(JSON.stringify({
-        error: validationResult.error.issues[0].message || "Invalid data"
+        error: validationResult.error.issues[0].message || "Credenciales invalidas"
       }), {
         status: 400,
       })
@@ -42,7 +42,7 @@ export async function POST(context: APIContext):Promise<Response> {
 
     if (!existingUser) {
       return new Response(JSON.stringify({
-        error: "User not found"
+        error: "El usuario o la contraseña no son correctos"
       }), {
         status: 400,
       })
@@ -53,7 +53,7 @@ export async function POST(context: APIContext):Promise<Response> {
 
     if (!validPassword) {
       return new Response(JSON.stringify({
-        error: "User not found"
+        error: "El usuario o la contraseña no son correctos"
       }), {
         status: 400,
       })
@@ -70,7 +70,7 @@ export async function POST(context: APIContext):Promise<Response> {
     })
   } catch (error) {
     return new Response(JSON.stringify({
-      error: "Internal Server Error"
+      error: "Error interno del servidor"
     }), { status: 500 })
   }
 }
