@@ -7,9 +7,13 @@ import db from '@astrojs/db'
 
 export default defineConfig({
   output: 'server',
+  integrations: [
+    db()
+  ],
   vite: {
     plugins: [tailwindcss()]
   },
-
-  integrations: [db()]
+  security: {
+    checkOrigin: true
+  }
 })

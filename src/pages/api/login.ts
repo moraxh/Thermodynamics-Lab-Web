@@ -63,9 +63,12 @@ export async function POST(context: APIContext):Promise<Response> {
     const sessionCookie = lucia.createSessionCookie(session.id);
     context.cookies.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 
-    return context.redirect('/')
+    return new Response(JSON.stringify({
+      success: true
+    }), {
+      status: 200,
+    })
   } catch (error) {
-    console.error(error)
     return new Response(JSON.stringify({
       error: "Internal Server Error"
     }), { status: 500 })

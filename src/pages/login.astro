@@ -6,7 +6,9 @@
   import bg from "@assets/images/bg/login.png"
   import logo from "@assets/images/logo/logo_full.webp"
 
-  export const prerender = false
+  if (Astro.locals.user) {
+    return Astro.redirect('/admin')
+  }
 ---
 
 <Empty class="min-h-[700px]" title="Iniciar Sesión">
@@ -58,23 +60,23 @@
 </style>
 
 <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const user = document.querySelector('input[name="username"]') as HTMLInputElement;
-    const password = document.querySelector('input[name="password"]') as HTMLInputElement;
-    const button = document.querySelector('button[type="submit"]') as HTMLButtonElement;
+  // Form Validation
+  const user = document.querySelector('input[name="username"]') as HTMLInputElement;
+  const password = document.querySelector('input[name="password"]') as HTMLInputElement;
+  const button = document.querySelector('button[type="submit"]') as HTMLButtonElement;
 
-    const validateFrom = () => {
-      if (user.value !== '' && password.value !== '') {
-        button.removeAttribute('disabled');
-      } else {
-        button.setAttribute('disabled', '');
-      }
+  const validateFrom = () => {
+    if (user.value !== '' && password.value !== '') {
+      button.removeAttribute('disabled');
+    } else {
+      button.setAttribute('disabled', '');
     }
+  }
 
-    user.addEventListener('input', validateFrom);
-    password.addEventListener('input', validateFrom);
-  })
+  user.addEventListener('input', validateFrom);
+  password.addEventListener('input', validateFrom);
 
+  // Password Toggle
   const passwordToggleBtn = document.getElementById('passwordToggle') as HTMLButtonElement;
   const passwordInput = document.querySelector('input[name="password"]') as HTMLInputElement;
   const passwordEye = document.getElementById('passwordEye') as HTMLSpanElement;
@@ -90,5 +92,23 @@
       passwordEye.hidden = false; 
       passwordEyeOff.hidden = true;
     }
+  })
+
+  // Login send data
+  const form = document.querySelector('form') as HTMLFormElement;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    fetch('/api/login', {
+      method: 'POST',
+      body: formData
+    }).then(res => res.json()).then(data => {
+      if (data.error) {
+        alert(data.error);
+      } else {
+        window.location.href = '/admin';
+      }
+    })
   })
 </script>
