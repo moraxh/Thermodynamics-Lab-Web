@@ -1,0 +1,151 @@
+---
+  import Icon from "./Icon.astro";
+---
+
+<dialog id="customAlert">
+  <!-- Error -->
+  <section hidden id="errorAlert">
+    <Icon class="fill-danger h-22 mx-10 w-auto" name="sadFace" />
+    <h2 class="text-danger">ERROR</h2>
+    <div>
+      <p>Un error ha ocurrido.</p>
+      <small class="">Porfavor, intenta nuevamente.</small>
+    </div>
+    <button onclick="window.customAlert.error.hide()"  class="bg-danger">
+      Ok
+    </button>
+  </section>
+
+  <!-- Success -->
+  <section hidden id="successAlert">
+    <Icon class="fill-success h-22 mx-10 w-auto" name="happyFace" />
+    <h2 class="text-success">Todo bien</h2>
+    <div>
+      <p>Todo perfecto y tu?.</p>
+      <small class="">Holaaa.</small>
+    </div>
+    <button onclick="window.customAlert.success.hide()" class="bg-success">
+      Ok
+    </button>
+  </section>
+</dialog>
+
+<style>
+  @reference "../../styles/global.css";
+
+  section {
+    @apply fixed flex flex-col gap-5 justify-center text-center items-center top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2 p-8 xs:p-12 min-w-[270px] rounded-2xl border-2 border-gray1 bg-gray0 max-w-[90%];
+    animation-delay: .2s;
+    animation: fadeUp .5s ease-in-out;
+  }
+
+  h2 {
+    @apply text-4xl font-bold;
+  }
+
+  p {
+    @apply text-xl text-text font-bold;
+  }
+
+  button {
+    @apply font-bold rounded-xl text-2xl text-text outline-none py-2 px-6 hover:cursor-pointer hover:brightness-75;
+  }
+
+  small {
+    @apply text-lg text-text/50;
+  }
+
+  #customAlert::backdrop {
+    @apply fixed bg-background/60 backdrop-blur-xs pointer-events-none;
+    animation: fadeIn .2s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  const customAlertDialog = document.getElementById('customAlert') as HTMLDialogElement;
+  const errorAlert = document.getElementById('errorAlert') as HTMLElement;
+  const successAlert = document.getElementById('successAlert') as HTMLElement;
+
+  interface CustomAlertInterface {
+    _showAlert: (type: string, title: string, body: string, extra?: string) => void;
+    _hideAlert: () => void;
+    error: {
+      show: (title: string, body: string, extra?: string) => void;
+      hide: () => void;
+    };
+    success: {
+      show: (title: string, body: string, extra?: string) => void;
+      hide: () => void;
+    };
+  }
+
+  declare global {
+    interface Window {
+      customAlert: CustomAlertInterface;
+    }
+  }
+
+  const customAlert = {
+    _showAlert: function (type: string, title: string, body: string, extra: string = '') {
+      customAlertDialog.showModal()
+      const alert = type === 'error' ? errorAlert : successAlert;
+      alert.hidden = false;
+      const h2 = alert.querySelector('h2') as HTMLHeadingElement;
+      const p = alert.querySelector('p') as HTMLParagraphElement;
+      const small = alert.querySelector('small') as HTMLParagraphElement;
+
+      if (title) {
+        h2.innerHTML = title;
+      }
+      if (body) {
+        p.innerHTML = body;
+      }
+      if (extra) {
+        small.innerHTML = extra;
+      }
+    },
+    _hideAlert: function () {
+      customAlertDialog.close();
+      errorAlert.hidden = true;
+      successAlert.hidden = true;
+    },
+    error: {
+      show: function (title: string, body: string, extra: string = '') {
+        customAlert._showAlert('error', title, body, extra);
+      },
+      hide: function () {
+        customAlert._hideAlert();
+      }
+    },
+    success: {
+      show: function (title: string, body: string, extra: string = '') {
+        customAlert._showAlert('success', title, body, extra);
+      },
+      hide: function () {
+        customAlert._hideAlert();
+      } 
+    }
+  }
+
+  window.customAlert = customAlert;
+</script>

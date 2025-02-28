@@ -9,6 +9,9 @@
   --color-gray1: #272d39;
   --color-gray2: #444b53;
   --color-gray3: #7b848d;
+  --color-danger: #dc3545;
+  --color-success: #28a745;
+  --color-info: #17a2b8;
 
   --font-sans: lato, sans-serif;
   --font-serif: montserrat, serif;
