@@ -1,0 +1,13 @@
+---
+  import TopBarTemplate from "@components/common/TopBarTemplate.astro";
+---
+
+<TopBarTemplate>
+  <a href="/admin">Admin Panel</a>
+  <a href="/admin/publications">Publicaciones</a>
+  <a href="/admin/divulgation">Divulgación</a>
+  <a href="/admin/newsletter">Newsletter</a>
+  <a href="/admin/users">Usuarios</a>
+  <a class="hover:cursor-pointer" onclick="document.getElementById('logoutForm').submit();">Cerrar Sesión</a>
+  <form hidden id="logoutForm" method="post" action="/api/logout"></form>
+</TopBarTemplate>

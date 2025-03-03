@@ -2,9 +2,11 @@
 	const { title, class: className, ...rest } = Astro.props;
 
 	import Empty from "@layouts/Empty.astro"
+	import AdminTopBar from "@src/components/common/AdminTopBar.astro";
 ---
 
 <Empty title={title}>
+	<AdminTopBar />
 	<main class:list={[
 		"flex flex-col justify-center items-center gap-10 m-3 sm:m-10",
 		className

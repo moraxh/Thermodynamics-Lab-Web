@@ -56,10 +56,12 @@
   
   // Toggle menu on mobile
   function toggleBurgerMenuIfNeeded() {
+    // Disable the menu to check
+    header.classList.remove('burger');
+    navMenu.hidden = true;
+
     // Check if navbar is overflowing
-    const overflowing =
-      navBar.scrollWidth > navBar.clientWidth
-      || (navBar.scrollWidth == 0 && navBar.clientWidth == 0);
+    const overflowing = navBar.scrollWidth > navBar.clientWidth;
 
     // Toggle the burger menu
     if (overflowing) {

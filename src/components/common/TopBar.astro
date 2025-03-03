@@ -1,14 +1,12 @@
 ---
   import TopBarTemplate from "@components/common/TopBarTemplate.astro";
-
-  const pages = ['/', '/publications', '/divulgation', '/us', '/contact', '/login'];
 ---
 
 <TopBarTemplate>
-  <a href={pages[0]}>Inicio</a>
-  <a href={pages[1]}>Publicaciones</a>
-  <a href={pages[2]}>Divulgación</a>
-  <a href={pages[3]}>Sobre nosotros</a>
-  <a href={pages[4]}>Contacto</a>
-  <a href={pages[5]}>Iniciar Sesión</a>
+  <a href="/">Inicio</a>
+  <a href="/publications">Publicaciones</a>
+  <a href="/divulgation">Divulgación</a>
+  <a href="/us">Sobre nosotros</a>
+  <a href="/contact">Contacto</a>
+  <a href="/login">Iniciar Sesión</a>
 </TopBarTemplate>
