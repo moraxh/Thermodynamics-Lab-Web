@@ -43,7 +43,8 @@
     const pages = document.querySelectorAll('#navBar > a') as NodeListOf<HTMLAnchorElement>;
 
     pages.forEach(el =>  {
-      if ((new URL(el.href)).pathname === pathname) {
+      const currentPathname = el.href ? new URL(el.href).pathname : null;
+      if (currentPathname === pathname) {
       // Highlight the active page link
         el.classList.add('text-accent');
       } else {
