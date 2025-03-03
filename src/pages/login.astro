@@ -63,11 +63,15 @@
 </style>
 
 <script>
-  window.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('astro:page-load', () => {
     // Form Validation
     const user = document.querySelector('input[name="username"]') as HTMLInputElement;
     const password = document.querySelector('input[name="password"]') as HTMLInputElement;
     const button = document.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    if (!user || !password || !button) {
+      return
+    }
 
     const validateFrom = () => {
       if (user.value !== '' && password.value !== '') {
