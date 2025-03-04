@@ -20,25 +20,24 @@
 </header>
 
 <script>
-  const navMenu = document.getElementById('nav-menu') as HTMLButtonElement;
-  const navBar = document.getElementById('navBar') as HTMLElement;
-  const header = document.querySelector('header') as HTMLElement;
 
-  if (navMenu) {
-    navMenu.addEventListener('click', () => {
-      document.querySelector('header')?.classList.toggle('active');
-    });
-  }
-
-  // Close menu on page load
-  document.querySelectorAll('#navBar > a')?.forEach(el => {
-    el.addEventListener('click', () => {
-      document.querySelector('header')?.classList.remove('active');
-    });
-  });
-
-  // Highlight page link on page load
   document.addEventListener('astro:page-load', () => {
+    const navMenu = document.getElementById('nav-menu') as HTMLButtonElement;
+
+    if (navMenu) {
+      navMenu.addEventListener('click', () => {
+        document.querySelector('header')?.classList.toggle('active');
+      });
+    }
+
+    // Close menu on page load
+    document.querySelectorAll('#navBar > a')?.forEach(el => {
+      el.addEventListener('click', () => {
+        document.querySelector('header')?.classList.remove('active');
+      });
+    });
+
+    // Highlight page link on page load
     const pathname = location.pathname;
     const pages = document.querySelectorAll('#navBar > a') as NodeListOf<HTMLAnchorElement>;
 
@@ -54,15 +53,23 @@
   })
 
   window.addEventListener('resize', () => toggleBurgerMenuIfNeeded())
+  document.addEventListener('astro:page-load', () => {
+    toggleBurgerMenuIfNeeded()
+  })
   
   // Toggle menu on mobile
   function toggleBurgerMenuIfNeeded() {
+    const navBar = document.getElementById('navBar') as HTMLElement;
+    const navMenu = document.getElementById('nav-menu') as HTMLButtonElement;
+    const header = document.querySelector('header') as HTMLElement;
+
     // Disable the menu to check
     header.classList.remove('burger');
     navMenu.hidden = true;
 
     // Check if navbar is overflowing
-    const overflowing = navBar.scrollWidth > navBar.clientWidth;
+    const overflowing = navBar.scrollWidth > navBar.clientWidth
+    || (navBar.scrollWidth == 0  && navBar.clientWidth == 0);
 
     // Toggle the burger menu
     if (overflowing) {
@@ -102,7 +109,7 @@
   }
 
   header.burger.active {
-    @apply fixed left-0 right-0 bottom-0 top-0 bg-gray0/50 flex flex-col gap-12 items-center justify-start;
+    @apply fixed left-0 right-0 bottom-0 top-0 bg-gray0/50 flex flex-col gap-12 items-center justify-start overflow-auto p-5;
   }
 
   header.burger.active > a {
