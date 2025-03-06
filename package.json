@@ -9,11 +9,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/db": "^0.14.7",
+    "@astrojs/db": "^0.14.8",
     "@lucia-auth/adapter-drizzle": "^1.1.0",
     "@node-rs/argon2": "^2.0.2",
     "@tailwindcss/vite": "^4.0.5",
-    "astro": "^5.3.1",
+    "astro": "^5.4.2",
     "lucia": "^3.2.2",
     "tailwindcss": "^4.0.5",
     "zod": "^3.24.2"
