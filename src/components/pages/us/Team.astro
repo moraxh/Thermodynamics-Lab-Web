@@ -1,37 +1,42 @@
 ---
   import Member from "@components/pages/us/Member.astro"
+  import { db, eq, Member as MemberDB, MemberType } from "astro:db"
+
+  // Get members
+  const members: Record<string, Array<typeof allMembers[number]>> = {}
+
+  const allMembers = 
+    await db
+    .select()
+    .from(MemberDB)
+
+  for (const member of allMembers) {
+    if (members[member.typeOfMember] === undefined) {
+      members[member.typeOfMember] = []
+    }
+    members[member.typeOfMember].push(member)
+  }
+
+  const memberTypes = await db
+    .selectDistinct({ name: MemberType.name, order: MemberType.order })
+    .from(MemberType)
+    .innerJoin(MemberDB, eq(MemberType.name, MemberDB.typeOfMember))
+    .orderBy(MemberType.order);
 ---
 
 <section class="flex flex-col justify-center gap-3">
-  <!-- Founders -->
-  <article>
-    <h3 class="text-accent text-3xl xs:text-5xl italic font-sans text-center">Fundadores</h3>
-    <div>
-      <Member class="mx-auto" name="Jorge Mora" position="Fundador" image="default" />
-      <Member class="mx-auto" name="Jorge Mora" position="Fundador" image="default" />
-      <Member class="mx-auto" name="Jorge Mora" position="Fundador" image="default" />
-    </div>
-  </article>
-
-  <!-- Members -->
-  <article>
-    <h3 class="text-accent text-3xl xs:text-5xl italic font-sans text-center">Miembros</h3>
-    <div>
-      <Member class="mx-auto" name="Jorge Mora" position="Fundador" image="default" />
-      <Member class="mx-auto" name="Jorge Mora" position="Fundador" image="default" />
-      <Member class="mx-auto" name="Jorge Mora" position="Fundador" image="default" />
-    </div>
-  </article>
-  
-  <!-- Collaborators -->
-  <article>
-    <h3 class="text-accent text-3xl xs:text-5xl italic font-sans text-center">Colaboradores</h3>
-    <div>
-      <Member class="mx-auto" name="Jorge Mora" position="Fundador" image="default" />
-      <Member class="mx-auto" name="Jorge Mora" position="Fundador" image="default" />
-      <Member class="mx-auto" name="Jorge Mora" position="Fundador" image="default" />
-    </div>
-  </article>
+  {memberTypes.map(type => (
+    <article>
+      <h3 class="text-accent text-3xl xs:text-5xl italic font-sans text-center">
+        {type.name}
+      </h3>
+      <div>
+        {members[type.name].map(member => (
+          <Member class="mx-auto" name={member.fullName} position={member.position} image={member.photo} />
+        ))}
+      </div>
+    </article>
+  ))}
 </section>
 
 <style>
