@@ -9,6 +9,7 @@
     await db
     .select()
     .from(MemberDB)
+    .orderBy(MemberDB.fullName)
 
   for (const member of allMembers) {
     if (members[member.typeOfMember] === undefined) {
@@ -32,7 +33,7 @@
       </h3>
       <div>
         {members[type.name].map(member => (
-          <Member class="mx-auto" name={member.fullName} position={member.position} image={member.photo} />
+          <Member class="mx-auto" name={member.fullName} position={member.position} image={member.photo || "default"} />
         ))}
       </div>
     </article>

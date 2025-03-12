@@ -1,14 +1,22 @@
 ---
-  const { name, position, image = "default", class: className, ...rest } = Astro.props;
+  const { name, position, image, class: className, ...rest } = Astro.props;
 
   import { Image } from "astro:assets";
 
   let img
 
-  if (image === "default") {
-    img = (await import(`../../../assets/images/team/default.webp`)).default;
+  const defaultImage = (await import(`../../../assets/images/team/default.webp`)).default;
+
+  if (image === "default" || image === undefined) {
+    img = defaultImage;
   } else {
     img = image
+  }
+  
+  const imageExists = (await fetch(`${Astro.url.origin}${img}`)).ok;
+
+  if (!imageExists) {
+    img = defaultImage;
   }
 ---
 
@@ -16,7 +24,7 @@
   "flex flex-col gap-2 justify-center items-center w-[350px] max-w[350px] h-fit p-6",
   className,
   ]}>
-  <Image class="w-52 h-52 object-cover rounded-full border border-gray1" src={img} height="500" width="500" alt="member image" /> 
+  <Image class="w-52 h-52 object-cover rounded-full border-2 border-gray1" src={img} height="500" width="500" alt="member image" /> 
   <span class="text-center">
     <p class="text-center text-2xl italic text-accent">{name}</p>
     <small class="text-base text-gray3 italic">{position}</small>

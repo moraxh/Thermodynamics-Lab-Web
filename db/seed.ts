@@ -4,8 +4,6 @@ import { passwordHashingOptions } from '@src/pages/api/login';
 import { generateIdFromEntropySize } from 'lucia';
 import * as crypto from 'node:crypto'
 
-
-
 import fs from 'node:fs'
 const NODE_ENV = import.meta.env.MODE
 import membersJSON from "../seed/members.json"
@@ -56,7 +54,7 @@ const members = membersJSON.map(member => {
   return {
     id: generateIdFromEntropySize(10),
     ...member,
-    photo: `/${membersImagesPath}/${member.photo}`,
+    photo: member.photo ? `/${membersImagesPath}/${member.photo}` : null,
   }
 })
 
