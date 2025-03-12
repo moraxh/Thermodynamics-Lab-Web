@@ -1,11 +1,28 @@
 ---
   const { class: className, ...rest } = Astro.props;
+  import { FACEBOOK_URL, INSTAGRAM_URL, TIKTOK_URL, YOUTUBE_URL } from "astro:env/server"
   import Icon from "@components/common/Icon.astro"
 ---
 
 <nav class:list={[className]} class="">
-  <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-6" name="facebook" />
-  <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-5" name="instagram" />
-  <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-5" name="tiktok" />
-  <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-5" name="youtube" />
+  {FACEBOOK_URL && (
+    <a href={FACEBOOK_URL} target="_blank">
+      <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-6" name="facebook"/>
+    </a>
+  )}
+  {INSTAGRAM_URL && (
+    <a href={INSTAGRAM_URL} target="_blank">
+      <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-5" name="instagram"/>
+    </a>
+  )}
+  {TIKTOK_URL && (
+    <a href={TIKTOK_URL} target="_blank">
+      <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-5" name="tiktok"/>
+    </a>
+  )}
+  {YOUTUBE_URL && (
+    <a href={YOUTUBE_URL} target="_blank">
+      <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-5" name="youtube"/>
+    </a>
+  )}
 </nav>

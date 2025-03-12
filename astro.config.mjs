@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config'
+import { defineConfig, envField } from 'astro/config'
 
 import tailwindcss from '@tailwindcss/vite'
 
@@ -15,5 +15,17 @@ export default defineConfig({
   },
   security: {
     checkOrigin: true
+  },
+  env: {
+    schema: {
+      FACEBOOK_URL: envField.string({ context: 'server', access: 'public', optional: true }),
+      INSTAGRAM_URL: envField.string({ context: 'server', access: 'public', optional: true }),
+      TIKTOK_URL: envField.string({ context: 'server', access: 'public', optional: true }),
+      YOUTUBE_URL: envField.string({ context: 'server', access: 'public', optional: true }),
+      EMAIL: envField.string({ context: 'server', access: 'public', optional: true }),
+      PHONE: envField.string({ context: 'server', access: 'public', optional: true }),
+      LOCATION: envField.string({ context: 'server', access: 'public', optional: false }),
+      LOCATION_URL: envField.string({ context: 'server', access: 'public', optional: false })
+    }
   }
 })

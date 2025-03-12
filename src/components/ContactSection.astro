@@ -1,5 +1,6 @@
 ---
   const { class: className, ...rest } = Astro.props;
+  import { EMAIL, PHONE, LOCATION, LOCATION_URL } from "astro:env/server"
   import Icon from "@components/common/Icon.astro";
 ---
 
@@ -7,21 +8,24 @@
   "flex flex-col gap-y-2 w-fit mx-auto text-start",
   className,
   ]}>
-  <!-- Email -->
-  <a class="contact-section" target="_blank" href="mailto:test@gmail.com">
-    <Icon name="email" class="contact-icon min-w-7 w-7 h-6 object-contain fill-gray2"/>
-    <p>example@gmail.com</p>
-  </a>
-  <!-- Phone -->
-  <a class="contact-section" target="_blank" href="tel:052-123-456-7890">
-    <Icon name="phone" class="contact-icon min-w-7 w-7 h-6 object-contain fill-gray2"/>
-    <p>+52 123 456 7890</p>
-  </a>
-  <!-- Location -->
-  <a class="contact-section" target="_blank" href="https://maps.app.goo.gl/H2XMtkisHDdv7ED69">
-    <Icon name="landmark" class="contact-icon min-w-7 w-7 h-6 object-contain fill-gray2"/>
-    <p>DICIS, Salamanca, Gto, México</p>
-  </a>
+  {EMAIL && (
+    <a class="contact-section" target="_blank" href={`mailto:${EMAIL}`}>
+      <Icon name="email" class="contact-icon min-w-7 w-7 h-6 object-contain fill-gray2"/>
+      <p>{EMAIL}</p>
+    </a>
+  )}
+  {PHONE && (
+    <a class="contact-section" target="_blank" href={`tel:${PHONE.replaceAll(' ', '-')}`}>
+      <Icon name="phone" class="contact-icon min-w-7 w-7 h-6 object-contain fill-gray2"/>
+      <p>{PHONE}</p>
+    </a>
+  )}
+  {LOCATION && LOCATION_URL && (
+    <a class="contact-section" target="_blank" href={LOCATION_URL}>
+      <Icon name="landmark" class="contact-icon min-w-7 w-7 h-6 object-contain fill-gray2"/>
+      <p>{LOCATION}</p>
+    </a>
+  )}
 </section>
 
 <style>
