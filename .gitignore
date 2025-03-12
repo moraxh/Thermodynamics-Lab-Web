@@ -24,3 +24,6 @@ pnpm-debug.log*
 .idea/
 
 TODO.md
+
+# Storage
+public/storage
