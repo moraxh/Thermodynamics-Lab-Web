@@ -21,7 +21,10 @@
         "./src/assets/*"
       ],
       "@api/*": [
-        "src/pages/api/*"
+        "./src/pages/api/*"
+      ],
+      "@seed/*": [
+        "./seed/*"
       ]
     }
   }

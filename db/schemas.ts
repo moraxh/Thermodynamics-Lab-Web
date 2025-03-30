@@ -29,3 +29,7 @@ export const MemberTypeSchema = z.object({
     .max(20, { message: "El nombre del tipo de miembro no puede tener mas de 20 caracteres de longitud"}),
   order: z.number()
 })
+
+export const GallerySchema = z.object({
+  path: z.string({ message: "La ruta de la imagen es requerida"})
+})

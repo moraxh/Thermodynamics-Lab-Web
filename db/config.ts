@@ -1,5 +1,5 @@
 import idleDirective from "astro/runtime/client/idle.js";
-import { defineDb, defineTable, column } from "astro:db";
+import { defineDb, defineTable, column, NOW } from "astro:db";
 
 const User = defineTable({
   columns: {
@@ -35,11 +35,20 @@ const Member = defineTable({
   }
 })
 
+const GalleryImage = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true }),
+    path: column.text(),
+    uploadedAt: column.date({ default: NOW}),
+  }
+})
+
 export default defineDb({
   tables: {
     User,
     Session,
     Member,
-    MemberType
+    MemberType,
+    GalleryImage
   }
 })
