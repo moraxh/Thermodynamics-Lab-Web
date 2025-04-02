@@ -1,0 +1,66 @@
+---
+  import Icon from "./Icon.astro"
+---
+
+<dialog id="imgViewerDialog" class="overflow-hidden fixed top-0 left-0 min-w-screen min-h-screen max-w-screen max-h-screen bg-transparent z-20">
+  <button id="imgViewerClose" class="absolute top-0 right-0 outline-none m-6 bg-transparent hover:cursor-pointer hover:brightness-50 transition-all duration-200">
+    <Icon name="xmark" class="fill-white w-5" />
+  </button>
+  <div class="flex items-center justify-center min-h-screen min-w-screen">
+    <img class="max-h-[90vh] max-w-[90%] outline-2 outline-gray1 rounded-md object-contain" src="http://localhost:4321/storage/gallery/abd48b30212f106098dfdf7782ef8848be02d633.webp" alt="imgViewer">
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.getElementById('imgViewerDialog') as HTMLDialogElement;
+  const closeBtn = document.getElementById('imgViewerClose') as HTMLButtonElement;
+  const body = document.querySelector('body') as HTMLBodyElement;
+
+  const openModal = () => {
+    dialog.showModal()
+    body.classList.add('overflow-hidden')
+  }
+
+  const closeModal = () => {
+    dialog.close()
+    body.classList.remove('overflow-hidden')
+  }
+
+  closeBtn.addEventListener('click', closeModal)
+  dialog.addEventListener('click', (e) => {
+    if (!(e.target instanceof HTMLImageElement))
+      closeModal()
+  })
+
+  openModal()
+
+  const handleImages = () => {
+    const images = document.querySelectorAll('.imgViewer') as NodeListOf<HTMLImageElement>;
+
+    images.forEach(image => {
+      image.addEventListener('click', () => {
+        const img = dialog.querySelector('img') as HTMLImageElement;
+        img.src = image.src;
+        openModal()
+      })
+    })
+  }
+
+  document.addEventListener('DOMContentLoaded', handleImages);
+  document.addEventListener('astro:page-load', handleImages);
+</script>
+
+<style is:global>
+  .imgViewer {
+    cursor: pointer;
+  }    
+</style>
+
+<style>
+  @reference "../../styles/global.css";
+
+  #imgViewerDialog::backdrop {
+    background-color: rgb(0 0 0 / .5);
+    backdrop-filter: blur(3px);
+  }
+</style>

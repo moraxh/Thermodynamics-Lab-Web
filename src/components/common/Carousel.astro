@@ -1,0 +1,100 @@
+---
+  import Icon from "./Icon.astro";
+  import ImgViewer from "./ImgViewer.astro";
+
+  const { images, ...rest } = Astro.props;
+
+  if (!(images instanceof Array) || images.length === 0) {
+    return  
+  }
+---
+<ImgViewer />
+
+<div class="w-[90%] max-w-[1000px] aspect-video relative">
+  <div class="w-full h-full rounded-lg relative overflow-hidden outline-2 outline-gray1">
+    <div id="carousel" class="relative z-10 w-full h-full flex overflow-auto no-scrollbar snap-x snap snap-mandatory">
+      {images.map(image => (
+        <div class="w-full flex-shrink-0 relative snap-center">
+          {/* Blured Background */}
+          <div class="absolute overflow-hidden inset-0 z-0">
+            <img 
+              class="w-full h-full object-cover scale-125 brightness-50 blur-lg" 
+              src={image} 
+            />
+          </div>
+          {/* Main Image */}
+          <img class="imgViewer relative z-10 w-full h-full object-contain" src={image} />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <button id="navNext" class="navigation-button right-0 translate-x-1/2">
+    <Icon name="right_arrow" class="fill-gray3 w-7" />
+  </button>
+
+  <button id="navPrev" class="navigation-button left-0 -translate-x-1/2">
+    <Icon name="right_arrow" class="fill-gray3 w-7 -scale-x-100" />
+  </button>
+</div>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const carousel = document.getElementById("carousel") as HTMLDivElement;
+    const navNext = document.getElementById("navNext") as HTMLButtonElement;
+    const navPrev = document.getElementById("navPrev") as HTMLButtonElement;
+
+    // Check if the scrollend event is supported
+    if ('onscrollend' in document) {
+      carousel.addEventListener("scrollend", () => {
+        checkNavButtons()
+      })
+    } else {
+      carousel.addEventListener("scroll", () => {
+        checkNavButtons()
+      })
+    }
+
+    const checkNavButtons = () => {
+      const currentPos = Math.ceil(carousel.scrollLeft / carousel.clientWidth)
+
+      // Disable the previous button
+      navPrev.disabled = (currentPos === 0)
+      navNext.disabled = (currentPos === carousel.children.length - 1)
+    }
+
+    navNext.addEventListener("click", () => {
+      carousel.scrollTo({
+        left: carousel.scrollLeft + carousel.clientWidth,
+        behavior: "smooth"
+      })   
+    })
+
+    navPrev.addEventListener("click", () => {
+      carousel.scrollTo({
+        left: carousel.scrollLeft - carousel.clientWidth,
+        behavior: "smooth"
+      })   
+    })
+
+    checkNavButtons()
+  })
+
+</script>
+
+<style>
+  @reference "../../styles/global.css";
+
+  .navigation-button {
+    @apply flex justify-center items-center outline-2 outline-gray1 bg-gray0 w-16 aspect-square rounded-md z-10 absolute top-1/2 -translate-y-1/2 transition-all duration-200;
+  }
+
+  .navigation-button:hover {
+    @apply brightness-110 cursor-pointer scale-105;
+  }
+
+  .navigation-button:disabled {
+    @apply pointer-events-none hidden;
+  }
+</style>

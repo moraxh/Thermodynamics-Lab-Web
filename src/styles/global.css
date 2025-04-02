@@ -40,3 +40,12 @@
 .contact-section:hover > .contact-icon {
   @apply !fill-accent;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

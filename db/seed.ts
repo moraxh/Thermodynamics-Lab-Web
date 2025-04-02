@@ -1,4 +1,4 @@
-import { db, User, Member, MemberType } from 'astro:db';
+import { db, User, Member, MemberType, GalleryImage } from 'astro:db';
 
 import { defaultUser } from "./seeders/SeedUsers"
 import { members, membersType } from "./seeders/SeedMembers"
@@ -8,4 +8,5 @@ export default async function() {
   await db.insert(User).values([defaultUser]);
   await db.insert(MemberType).values(membersType);
   await db.insert(Member).values(members);
+  await db.insert(GalleryImage).values(galleryImages);
 }

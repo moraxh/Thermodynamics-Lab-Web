@@ -7,17 +7,20 @@
   import { Image } from "astro:assets"
 
   import bgImage from "@assets/images/bg/us.webp"
+import Gallery from "@src/components/pages/us/Gallery.astro"
 ---
 
 <Layout title="Sobre Nosotros | Labinst">
   <!-- Bg Image -->
   <Image class="bgImage" src={bgImage} alt="bg" />
 
-  <Hero />
+  <!-- <Hero />
 
   <InvestigationAreas />
 
-  <Team />
+  <Team /> -->
+
+  <Gallery />
 </Layout>
 
 <style>
