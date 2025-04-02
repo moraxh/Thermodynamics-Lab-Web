@@ -27,6 +27,7 @@
   }
 
   closeBtn.addEventListener('click', closeModal)
+  dialog.addEventListener('close', closeModal)
   dialog.addEventListener('click', (e) => {
     if (!(e.target instanceof HTMLImageElement))
       closeModal()
