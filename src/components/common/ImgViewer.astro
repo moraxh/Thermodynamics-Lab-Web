@@ -7,7 +7,7 @@
     <Icon name="xmark" class="fill-white w-5" />
   </button>
   <div class="flex items-center justify-center min-h-screen min-w-screen">
-    <img class="max-h-[90vh] max-w-[90%] outline-2 outline-gray1 rounded-md object-contain" src="http://localhost:4321/storage/gallery/abd48b30212f106098dfdf7782ef8848be02d633.webp" alt="imgViewer">
+    <img class="max-h-[90vh] max-w-[90%] outline-2 outline-gray1 rounded-md object-contain" src="" alt="imgViewer">
   </div>
 </dialog>
 
@@ -31,8 +31,6 @@
     if (!(e.target instanceof HTMLImageElement))
       closeModal()
   })
-
-  openModal()
 
   const handleImages = () => {
     const images = document.querySelectorAll('.imgViewer') as NodeListOf<HTMLImageElement>;
