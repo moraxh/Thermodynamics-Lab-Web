@@ -1,11 +1,11 @@
 ---
   import Empty from "@layouts/Empty.astro"
-  import Icon from "@components/common/Icon.astro"
   import CustomAlert from "@src/components/common/CustomAlert.astro"
   import { Image } from 'astro:assets'
 
   import bg from "@assets/images/bg/login.png"
   import logo from "@assets/images/logo/logo_full.webp"
+  import InputPassword from "@src/components/common/InputPassword.astro"
 
   if (Astro.locals.user) {
     return Astro.redirect('/admin')
@@ -27,20 +27,10 @@
       <input type="text" class="input-field" name="username" placeholder="Usuario">
 
       <!-- Password -->
-      <div class="w-full relative">
-        <input class="input-field !pe-12" type="password" name="password" placeholder="Contraseña">
-        <button type="button" id="passwordToggle" class="absolute right-0 top-1/2 -translate-y-1/2 me-3 hover:cursor-pointer hover:brightness-75 transition-all aspect-square">
-          <span id="passwordEye">
-            <Icon name="eye" class="w-6 h-auto" />
-          </span>
-          <span id="passwordEyeOff" hidden>
-            <Icon name="eyeOff" class="w-6 h-auto" />
-          </span>
-        </button>
-      </div>
+      <InputPassword name="password" placeholder="Contraseña" />
 
       <!-- Submit -->
-      <button disabled type="submit" class="text-black bg-accent w-full py-3 text-2xl font-bold rounded-full hover:saturate-50 hover:cursor-pointer disabled:opacity-20 disabled:pointer-events-none">
+      <button disabled type="submit" class="submit-button">
         Iniciar Sesión
       </button>
     </form>
@@ -48,19 +38,6 @@
 </Empty>
 
 <CustomAlert />
-
-<style>
-  @reference "../styles/global.css";
-
-  .input-field,
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  input:-webkit-autofill:active {
-    @apply bg-gray1 p-2.5 px-4 w-full rounded-lg text-xl active:outline-accent focus:outline-accent focus-visible:outline-accent focus-visible:border-accent;
-    transition: all 5000s ease-in-out 0s;
-  }
-</style>
 
 <script>
   document.addEventListener('astro:page-load', () => {
@@ -83,24 +60,6 @@
 
     user.addEventListener('input', validateFrom);
     password.addEventListener('input', validateFrom);
-
-    // Password Toggle
-    const passwordToggleBtn = document.getElementById('passwordToggle') as HTMLButtonElement;
-    const passwordInput = document.querySelector('input[name="password"]') as HTMLInputElement;
-    const passwordEye = document.getElementById('passwordEye') as HTMLSpanElement;
-    const passwordEyeOff = document.getElementById('passwordEyeOff') as HTMLSpanElement;
-
-    passwordToggleBtn.addEventListener('click', () => {
-      if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        passwordEye.hidden = true;
-        passwordEyeOff.hidden = false;
-      } else {
-        passwordInput.type = 'password';
-        passwordEye.hidden = false; 
-        passwordEyeOff.hidden = true;
-      }
-    })
 
     // Login send data
     const form = document.querySelector('form') as HTMLFormElement;
