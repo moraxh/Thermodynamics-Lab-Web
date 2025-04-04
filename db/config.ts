@@ -1,4 +1,3 @@
-import idleDirective from "astro/runtime/client/idle.js";
 import { defineDb, defineTable, column, NOW } from "astro:db";
 
 const User = defineTable({
