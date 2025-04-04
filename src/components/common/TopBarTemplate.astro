@@ -4,7 +4,7 @@
   import logo from '@assets/images/logo/logo_full.webp'
 ---
 
-<header transition:persist class="sticky top-0 from-gray0 to-transparent bg-gradient-to-b flex justify-between items-center gap-12 sm:gap-24 pt-3 px-5 sm:px-14 backdrop-blur-xs z-10">
+<header transition:persist class="sticky top-0 from-gray0 to-transparent bg-gradient-to-b flex justify-between items-center gap-12 sm:gap-24 pt-3 px-5 sm:px-14 backdrop-blur-xs z-50">
   <a href="/">
     <Image class="w-72 min-w-32" src={logo} alt="logo" />
   </a>
@@ -20,21 +20,26 @@
 </header>
 
 <script>
-
-  document.addEventListener('astro:page-load', () => {
+  document.addEventListener("astro:page-load", () => {
     const navMenu = document.getElementById('nav-menu') as HTMLButtonElement;
 
     if (navMenu) {
-      navMenu.addEventListener('click', () => {
-        document.querySelector('header')?.classList.toggle('active');
-      });
+      if (!navMenu.hasAttribute("listener")) {
+        navMenu.setAttribute("listener", "true")
+        navMenu.addEventListener('click', () => {
+          document.querySelector('header')?.classList.toggle('active');
+        });
+      }
     }
 
     // Close menu on page load
     document.querySelectorAll('#navBar > a')?.forEach(el => {
-      el.addEventListener('click', () => {
-        document.querySelector('header')?.classList.remove('active');
-      });
+      if (!el.hasAttribute("listener")) {
+        el.setAttribute("listener", "true")
+        el.addEventListener('click', () => {
+          document.querySelector('header')?.classList.remove('active');
+        });
+      }
     });
 
     // Highlight page link on page load
