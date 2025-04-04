@@ -1,15 +1,43 @@
 ---
   import { db, GalleryImage } from 'astro:db';
-  import Carousel from '@src/components/common/Carousel.astro';
+  import { getMonthName } from '@src/utils/date';
+  import ImgViewer from '@src/components/common/ImgViewer.astro';
+import Icon from '@src/components/common/Icon.astro';
 
   const imagesUrl = (
     await db
-    .select({ path: GalleryImage.path })
+    .select()
     .from(GalleryImage)
     .run()
   )
   .rows
-  .map(image => `${Astro.url.origin}/${image.path}`);
+  .map(image => {
+    const date = new Date(image.uploadedAt as string);
+
+    return {
+      path: `${Astro.url.origin}/${image.path}`,
+      uploadedAt: `${date.getDate()} ${getMonthName(date.getMonth()).slice(0, 3)}. ${date.getFullYear()}`
+    }
+  })
+
 ---
 
-<Carousel images={imagesUrl} />
+<ImgViewer />
+
+<section class="bg-gray0 p-5 rounded-md max-h-[500px] overflow-auto flex flex-col gap-5 w-[400px]">
+  {imagesUrl.map(image => (
+    <div class="flex justify-between items-center gap-3 bg-gray1 p-3 rounded-md">
+      <div class="flex items-center gap-3">
+        <img src={image.path} alt="Gallery Image" class="imgViewer h-20 w-auto object-contain rounded-md" />
+        <p class="text-gray3 font-bold">{image.uploadedAt}</p>
+      </div>
+      <button class="hover:cursor-pointer hover:brightness-75 transition-all duration-200">
+        <Icon name="xmark" class="fill-red-500 w-4" />
+      </button>
+    </div>
+  ))}
+</section>
+
+<button class="flex justify-center !w-fit px-5 !py-2 !text-lg submit-button">
+  <span class="text-black font-bold">Agregar imagen</span>
+</button>
