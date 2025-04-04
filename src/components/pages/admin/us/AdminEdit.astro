@@ -13,33 +13,27 @@
     .username
 ---
 
-<section class="flex flex-col justify-center items-center gap-4 max-w-full">
-  <h2 class="text-accent text-center font-bold text-5xl">
-    Credenciales <br> del Administrador
-  </h2>
+<form id="adminEditForm" class="w-[450px] flex flex-col items-center justify-center gap-4 bg-gray0 outline-2 outline-gray1 rounded-md p-8 max-w-[90%]">
+  <div>
+    <label for="username">Nombre de Usuario</label>
+    <input type="text" class="input-field" name="new_username" placeholder="Usuario" autocomplete="new-password" value={userAdmin?.toString()}> 
+    <p></p>
+  </div>
 
-  <form id="adminEditForm" class="w-[450px] flex flex-col items-center justify-center gap-4 bg-gray0 outline-2 outline-gray1 rounded-md p-8 max-w-[90%]">
-    <div>
-      <label for="username">Nombre de Usuario</label>
-      <input type="text" class="input-field" name="new_username" placeholder="Usuario" autocomplete="new-password" value={userAdmin?.toString()}> 
-      <p></p>
-    </div>
+  <div>
+    <label for="password">Contraseña</label>
+    <InputPassword name="new_password" placeholder="Contraseña" autocomplete="new-password" />
+  </div>
 
-    <div>
-      <label for="password">Contraseña</label>
-      <InputPassword name="new_password" placeholder="Contraseña" autocomplete="new-password" />
-    </div>
+  <div>
+    <label for="confirm_password">Confirmar Contraseña</label>
+    <InputPassword name="new_confirm_password" placeholder="Confirmar Contraseña" autocomplete="new-password"/>
+  </div>
 
-    <div>
-      <label for="confirm_password">Confirmar Contraseña</label>
-      <InputPassword name="new_confirm_password" placeholder="Confirmar Contraseña" autocomplete="new-password"/>
-    </div>
-
-    <button disabled type="submit" class="submit-button">
-      Cambiar
-    </button>
-  </form>
-</section>
+  <button disabled type="submit" class="submit-button">
+    Cambiar
+  </button>
+</form>
 
 <script>
   const form = document.getElementById("adminEditForm") as HTMLFormElement; 

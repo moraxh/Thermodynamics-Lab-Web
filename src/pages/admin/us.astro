@@ -4,12 +4,21 @@
   import GalleryEdit from "@src/components/pages/admin/us/GalleryEdit.astro";
   import MembersEdit from "@src/components/pages/admin/us/MembersEdit.astro";
   import CustomAlert from "@src/components/common/CustomAlert.astro";
+import Section from "@src/components/pages/admin/us/Section.astro";
 ---
 
 <AdminPanel title="Panel de Administrador">
   <CustomAlert />
 
-  <MembersEdit />
-  <GalleryEdit />
-  <AdminEdit />
+  <Section sectionName="Miembros">
+    <MembersEdit />
+  </Section>
+
+  <Section sectionName="Galería">
+    <GalleryEdit />
+  </Section>
+
+  <Section sectionName="Administrador">
+    <AdminEdit />
+  </Section>
 </AdminPanel>

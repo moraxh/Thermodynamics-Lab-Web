@@ -1,5 +1,15 @@
-<section>
-  <h2 class="text-accent text-center font-bold text-5xl">
-    Galería
-  </h2>
-</section>
+---
+  import { db, GalleryImage } from 'astro:db';
+  import Carousel from '@src/components/common/Carousel.astro';
+
+  const imagesUrl = (
+    await db
+    .select({ path: GalleryImage.path })
+    .from(GalleryImage)
+    .run()
+  )
+  .rows
+  .map(image => `${Astro.url.origin}/${image.path}`);
+---
+
+<Carousel images={imagesUrl} />

@@ -1,0 +1,11 @@
+---
+  const { sectionName } = Astro.props;
+---
+
+<section class="flex flex-col justify-center items-center gap-4 max-w-full">
+  <h2 class="text-accent text-center font-bold text-4xl sm:text-5xl">
+    {sectionName}
+  </h2>
+
+  <slot />
+</section>
