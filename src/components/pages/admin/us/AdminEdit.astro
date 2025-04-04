@@ -1,5 +1,16 @@
 ---
+  import { db, User } from "astro:db";
   import InputPassword from "@src/components/common/InputPassword.astro";
+
+  const userAdmin = 
+    (
+      await db
+      .select({ username: User.username })
+      .from(User)
+      .run()
+    )
+    .rows[0]
+    .username
 ---
 
 <section class="flex flex-col justify-center items-center gap-4 max-w-full">
@@ -10,7 +21,7 @@
   <form id="adminEditForm" class="w-[450px] flex flex-col items-center justify-center gap-4 bg-gray0 outline-2 outline-gray1 rounded-md p-8 max-w-[90%]">
     <div>
       <label for="username">Nombre de Usuario</label>
-      <input type="text" class="input-field" name="new_username" placeholder="Usuario" autocomplete="new-password"> 
+      <input type="text" class="input-field" name="new_username" placeholder="Usuario" autocomplete="new-password" value={userAdmin?.toString()}> 
       <p></p>
     </div>
 
