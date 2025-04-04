@@ -1,0 +1,102 @@
+---
+  import InputPassword from "@src/components/common/InputPassword.astro";
+---
+
+<section class="flex flex-col justify-center items-center gap-4 max-w-full">
+  <h2 class="text-accent text-center font-bold text-5xl">
+    Credenciales <br> del Administrador
+  </h2>
+
+  <form id="adminEditForm" class="w-[450px] flex flex-col items-center justify-center gap-4 bg-gray0 outline-2 outline-gray1 rounded-md p-8 max-w-[90%]">
+    <div>
+      <label for="username">Nombre de Usuario</label>
+      <input type="text" class="input-field" name="new_username" placeholder="Usuario" autocomplete="new-password"> 
+      <p></p>
+    </div>
+
+    <div>
+      <label for="password">Contraseña</label>
+      <InputPassword name="new_password" placeholder="Contraseña" autocomplete="new-password" />
+    </div>
+
+    <div>
+      <label for="confirm_password">Confirmar Contraseña</label>
+      <InputPassword name="new_confirm_password" placeholder="Confirmar Contraseña" autocomplete="new-password"/>
+    </div>
+
+    <button disabled type="submit" class="submit-button">
+      Cambiar
+    </button>
+  </form>
+</section>
+
+<script>
+  const form = document.getElementById("adminEditForm") as HTMLFormElement; 
+
+  const username = form.querySelector("input[name='new_username']") as HTMLInputElement;
+  const password = form.querySelector("input[name='new_password']") as HTMLInputElement;
+  const confirmPassword = form.querySelector("input[name='new_confirm_password']") as HTMLInputElement;
+
+  const submitButton = form.querySelector(".submit-button") as HTMLButtonElement; 
+
+  const validateAdminEditForm = () => {
+    const usernameValue = username.value.trim();
+    const passwordValue = password.value.trim();
+    const confirmPasswordValue = confirmPassword.value.trim();  
+
+    if (usernameValue !== "" && passwordValue !== "" && confirmPasswordValue !== "") {
+      submitButton.disabled = false;
+    } else {
+      submitButton.disabled = true;
+    }
+  }
+
+  username.addEventListener("input", validateAdminEditForm);  
+  password.addEventListener("input", validateAdminEditForm);  
+  confirmPassword.addEventListener("input", validateAdminEditForm);
+
+  validateAdminEditForm()
+
+  submitButton.addEventListener("click", e => {
+    e.preventDefault();
+
+    const usernameValue = username.value.trim();  
+    const passwordValue = password.value.trim();  
+    const confirmPasswordValue = confirmPassword.value.trim();  
+
+    if (usernameValue === "" || passwordValue === "" || confirmPasswordValue === "") {
+      window.customAlert.error.show("Error", "Por favor, rellena todos los campos");
+      return;
+    }
+    
+    const formData = new FormData()
+
+    formData.append("username", usernameValue);
+    formData.append("password", passwordValue);
+    formData.append("confirm_password", confirmPasswordValue);
+
+    fetch("/api/admin/updateUser", {
+      method: 'POST',
+      body: formData,
+    }).then(res => res.json()).then(data => {
+      if (data.error) {
+        window.customAlert.error.show("Error", data.error);
+        return;
+      } else {
+        window.location.href = "/admin/us";
+      }
+    })
+  })
+</script>
+
+<style>
+  @reference "../../../../styles/global.css";
+
+  form div {
+    @apply flex flex-col gap-1 w-full max-w-full;
+  }
+
+  label {
+    @apply text-accent font-bold text-xl;
+  }
+</style>

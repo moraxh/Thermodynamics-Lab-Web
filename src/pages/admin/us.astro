@@ -1,0 +1,15 @@
+---
+  import AdminPanel from "@src/layouts/AdminPanel.astro";
+  import AdminEdit from "@src/components/pages/admin/us/AdminEdit.astro";
+  import GalleryEdit from "@src/components/pages/admin/us/GalleryEdit.astro";
+  import MembersEdit from "@src/components/pages/admin/us/MembersEdit.astro";
+  import CustomAlert from "@src/components/common/CustomAlert.astro";
+---
+
+<AdminPanel title="Panel de Administrador">
+  <CustomAlert />
+
+  <MembersEdit />
+  <GalleryEdit />
+  <AdminEdit />
+</AdminPanel>
