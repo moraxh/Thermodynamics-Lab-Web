@@ -31,11 +31,11 @@
 
   <!-- Navigation Buttons -->
   <button id="navNext" class="navigation-button right-0 translate-x-1/2">
-    <Icon name="right_arrow" class="fill-gray3 w-7" />
+    <Icon name="right_arrow" class="fill-gray3 w-5 sm:w-7" />
   </button>
 
   <button id="navPrev" class="navigation-button left-0 -translate-x-1/2">
-    <Icon name="right_arrow" class="fill-gray3 w-7 -scale-x-100" />
+    <Icon name="right_arrow" class="fill-gray3 w-5 sm:w-7 -scale-x-100" />
   </button>
 </div>
 
@@ -87,7 +87,7 @@
   @reference "../../styles/global.css";
 
   .navigation-button {
-    @apply flex justify-center items-center outline-2 outline-gray1 bg-gray0 w-16 aspect-square rounded-md z-10 absolute top-1/2 -translate-y-1/2 transition-all duration-200;
+    @apply flex justify-center items-center outline-2 outline-gray1 bg-gray0 w-10 sm:w-16 aspect-square rounded-md z-10 absolute top-1/2 -translate-y-1/2 transition-all duration-200;
   }
 
   .navigation-button:hover {
