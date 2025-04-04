@@ -83,7 +83,9 @@
         window.customAlert.error.show("Error", data.error);
         return;
       } else {
-        window.location.href = "/admin/us";
+        window.customAlert.success.show("Éxito", "Credenciales actualizadas correctamente", "", () => {
+          window.location.href = "/admin/us";
+        });
       }
     })
   })

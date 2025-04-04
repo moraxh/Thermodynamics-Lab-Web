@@ -34,7 +34,7 @@
   @reference "../../styles/global.css";
 
   section {
-    @apply fixed flex flex-col gap-5 justify-center text-center items-center top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2 p-8 xs:p-12 min-w-[270px] rounded-[1rem] border-2 border-gray1 bg-gray0 max-w-[90%];
+    @apply fixed flex flex-col gap-5 justify-center text-center items-center top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2 p-8 xs:p-12 min-w-[370px] rounded-[1rem] border-2 border-gray1 bg-gray0 max-w-[90%];
     animation-delay: .2s;
     animation: fadeUp .5s ease-in-out;
   }
@@ -90,11 +90,11 @@
     _showAlert: (type: string, title: string, body: string, extra?: string) => void;
     _hideAlert: () => void;
     error: {
-      show: (title: string, body: string, extra?: string) => void;
+      show: (title: string, body: string, extra?: string, callback?: () => void) => void;
       hide: () => void;
     };
     success: {
-      show: (title: string, body: string, extra?: string) => void;
+      show: (title: string, body: string, extra?: string, callback?: () => void) => void;
       hide: () => void;
     };
   }
@@ -105,9 +105,11 @@
     }
   }
 
+  let closeCallback: null | Function = null
+
   const customAlert = {
     _showAlert: function (type: string, title: string, body: string, extra: string = '') {
-      customAlert._hideAlert()
+      customAlert._hideAlert(false)
       customAlertDialog.showModal()
       const alert = type === 'error' ? errorAlert : successAlert;
       alert.hidden = false;
@@ -125,13 +127,21 @@
         small.innerHTML = extra;
       }
     },
-    _hideAlert: function () {
+    _hideAlert: function (withCallback=true) {
       customAlertDialog.close();
       errorAlert.hidden = true;
       successAlert.hidden = true;
+
+      if (withCallback) {
+        if (closeCallback) {
+          closeCallback();
+          closeCallback = null;
+        }
+      }
     },
     error: {
-      show: function (title: string, body: string, extra: string = '') {
+      show: function (title: string, body: string, extra: string = '', callback?: () => void) {
+        closeCallback = callback || null;
         customAlert._showAlert('error', title, body, extra);
       },
       hide: function () {
@@ -139,7 +149,8 @@
       }
     },
     success: {
-      show: function (title: string, body: string, extra: string = '') {
+      show: function (title: string, body: string, extra: string = '', callback?: () => void) {
+        closeCallback = callback || null;
         customAlert._showAlert('success', title, body, extra);
       },
       hide: function () {
@@ -147,6 +158,8 @@
       } 
     }
   }
+
+  customAlertDialog.addEventListener("close", () => customAlert._hideAlert())
 
   window.customAlert = customAlert;
 </script>
