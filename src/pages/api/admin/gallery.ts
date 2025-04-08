@@ -22,6 +22,12 @@ export async function DELETE(context: APIContext):Promise<Response> {
           .where(eq(GalleryImage.id, imageId))
       )[0].path
 
+    if (!imagePath) {
+      return new Response(JSON.stringify({
+        error: "El ID de imagen no existe"
+      }), { status: 400 })
+    }
+
     // Delete the image from the database
     await db
       .delete(GalleryImage)
