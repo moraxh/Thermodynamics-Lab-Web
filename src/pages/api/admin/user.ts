@@ -37,7 +37,7 @@ export async function POST(context: APIContext):Promise<Response> {
     const hashedPassword = await hash(password, passwordHashingOptions)
 
     // Update the user
-    db.update(User)
+    await db.update(User)
       .set({
         username: username,
         password_hash: hashedPassword

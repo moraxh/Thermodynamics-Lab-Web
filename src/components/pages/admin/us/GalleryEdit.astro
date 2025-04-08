@@ -15,6 +15,7 @@ import Icon from '@src/components/common/Icon.astro';
     const date = new Date(image.uploadedAt as string);
 
     return {
+      id: image.id,
       path: `${Astro.url.origin}/${image.path}`,
       uploadedAt: `${date.getDate()} ${getMonthName(date.getMonth()).slice(0, 3)}. ${date.getFullYear()}`
     }
@@ -25,13 +26,16 @@ import Icon from '@src/components/common/Icon.astro';
 <ImgViewer />
 
 <section class="bg-gray0 p-5 rounded-md max-h-[500px] outline-2 outline-gray1 overflow-auto flex flex-col gap-5 w-[500px] max-w-[95%]">
+  {imagesUrl.length == 0 && (
+    <p class="text-center font-bold text-xl text-gray2">No hay imágenes en la galería 😔</p>
+  )}
   {imagesUrl.map(image => (
     <div class="flex justify-between items-center gap-3 bg-gray1 p-4 rounded-md">
       <div class="flex flex-wrap items-center gap-3">
         <img src={image.path} alt="Gallery Image" class="imgViewer h-20 w-auto object-contain rounded-md" />
         <p class="text-gray3 font-bold text-lg">{image.uploadedAt}</p>
       </div>
-      <button class="hover:cursor-pointer hover:brightness-75 transition-all duration-200">
+      <button data-image-id={image.id} class="deleteImgGallery hover:cursor-pointer hover:brightness-75 transition-all duration-200">
         <Icon name="xmark" class="fill-red-500 w-4" />
       </button>
     </div>
@@ -42,3 +46,38 @@ import Icon from '@src/components/common/Icon.astro';
   <Icon name="plus" class="fill-black w-4" />
   <span class="text-black font-bold">Agregar imagen</span>
 </button>
+
+<script>
+  const handleGalleryEdit = () => {
+    const deleteImg = (imageId: string) => {
+      const formData = new FormData();
+      formData.append('image_id', imageId);
+
+      fetch('/api/admin/gallery', {
+        method: 'DELETE',
+        body: formData,
+      }).then(res => res.json()).then(data => {
+        if (data.error) {
+          window.customAlert.error.show("¡Ups! Hubo un error", data.error);
+        } else {
+          window.customAlert.success.show("Imagen Eliminada", "La imagen ha sido eliminada correctamente", "", () => {
+            window.location.href = window.location.href;
+          });
+        }
+      })
+    }
+
+    const deleteButtons = document.querySelectorAll('.deleteImgGallery');
+
+    deleteButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        const imageId = (button as HTMLButtonElement).dataset.imageId;
+        if (imageId) {
+          deleteImg(imageId);
+        }
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', handleGalleryEdit)
+</script>

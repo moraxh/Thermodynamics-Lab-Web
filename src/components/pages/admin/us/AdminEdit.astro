@@ -80,16 +80,15 @@
     formData.append("password", passwordValue);
     formData.append("confirm_password", confirmPasswordValue);
 
-    fetch("/api/admin/updateUser", {
+    fetch("/api/admin/user", {
       method: 'POST',
       body: formData,
     }).then(res => res.json()).then(data => {
       if (data.error) {
-        window.customAlert.error.show("Error", data.error);
-        return;
+        window.customAlert.error.show("¡Ups! Hubo un error", data.error);
       } else {
-        window.customAlert.success.show("Éxito", "Credenciales actualizadas correctamente", "", () => {
-          window.location.href = "/admin/us";
+        window.customAlert.success.show("Credenciales Actualizadas", "Las credenciales han sido actualizadas correctamente", "", () => {
+          window.location.href = window.location.href;
         });
       }
     })
