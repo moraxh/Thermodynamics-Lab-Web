@@ -12,40 +12,50 @@
 </dialog>
 
 <script>
-  const dialog = document.getElementById('imgViewerDialog') as HTMLDialogElement;
-  const closeBtn = document.getElementById('imgViewerClose') as HTMLButtonElement;
-  const body = document.querySelector('body') as HTMLBodyElement;
+  const handleImgViewer = () => {
+    const dialog = document.getElementById('imgViewerDialog') as HTMLDialogElement;
+    const closeBtn = document.getElementById('imgViewerClose') as HTMLButtonElement;
+    const body = document.querySelector('body') as HTMLBodyElement;
 
-  const openModal = () => {
-    dialog.showModal()
-    body.classList.add('overflow-hidden')
-  }
+    console.log(dialog, closeBtn, body)
 
-  const closeModal = () => {
-    dialog.close()
-    body.classList.remove('overflow-hidden')
-  }
+    if (!dialog || !closeBtn || !body) {
+      return
+    }
 
-  closeBtn.addEventListener('click', closeModal)
-  dialog.addEventListener('close', closeModal)
-  dialog.addEventListener('click', (e) => {
-    if (!(e.target instanceof HTMLImageElement))
-      closeModal()
-  })
+    const openModal = () => {
+      dialog.showModal()
+      body.classList.add('overflow-hidden')
+    }
 
-  const handleImages = () => {
-    const images = document.querySelectorAll('.imgViewer') as NodeListOf<HTMLImageElement>;
+    const closeModal = () => {
+      dialog.close()
+      body.classList.remove('overflow-hidden')
+    }
 
-    images.forEach(image => {
-      image.addEventListener('click', () => {
-        const img = dialog.querySelector('img') as HTMLImageElement;
-        img.src = image.src;
-        openModal()
-      })
+    closeBtn.addEventListener('click', closeModal)
+    dialog.addEventListener('close', closeModal)
+    dialog.addEventListener('click', (e) => {
+      if (!(e.target instanceof HTMLImageElement))
+        closeModal()
     })
+
+    const handleImages = () => {
+      const images = document.querySelectorAll('.imgViewer') as NodeListOf<HTMLImageElement>;
+
+      images.forEach(image => {
+        image.addEventListener('click', () => {
+          const img = dialog.querySelector('img') as HTMLImageElement;
+          img.src = image.src;
+          openModal()
+        })
+      })
+    }
+
+    handleImages()
   }
 
-  document.addEventListener('astro:page-load', handleImages);
+  document.addEventListener("astro:page-load", handleImgViewer)
 </script>
 
 <style is:global>

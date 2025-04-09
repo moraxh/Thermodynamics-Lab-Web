@@ -45,6 +45,10 @@
     const navNext = document.getElementById("navNext") as HTMLButtonElement;
     const navPrev = document.getElementById("navPrev") as HTMLButtonElement;
 
+    if (carousel === null || navNext === null || navPrev === null) {
+      return
+    }
+
     // Check if the scrollend event is supported
     if ('onscrollend' in document) {
       carousel.addEventListener("scrollend", () => {
