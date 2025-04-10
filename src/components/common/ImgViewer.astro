@@ -1,42 +1,14 @@
 ---
-  import Icon from "./Icon.astro"
+  import CustomModal from "./CustomModal.astro"
 ---
 
-<dialog id="imgViewerDialog" class="overflow-hidden fixed top-0 left-0 min-w-screen min-h-screen max-w-screen max-h-screen bg-transparent z-20">
-  <button id="imgViewerClose" class="absolute top-0 right-0 outline-none m-6 bg-transparent hover:cursor-pointer hover:brightness-50 transition-all duration-200">
-    <Icon name="xmark" class="fill-white w-5" />
-  </button>
-  <div class="flex items-center justify-center min-h-screen min-w-screen">
-    <img class="max-h-[90vh] max-w-[90%] outline-2 outline-gray1 rounded-md object-contain" src="" alt="imgViewer">
-  </div>
-</dialog>
+<CustomModal id="imgViewerDialog">
+  <img class="max-h-[90vh] max-w-[90%] outline-2 outline-gray1 rounded-md object-contain" src="" alt="imgViewer">
+</CustomModal>
 
 <script>
   const handleImgViewer = () => {
     const dialog = document.getElementById('imgViewerDialog') as HTMLDialogElement;
-    const closeBtn = document.getElementById('imgViewerClose') as HTMLButtonElement;
-    const body = document.querySelector('body') as HTMLBodyElement;
-
-    if (!dialog || !closeBtn || !body) {
-      return
-    }
-
-    const openModal = () => {
-      dialog.showModal()
-      body.classList.add('overflow-hidden')
-    }
-
-    const closeModal = () => {
-      dialog.close()
-      body.classList.remove('overflow-hidden')
-    }
-
-    closeBtn.addEventListener('click', closeModal)
-    dialog.addEventListener('close', closeModal)
-    dialog.addEventListener('click', (e) => {
-      if (!(e.target instanceof HTMLImageElement))
-        closeModal()
-    })
 
     const handleImages = () => {
       const images = document.querySelectorAll('.imgViewer') as NodeListOf<HTMLImageElement>;
@@ -45,7 +17,7 @@
         image.addEventListener('click', () => {
           const img = dialog.querySelector('img') as HTMLImageElement;
           img.src = image.src;
-          openModal()
+          window.customModal.show('imgViewerDialog')  
         })
       })
     }
