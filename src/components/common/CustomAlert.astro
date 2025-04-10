@@ -1,8 +1,9 @@
 ---
   import Icon from "@components/common/Icon.astro";
+  import CustomModal from "./CustomModal.astro";
 ---
 
-<dialog id="customAlert">
+<CustomModal  id="customAlert">
   <!-- Error -->
   <section hidden id="errorAlert">
     <Icon class="fill-danger h-22 mx-10 w-auto" name="sadFace" />
@@ -28,15 +29,13 @@
       Ok
     </button>
   </section>
-</dialog>
+</CustomModal>
 
 <style>
   @reference "../../styles/global.css";
 
   section {
     @apply fixed flex flex-col gap-5 justify-center text-center items-center top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2 p-8 xs:p-12 min-w-[370px] rounded-[1rem] border-2 border-gray1 bg-gray0 max-w-[90%];
-    animation-delay: .2s;
-    animation: fadeUp .5s ease-in-out;
   }
 
   h2 {
@@ -53,31 +52,6 @@
 
   small {
     @apply text-lg text-text/50;
-  }
-
-  #customAlert::backdrop {
-    @apply fixed bg-background/60 backdrop-blur-xs pointer-events-none;
-    animation: fadeIn .2s ease-in-out;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(50px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
   }
 </style>
 
@@ -110,7 +84,7 @@
   const customAlert = {
     _showAlert: function (type: string, title: string, body: string, extra: string = '') {
       customAlert._hideAlert(false)
-      customAlertDialog.showModal()
+      window.customModal.show(customAlertDialog.id)
       const alert = type === 'error' ? errorAlert : successAlert;
       alert.hidden = false;
       const h2 = alert.querySelector('h2') as HTMLHeadingElement;
@@ -128,7 +102,6 @@
       }
     },
     _hideAlert: function (withCallback=true) {
-      customAlertDialog.close();
       errorAlert.hidden = true;
       successAlert.hidden = true;
 
