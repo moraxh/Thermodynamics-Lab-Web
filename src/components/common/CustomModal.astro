@@ -4,9 +4,8 @@
 ---
 
 <dialog id={id} class:list={["fixed outline-none top-0 left-0 min-h-screen min-w-screen bg-transparent backdrop:bg-black/70", className]}>
-  <section class="flex justify-center items-center min-w-screen min-h-screen p-16">
+  <section class="dialog-section flex justify-center items-center min-w-screen min-h-screen p-16">
     <Icon name="xmark" class="close-btn fill-white w-5 absolute top-0 right-0 m-5 hover:cursor-pointer hover:brightness-50" />
-
     <slot />
   </section>
 </dialog>
@@ -40,6 +39,8 @@
 </style>
 
 <script>
+import mod from "astro/zod";
+
   interface customModalInterface {
     show: (id: string) => void;
     hide: (id: string) => void;
@@ -72,14 +73,20 @@
 
       const cancelHandler = (e: Event) => handleCancelModal(this, e, id)
       const closeHandler = (e: Event) => this.hide(id)
+      const clickCloseHandler = (e: Event) => {
+        if ((e.target as HTMLElement).classList.contains('dialog-section')) {
+          this.hide(id)
+        }
+      }
 
-
-      this.eventCache.set(id, { cancelHandler, closeHandler })
+      this.eventCache.set(id, { cancelHandler, closeHandler, clickCloseHandler })
 
       // Esc key to close modal
       modal.addEventListener('cancel', cancelHandler, {once: true})
       // Close btn to close modal
       closeBtn.addEventListener('click', closeHandler, {once: true})
+      // BG click to close modal
+      modal.addEventListener('click', clickCloseHandler, {once: true})
 
       // Remove event listener when modal is closed
       modal.addEventListener('close', () => {
@@ -87,6 +94,7 @@
         if (cached) {
           modal.removeEventListener('cancel', cached.cancelHandler)
           closeBtn.removeEventListener('click', cached.closeHandler)
+          modal.removeEventListener('click', cached.clickCloseHandler)
           this.eventCache.delete(id)
         }
       }, {once: true})
