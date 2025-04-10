@@ -3,26 +3,26 @@
   import Icon from "./Icon.astro"
 ---
 
-<dialog id={id} class:list={["fixed outline-none top-0 left-0 min-h-screen min-w-screen bg-transparent backdrop:bg-black/70", className]}>
-  <section class="dialog-section flex justify-center items-center min-w-screen min-h-screen p-16">
+<dialog id={id} class:list={["customDialog fixed outline-none top-0 left-0 min-h-screen min-w-screen bg-transparent backdrop:bg-black/70", className]}>
+  <section class="dialog-section flex justify-center items-center min-w-screen min-h-screen max-w-screen max-h-screen p-16">
     <Icon name="xmark" class="close-btn fill-white w-5 absolute top-0 right-0 m-5 hover:cursor-pointer hover:brightness-50" />
     <slot />
   </section>
 </dialog>
 
-<style>
-  dialog {
+<style is:global>
+  .customDialog {
     transition: all .2s ease-in-out;
     opacity: 0;
     scale: .5;
   }
 
-  dialog.show {
+  .customDialog.show {
     opacity: 1;
     scale: 1;
   }
 
-  dialog.show[open]::backdrop {
+  .customDialog.show[open]::backdrop {
     animation: backdropBlur .2s ease-in-out forwards;
     animation-delay: .2s;
   }
@@ -35,12 +35,9 @@
       backdrop-filter: blur(5px);
     } 
   }
-
 </style>
 
 <script>
-import mod from "astro/zod";
-
   interface customModalInterface {
     show: (id: string) => void;
     hide: (id: string) => void;
