@@ -68,8 +68,12 @@ import SocialMediaIcons from "./SocialMediaIcons.astro";
 
 <script>
   const updateFooter = () => {
+    const footerLegend = document.querySelector("#footer-legend");
+
+    if (!footerLegend) return;
+
     const footer = `© ${new Date().getFullYear()} Copyright Todos los derechos reservados | Página web creada por Hadassah García y Jorge Mora`;
-    (document.getElementById("footer-legend") as HTMLParagraphElement).innerHTML = footer
+    footerLegend.innerHTML = footer;
   };
 
   document.addEventListener("astro:page-load", updateFooter);
