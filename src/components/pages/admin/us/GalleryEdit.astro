@@ -3,6 +3,7 @@
   import { getMonthName } from '@src/utils/date';
   import ImgViewer from '@src/components/common/ImgViewer.astro';
   import Icon from '@src/components/common/Icon.astro';
+import CustomModal from '@src/components/common/CustomModal.astro';
 
   const imagesUrl = (
     await db
@@ -48,24 +49,22 @@
   <span class="text-black font-bold">Agregar imagen</span>
 </button>
 
-<dialog id="galleryAddModal" class="fixed top-0 left-0 min-w-screen min-h-screen outline-none z-50 bg-transparent backdrop:bg-black/50 backdrop:backdrop-blur-md">
-  <div class="flex justify-center items-center w-screen h-screen">
-    <div class="flex flex-col justify-start items-center gap-5 bg-gray0 outline-2 outline-gray1 p-7 rounded-md">
-      <h2 class="text-3xl font-bold text-accent">Agregar Imagen</h2>
-      <div class="relative">
-        <div id="fakeUpload" class="flex flex-col gap-3 justify-center items-center bg-contain bg-no-repeat bg-center w-96 aspect-square rounded-md outline-2 outline-gray2 hover:cursor-pointer hover:brightness-105 transition-all duration-200">
-          <Icon name="upload" class="fill-gray2 w-20" />
-          <p class="text-2xl font-bold text-gray2">Subir Imagen</p>
-        </div>
-        <button id="close" class="hidden p-2 rounded-full bg-red-500 hover:cursor-pointer hover:brightness-75 -translate-y-1/2 translate-x-1/2 transition-all duration-200 absolute top-0 right-0">
-          <Icon name="xmark" class="fill-white w-3" />
-        </button>
+<CustomModal id="galleryAddModal">
+  <div class="flex flex-col justify-start items-center gap-5 bg-gray0 outline-2 outline-gray1 p-7 rounded-md">
+    <h2 class="text-3xl font-bold text-accent">Agregar Imagen</h2>
+    <div class="relative">
+      <div id="fakeUpload" class="flex flex-col gap-3 justify-center items-center bg-contain bg-no-repeat bg-center w-96 aspect-square rounded-md outline-2 outline-gray2 hover:cursor-pointer hover:brightness-105 transition-all duration-200">
+        <Icon name="upload" class="fill-gray2 w-20" />
+        <p class="text-2xl font-bold text-gray2">Subir Imagen</p>
       </div>
-      <input type="file" name="image" class="hidden" accept=".png, .jpg, .jpeg, .webp" required />
-      <button type="submit" disabled class="submit-button !py-2 !w-fit px-5">Agregar</button>
+      <button id="close" class="hidden p-2 rounded-full bg-red-500 hover:cursor-pointer hover:brightness-75 -translate-y-1/2 translate-x-1/2 transition-all duration-200 absolute top-0 right-0">
+        <Icon name="xmark" class="fill-white w-3" />
+      </button>
     </div>
+    <input type="file" name="image" class="hidden" accept=".png, .jpg, .jpeg, .webp" required />
+    <button type="submit" disabled class="submit-button !py-2 !w-fit px-5">Agregar</button>
   </div>
-</dialog>
+</CustomModal>
 
 <script>
   const handleGalleryEdit = () => {
@@ -76,6 +75,10 @@
     const realUpload = dialog.querySelector("input[name='image']") as HTMLInputElement;
     const fakeUpload = dialog.querySelector("#fakeUpload") as HTMLDivElement;
     const submitButton = dialog.querySelector("button[type='submit']") as HTMLButtonElement;
+
+    if (!addImageButton || !dialog || !closeButton || !realUpload || !fakeUpload || !submitButton) {
+      return;
+    }
 
     const showImgOnFakeUpload = (url: string) => {
       fakeUpload.style.backgroundImage = `url(${url})`;
@@ -105,9 +108,10 @@
       submitButton.disabled = true // Dissable the submit button
     }
 
-    addImageButton.addEventListener('click', () => dialog.showModal())
+    addImageButton.addEventListener('click', () => window.customModal.show(dialog.id));
     fakeUpload.addEventListener("click", () => realUpload.click())
     closeButton.addEventListener("click", () => deleteImgOnFakeUpload())
+    dialog.addEventListener("close", deleteImgOnFakeUpload)
 
     realUpload.addEventListener("change", e => {
       const file = (e.target as HTMLInputElement).files?.[0];
