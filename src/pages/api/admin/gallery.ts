@@ -68,7 +68,7 @@ export async function POST(context: APIContext):Promise<Response> {
 export async function DELETE(context: APIContext):Promise<Response> {
   try {
     const formData = await context.request.formData();
-    const imageId = formData.get('image_id') as string;
+    const imageId = formData.get('id') as string;
 
     if (!imageId) {
       return new Response(JSON.stringify({
