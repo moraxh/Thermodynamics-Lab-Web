@@ -1,8 +1,8 @@
 ---
-  const { sectionName } = Astro.props;
+  const { sectionName, class: className } = Astro.props;
 ---
 
-<section class="flex flex-col justify-center items-center gap-4 max-w-full">
+<section class:list={["flex flex-col justify-center items-center gap-4 max-w-full", className]}>
   <h2 class="text-accent text-center font-bold text-4xl sm:text-5xl mb-2">
     {sectionName}
   </h2>

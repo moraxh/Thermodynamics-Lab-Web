@@ -1,0 +1,91 @@
+---
+  import Icon from "@src/components/common/Icon.astro"
+  import { db, eq, Member, MemberType } from "astro:db"
+
+  const members: Record<string, Array<typeof allMembers[number]>> = {}
+
+  const allMembers = 
+    await db
+    .select()
+    .from(Member)
+    .orderBy(Member.fullName)
+
+  for (const member of allMembers) {
+    if (members[member.typeOfMember] === undefined) {
+      members[member.typeOfMember] = []
+    }
+    members[member.typeOfMember].push(member)
+  }
+
+  const memberTypes = await db
+    .selectDistinct({ name: MemberType.name, order: MemberType.order })
+    .from(MemberType)
+    .innerJoin(Member, eq(MemberType.name, Member.typeOfMember))
+    .orderBy(MemberType.order);
+---
+
+<section class="bg-gray0 p-5 rounded-md max-h-[700px] outline-2 outline-gray1 overflow-auto flex flex-col gap-5 w-[550px] max-w-[95%]">
+  {Array.from(memberTypes).length == 0 && (
+    <p class="text-center font-bold text-xl text-gray2">No hay miembros en el equipo 😔</p>
+  )}
+  {memberTypes.map(type => (
+    <>
+      <h3 class="text-accent text-2xl xs:text-4xl italic font-sans text-center">
+        {type.name}
+      </h3>
+      {members[type.name].map(member => (
+        <div class="flex justify-between items-center gap-3 bg-gray1 p-4 rounded-md">
+          <div class="flex flex-wrap items-center gap-3">
+            <img src={member.photo} alt="Member Image" class="imgViewer h-25 w-auto object-contain rounded-full outline-2 outline-gray2" />
+            <div class="max-w-[200px] flex flex-col gap-1">
+              <p class="text-gray3 font-bold leading-5 break-words">{member.fullName}</p>
+              <small class="text-gray2 font-bold break-words leading-4">{member.position}</p>
+            </div>
+          </div>
+          <div class="flex gap-2.5">
+            <button data-member-id={member.id} class="updateMember hover:cursor-pointer hover:brightness-75 transition-all duration-200">
+              <Icon name="pen" class="fill-blue-500 h-4 xs:h-[1.15rem]" />
+            </button>
+            <button data-member-id={member.id} class="deleteMember hover:cursor-pointer hover:brightness-75 transition-all duration-200">
+              <Icon name="xmark" class="fill-red-500 h-4 xs:h-[1.15rem]" />
+            </button>
+          </div>
+        </div>
+      ))}
+    </>
+  ))}
+</section>
+
+<script is:inline data-astro-rerun>
+  const updateMemberButtons = document.querySelectorAll('.updateMember')
+  const deleteMemberButtons = document.querySelectorAll('.deleteMember')
+
+  const deleteMember = (imageId) => {
+    const formData = new FormData()
+    formData.append('id', imageId)
+
+    fetch('/api/admin/member', {
+      method: 'DELETE',
+      body: formData
+    }).then(res => res.json()).then(data => {
+      if (data.error) {
+        window.customAlert.error.show("¡Ups! Hubo un error", data.error);
+      } else {
+        window.customAlert.success.show("Miembro eliminado", "El miembro fue eliminado correctamente", "", () => {
+          window.location.href = window.location.href;
+        });
+      }
+    })
+  }
+
+  deleteMemberButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      const memberId = e.currentTarget.dataset.memberId
+      deleteMember(memberId)
+    })
+  })
+
+  updateMemberButtons.forEach(button => {
+
+  })
+</script>
