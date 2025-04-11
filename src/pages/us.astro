@@ -3,14 +3,18 @@
   import Hero from "@components/pages/us/Hero.astro"
   import InvestigationAreas from "@components/pages/us/InvestigationAreas.astro"
   import Team from "@components/pages/us/Team.astro"
+  import ImgViewer from "@src/components/common/ImgViewer.astro";
 
   import { Image } from "astro:assets"
 
   import bgImage from "@assets/images/bg/us.webp"
-import Gallery from "@src/components/pages/us/Gallery.astro"
+  import Gallery from "@src/components/pages/us/Gallery.astro"
+
 ---
 
 <Layout title="Sobre Nosotros | Labinst">
+  <ImgViewer />
+
   <!-- Bg Image -->
   <Image class="bgImage" src={bgImage} alt="bg" />
 
