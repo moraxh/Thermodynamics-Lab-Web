@@ -112,7 +112,7 @@ export async function DELETE(context: APIContext):Promise<Response> {
     }
 
     // Delete from filesystem
-    fs.rmSync(imagePath, { force: true })
+    fs.rmSync(`./public/${imagePath}`, { force: true })
 
     return new Response(JSON.stringify({
       success: true
