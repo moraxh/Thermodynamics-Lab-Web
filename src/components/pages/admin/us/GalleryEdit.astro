@@ -71,14 +71,15 @@
     // Add Image
     const addImageButton = document.getElementById('addImage') as HTMLButtonElement;
     const dialog = document.getElementById('galleryAddModal') as HTMLDialogElement;
+
+    if (!dialog) return
+
     const closeButton = dialog.querySelector('#close') as HTMLButtonElement;
     const realUpload = dialog.querySelector("input[name='image']") as HTMLInputElement;
     const fakeUpload = dialog.querySelector("#fakeUpload") as HTMLDivElement;
     const submitButton = dialog.querySelector("button[type='submit']") as HTMLButtonElement;
 
-    if (!addImageButton || !dialog || !closeButton || !realUpload || !fakeUpload || !submitButton) {
-      return;
-    }
+    if (!addImageButton || !closeButton || !realUpload || !fakeUpload || !submitButton) return
 
     const showImgOnFakeUpload = (url: string) => {
       fakeUpload.style.backgroundImage = `url(${url})`;

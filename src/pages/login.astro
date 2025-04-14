@@ -20,7 +20,7 @@
   <section class="bg-gray0/80 border-2 border-gray1 backdrop-blur-2xl m-auto py-7 p-10 rounded-3xl max-w-[90%]">
     <!-- Img -->
     <a class="p-8" aria-label="Volver al inicio" href="/">
-      <Image class="w-80 max-w-full" src={logo} alt="logo" />
+      <Image transition:name="logo" class="w-80 max-w-full" src={logo} alt="logo" />
     </a>
     <form class="flex flex-col justify-center items-center gap-5" action="/api/login" method="post">
       <!-- User -->
@@ -41,6 +41,8 @@
 
 
 <script>
+  import { navigate } from "astro:transitions/client";
+
   document.addEventListener('astro:page-load', () => {
     // Form Validation
     const user = document.querySelector('input[name="username"]') as HTMLInputElement;
@@ -78,7 +80,7 @@
         if (data.error) {
           window.customAlert.error.show('Error', data.error);
         } else {
-          window.location.href = '/admin';
+          navigate('/admin')
         }
       })
     })

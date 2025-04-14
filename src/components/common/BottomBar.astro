@@ -67,14 +67,12 @@ import SocialMediaIcons from "./SocialMediaIcons.astro";
 </style>
 
 <script>
-  const updateFooter = () => {
+  document.addEventListener("astro:page-load", () => {
     const footerLegend = document.querySelector("#footer-legend");
 
     if (!footerLegend) return;
 
     const footer = `© ${new Date().getFullYear()} Copyright Todos los derechos reservados | Página web creada por Hadassah García y Jorge Mora`;
     footerLegend.innerHTML = footer;
-  };
-
-  document.addEventListener("astro:page-load", updateFooter);
+  })
 </script>

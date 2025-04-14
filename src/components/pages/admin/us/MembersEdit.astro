@@ -56,36 +56,47 @@
   ))}
 </section>
 
-<script is:inline data-astro-rerun>
-  const updateMemberButtons = document.querySelectorAll('.updateMember')
-  const deleteMemberButtons = document.querySelectorAll('.deleteMember')
+<script >
+  const handleMembersEdit = () => {
+    const updateMemberButtons = document.querySelectorAll('.updateMember') as NodeListOf<HTMLButtonElement>
+    const deleteMemberButtons = document.querySelectorAll('.deleteMember') as NodeListOf<HTMLButtonElement>
 
-  const deleteMember = (imageId) => {
-    const formData = new FormData()
-    formData.append('id', imageId)
+    if (!updateMemberButtons || !deleteMemberButtons) {
+      return
+    }
 
-    fetch('/api/admin/member', {
-      method: 'DELETE',
-      body: formData
-    }).then(res => res.json()).then(data => {
-      if (data.error) {
-        window.customAlert.error.show("¡Ups! Hubo un error", data.error);
-      } else {
-        window.customAlert.success.show("Miembro eliminado", "El miembro fue eliminado correctamente", "", () => {
-          window.location.href = window.location.href;
-        });
-      }
+    const deleteMember = (imageId: string) => {
+      const formData = new FormData()
+      formData.append('id', imageId)
+
+      fetch('/api/admin/member', {
+        method: 'DELETE',
+        body: formData
+      }).then(res => res.json()).then(data => {
+        if (data.error) {
+          window.customAlert.error.show("¡Ups! Hubo un error", data.error);
+        } else {
+          window.customAlert.success.show("Miembro eliminado", "El miembro fue eliminado correctamente", "", () => {
+            window.location.href = window.location.href;
+          });
+        }
+      })
+    }
+
+    deleteMemberButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        const memberId = (e.currentTarget as HTMLElement).dataset.memberId as string
+
+        if (!memberId) return
+
+        deleteMember(memberId)
+      })
     })
+
+    updateMemberButtons.forEach(button => {
+
+    })
+
+    document.addEventListener("astro:page-load", handleMembersEdit)
   }
-
-  deleteMemberButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-      const memberId = e.currentTarget.dataset.memberId
-      deleteMember(memberId)
-    })
-  })
-
-  updateMemberButtons.forEach(button => {
-
-  })
 </script>

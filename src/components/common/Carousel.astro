@@ -49,23 +49,19 @@
       return
     }
 
-    // Check if the scrollend event is supported
-    if ('onscrollend' in document) {
-      carousel.addEventListener("scrollend", () => {
-        checkNavButtons()
-      })
-    } else {
-      carousel.addEventListener("scroll", () => {
-        checkNavButtons()
-      })
-    }
-
     const checkNavButtons = () => {
       const currentPos = Math.ceil(carousel.scrollLeft / carousel.clientWidth)
 
       // Disable the previous button
       navPrev.disabled = (currentPos === 0)
       navNext.disabled = (currentPos === carousel.children.length - 1)
+    }
+
+    // Check if the scrollend event is supported
+    if ('onscrollend' in document) {
+      carousel.addEventListener("scrollend", checkNavButtons)
+    } else {
+      carousel.addEventListener("scroll", checkNavButtons)
     }
 
     navNext.addEventListener("click", () => {
