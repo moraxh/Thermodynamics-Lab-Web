@@ -4,6 +4,7 @@
   import ImgViewer from '@src/components/common/ImgViewer.astro';
   import Icon from '@src/components/common/Icon.astro';
   import CustomModal from '@src/components/common/CustomModal.astro';
+  import ImageUpload from '@src/components/common/ImageUpload.astro';
 
   const imagesUrl = (
     await db
@@ -52,16 +53,7 @@
 <CustomModal id="galleryAddModal">
   <div class="flex flex-col justify-start items-center gap-5 bg-gray0 outline-2 outline-gray1 p-7 rounded-md">
     <h2 class="text-3xl font-bold text-accent">Agregar Imagen</h2>
-    <div class="relative">
-      <div id="fakeUpload" class="flex flex-col gap-3 justify-center items-center bg-contain bg-no-repeat bg-center w-96 aspect-square rounded-md outline-2 outline-gray2 hover:cursor-pointer hover:brightness-105 transition-all duration-200">
-        <Icon name="upload" class="fill-gray2 w-20" />
-        <p class="text-2xl font-bold text-gray2">Subir Imagen</p>
-      </div>
-      <button id="close" class="hidden p-2 rounded-full bg-red-500 hover:cursor-pointer hover:brightness-75 -translate-y-1/2 translate-x-1/2 transition-all duration-200 absolute top-0 right-0">
-        <Icon name="xmark" class="fill-white w-3" />
-      </button>
-    </div>
-    <input type="file" name="image" class="hidden" accept=".png, .jpg, .jpeg, .webp" required />
+    <ImageUpload instanceId="galleryEditImageUpload" realUploadId="image" />
     <button type="submit" disabled class="submit-button !py-2 !w-fit px-5">Agregar</button>
   </div>
 </CustomModal>
@@ -69,64 +61,26 @@
 <script>
   const handleGalleryEdit = () => {
     // Add Image
-    const addImageButton = document.getElementById('addImage') as HTMLButtonElement;
     const dialog = document.getElementById('galleryAddModal') as HTMLDialogElement;
 
     if (!dialog) return
 
-    const closeButton = dialog.querySelector('#close') as HTMLButtonElement;
-    const realUpload = dialog.querySelector("input[name='image']") as HTMLInputElement;
-    const fakeUpload = dialog.querySelector("#fakeUpload") as HTMLDivElement;
+    const addImageButton = document.getElementById('addImage') as HTMLButtonElement;
+    const imageUpload = document.getElementById(`imageUpload_galleryEditImageUpload`)?.querySelector('input') as HTMLInputElement;
+
+    const realUpload = dialog.querySelector("#image") as HTMLInputElement;
     const submitButton = dialog.querySelector("button[type='submit']") as HTMLButtonElement;
 
-    if (!addImageButton || !closeButton || !realUpload || !fakeUpload || !submitButton) return
-
-    const showImgOnFakeUpload = (url: string) => {
-      fakeUpload.style.backgroundImage = `url(${url})`;
-
-      // Hide all the children
-      Array.from(fakeUpload.children).forEach(child => {
-        child.classList.add("hidden")
-      })
-
-      closeButton.classList.remove("hidden") // Show close button
-
-      submitButton.disabled = false // Enable the submit button
-    }
-
-    const deleteImgOnFakeUpload = () => {
-      fakeUpload.style.backgroundImage = "none";
-
-      // Show the children
-      Array.from(fakeUpload.children).forEach(child => {
-        child.classList.remove("hidden")
-      })
-
-      closeButton.classList.add("hidden") // Hide close button
-
-      realUpload.value = ""; // Reset the file input value
-
-      submitButton.disabled = true // Dissable the submit button
-    }
+    if (!addImageButton || !imageUpload || !realUpload || !submitButton) return
 
     addImageButton.addEventListener('click', () => window.customModal.show(dialog.id));
-    fakeUpload.addEventListener("click", () => realUpload.click())
-    closeButton.addEventListener("click", () => deleteImgOnFakeUpload())
-    dialog.addEventListener("close", deleteImgOnFakeUpload)
 
-    realUpload.addEventListener("change", e => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const url = e.target?.result as string;
-          showImgOnFakeUpload(url);
-        }
-        reader.readAsDataURL(file);
-      } else {
-        deleteImgOnFakeUpload();
-      }
-    })
+    const validateAddImage = () => {
+      submitButton.disabled = realUpload.files?.length === 0
+    }
+
+    realUpload.addEventListener("change", validateAddImage)
+    realUpload.addEventListener("delete", validateAddImage)
 
     submitButton.addEventListener("click", e => {
       e.preventDefault();
