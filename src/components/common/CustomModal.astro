@@ -83,7 +83,7 @@
       // Close btn to close modal
       closeBtn.addEventListener('click', closeHandler, {once: true})
       // BG click to close modal
-      modal.addEventListener('click', clickCloseHandler, {once: true})
+      modal.addEventListener('click', clickCloseHandler)
 
       // Remove event listener when modal is closed
       modal.addEventListener('close', () => {
