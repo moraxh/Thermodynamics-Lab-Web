@@ -27,6 +27,9 @@ export const MemberTypeSchema = z.object({
   name: z.string({ message: "El nombre del tipo de miembro es requerido"})
     .min(3, { message: "El nombre del tipo de miembro debe tener al menos 3 caracteres de longitud"})
     .max(20, { message: "El nombre del tipo de miembro no puede tener mas de 20 caracteres de longitud"}),
+  plural_name: z.string({ message: "El nombre del tipo de miembro es requerido"})
+    .min(3, { message: "El nombre del tipo de miembro debe tener al menos 3 caracteres de longitud"})
+    .max(20, { message: "El nombre del tipo de miembro no puede tener mas de 20 caracteres de longitud"}),
   order: z.number()
 })
 

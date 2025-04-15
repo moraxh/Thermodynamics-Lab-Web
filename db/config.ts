@@ -20,6 +20,7 @@ const Session = defineTable({
 const MemberType = defineTable({
   columns: {
     name: column.text({ primaryKey: true, unique: true }),
+    plural_name: column.text({ unique: true }),
     order: column.number({ unique: true })
   }
 })

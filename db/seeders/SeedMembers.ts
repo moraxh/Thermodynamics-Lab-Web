@@ -5,9 +5,9 @@ import { generateHashFromFile } from '@src/utils/Hash';
 import membersJSON from "@seed/members.json"
 
 export const membersType = [
-  { name: "Fundadores", order: 1 },
-  { name: "Colaboradores", order: 2 },
-  { name: "Miembros", order: 3 },
+  { name: "Fundador", plural_name: "Fundadores",order: 1 },
+  { name: "Colaborador", plural_name: "Colaboradores", order: 2 },
+  { name: "Miembro", plural_name: "Miembros", order: 3 },
 ]
 
 // ----------

@@ -19,7 +19,7 @@
   }
 
   const memberTypes = await db
-    .selectDistinct({ name: MemberType.name, order: MemberType.order })
+    .selectDistinct({ name: MemberType.name, plural_name: MemberType.plural_name, order: MemberType.order })
     .from(MemberType)
     .innerJoin(MemberDB, eq(MemberType.name, MemberDB.typeOfMember))
     .orderBy(MemberType.order);
@@ -32,7 +32,7 @@
   {memberTypes.map(type => (
     <article>
       <h3 class="text-accent text-3xl xs:text-5xl italic font-sans text-center">
-        {type.name}
+        {type.plural_name}
       </h3>
       <div>
         {members[type.name].map(member => (
