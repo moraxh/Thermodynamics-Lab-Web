@@ -5,6 +5,13 @@ import { Readable } from "node:stream"
 
 export class GalleryService {
   static async createImage(image: File):Promise<{ status: number, message: string }> {
+    if (!image) {
+      return {
+        status: 400,
+        message: "La imagen es requerida"
+      }
+    }
+
     const extension = image.type.split('/').pop()
     const hash = await generateHashFromStream(image.stream()) as string
 
@@ -39,6 +46,13 @@ export class GalleryService {
   }
 
   static async deleteImage(imageId: string):Promise<{ status: number, message: string }> {
+    if (!imageId) {
+      return {
+        status: 400,
+        message: "ID de imagen requerido"
+      }
+    }
+
     const imagePath = await GalleryRepository.findImagePathById(imageId)
 
     if (!imagePath) {

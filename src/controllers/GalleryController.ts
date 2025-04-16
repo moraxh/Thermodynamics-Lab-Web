@@ -7,12 +7,6 @@ export class GalleryController {
       const formData = await context.request.formData();
       const image = formData.get('image') as File;
 
-      if (!image) {
-        return new Response(JSON.stringify({
-          error: "La imagen es requerida"
-        }), { status: 400 })
-      }
-
       const response = await GalleryService.createImage(image)
       return new Response(JSON.stringify(response), { status: response.status })
     } catch (error) {
@@ -26,12 +20,6 @@ export class GalleryController {
     try {
       const formData = await context.request.formData();
       const imageId = formData.get('id') as string;
-
-      if (!imageId) {
-        return new Response(JSON.stringify({
-          error: "ID de imagen requerido"
-        }), { status: 400 })
-      }
 
       const response = await GalleryService.deleteImage(imageId)
       return new Response(JSON.stringify(response), { status: response.status })

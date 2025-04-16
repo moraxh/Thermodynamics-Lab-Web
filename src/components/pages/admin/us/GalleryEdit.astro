@@ -92,12 +92,12 @@
           method: 'POST',
           body: formData,
         }).then(res => res.json()).then(data => {
-          if (data.error) {
-            window.customAlert.error.show("¡Ups! Hubo un error", data.error);
-          } else {
-            window.customAlert.success.show("Imagen Agregada", "La imagen ha sido agregada correctamente", "", () => {
+          if (data.status === 200) {
+            window.customAlert.success.show("Imagen Agregada", data.message || "La imagen ha sido agregada correctamente", "", () => {
               window.location.href = window.location.href;
             });
+          } else {
+            window.customAlert.error.show("¡Ups! Hubo un error", data.error || "Hubo un error al agregar la imagen");
           }
         })
       }
@@ -114,12 +114,12 @@
         method: 'DELETE',
         body: formData,
       }).then(res => res.json()).then(data => {
-        if (data.error) {
-          window.customAlert.error.show("¡Ups! Hubo un error", data.error);
-        } else {
-          window.customAlert.success.show("Imagen Eliminada", "La imagen ha sido eliminada correctamente", "", () => {
+        if (data.status === 200) {
+          window.customAlert.success.show("Imagen Eliminada", data.message || "La imagen ha sido eliminada correctamente", "", () => {
             window.location.href = window.location.href;
           });
+        } else {
+          window.customAlert.error.show("¡Ups! Hubo un error", data.message || "Hubo un error al eliminar la imagen");
         }
       })
     }
