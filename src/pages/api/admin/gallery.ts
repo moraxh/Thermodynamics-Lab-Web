@@ -8,6 +8,14 @@ export async function POST(context: APIContext):Promise<Response> {
   try {
     const formData = await context.request.formData();
     const image = formData.get('image') as File;
+
+    if (!image) {
+      return new Response(JSON.stringify({
+        error: "La imagen es requerida"
+      }), { status: 400 })
+    }
+
+    // Get extension
     const extension = image.type.split('/').pop()
 
     // Get hash
@@ -32,7 +40,6 @@ export async function POST(context: APIContext):Promise<Response> {
     fs.mkdirSync("./public/storage/gallery", { recursive: true })
     const outputPath = `storage/gallery/${hash}.${extension}`
 
-    // Store the image in the database
     const writableStream = fs.createWriteStream(`./public/${outputPath}`)
     const readableStream = Readable.from(image.stream())
 

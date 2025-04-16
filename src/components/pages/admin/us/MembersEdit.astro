@@ -1,4 +1,6 @@
 ---
+  import ImageUpload from "@src/components/common/ImageUpload.astro"
+  import CustomModal from "@src/components/common/CustomModal.astro"
   import Icon from "@src/components/common/Icon.astro"
   import { db, eq, Member, MemberType } from "astro:db"
 
@@ -17,26 +19,31 @@
     members[member.typeOfMember].push(member)
   }
 
-  const memberTypes = await db
-    .selectDistinct({ name: MemberType.name, order: MemberType.order })
+  const existingMemberTypes = await db
+    .selectDistinct({ name: MemberType.name, plural_name: MemberType.plural_name, order: MemberType.order })
     .from(MemberType)
     .innerJoin(Member, eq(MemberType.name, Member.typeOfMember))
     .orderBy(MemberType.order);
+
+  const memberTypes = await db
+    .select()
+    .from(MemberType)
+    .orderBy(MemberType.order);
 ---
 
-<section class="bg-gray0 p-5 rounded-md max-h-[700px] outline-2 outline-gray1 overflow-auto flex flex-col gap-5 w-[550px] max-w-[95%]">
-  {Array.from(memberTypes).length == 0 && (
+<section class="bg-gray0 p-5 rounded-md max-h-[600px] outline-2 outline-gray1 overflow-auto flex flex-col gap-5 w-[550px] max-w-[95%]">
+  {Array.from(existingMemberTypes).length == 0 && (
     <p class="text-center font-bold text-xl text-gray2">No hay miembros en el equipo 😔</p>
   )}
-  {memberTypes.map(type => (
+  {existingMemberTypes.map(type => (
     <>
       <h3 class="text-accent text-2xl xs:text-4xl italic font-sans text-center">
-        {type.name}
+        {type.plural_name}
       </h3>
       {members[type.name].map(member => (
         <div class="flex justify-between items-center gap-3 bg-gray1 p-4 rounded-md">
           <div class="flex flex-wrap items-center gap-3">
-            <img src={member.photo} alt="Member Image" class="imgViewer h-25 w-auto object-contain rounded-full outline-2 outline-gray2" />
+            <img src={`${Astro.url.origin}/${member.photo}`} alt="Member Image" class="imgViewer aspect-square object-cover h-25 w-auto object-contain rounded-full outline-2 outline-gray2" />
             <div class="max-w-[200px] flex flex-col gap-1">
               <p class="text-gray3 font-bold leading-5 break-words">{member.fullName}</p>
               <small class="text-gray2 font-bold break-words leading-4">{member.position}</p>
@@ -56,14 +63,109 @@
   ))}
 </section>
 
-<script >
-  const handleMembersEdit = () => {
-    const updateMemberButtons = document.querySelectorAll('.updateMember') as NodeListOf<HTMLButtonElement>
-    const deleteMemberButtons = document.querySelectorAll('.deleteMember') as NodeListOf<HTMLButtonElement>
+<button id="addMember" class="flex justify-center !w-fit px-5 !py-2 !text-lg submit-button gap-2">
+  <Icon name="plus" class="fill-black w-4" />
+  <span class="text-black font-bold">Agregar miembro</span>
+</button>
 
-    if (!updateMemberButtons || !deleteMemberButtons) {
-      return
+<CustomModal id="memberAddEditModal">
+  <div class="flex flex-col justify-start items-center gap-5 bg-gray0 outline-2 outline-gray1 p-7 rounded-md">
+    <h2 class="text-3xl font-bold text-accent">Agregar Miembro</h2>
+      <form class="flex flex-col gap-3 justify-center items-center" novalidate>
+        <div class="flex flex-col items-center">
+          <ImageUpload instanceId="membersEditImageUpload" realUploadId="memberPhoto" fakeUploadClass="!w-40 !rounded-full bg-cover" />
+        </div>
+        <div>
+          <label for="name">Nombre</label>
+          <input class="input-field" type="text" id="name" placeholder="Nombre" required>
+        </div>
+        <div>
+          <label for="position">Cargo</label>
+          <input class="input-field" type="text" id="position" placeholder="Cargo" required>
+        </div>
+        <div>
+          <label for="typeOfMember">Tipo de Miembro</label>
+          <select class="input-field" id="typeOfMember" required>
+            {memberTypes.map(type => (
+              <option value={type.name} selected={type.name == "Miembro"}>{type.name}</option>
+            ))}
+          </select>
+        </div>
+        <button type="submit" disabled class="submit-button !py-2 !w-fit px-5">Agregar Miembro</button>
+      </form>
+  </div>
+</CustomModal>
+
+<script>
+  const handleMembersEdit = () => {
+   const dialog = document.getElementById('memberAddEditModal')
+
+   if (!dialog) return
+
+    const addMemberButton = document.getElementById('addMember') as HTMLButtonElement
+    addMemberButton.addEventListener('click', () => window.customModal.show('memberAddEditModal'))
+
+    const form = dialog.querySelector("form") as HTMLFormElement
+    const submitButton = dialog.querySelector("button[type='submit']") as HTMLButtonElement 
+    const imageUpload = dialog.querySelector(`#imageUpload_membersEditImageUpload`)?.querySelector("input") as HTMLInputElement
+
+    // Validate
+    const validateForm = () => {
+      const requiredFields = form.querySelectorAll("[required]")
+      const isInvalid = Array.from(requiredFields).some(field => !(field as HTMLInputElement | HTMLSelectElement).value)
+
+      submitButton.disabled = isInvalid
     }
+
+    form.querySelectorAll("input,select").forEach(input => {
+      input.addEventListener("input", validateForm)
+    })
+    imageUpload.addEventListener("delete", validateForm)
+
+    // On submit
+    submitButton.addEventListener("click", e => {
+      e.preventDefault()
+
+      const name = form.querySelector("#name") as HTMLInputElement
+      const position = form.querySelector("#position") as HTMLInputElement
+      const typeOfMember = form.querySelector("#typeOfMember") as HTMLSelectElement
+      const file = imageUpload.files?.[0] as File
+
+      if (!file) {
+        window.customAlert.error.show("¡Ups! Hubo un error", "No se ha seleccionado una imagen")
+        return
+      }
+
+      const formData = new FormData()
+      formData.append('name', name.value)
+      formData.append('position', position.value)
+      formData.append('typeOfMember', typeOfMember.value)
+      formData.append('memberPhoto', file)
+
+      fetch("/api/admin/member", {
+        method: "POST",
+        body: formData
+      }).then(res => res.json()).then(data => {
+        if (data.error) {
+          window.customAlert.error.show("¡Ups! Hubo un error", data.error);
+        } else {
+          window.customAlert.success.show("Miembro Agregado", "Un miembro ha sido agregado correctamente", "", () => {
+            window.location.href = window.location.href;
+          });
+        }
+      })
+    })
+
+    // Reset dialog on close
+    dialog.addEventListener("close", () => {
+      dialog.querySelectorAll("input").forEach(input => {
+        input.value = ""
+      })
+    })
+
+    // Update and Delete Buttons
+    const updateMemberButtons = document.querySelectorAll('.updateMember')
+    const deleteMemberButtons = document.querySelectorAll('.deleteMember')
 
     const deleteMember = (imageId: string) => {
       const formData = new FormData()
@@ -83,20 +185,38 @@
       })
     }
 
+    const updateMember = (imageId: string) => {
+
+    }
+
     deleteMemberButtons.forEach(button => {
-      button.addEventListener('click', (e) => {
+      button.addEventListener('click', e => {
         const memberId = (e.currentTarget as HTMLElement).dataset.memberId as string
-
         if (!memberId) return
-
         deleteMember(memberId)
       })
     })
 
     updateMemberButtons.forEach(button => {
-
+      button.addEventListener('click', e => {
+        const memberId = (e.currentTarget as HTMLElement).dataset.memberId as string
+        if (!memberId) return
+        updateMember(memberId)
+      })
     })
-
-    document.addEventListener("astro:page-load", handleMembersEdit)
   }
+
+  document.addEventListener('astro:page-load', handleMembersEdit)
 </script>
+
+<style>
+  @reference "../../../../styles/global.css";
+
+  form div {
+    @apply flex flex-col gap-1 w-full max-w-full;
+  }
+
+  label {
+    @apply text-accent font-bold text-xl;
+  }
+</style>

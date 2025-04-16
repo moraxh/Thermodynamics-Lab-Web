@@ -7,11 +7,13 @@
   <div class:list={[
     fakeUploadClass,
     "imageUploadFakeInput flex flex-col gap-3 justify-center items-center bg-contain bg-no-repeat bg-center w-80 aspect-square rounded-lg outline-2 outline-gray2 hover:cursor-pointer hover:brightness-105 transition-all duration-200"
-    ]}>
+    ]}
+    style="container-type: inline-size;"
+    >
     <Icon name="upload" class="fill-gray2 w-[25%]" />
-    <p class="text-[1.3cqw] font-bold text-gray2">Subir Imagen</p>
+    <p class="text-[10cqw] font-bold text-gray2">Subir Imagen</p>
   </div>
-  <button class="imageUploadDeleteInput hidden p-2 rounded-full bg-red-500 hover:cursor-pointer hover:brightness-75 -translate-y-1/2 translate-x-1/2 transition-all duration-200 absolute top-0 right-0">
+  <button type="button" class="imageUploadDeleteInput hidden p-2 rounded-full bg-red-500 hover:cursor-pointer hover:brightness-75 -translate-y-1/2 translate-x-1/2 transition-all duration-200 absolute top-0 right-0">
     <Icon name="xmark" class="fill-white w-3" />
   </button>
   <input id={realUploadId} type="file" name="image" class="imageUploadRealInput hidden" accept=".png, .jpg, .jpeg, .webp" required />

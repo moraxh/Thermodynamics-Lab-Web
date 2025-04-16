@@ -54,11 +54,15 @@
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
+input:-webkit-autofill:focus-visible,
 input:-webkit-autofill:active {
-  @apply bg-gray1 p-2.5 px-4 w-full rounded-lg text-xl active:outline-accent focus:outline-accent focus-visible:outline-accent focus-visible:border-accent;
+  @apply bg-gray1 text-white p-2.5 px-4 w-full rounded-lg text-xl active:outline-accent focus:outline-accent focus-visible:outline-accent focus-visible:border-accent;
   transition: all 5000s ease-in-out 0s;
 }
 
+select.input-field {
+  border-right: 13px solid transparent
+}
 .submit-button {
   @apply text-black bg-accent w-full py-3 text-2xl font-bold rounded-full hover:saturate-50 hover:cursor-pointer disabled:opacity-20 disabled:pointer-events-none;
 }
