@@ -1,13 +1,15 @@
 import { db, GalleryImage, like, eq } from "astro:db";
 
+type GalleryImageSelect = typeof GalleryImage.$inferSelect
+
 export class GalleryRepository {
-  static async findImageByHash(hash: string):Promise<typeof GalleryImage | null> {
+  static async findImageByHash(hash: string):Promise<GalleryImageSelect | null> {
     const result = 
       await db
         .select()
         .from(GalleryImage)
         .where(like(GalleryImage.path, `%${hash}%`))
-    return result.length > 0 ? (result[0] as unknown as typeof GalleryImage) : null
+    return result.length > 0 ? result[0] : null
   }
 
   static async insertImage(path: string):Promise<void> {
