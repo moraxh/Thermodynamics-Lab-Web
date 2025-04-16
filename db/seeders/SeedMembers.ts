@@ -38,6 +38,6 @@ export const members = membersJSON.map(member => {
   return {
     id: generateIdFromEntropySize(10),
     ...member,
-    photo: member.photo ? `/${membersImagesPath}/${member.photo}` : null,
+    photo: member.photo ? `${membersImagesPath}/${member.photo}` : null,
   }
 })
