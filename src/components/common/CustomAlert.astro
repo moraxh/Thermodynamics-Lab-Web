@@ -3,7 +3,7 @@
   import CustomModal from "./CustomModal.astro";
 ---
 
-<CustomModal  id="customAlert">
+<CustomModal id="customAlert">
   <!-- Error -->
   <section hidden id="errorAlert">
     <Icon class="fill-danger h-22 mx-10 w-auto" name="sadFace" />
@@ -86,7 +86,6 @@
 
     const customAlert = {
       _showAlert: function (type: string, title: string, body: string, extra: string = '') {
-        customAlert._hideAlert(false)
         window.customModal.show(customAlertDialog.id)
         const alert = type === 'error' ? errorAlert : successAlert;
         alert.hidden = false;
@@ -105,8 +104,7 @@
         }
       },
       _hideAlert: function (withCallback=true) {
-        errorAlert.hidden = true;
-        successAlert.hidden = true;
+        window.customModal.hide(customAlertDialog.id)
 
         if (withCallback) {
           if (closeCallback) {
