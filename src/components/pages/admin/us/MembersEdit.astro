@@ -43,16 +43,13 @@
       {members[type.name].map(member => (
         <div class="flex justify-between items-center gap-3 bg-gray1 p-4 rounded-md">
           <div class="flex flex-wrap items-center gap-3">
-            <img src={`${Astro.url.origin}/${member.photo}`} alt="Member Image" class="imgViewer aspect-square object-cover h-25 w-auto object-contain rounded-full outline-2 outline-gray2" />
+            <img src={`${Astro.url.origin}/${member.photo}`} alt="Member Image" class="imgViewer aspect-square object-cover h-25 w-auto rounded-full outline-2 outline-gray2" />
             <div class="max-w-[200px] flex flex-col gap-1">
               <p class="text-gray3 font-bold leading-5 break-words">{member.fullName}</p>
               <small class="text-gray2 font-bold break-words leading-4">{member.position}</p>
             </div>
           </div>
           <div class="flex gap-2.5">
-            <button data-member-id={member.id} class="updateMember hover:cursor-pointer hover:brightness-75 transition-all duration-200">
-              <Icon name="pen" class="fill-blue-500 h-4 xs:h-[1.15rem]" />
-            </button>
             <button data-member-id={member.id} class="deleteMember hover:cursor-pointer hover:brightness-75 transition-all duration-200">
               <Icon name="xmark" class="fill-red-500 h-4 xs:h-[1.15rem]" />
             </button>
@@ -98,16 +95,16 @@
 
 <script>
   const handleMembersEdit = () => {
-   const dialog = document.getElementById('memberAddEditModal')
-
-   if (!dialog) return
-
+    const dialog = document.getElementById('memberAddEditModal')
     const addMemberButton = document.getElementById('addMember') as HTMLButtonElement
-    addMemberButton.addEventListener('click', () => window.customModal.show('memberAddEditModal'))
+    if (!dialog) return
 
     const form = dialog.querySelector("form") as HTMLFormElement
     const submitButton = dialog.querySelector("button[type='submit']") as HTMLButtonElement 
     const imageUpload = dialog.querySelector(`#imageUpload_membersEditImageUpload`)?.querySelector("input") as HTMLInputElement
+
+    // Open modal to add a member
+    addMemberButton.addEventListener('click', () => window.customModal.show('memberAddEditModal'))
 
     // Validate
     const validateForm = () => {
@@ -185,23 +182,11 @@
       })
     }
 
-    const updateMember = (imageId: string) => {
-
-    }
-
     deleteMemberButtons.forEach(button => {
       button.addEventListener('click', e => {
         const memberId = (e.currentTarget as HTMLElement).dataset.memberId as string
         if (!memberId) return
         deleteMember(memberId)
-      })
-    })
-
-    updateMemberButtons.forEach(button => {
-      button.addEventListener('click', e => {
-        const memberId = (e.currentTarget as HTMLElement).dataset.memberId as string
-        if (!memberId) return
-        updateMember(memberId)
       })
     })
   }
