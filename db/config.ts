@@ -29,8 +29,8 @@ const Member = defineTable({
   columns: {
     id: column.text({ primaryKey: true}),
     fullName: column.text(),
-    position: column.text({ optional: true }),
-    photo: column.text({ optional: true }),
+    position: column.text(),
+    photo: column.text(),
     typeOfMember: column.text({ references: () => MemberType.columns.name }),   
   }
 })

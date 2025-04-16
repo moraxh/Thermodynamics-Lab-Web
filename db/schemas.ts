@@ -17,10 +17,9 @@ export const MemberSchema = z.object({
   typeOfMember: z.string({ message: "El tipo de miembro es requerido"})
     .min(3, { message: "El tipo de miembro debe tener al menos 3 caracteres de longitud"})
     .max(20, { message: "El tipo de miembro no puede tener mas de 20 caracteres de longitud"}),
-  position: z.string({ message: "La posición tiene que ser un texto"})
+  position: z.string({ message: "La posición del miembro es requerida"})
     .min(3, { message: "La posición debe tener al menos 3 caracteres de longitud"})
     .max(20, { message: "La posición no puede tener mas de 20 caracteres de longitud"})
-    .optional(),
 })
 
 export const MemberTypeSchema = z.object({
