@@ -4,7 +4,9 @@ import { generateHashFromStream } from "@src/utils/Hash"
 import { Readable } from "node:stream"
 
 export class GalleryService {
-  static async createImage(image: File):Promise<{ status: number, message: string }> {
+  static async createImage(formData: FormData):Promise<{ status: number, message: string }> {
+    const image = formData.get('image') as File;
+
     if (!image) {
       return {
         status: 400,
@@ -45,7 +47,9 @@ export class GalleryService {
     }
   }
 
-  static async deleteImage(imageId: string):Promise<{ status: number, message: string }> {
+  static async deleteImage(formData: FormData):Promise<{ status: number, message: string }> {
+    const imageId = formData.get('id') as string;
+
     if (!imageId) {
       return {
         status: 400,

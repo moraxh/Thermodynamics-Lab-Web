@@ -6,17 +6,12 @@ export class UserController {
   static async updateUser(context: APIContext): Promise<Response> {
     try {
       const formData = await context.request.formData();
-      const username = formData.get('username') as string
-      const password = formData.get('password') as string
-      const confirmPassword = formData.get('confirm_password') as string
-
-      const response = await UserService.updateUser(username, password, confirmPassword)
+      const response = await UserService.updateUser(formData)
       return new Response(JSON.stringify(response), { status: response.status })
     } catch (error) {
       return new Response(JSON.stringify({
-        error: "Error interno del servidor"
+        message: "Error interno del servidor"
       }), { status: 500 })
     }
-
-    }
+  }
 }

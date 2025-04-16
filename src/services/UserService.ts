@@ -4,7 +4,11 @@ import { passwordHashingOptions } from "@src/pages/api/login";
 import { UserRepository } from "@src/repositories/UserRepository";
 
 export class UserService {
-  static async updateUser(username: string, password: string, confirmPassword: string): Promise<{ status: number, message: string }> {
+  static async updateUser(formData: FormData): Promise<{ status: number, message: string }> {
+    const username = formData.get('username') as string
+    const password = formData.get('password') as string
+    const confirmPassword = formData.get('confirm_password') as string
+
     // Check if all the fields are filled
     if (!username || !password || !confirmPassword) {
       let error;
