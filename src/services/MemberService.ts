@@ -6,17 +6,17 @@ import { MemberSchema } from "@db/schemas";
 
 export class MemberService {
   static async createMember(formData: FormData): Promise<{ status: number, message: string }> {
-    const image = formData.get('image') as File
-    const name = formData.get('name') as string
+    const image = formData.get('memberPhoto') as File
+    const fullName = formData.get('name') as string
     const position = formData.get('position') as string
     const typeOfMember = formData.get('typeOfMember') as string
 
-    if (!image || !name || !position || !typeOfMember) {
+    if (!image || !fullName || !position || !typeOfMember) {
       let error;
       if (!image) error = "La imagen es requerida"
-      if (!name) error = "El nombre es requerido"
-      if (!position) error = "La posición es requerida"
-      if (!typeOfMember) error = "El tipo de miembro es requerido"
+      else if (!fullName) error = "El nombre es requerido"
+      else if (!position) error = "La posición es requerida"
+      else if (!typeOfMember) error = "El tipo de miembro es requerido"
       else error = "Todos los campos son requeridos"
 
       return {
@@ -27,7 +27,7 @@ export class MemberService {
 
     // Validate
     const validation = MemberSchema.safeParse({
-      name,
+      fullName,
       position,
       typeOfMember
     })
@@ -77,7 +77,7 @@ export class MemberService {
 
     // Insert in the db
     await MemberRepository.createMember({
-      fullName: name,
+      fullName: fullName,
       position: position,
       typeOfMember: typeOfMember,
       photo: outputPath

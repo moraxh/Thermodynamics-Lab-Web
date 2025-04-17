@@ -143,12 +143,12 @@
         method: "POST",
         body: formData
       }).then(res => res.json()).then(data => {
-        if (data.error) {
-          window.customAlert.error.show("¡Ups! Hubo un error", data.error);
-        } else {
-          window.customAlert.success.show("Miembro Agregado", "Un miembro ha sido agregado correctamente", "", () => {
+        if (data.status === 200) {
+          window.customAlert.success.show("Miembro Agregado", data.message || "Un miembro ha sido agregado correctamente", "", () => {
             window.location.href = window.location.href;
           });
+        } else {
+          window.customAlert.error.show("¡Ups! Hubo un error", data.message || "Error al agregar el miembro");
         }
       })
     })
@@ -172,12 +172,12 @@
         method: 'DELETE',
         body: formData
       }).then(res => res.json()).then(data => {
-        if (data.error) {
-          window.customAlert.error.show("¡Ups! Hubo un error", data.error);
-        } else {
-          window.customAlert.success.show("Miembro eliminado", "El miembro fue eliminado correctamente", "", () => {
+        if (data.status === 200) {
+          window.customAlert.success.show("Miembro eliminado", data.message || "El miembro fue eliminado correctamente", "", () => {
             window.location.href = window.location.href;
           });
+        } else {
+          window.customAlert.error.show("¡Ups! Hubo un error", data.message || "Error al eliminar el miembro");
         }
       })
     }
