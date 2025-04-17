@@ -86,6 +86,8 @@
 
     const customAlert = {
       _showAlert: function (type: string, title: string, body: string, extra: string = '') {
+        errorAlert.hidden = true;
+        successAlert.hidden = true;
         window.customModal.show(customAlertDialog.id)
         const alert = type === 'error' ? errorAlert : successAlert;
         alert.hidden = false;
