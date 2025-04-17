@@ -1,3 +1,6 @@
+import { db } from "@db/connection"
+import { Member, MemberType } from "@db/tables"
+
 import fs from 'node:fs'
 import { generateIdFromEntropySize } from 'lucia';
 import { generateHashFromFile } from '@src/utils/Hash';
@@ -5,9 +8,9 @@ import { generateHashFromFile } from '@src/utils/Hash';
 import membersJSON from "@seed/members.json"
 
 export const membersType = [
-  { name: "Fundador", plural_name: "Fundadores",order: 1 },
-  { name: "Colaborador", plural_name: "Colaboradores", order: 2 },
-  { name: "Miembro", plural_name: "Miembros", order: 3 },
+  { name: "Fundador", pluralName: "Fundadores",order: 1 },
+  { name: "Colaborador", pluralName: "Colaboradores", order: 2 },
+  { name: "Miembro", pluralName: "Miembros", order: 3 },
 ]
 
 // ----------
@@ -41,3 +44,8 @@ export const members = membersJSON.map(member => {
     photo: member.photo ? `${membersImagesPath}/${member.photo}` : null,
   }
 })
+
+export async function seedMembers() {
+  await db.insert(MemberType).values(membersType).execute()
+  await db.insert(Member).values(members).execute()
+}

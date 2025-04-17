@@ -1,5 +1,7 @@
 ---
-  import { db, GalleryImage, desc } from 'astro:db';
+  import { db } from "@db/connection"
+  import { Gallery } from '@db/tables';
+  import { desc } from 'drizzle-orm';
   import { getMonthName } from '@src/utils/date';
   import ImgViewer from '@src/components/common/ImgViewer.astro';
   import Icon from '@src/components/common/Icon.astro';
@@ -9,13 +11,11 @@
   const imagesUrl = (
     await db
     .select()
-    .from(GalleryImage)
-    .orderBy(desc(GalleryImage.uploadedAt))
-    .run()
+    .from(Gallery)
+    .orderBy(desc(Gallery.uploadedAt))
   )
-  .rows
   .map(image => {
-    const date = new Date(image.uploadedAt as string);
+    const date = new Date(image.uploadedAt);
 
     return {
       id: image.id,

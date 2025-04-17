@@ -1,5 +1,6 @@
 ---
-  import { db, User } from "astro:db";
+  import { db } from "@db/connection";
+  import { User } from "@db/tables";
   import InputPassword from "@src/components/common/InputPassword.astro";
 
   const userAdmin = 
@@ -7,9 +8,7 @@
       await db
       .select({ username: User.username })
       .from(User)
-      .run()
-    )
-    .rows[0]
+    )[0]
     .username
 ---
 

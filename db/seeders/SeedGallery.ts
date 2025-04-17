@@ -1,4 +1,6 @@
-import { GalleryImage } from "astro:db"
+import { db } from "@db/connection"
+import { Gallery } from "@db/tables"
+
 import { generateIdFromEntropySize } from 'lucia';
 import { generateHashFromFile } from "@src/utils/Hash"
 import fs from "node:fs"
@@ -31,3 +33,7 @@ await Promise.all(images.map(async (image) => {
     path: outputPath
   })
 }))
+
+export async function seedGallery() {
+  await db.insert(Gallery).values(galleryImages)
+}

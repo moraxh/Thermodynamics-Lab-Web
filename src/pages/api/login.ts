@@ -2,7 +2,9 @@ import { lucia } from "@src/auth"
 import { UserSchema } from "db/schemas"
 import { verify } from "@node-rs/argon2"
 import type { APIContext } from "astro"
-import { db, eq, User } from "astro:db"
+import { db } from "@db/connection"
+import { User } from "@db/tables"
+import { eq } from "drizzle-orm"
 
 export const passwordHashingOptions = {
 		memoryCost: 19456,
@@ -49,7 +51,7 @@ export async function POST(context: APIContext):Promise<Response> {
     }
 
     // Check if the password is correct
-    const validPassword = await verify(existingUser.password_hash, password as string, passwordHashingOptions)
+    const validPassword = await verify(existingUser.passwordHash, password as string, passwordHashingOptions)
 
     if (!validPassword) {
       return new Response(JSON.stringify({

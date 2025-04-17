@@ -2,7 +2,9 @@
   import ImageUpload from "@src/components/common/ImageUpload.astro"
   import CustomModal from "@src/components/common/CustomModal.astro"
   import Icon from "@src/components/common/Icon.astro"
-  import { db, eq, Member, MemberType } from "astro:db"
+  import { db } from "@db/connection"
+  import { Member, MemberType} from "@db/tables"
+  import { eq } from "drizzle-orm"
 
   const members: Record<string, Array<typeof allMembers[number]>> = {}
 
@@ -13,14 +15,16 @@
     .orderBy(Member.fullName)
 
   for (const member of allMembers) {
-    if (members[member.typeOfMember] === undefined) {
+    if (member.typeOfMember && members[member.typeOfMember] === undefined) {
       members[member.typeOfMember] = []
     }
-    members[member.typeOfMember].push(member)
+    if (member.typeOfMember !== null) {
+      members[member.typeOfMember].push(member)
+    }
   }
 
   const existingMemberTypes = await db
-    .selectDistinct({ name: MemberType.name, plural_name: MemberType.plural_name, order: MemberType.order })
+    .selectDistinct({ name: MemberType.name, pluralName: MemberType.pluralName, order: MemberType.order })
     .from(MemberType)
     .innerJoin(Member, eq(MemberType.name, Member.typeOfMember))
     .orderBy(MemberType.order);
@@ -38,7 +42,7 @@
   {existingMemberTypes.map(type => (
     <>
       <h3 class="text-accent text-2xl xs:text-4xl italic font-sans text-center">
-        {type.plural_name}
+        {type.pluralName}
       </h3>
       {members[type.name].map(member => (
         <div class="flex justify-between items-center gap-3 bg-gray1 p-4 rounded-md">

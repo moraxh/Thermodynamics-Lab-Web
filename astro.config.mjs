@@ -1,14 +1,13 @@
 // @ts-check
 import { defineConfig, envField } from 'astro/config'
+import seederRunnerIntegration from "./src/integrations/seederRunner/index.ts"
 
 import tailwindcss from '@tailwindcss/vite'
-
-import db from '@astrojs/db'
 
 export default defineConfig({
   output: 'server',
   integrations: [
-    db()
+    seederRunnerIntegration()
   ],
   vite: {
     plugins: [tailwindcss()]
@@ -25,7 +24,8 @@ export default defineConfig({
       EMAIL: envField.string({ context: 'server', access: 'public', optional: true }),
       PHONE: envField.string({ context: 'server', access: 'public', optional: true }),
       LOCATION: envField.string({ context: 'server', access: 'public', optional: false }),
-      LOCATION_URL: envField.string({ context: 'server', access: 'public', optional: false })
+      LOCATION_URL: envField.string({ context: 'server', access: 'public', optional: false }),
+      CONNECTION_STRING: envField.string({ context: 'server', access: 'secret', optional: false })
     }
   }
 })

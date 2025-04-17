@@ -25,7 +25,10 @@
       ],
       "@seed/*": [
         "./seed/*"
-      ]
+      ],
+      "@integrations/*": [
+        "./src/integrations/*"
+      ],
     }
   }
 }

@@ -1,4 +1,6 @@
-import { db, Member, like, eq, MemberType } from "astro:db";
+import { db } from "@db/connection";
+import { Member, MemberType } from "@db/tables";
+import { eq, like } from "drizzle-orm";
 
 type NewMember = typeof Member.$inferInsert
 type MemberSelect = typeof Member.$inferSelect

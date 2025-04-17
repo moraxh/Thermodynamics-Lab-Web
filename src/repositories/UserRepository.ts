@@ -1,4 +1,5 @@
-import { db, User } from "astro:db";
+import { db } from "@db/connection";
+import { User } from "@db/tables";
 
 export class UserRepository {
   static async updateUser(username: string, hashedPassword: string) {
@@ -6,7 +7,7 @@ export class UserRepository {
     .update(User)
     .set({
       username: username,
-      password_hash: hashedPassword
+      passwordHash: hashedPassword
     })
     .execute()
   }

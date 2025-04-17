@@ -1,12 +1,14 @@
 ---
   import Carousel from "@src/components/common/Carousel.astro";
-  import { db, GalleryImage, desc } from "astro:db";
+  import { db } from "@db/connection";
+  import { Gallery as GalleryTable } from "@db/tables";
+  import { desc } from "drizzle-orm";
 
   const images = 
     await db
     .select()
-    .from(GalleryImage)
-    .orderBy(desc(GalleryImage.uploadedAt))
+    .from(GalleryTable)
+    .orderBy(desc(GalleryTable.uploadedAt))
 
   const imagesUrl = images.map((image) => `${Astro.url.origin}/${image.path}`);
 ---

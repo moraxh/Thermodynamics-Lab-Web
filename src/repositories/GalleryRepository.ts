@@ -1,32 +1,35 @@
-import { db, GalleryImage, like, eq } from "astro:db";
+import{ db } from "@db/connection"
+import { Gallery } from "@db/tables"
+import { eq, like } from "drizzle-orm"
+import { generateIdFromEntropySize } from "lucia"
 
-type GalleryImageSelect = typeof GalleryImage.$inferSelect
+type GalleryImageSelect = typeof Gallery.$inferSelect
 
 export class GalleryRepository {
   static async findImageByHash(hash: string):Promise<GalleryImageSelect | null> {
     const result = 
       await db
         .select()
-        .from(GalleryImage)
-        .where(like(GalleryImage.path, `%${hash}%`))
+        .from(Gallery)
+        .where(like(Gallery.path, `%${hash}%`))
     return result.length > 0 ? result[0] : null
   }
 
   static async insertImage(path: string):Promise<void> {
-    await db.insert(GalleryImage).values({ path })
+    await db.insert(Gallery).values({ id: generateIdFromEntropySize(10), path })
   }
 
   static async findImagePathById(id: string): Promise<string | null> {
     const result = 
       await db
-        .select({ path: GalleryImage.path })
-        .from(GalleryImage)
-        .where(eq(GalleryImage.id, id))
+        .select({ path: Gallery.path })
+        .from(Gallery)
+        .where(eq(Gallery.id, id))
 
     return result.length > 0 ? result[0].path : null
   }
 
   static async deleteImageById(id: string):Promise<void> {
-    await db.delete(GalleryImage).where(eq(GalleryImage.id, id)).execute()
+    await db.delete(Gallery).where(eq(Gallery.id, id)).execute()
   }
 }

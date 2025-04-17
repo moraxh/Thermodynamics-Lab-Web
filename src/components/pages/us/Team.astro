@@ -1,6 +1,8 @@
 ---
   import Member from "@components/pages/us/Member.astro"
-  import { db, eq, Member as MemberDB, MemberType } from "astro:db"
+  import { db } from "@db/connection"
+  import { MemberType, Member as MemberTable } from "@db/tables"
+  import { eq } from "drizzle-orm"
 
   // Get members
   const members: Record<string, Array<typeof allMembers[number]>> = {}
@@ -8,20 +10,22 @@
   const allMembers = 
     await db
     .select()
-    .from(MemberDB)
-    .orderBy(MemberDB.fullName)
+    .from(MemberTable)
+    .orderBy(MemberTable.fullName)
 
   for (const member of allMembers) {
-    if (members[member.typeOfMember] === undefined) {
+    if (member.typeOfMember && members[member.typeOfMember] === undefined) {
       members[member.typeOfMember] = []
     }
-    members[member.typeOfMember].push(member)
+    if (member.typeOfMember !== null) {
+      members[member.typeOfMember].push(member)
+    }
   }
 
   const memberTypes = await db
-    .selectDistinct({ name: MemberType.name, plural_name: MemberType.plural_name, order: MemberType.order })
+    .selectDistinct({ name: MemberType.name, pluralName: MemberType.pluralName, order: MemberType.order })
     .from(MemberType)
-    .innerJoin(MemberDB, eq(MemberType.name, MemberDB.typeOfMember))
+    .innerJoin(MemberTable, eq(MemberType.name, MemberTable.typeOfMember))
     .orderBy(MemberType.order);
 ---
 
@@ -32,7 +36,7 @@
   {memberTypes.map(type => (
     <article>
       <h3 class="text-accent text-3xl xs:text-5xl italic font-sans text-center">
-        {type.plural_name}
+        {type.pluralName}
       </h3>
       <div>
         {members[type.name].map(member => (
