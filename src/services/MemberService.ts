@@ -3,6 +3,7 @@ import { MemberRepository } from "@src/repositories/MemberRepository";
 import { generateHashFromStream } from "@src/utils/Hash";
 import { Readable } from "node:stream"
 import { MemberSchema } from "@db/schemas";
+import { generateIdFromEntropySize } from "lucia";
 
 export class MemberService {
   static async createMember(formData: FormData): Promise<{ status: number, message: string }> {
@@ -77,6 +78,7 @@ export class MemberService {
 
     // Insert in the db
     await MemberRepository.createMember({
+      id: generateIdFromEntropySize(10),
       fullName: fullName,
       position: position,
       typeOfMember: typeOfMember,
