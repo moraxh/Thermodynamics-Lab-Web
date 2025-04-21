@@ -1,0 +1,22 @@
+---
+  import { Image } from 'astro:assets';
+
+  import bgImage from "@assets/images/bg/publications_divulgation.webp";
+  import Layout from '@layouts/Layout.astro';
+  import Tabs from '@components/pages/publications_divulgation/Tabs.astro';
+  import Hero from '@src/components/pages/publications_divulgation/Hero.astro';
+import Divulgation from '@src/components/pages/publications_divulgation/Divulgation.astro';
+import Publications from '@src/components/pages/publications_divulgation/Publications.astro';
+---
+
+<Layout title="Divulgación y Publicaciones | Labinst">
+  <!-- Bg Image -->
+  <Image class="bgImage !-top-1/3 opacity-50" src={bgImage} alt="bg" />
+
+  <Hero />
+
+  <Tabs>
+    <Publications slot="publications" />
+    <Divulgation slot="divulgation" />
+  </Tabs>
+</Layout>

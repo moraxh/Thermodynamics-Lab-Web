@@ -1,0 +1,62 @@
+<div id="tabSelector" class="flex bg-gray0 outline-2 outline-gray1 rounded-lg">
+  <button data-section="publications" class="active">Publicaciones</button>
+  <button data-section="divulgation">Divulgación</button>
+</div>
+
+<section id="publications">
+  <slot name="publications"/>
+</section>
+
+<section id="divulgation" class="hidden">
+  <slot name="divulgation"/>
+</section>
+
+<style>
+  @import "../../../styles/global.css";
+
+  #tabSelector > button {
+    @apply w-44 py-3 text-lg font-bold hover:bg-gray1 hover:cursor-pointer transition-all duration-200 ease-in-out;
+  }
+
+  #tabSelector > button.active {
+    @apply border-accent border-b-4 bg-gray1;
+  }
+</style>
+
+<script>
+  const handleTabs = () => {
+    const tabSelector = document.getElementById("tabSelector")
+    const publicationsSection = document.getElementById("publications")
+    const divulgationSection = document.getElementById("divulgation")
+
+    if (!tabSelector || !publicationsSection || !divulgationSection) return
+
+    // Handle the buttons of the tab selector
+    tabSelector.querySelectorAll("button").forEach((button) => {
+      button.addEventListener("click", () => {
+        // Remove all the active classes from the buttons
+        tabSelector.querySelectorAll(".active").forEach((activeButton) => {
+          activeButton.classList.remove("active")
+        })
+
+        // Add the active class to the clicked button
+        button.classList.add("active")
+
+        // Get the section to show
+        const sectionToShow = button.getAttribute("data-section")
+
+        if (!sectionToShow) return
+
+        if (sectionToShow === "publications") {
+          publicationsSection.classList.remove("hidden")
+          divulgationSection.classList.add("hidden")
+        } else if (sectionToShow === "divulgation") {
+          divulgationSection.classList.remove("hidden")
+          publicationsSection.classList.add("hidden")
+        }
+      })
+    }) 
+  }
+
+  document.addEventListener("astro:page-load", handleTabs)
+</script>
