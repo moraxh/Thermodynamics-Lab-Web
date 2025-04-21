@@ -21,6 +21,10 @@
   #tabSelector > button.active {
     @apply border-accent border-b-4 bg-gray1;
   }
+
+  section {
+    @apply flex flex-col gap-5 justify-start items-start w-full max-w-7xl;
+  }
 </style>
 
 <script>
@@ -48,11 +52,11 @@
         if (!sectionToShow) return
 
         if (sectionToShow === "publications") {
-          publicationsSection.classList.remove("hidden")
-          divulgationSection.classList.add("hidden")
+          publicationsSection.classList.remove("!hidden")
+          divulgationSection.classList.add("!hidden")
         } else if (sectionToShow === "divulgation") {
-          divulgationSection.classList.remove("hidden")
-          publicationsSection.classList.add("hidden")
+          divulgationSection.classList.remove("!hidden")
+          publicationsSection.classList.add("!hidden")
         }
       })
     }) 

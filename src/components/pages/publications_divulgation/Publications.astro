@@ -1,0 +1,63 @@
+---
+  import PublicationCard from "./PublicationCard.astro";
+---
+
+<h2 class="text-accent text-3xl font-bold">Publicaciones Científicas</h2>
+
+<div id="categoryNav" class="flex gap-2">
+  <button data-filter="all" class="active">Todos</button>
+  <button data-filter="articles">Artículos</button>
+  <button data-filter="books">Libros</button>
+  <button data-filter="tesis">Tesis</button>
+</div>
+
+<section class="flex flex-wrap justify-center gap-5">
+  {Array.from(Array(9).keys()).map(() => (
+  <PublicationCard
+    title="Análisis de sistemas termodinámicos fuera de equilibrio mediante la teoría Steepest-Entropy-Ascent"
+    type="Artículo"
+    description="En este trabajo se presenta un análisis de sistemas termodinámicos fuera de equilibrio mediante la teoría Steepest-Entropy-Ascent (SEA). Esta teoría se basa en la maximización de la entropía de un sistema, lo que permite describir su evolución temporal y predecir su comportamiento en condiciones no estacionarias. Se presentan ejemplos de aplicación de la teoría SEA a sistemas termodinámicos simples y complejos, así como su relación con otras teorías termodinámicas."
+    authors={["J. A. Cañizares", "A. C. González", "A. C. González", "A. C. González"]}
+    date="2023-01-01"
+    file_link="https://example.com/publication1.pdf"
+  /> 
+  ))}
+</section>
+
+<style>
+  @import "../../../styles/global.css";
+
+  div > button {
+    @apply text-lg font-bold hover:bg-gray1 hover:cursor-pointer transition-all duration-200 ease-in-out py-2 px-4 rounded-md;
+  }
+
+  div > button.active {
+    @apply bg-gray1;
+  }
+</style>
+
+<script>
+  const handlePublicationsCategoryNav = () => {
+    const categoryNav = document.getElementById("categoryNav")
+
+    if (!categoryNav) return
+
+    categoryNav.querySelectorAll("button").forEach((button) => {
+      button.addEventListener("click", () => {
+        // Remove all the active classes from the buttons
+        categoryNav.querySelectorAll(".active").forEach((activeButton) => {
+          activeButton.classList.remove("active")
+        })
+
+        // Add the active class to the clicked button
+        button.classList.add("active")
+
+        // Get the section to show
+        const sectionToShow = button.innerText.toLowerCase()
+
+      })
+    })
+  }
+
+  document.addEventListener("astro:page-load", handlePublicationsCategoryNav)
+</script>
