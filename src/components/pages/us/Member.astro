@@ -17,6 +17,8 @@
 
   if (!imageExists) {
     img = `${Astro.url.origin}/${defaultImage}`;
+  } else {
+    img = `${Astro.url.origin}/${img}`;
   }
 ---
 
@@ -27,9 +29,9 @@
   <div class="w-52 h-52 rounded-full relative">
     <div class="relative">
       <div class="rounded-full overflow-hidden z-10 absolute">
-        <Image class="imgViewer w-52 h-52 object-cover hover:scale-110 transition-all duration-500" src={`${Astro.url.origin}/${img}`} height="500" width="500" alt="member image" /> 
+        <Image class="imgViewer w-52 h-52 object-cover hover:scale-110 transition-all duration-500" src={img} height="500" width="500" alt="member image" /> 
       </div>
-      <Image class="w-52 h-52 object-cover rounded-full absolute blur-lg opacity-90" src={`${Astro.url.origin}/${img}`} height="500" width="500" alt="member image" /> 
+      <Image class="w-52 h-52 object-cover rounded-full absolute blur-lg opacity-90" src={img} height="500" width="500" alt="member image" /> 
     </div>
   </div>
   <span class="text-center">
