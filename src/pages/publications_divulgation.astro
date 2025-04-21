@@ -7,6 +7,7 @@
   import Hero from '@src/components/pages/publications_divulgation/Hero.astro';
   import Divulgation from '@src/components/pages/publications_divulgation/Divulgation.astro';
   import Publications from '@src/components/pages/publications_divulgation/Publications.astro';
+  import CollaborationInvite from '@src/components/common/CollaborationInvite.astro';
 ---
 
 <Layout title="Divulgación y Publicaciones | Labinst">
@@ -19,4 +20,6 @@
     <Publications slot="publications" />
     <Divulgation slot="divulgation" />
   </Tabs>
+
+  <CollaborationInvite />
 </Layout>

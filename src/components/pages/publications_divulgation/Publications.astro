@@ -4,14 +4,14 @@
 
 <h2 class="text-accent text-3xl font-bold">Publicaciones Científicas</h2>
 
-<div id="categoryNav" class="flex gap-2">
+<div id="categoryNav" class="flex flex-wrap gap-2 max-w-full ">
   <button data-filter="all" class="active">Todos</button>
   <button data-filter="articles">Artículos</button>
   <button data-filter="books">Libros</button>
   <button data-filter="tesis">Tesis</button>
 </div>
 
-<section class="flex flex-wrap justify-center gap-5">
+<section class="flex flex-wrap justify-center gap-5 max-w-full">
   {Array.from(Array(9).keys()).map(() => (
   <PublicationCard
     title="Análisis de sistemas termodinámicos fuera de equilibrio mediante la teoría Steepest-Entropy-Ascent"
