@@ -1,7 +1,9 @@
+CREATE TYPE "public"."type" AS ENUM('article', 'book', 'thesis', 'technical_report', 'monograph', 'other');--> statement-breakpoint
 CREATE TABLE "gallery" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"path" text NOT NULL,
-	"uploaded_at" timestamp DEFAULT now() NOT NULL
+	"uploaded_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "gallery_path_unique" UNIQUE("path")
 );
 --> statement-breakpoint
 CREATE TABLE "member" (
@@ -15,7 +17,24 @@ CREATE TABLE "member" (
 CREATE TABLE "memberType" (
 	"name" varchar(255) PRIMARY KEY NOT NULL,
 	"plural_name" varchar(255) NOT NULL,
-	"order" integer NOT NULL
+	"order" integer NOT NULL,
+	CONSTRAINT "memberType_name_unique" UNIQUE("name"),
+	CONSTRAINT "memberType_plural_name_unique" UNIQUE("plural_name"),
+	CONSTRAINT "memberType_order_unique" UNIQUE("order")
+);
+--> statement-breakpoint
+CREATE TABLE "publication" (
+	"id" varchar(255) PRIMARY KEY NOT NULL,
+	"title" text NOT NULL,
+	"description" text NOT NULL,
+	"type" "type" DEFAULT 'other' NOT NULL,
+	"authors" json NOT NULL,
+	"publication_date" timestamp NOT NULL,
+	"file_path" text NOT NULL,
+	"thumbnail_path" text,
+	CONSTRAINT "publication_title_unique" UNIQUE("title"),
+	CONSTRAINT "publication_file_path_unique" UNIQUE("file_path"),
+	CONSTRAINT "publication_thumbnail_path_unique" UNIQUE("thumbnail_path")
 );
 --> statement-breakpoint
 CREATE TABLE "session" (

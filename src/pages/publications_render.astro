@@ -1,0 +1,47 @@
+---
+  import PublicationCard from "@src/components/pages/publications_divulgation/PublicationCard.astro";
+
+  import { Publication } from "@db/tables"
+
+  type PublicationSelect = typeof Publication.$inferSelect
+  
+  const page = Astro.url.searchParams.get("page") || 1;
+  const type = Astro.url.searchParams.get("type") || "all";
+  const limit = Astro.url.searchParams.get("limit") || 9;
+
+  const url = new URL(`${Astro.url.origin}/api/publications`)
+  url.searchParams.append("page", page.toString())
+  url.searchParams.append("type", type)
+  url.searchParams.append("limit", limit.toString())
+
+  const res = await fetch(url)
+  const data = await res.json()
+
+  if (data.status !== 200) {
+    return
+  }
+
+  const publications: PublicationSelect[] = data.publications
+
+  const publicationTypeSpanish = {
+    article: "Artículo",
+    book: "Libro",
+    thesis: "Tesis",
+    technical_report: "Informe Técnico",
+    monograph: "Monografía",
+    other: "Otro",
+  }
+---
+<input type="hidden" name="info" value={JSON.stringify(data.info)} />
+
+{publications.map(publication => (
+  <PublicationCard
+    title={publication.title}
+    type={publicationTypeSpanish[publication.type]}
+    description={publication.description}
+    authors={publication.authors}
+    date={publication.publicationDate}
+    filePath={publication.filePath}
+    thumbnailPath={publication.thumbnailPath}
+  />
+))}

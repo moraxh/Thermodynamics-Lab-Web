@@ -1,43 +1,201 @@
 ---
-  import PublicationCard from "./PublicationCard.astro";
+  import Icon from "@src/components/common/Icon.astro";
 ---
 
 <h2 class="text-accent text-3xl font-bold">Publicaciones Científicas</h2>
 
-<div id="categoryNav" class="flex flex-wrap gap-2 max-w-full ">
+<div id="categoryNav" class="flex flex-wrap gap-2 max-w-full">
   <button data-filter="all" class="active">Todos</button>
-  <button data-filter="articles">Artículos</button>
-  <button data-filter="books">Libros</button>
-  <button data-filter="tesis">Tesis</button>
+  <button data-filter="article">Artículos</button>
+  <button data-filter="book">Libros</button>
+  <button data-filter="thesis">Tesis</button>
+  <button data-filter="technical_report">Informe Técnico</button>
+  <button data-filter="monograph">Monografía</button>
+  <button data-filter="other">Otros</button>
 </div>
 
-<section class="flex flex-wrap justify-center gap-5 max-w-full">
-  {Array.from(Array(9).keys()).map(() => (
-  <PublicationCard
-    title="Análisis de sistemas termodinámicos fuera de equilibrio mediante la teoría Steepest-Entropy-Ascent"
-    type="Artículo"
-    description="En este trabajo se presenta un análisis de sistemas termodinámicos fuera de equilibrio mediante la teoría Steepest-Entropy-Ascent (SEA). Esta teoría se basa en la maximización de la entropía de un sistema, lo que permite describir su evolución temporal y predecir su comportamiento en condiciones no estacionarias. Se presentan ejemplos de aplicación de la teoría SEA a sistemas termodinámicos simples y complejos, así como su relación con otras teorías termodinámicas."
-    authors={["J. A. Cañizares", "A. C. González", "A. C. González", "A. C. González"]}
-    date="2023-01-01"
-    file_link="https://example.com/publication1.pdf"
-  /> 
-  ))}
+<section id="publicationsSection" class="flex flex-wrap justify-center gap-5 max-w-full">
 </section>
 
-<style>
+<div hidden id="pagination" class="w-full flex flex-wrap justify-center items-center gap-2 max-w-[90vw]">
+  <!-- Previous -->
+  <button id="previousPage">
+    <Icon name="right_arrow" class="fill-white w-5 h-5 rotate-180" />
+  </button>
+  <div class="flex gap-2">
+
+  </div>
+  <!-- Next -->
+  <button id="nextPage">
+    <Icon name="right_arrow" class="fill-white w-5 h-5" />
+  </button>
+</div>
+
+<style is:global>
   @import "../../../styles/global.css";
 
-  div > button {
+  #categoryNav > button {
     @apply text-lg font-bold hover:bg-gray1 hover:cursor-pointer transition-all duration-200 ease-in-out py-2 px-4 rounded-md;
   }
 
-  div > button.active {
+  #categoryNav > button.active {
     @apply bg-gray1;
+  }
+
+  #pagination button {
+    @apply bg-gray0 rounded-md flex justify-center items-center w-fit min-h-12 min-w-12 hover:bg-gray1 transition-all duration-200 ease-in-out hover:cursor-pointer;
+  }
+
+  #pagination button.active {
+    @apply bg-accent text-black *:!fill-black;
+  }
+
+  #pagination button:disabled {
+    @apply cursor-not-allowed opacity-50 pointer-events-none;
+  }
+
+  #pagination button.ellipsis {
+    @apply cursor-not-allowed pointer-events-none;
   }
 </style>
 
 <script>
-  const handlePublicationsCategoryNav = () => {
+import { info } from "node_modules/astro/dist/core/logger/core"
+
+  const DEFAULT_LIMIT_PER_PAGE = 6
+
+  const handlePublications = () => {
+    const isOnMobile = window.innerWidth < 565
+    const publicationsSection = document.getElementById("publicationsSection") as HTMLDivElement
+    const pagination = document.getElementById("pagination") as HTMLDivElement
+    const previousPageButton = document.getElementById("previousPage") as HTMLButtonElement
+    const nextPageButton = document.getElementById("nextPage") as HTMLButtonElement
+
+    if (!publicationsSection || !pagination || !previousPageButton || !nextPageButton) return
+
+    const paginationButtonsDiv = pagination.querySelector("div") as HTMLDivElement
+
+    let currentFilter = "all";
+
+    const fetchPublications = async(page: number = 1, type: string = "all", limit: number = DEFAULT_LIMIT_PER_PAGE) => {
+      const url = new URL(`${location.origin}/publications_render`)
+      url.searchParams.append("page", page.toString())
+      url.searchParams.append("type", type)
+      url.searchParams.append("limit", limit.toString())
+
+      currentFilter = type
+
+      await fetch(url)
+        .then((response) => response.text())
+        .then(rawHTML => {
+          const html = new DOMParser().parseFromString(rawHTML, "text/html")
+          const infoInput = html.querySelector("input[name='info']") as HTMLInputElement
+
+          if (infoInput) {
+            const info = JSON.parse(infoInput.value)
+            handlePagination(info.page, info.limit, info.total)
+
+            if (info.size === 0) {
+              publicationsSection.innerHTML = "<p class='text-2xl font-bold text-center text-gray-500 mx-auto'>No hay publicaciones para mostrar 😔</p>"
+              return
+            }
+          }
+
+          publicationsSection.innerHTML = html.body.innerHTML
+        })
+    }
+
+    const getPageButton = (page: number = 0, isEllipsis = false) => {
+        const button = document.createElement("button")
+
+        if (isEllipsis) {
+          button.innerText = "..."
+          button.classList.add("ellipsis")
+        } else {
+          button.dataset.page = page.toString()
+          button.innerText = page.toString()
+        }
+
+        return button
+    }
+
+    const handlePagination = (current_page: number, limit: number, total: number) => {
+      const totalPages = Math.ceil(total / limit)
+
+      // Hide pagination if there are no pages to show
+      pagination.hidden = (totalPages <= 1)
+      if (pagination.hidden) return
+
+      // Disable enable the previous and next buttons
+      previousPageButton.disabled = (current_page <= 1)
+      nextPageButton.disabled = (current_page >= totalPages)
+
+      // Previous / Next button page marker
+      previousPageButton.dataset.page = Math.max(current_page - 1, 1).toString()
+      nextPageButton.dataset.page = Math.min(current_page + 1, totalPages).toString()
+
+      // Clear the pagination buttons
+      paginationButtonsDiv.innerHTML = ""
+
+      if (totalPages <= 4) {
+        for (let i = 1; i < totalPages + 1; i++) {
+          const button = getPageButton(i)
+
+          if (i === current_page) 
+            button.classList.add("active")
+
+          paginationButtonsDiv.appendChild(button)
+        }
+      } else {
+        const maxForwardButtons = 1
+        const startPageButton = Math.max(current_page - 1, 1)
+        const endPageButton = Math.min(current_page + maxForwardButtons, totalPages)
+
+        // Add a button to the first page if there are more pages before the first button
+        if (startPageButton > 1 && !isOnMobile) {
+          paginationButtonsDiv.appendChild(getPageButton(1))
+
+          // Add the ellipsis
+          paginationButtonsDiv.appendChild(getPageButton(0, true))
+        }
+
+        for (let i = startPageButton; i < endPageButton + 1; i++) {
+          const button = getPageButton(i)
+
+          if (i === current_page) 
+            button.classList.add("active")
+
+          paginationButtonsDiv.appendChild(button)
+        }
+
+        // Add a button to the last page if there are more pages after the last button
+        if (endPageButton < totalPages - 1 && !isOnMobile) {
+          // Add the ellipsis
+          paginationButtonsDiv.appendChild(getPageButton(0, true))
+
+          paginationButtonsDiv.appendChild(getPageButton(totalPages))
+        }
+      }
+
+      // Scroll to the publications section
+      publicationsSection.scrollIntoView({ behavior: "smooth" })
+    }
+
+    // Handle the click event for the pagination buttons
+    pagination.addEventListener("click", (event) => {
+      const target = event.target as HTMLButtonElement
+
+      const button = target.closest("button")
+      if (!button) return
+
+      const page = parseInt(button.dataset.page || "0")
+
+      if (page > 0) {
+        fetchPublications(page, currentFilter, DEFAULT_LIMIT_PER_PAGE)
+      }
+    })
+
+    // Category navigation
     const categoryNav = document.getElementById("categoryNav")
 
     if (!categoryNav) return
@@ -53,11 +211,14 @@
         button.classList.add("active")
 
         // Get the section to show
-        const sectionToShow = button.innerText.toLowerCase()
+        const sectionToShow = button.dataset.filter || "all"
 
+        fetchPublications(1, sectionToShow, DEFAULT_LIMIT_PER_PAGE)
       })
     })
+
+    fetchPublications()
   }
 
-  document.addEventListener("astro:page-load", handlePublicationsCategoryNav)
+  document.addEventListener("astro:page-load", handlePublications)
 </script>

@@ -1,4 +1,4 @@
-import { pgTable, text, varchar, boolean, integer, timestamp, json } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, boolean, integer, timestamp, json, pgEnum } from "drizzle-orm/pg-core";
 
 export const User = pgTable("user", {
   id: varchar("id", { length: 255 })
@@ -57,6 +57,8 @@ export const Gallery = pgTable("gallery", {
     .defaultNow()
 })
 
+export const publicationTypeEnum = pgEnum("type", ["article", "book", "thesis", "technical_report", "monograph", "other"]);
+
 export const Publication = pgTable("publication", {
   id: varchar("id", { length: 255 })
     .primaryKey(),
@@ -65,13 +67,16 @@ export const Publication = pgTable("publication", {
     .unique(),
   description: text("description")
     .notNull(),
-  type: varchar("type", { length: 255 })
-    .notNull(),
+  type: publicationTypeEnum()
+    .notNull()
+    .default("other"),
   authors: json("authors")
     .notNull(),
   publicationDate: timestamp("publication_date")
     .notNull(),
-  fileLink: text("file_link")
+  filePath: text("file_path")
     .notNull()
     .unique(),
+  thumbnailPath: text("thumbnail_path")
+    .unique()
 })

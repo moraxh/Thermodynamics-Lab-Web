@@ -1,25 +1,23 @@
 ---
-  const { image, title, type, description, authors, date, file_link } = Astro.props;
+  const { thumbnailPath, title, type, description, authors, date, filePath, ...rest } = Astro.props;
 
-import Icon from "@src/components/common/Icon.astro";
-import { formDataToObject } from "astro:actions";
+  import Icon from "@src/components/common/Icon.astro";
   import { Image } from "astro:assets";
 
-  // Check if the image exists, if not, use the default image
-  let thumbnail
+  const defaultImage = (await import("../../../assets/images/default.webp")).default;
 
-  const defaultImage = (await import(`../../../assets/images/default.webp`)).default;
+  let thumbnailUrl = thumbnailPath;
 
-  if (image === "default" || image === undefined) {
+  if (!thumbnailPath || thumbnailPath === "default") {
+    thumbnailUrl = defaultImage;
   } else {
-    thumbnail = image
-  }
-  
-  const imageExists = (await fetch(`${Astro.url.origin}/${thumbnail}`)).ok;
-  if (!imageExists) {
-    thumbnail = defaultImage;
-  } else {
-    thumbnail = `${Astro.url.origin}/${thumbnail}`;
+    const fullPath = `${Astro.url.origin}/${thumbnailPath}`;
+    try {
+      const response = await fetch(fullPath);
+      thumbnailUrl = response.ok ? fullPath : defaultImage;
+    } catch (err) {
+      thumbnailUrl = defaultImage;
+    }
   }
 
   // Format the date to a more readable format
@@ -37,39 +35,39 @@ import { formDataToObject } from "astro:actions";
   const formattedAuthors = authors.join(", ");
 ---
 
-<article class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 rounded-lg w-full max-w-[400px] min-w-[350px] min-h-[630px] max-h-[630px]">
-  { typeof thumbnail !== "string" ? (
-    <Image class="thumbnail" src={thumbnail} alt="thumbnail" />
+<article class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 rounded-lg w-full max-w-[400px] min-w-[350px] min-h-[630px] max-h-[630px]" {...rest}>
+  { typeof thumbnailUrl !== "string" ? (
+    <Image class="thumbnail" src={thumbnailUrl} alt="thumbnail" />
   ): (
-    <Image class="thumbnail" src={thumbnail} width="100" height="100" alt="thumbnail" />
+    <Image class="thumbnail" src={thumbnailUrl} width="100" height="100" alt="thumbnail" />
   )}
-  <section class="flex flex-col gap-3 p-5">
+  <section class="flex flex-col gap-3 p-5 h-full">
     <!-- Type -->
-    <small class="text-lg text-gray3">{type}</small>
+    <small class="type text-lg text-gray3">{type}</small>
     <!-- Title -->
-    <h3 title={title} class="text-2xl font-bold text-ellipsis-multiline line-clamp-3" style="-webkit-line-clamp: 3;">{title}</h3>
+    <h3 title={title} class="title text-2xl font-bold text-ellipsis-multiline line-clamp-3" style="-webkit-line-clamp: 3;">{title}</h3>
     <div>
       <!-- Authors -->
       <span class="flex items-center gap-1">
         <Icon class="stroke-gray3 stroke-3 min-w-4 max-w-4" name="users" />
-        <p title={formattedAuthors} class="text-sm whitespace-nowrap overflow-hidden text-ellipsis text-gray3 font-bold">
+        <p title={formattedAuthors} class="authors text-sm whitespace-nowrap overflow-hidden text-ellipsis text-gray3 font-bold">
           {formattedAuthors}
         </p>
       </span>
       <!-- Date -->
       <span class="flex items-center gap-1">
         <Icon class="stroke-gray3 stroke-3 min-w-4 max-w-4" name="calendar" />
-        <p title={formattedDate} class="text-sm whitespace-nowrap overflow-hidden text-ellipsis text-gray3 font-bold">
+        <p title={formattedDate} class="date text-sm whitespace-nowrap overflow-hidden text-ellipsis text-gray3 font-bold">
           {formattedDate}
         </p>
       </span>
     </div>
     <!-- Description -->
-    <p class="text-gray3 text-ellipsis-multiline line-clamp-4" style="-webkit-line-clamp: 4;">
+    <p class="description text-gray3 text-ellipsis-multiline line-clamp-4" style="-webkit-line-clamp: 4;">
       {description}
     </p>
-    <!-- File link -->
-    <a class="flex justify-center items-center w-12 h-12 aspect-square bg-gray3 rounded-md ms-auto transition-all duration-200 ease-in-out hover:bg-gray2" href={file_link} target="_blank">
+    <!-- File path -->
+    <a aria-label="Download File" class="filePath flex justify-center items-center w-12 h-12 aspect-square bg-gray3 rounded-md ms-auto mt-auto transition-all duration-200 ease-in-out hover:bg-gray2" href={filePath} target="_blank">
       <Icon name="download" class="fill-white w-5" />
     </a>
   </section>
