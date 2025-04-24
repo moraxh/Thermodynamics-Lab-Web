@@ -37,9 +37,9 @@
 
 <article class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 rounded-lg w-full max-w-[400px] min-w-[350px] min-h-[630px] max-h-[630px]" {...rest}>
   { typeof thumbnailUrl !== "string" ? (
-    <Image class="thumbnail" src={thumbnailUrl} alt="thumbnail" />
+    <Image class="w-full aspect-video object-cover" src={thumbnailUrl} alt="thumbnail" />
   ): (
-    <Image class="thumbnail" src={thumbnailUrl} width="100" height="100" alt="thumbnail" />
+     <img src={thumbnailUrl} alt="thumbnail" class="w-full aspect-video object-cover">
   )}
   <section class="flex flex-col gap-3 p-5 h-full">
     <!-- Type -->
@@ -72,11 +72,3 @@
     </a>
   </section>
 </article>
-
-<style>
-  @import "../../../../styles/global.css";
-
-  .thumbnail {
-    @apply aspect-video object-cover;
-  }
-</style>

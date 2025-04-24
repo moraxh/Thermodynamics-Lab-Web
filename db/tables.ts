@@ -1,4 +1,5 @@
-import { pgTable, text, varchar, boolean, integer, timestamp, json, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, boolean, integer, timestamp, json, pgEnum, date, time } from "drizzle-orm/pg-core";
+import { EndpointDidNotReturnAResponse } from "node_modules/astro/dist/core/errors/errors-data";
 
 export const User = pgTable("user", {
   id: varchar("id", { length: 255 })
@@ -79,4 +80,91 @@ export const Publication = pgTable("publication", {
     .unique(),
   thumbnailPath: text("thumbnail_path")
     .unique()
+})
+
+export const Video = pgTable("video", {
+  id: varchar("id", { length: 255 })
+    .primaryKey(),
+  title: text("title")
+    .notNull()
+    .unique(),
+  description: text("description")
+    .notNull()
+    .unique(),
+  duration: integer("duration_in_seconds")
+    .notNull(),
+  thumbnailPath: text("thumbnail_path"),
+  videoPath: text("video_path")
+    .notNull()
+    .unique(),
+  uploadedAt: timestamp("uploaded_at")
+    .notNull()
+    .defaultNow()
+})
+
+export const Article = pgTable("article", {
+  id: varchar("id", { length: 255})
+    .primaryKey(),
+  title: text("title")
+    .notNull()
+    .unique(),
+  slug: text("slug")
+    .notNull()
+    .unique(),
+  category: varchar("category", { length: 255 })
+    .notNull(),
+  authors: json("authors")
+    .notNull(),
+  description: text("description")
+    .notNull()
+    .unique(),
+  body: text("body")
+    .notNull()
+    .unique(),
+  thumbnailPath: text("thumbnail_path"),
+  uploadedAt: timestamp("uploaded_at")
+    .notNull()
+    .defaultNow()
+})
+
+export const EducationalMaterial = pgTable("educational_material", {
+  id: varchar("id", { length: 255 })
+    .primaryKey(),
+  title: text("title")
+    .notNull()
+    .unique(),
+  description: text("description")
+    .notNull()
+    .unique(),
+  filePath: text("file_path")
+    .notNull()
+    .unique(),
+  uploadedAt: timestamp("uploaded_at")
+    .notNull()
+    .defaultNow()
+})
+
+export const Event = pgTable("event", {
+  id: varchar("id", { length: 255 })
+    .primaryKey(),
+  title: text("title")
+    .notNull()
+    .unique(),
+  description: text("description")
+    .notNull()
+    .unique(),
+  typeOfEvent: varchar("type_of_event", { length: 255 })
+    .notNull(),
+  eventDate: date("event_date")
+    .notNull(),
+  startTime: time("start_time")
+    .notNull(),
+  endTime: time("end_time")
+    .notNull(),
+  location: text("location")
+    .notNull(),
+  link: text("link"),
+  uploadedAt: timestamp("uploaded_at")
+    .notNull()
+    .defaultNow()
 })
