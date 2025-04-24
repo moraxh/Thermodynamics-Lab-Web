@@ -4,7 +4,7 @@
   import Icon from "@src/components/common/Icon.astro";
   import { Image } from "astro:assets";
 
-  const defaultImage = (await import("../../../assets/images/default.webp")).default;
+  const defaultImage = (await import("../../../../assets/images/default.webp")).default;
 
   let thumbnailUrl = thumbnailPath;
 
@@ -74,7 +74,7 @@
 </article>
 
 <style>
-  @import "../../../styles/global.css";
+  @import "../../../../styles/global.css";
 
   .thumbnail {
     @apply aspect-video object-cover;
