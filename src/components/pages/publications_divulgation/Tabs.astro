@@ -1,13 +1,14 @@
 <div id="tabSelector" class="flex bg-gray0 outline-2 outline-gray1 rounded-lg">
-  <button data-section="publications" class="active">Publicaciones</button>
-  <button data-section="divulgation">Divulgación</button>
+  <button data-section="divulgation" class="active">Divulgación</button>
+  <button data-section="publications">Publicaciones</button>
 </div>
 
-<section id="publications">
+<section id="publications" class="!hidden">
   <slot name="publications"/>
 </section>
 
-<section id="divulgation" class="hidden">
+<section id="divulgation">
+  holaaaaaaaa
   <slot name="divulgation"/>
 </section>
 

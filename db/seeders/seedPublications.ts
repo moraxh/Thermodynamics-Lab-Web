@@ -48,7 +48,6 @@ fs.readdirSync(`${seedPath}/thumbnails`).forEach((file) => {
   fs.copyFileSync(inputPath, `./public/${outputPath}`)
 })
 
-
 export async function seedPublications() {
   await db.insert(Publication).values(test_publications)
 }

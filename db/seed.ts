@@ -8,6 +8,10 @@ import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { db } from "@db/connection";
 import { exec } from "child_process"
 import { resolve } from "path";
+import { seedVideos } from "./seeders/seedVideos";
+import { seedEducationalMaterial } from "./seeders/seedEducationalMaterial";
+import { seedEvents } from "./seeders/seedEvents";
+import { seedArticles } from "./seeders/seedArticles";
 
 export default async function seedDatabase() {
   await ensureDatabaseExists();
@@ -32,6 +36,12 @@ export default async function seedDatabase() {
   await seedUsers();
   await seedMembers();
   await seedGallery();
+  // Publications
   await seedPublications();
+  // Divulgation
+  await seedVideos()
+  await seedEducationalMaterial()
+  await seedEvents()
+  await seedArticles()
   console.log("Database seeded ☺️");
 }

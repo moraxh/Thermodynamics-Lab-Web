@@ -1,7 +1,7 @@
 import { pgTable, text, varchar, boolean, integer, timestamp, json, pgEnum, date, time } from "drizzle-orm/pg-core";
 import { EndpointDidNotReturnAResponse } from "node_modules/astro/dist/core/errors/errors-data";
 
-export const User = pgTable("user", {
+export const User = pgTable("users", {
   id: varchar("id", { length: 255 })
     .primaryKey(),
   username: varchar("username", { length: 255 })
@@ -11,7 +11,7 @@ export const User = pgTable("user", {
     .notNull()
 })
 
-export const Session = pgTable("session", {
+export const Session = pgTable("sessions", {
   id: varchar("id", { length: 255 })
     .primaryKey(),
   userId: varchar("user_id", { length: 255 })
@@ -22,7 +22,7 @@ export const Session = pgTable("session", {
   fresh: boolean("fresh")
 })
 
-export const MemberType = pgTable("memberType", {
+export const MemberType = pgTable("member_types", {
   name: varchar("name", { length: 255 })
     .primaryKey()
     .unique(),
@@ -34,7 +34,7 @@ export const MemberType = pgTable("memberType", {
     .unique()
 })
 
-export const Member = pgTable("member", {
+export const Member = pgTable("members", {
   id: varchar("id", { length: 255 })
     .primaryKey(),
   fullName: varchar("full_name", { length: 255 })
@@ -60,7 +60,7 @@ export const Gallery = pgTable("gallery", {
 
 export const publicationTypeEnum = pgEnum("type", ["article", "book", "thesis", "technical_report", "monograph", "other"]);
 
-export const Publication = pgTable("publication", {
+export const Publication = pgTable("publications", {
   id: varchar("id", { length: 255 })
     .primaryKey(),
   title: text("title")
@@ -82,7 +82,7 @@ export const Publication = pgTable("publication", {
     .unique()
 })
 
-export const Video = pgTable("video", {
+export const Video = pgTable("videos", {
   id: varchar("id", { length: 255 })
     .primaryKey(),
   title: text("title")
@@ -102,29 +102,21 @@ export const Video = pgTable("video", {
     .defaultNow()
 })
 
-export const Article = pgTable("article", {
-  id: varchar("id", { length: 255})
+export const Article = pgTable("articles", {
+  id: varchar("id", { length: 255 })
     .primaryKey(),
   title: text("title")
     .notNull()
     .unique(),
-  slug: text("slug")
-    .notNull()
-    .unique(),
-  category: varchar("category", { length: 255 })
-    .notNull(),
-  authors: json("authors")
-    .notNull(),
   description: text("description")
+    .notNull(),
+  publicationDate: timestamp("publication_date")
+    .notNull(),
+  filePath: text("file_path")
     .notNull()
     .unique(),
-  body: text("body")
-    .notNull()
-    .unique(),
-  thumbnailPath: text("thumbnail_path"),
-  uploadedAt: timestamp("uploaded_at")
-    .notNull()
-    .defaultNow()
+  thumbnailPath: text("thumbnail_path")
+    .unique()
 })
 
 export const EducationalMaterial = pgTable("educational_material", {
@@ -144,7 +136,7 @@ export const EducationalMaterial = pgTable("educational_material", {
     .defaultNow()
 })
 
-export const Event = pgTable("event", {
+export const Event = pgTable("events", {
   id: varchar("id", { length: 255 })
     .primaryKey(),
   title: text("title")
