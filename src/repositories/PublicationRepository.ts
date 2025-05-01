@@ -1,4 +1,4 @@
-import { eq, count, desc, asc } from "drizzle-orm"
+import { eq, count, desc } from "drizzle-orm"
 import { db } from "@db/connection"
 import { Publication, publicationTypeEnum } from "@db/tables"
 
