@@ -1,0 +1,13 @@
+---
+  import { db } from "@db/connection"
+  import { Video } from "@db/tables";
+
+  const videos = await db
+    .select()
+    .from(Video)
+    .orderBy(Video.uploadedAt)
+  
+  console.log(videos)
+---
+
+<h3 class="text-2xl font-bold text-white">Videos Explicativos</h3>

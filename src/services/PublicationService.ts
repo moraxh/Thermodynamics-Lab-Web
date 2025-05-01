@@ -1,17 +1,10 @@
 import { PublicationRepository } from "@src/repositories/PublicationRepository";
 import { Publication } from "@db/tables";
+import type { PaginatedResponse } from "@src/types";
 
 type PublicationSelect = typeof Publication.$inferSelect
 
-interface PublicationResponse {
-  status: number;
-  message?: string;
-  info?: {
-    total: number; 
-    page: number; 
-    size: number; 
-    limit: number;
-  },
+interface PublicationResponse extends PaginatedResponse {
   publications?: PublicationSelect[];
 }
 
