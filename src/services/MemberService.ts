@@ -139,4 +139,12 @@ export class MemberService {
       message: "Miembro eliminado correctamente"
     }
   }
+
+  static async clearData(): Promise<void> {
+    // Clear the files
+    fs.rmdirSync("./public/storage/members", { recursive: true })
+
+    // Delete the table data
+    await MemberRepository.clearTable()
+  }
 }

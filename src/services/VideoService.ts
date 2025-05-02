@@ -1,3 +1,4 @@
+import fs from "node:fs"
 import { VideoRepository } from "@src/repositories/VideoRepository";
 import { Video } from "@db/tables";
 import type { PaginatedResponse } from "@src/types";
@@ -28,6 +29,13 @@ export class VideoService {
       },
       videos
     }
+  }
 
+  static async clearData(): Promise<void> {
+    // Delete the files
+    fs.rmdirSync("./public/storage/videos", { recursive: true})
+
+    // Clear the table data
+    await VideoRepository.clearTable()
   }
 }

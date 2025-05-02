@@ -11,4 +11,8 @@ export class UserRepository {
     })
     .execute()
   }
+
+  static async clearTable(): Promise<void> {
+    db.delete(User).execute()
+  }
 }

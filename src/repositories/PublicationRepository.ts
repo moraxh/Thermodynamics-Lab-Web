@@ -29,4 +29,8 @@ export class PublicationRepository {
 
     return publicationsCount[0].count
   }
+
+  static async clearTable(): Promise<void> {
+    await db.delete(Publication).execute()
+  }
 }

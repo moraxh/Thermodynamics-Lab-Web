@@ -26,4 +26,8 @@ export class ResourceRepository {
 
     return resourcesCount[0].count
   }
+
+  static async clearTable(): Promise<void> {
+    await db.delete(EducationalMaterial).execute()
+  }
 }

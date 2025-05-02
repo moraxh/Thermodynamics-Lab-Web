@@ -41,4 +41,8 @@ export class MemberRepository {
   static async deleteMember(id: string): Promise<void> {
     await db.delete(Member).where(eq(Member.id, id))
   }
+
+  static async clearTable(): Promise<void> {
+    await db.delete(Member).execute()
+  }
 }

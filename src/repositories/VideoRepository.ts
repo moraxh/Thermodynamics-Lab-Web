@@ -26,4 +26,8 @@ export class VideoRepository {
 
   return videosCount[0].count
  }
+
+ static async clearTable(): Promise<void> {
+  await db.delete(Video).execute()
+ }
 }

@@ -54,4 +54,9 @@ export class UserService {
       message: "Usuario actualizado correctamente"
     }
   }
+
+  static async clearData(): Promise<void> {
+    // Delete the table data
+    await UserRepository.clearTable()
+  }
 }

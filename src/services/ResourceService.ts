@@ -1,3 +1,4 @@
+import fs from "node:fs"
 import { EducationalMaterial } from "@db/tables";
 import { ResourceRepository } from "@src/repositories/ResourceRepository";
 import type { PaginatedResponse } from "@src/types";
@@ -26,5 +27,13 @@ export class ResourceService {
       },
       resources
     }
+  }
+
+  static async clearData(): Promise<void> {
+    // Delete the files
+    fs.rmdirSync("./public/storage/resources", { recursive: true });
+
+    // Delete the table data
+    await ResourceRepository.clearTable()
   }
 }

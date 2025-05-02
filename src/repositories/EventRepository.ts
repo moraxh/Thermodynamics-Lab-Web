@@ -24,4 +24,8 @@ export class EventRepository {
 
     return eventsCount[0].count
   }
+
+  static async clearTable(): Promise<void> {
+    await db.delete(Event).execute()
+  }
 }

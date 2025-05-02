@@ -1,3 +1,4 @@
+import fs from "node:fs"
 import { Event } from "@db/tables";
 import { EventRepository } from "@src/repositories/EventRepository";
 import type { PaginatedResponse } from "@src/types";
@@ -26,5 +27,13 @@ export class EventService {
       },
       events
     }
+  }
+
+  static async clearData(): Promise<void> {
+    // Clear the files  
+    fs.rmdirSync("./public/storage/events", { recursive: true });
+
+    // Delete the table data
+    await EventRepository.clearTable()
   }
 }

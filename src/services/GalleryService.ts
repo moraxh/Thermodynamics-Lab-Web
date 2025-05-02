@@ -94,4 +94,12 @@ export class GalleryService {
       message: "Imagen eliminada correctamente"
     }
   }
+
+  static async clearData(): Promise<void> {
+    // Delete the files
+    fs.rmdirSync("./public/storage/gallery", { recursive: true })
+
+    // Delete the table data
+    await GalleryRepository.clearTable()
+  }
 }

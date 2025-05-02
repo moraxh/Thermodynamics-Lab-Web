@@ -32,4 +32,8 @@ export class GalleryRepository {
   static async deleteImageById(id: string):Promise<void> {
     await db.delete(Gallery).where(eq(Gallery.id, id)).execute()
   }
+
+  static async clearTable():Promise<void> {
+    await db.delete(Gallery).execute()
+  }
 }

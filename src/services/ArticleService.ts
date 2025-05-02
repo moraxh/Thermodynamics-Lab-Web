@@ -1,3 +1,4 @@
+import fs from "node:fs"
 import { ArticleRepository } from "@src/repositories/ArticleRepository";
 import { Article } from "@db/tables";
 import type { PaginatedResponse } from "@src/types";
@@ -26,5 +27,13 @@ export class ArticleService {
       },
       articles
     }
+  }
+
+  static async clearData(): Promise<void> {
+    // Clear the files
+    fs.rmdirSync("./public/storage/articles", { recursive: true });
+
+    // Delete the table data
+    await ArticleRepository.clearTable()
   }
 }

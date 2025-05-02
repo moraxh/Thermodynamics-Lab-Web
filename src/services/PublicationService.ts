@@ -1,3 +1,4 @@
+import fs from "node:fs"
 import { PublicationRepository } from "@src/repositories/PublicationRepository";
 import { Publication } from "@db/tables";
 import type { PaginatedResponse } from "@src/types";
@@ -31,5 +32,13 @@ export class PublicationService {
       },
       publications
     }
+  }
+
+  static async clearData(): Promise<void> {
+    // Clear the files
+    fs.rmdirSync("./public/storage/publications", { recursive: true });
+
+    // Delete the table data
+    await PublicationRepository.clearTable()
   }
 }

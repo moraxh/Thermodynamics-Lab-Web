@@ -26,4 +26,8 @@ export class ArticleRepository {
 
     return articlesCount[0].count
   }
+
+  static async clearTable(): Promise<void> {
+    await db.delete(Article).execute()
+  }
 }
