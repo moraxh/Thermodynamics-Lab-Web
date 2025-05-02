@@ -2,8 +2,9 @@ import { eq, count, desc } from "drizzle-orm"
 import { db } from "@db/connection"
 import { Publication, publicationTypeEnum } from "@db/tables"
 
-type PublicationSelect = typeof Publication.$inferSelect
-type PublicationType = typeof publicationTypeEnum.enumValues
+export type PublicationSelect = typeof Publication.$inferSelect
+export type PublicationInsert = typeof Publication.$inferInsert
+export type PublicationType = typeof publicationTypeEnum.enumValues
 
 export class PublicationRepository {
   static async getPublications(page: number = 1, type: string = 'all', max_size: number = 9): Promise<PublicationSelect[]> {
@@ -32,5 +33,9 @@ export class PublicationRepository {
 
   static async clearTable(): Promise<void> {
     await db.delete(Publication).execute()
+  }
+
+  static async insertPublications(publications: PublicationInsert[]) {
+    await db.insert(Publication).values(publications).execute()
   }
 }

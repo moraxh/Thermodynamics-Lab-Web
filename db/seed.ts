@@ -1,17 +1,17 @@
-import { seedGallery } from "./seeders/SeedGallery";
-import { seedUsers } from "./seeders/SeedUsers";
-import { seedMembers } from "./seeders/SeedMembers";
-import { seedPublications } from "./seeders/seedPublications";
-
 import { ensureDatabaseExists } from "@db/utils";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { db } from "@db/connection";
 import { exec } from "child_process"
-import { resolve } from "path";
-import { seedVideos } from "./seeders/seedVideos";
-import { seedEducationalMaterial } from "./seeders/seedEducationalMaterial";
-import { seedEvents } from "./seeders/seedEvents";
-import { seedArticles } from "./seeders/seedArticles";
+
+import { ArticleService } from "@src/services/ArticleService";
+import { EventService } from "@src/services/EventService";
+import { GalleryService } from "@src/services/GalleryService";
+import { EducationalMaterialService } from "@src/services/EducationalMaterialService";
+import { MemberTypeService } from "@src/services/MemberTypeService";
+import { MemberService } from "@src/services/MemberService";
+import { PublicationService } from "@src/services/PublicationService";
+import { UserService } from "@src/services/UserService";
+import { VideoService } from "@src/services/VideoService";
 
 export default async function seedDatabase() {
   await ensureDatabaseExists();
@@ -33,15 +33,15 @@ export default async function seedDatabase() {
 
   await migrate(db, { migrationsFolder: "./drizzle" });
 
-  await seedUsers();
-  await seedMembers();
-  await seedGallery();
-  // Publications
-  await seedPublications();
-  // Divulgation
-  await seedVideos()
-  await seedEducationalMaterial()
-  await seedEvents()
-  await seedArticles()
+  await ArticleService.seedData()
+  await EventService.seedData()
+  await GalleryService.seedData()
+  await EducationalMaterialService.seedData() 
+  await MemberTypeService.seedData()
+  await MemberService.seedData()
+  await PublicationService.seedData()
+  await UserService.seedData()
+  await VideoService.seedData()
+
   console.log("Database seeded ☺️");
 }

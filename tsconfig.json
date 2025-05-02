@@ -23,9 +23,6 @@
       "@api/*": [
         "./src/pages/api/*"
       ],
-      "@seed/*": [
-        "./seed/*"
-      ],
       "@integrations/*": [
         "./src/integrations/*"
       ],

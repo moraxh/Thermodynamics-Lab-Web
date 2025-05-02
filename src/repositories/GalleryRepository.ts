@@ -1,12 +1,12 @@
 import{ db } from "@db/connection"
 import { Gallery } from "@db/tables"
 import { eq, like } from "drizzle-orm"
-import { generateIdFromEntropySize } from "lucia"
 
-type GalleryImageSelect = typeof Gallery.$inferSelect
+export type GallerySelect = typeof Gallery.$inferSelect
+export type GalleryInsert = typeof Gallery.$inferInsert
 
 export class GalleryRepository {
-  static async findImageByHash(hash: string):Promise<GalleryImageSelect | null> {
+  static async findImageByHash(hash: string):Promise<GallerySelect | null> {
     const result = 
       await db
         .select()
@@ -15,8 +15,8 @@ export class GalleryRepository {
     return result.length > 0 ? result[0] : null
   }
 
-  static async insertImage(path: string):Promise<void> {
-    await db.insert(Gallery).values({ id: generateIdFromEntropySize(10), path })
+  static async insertImages(images: GalleryInsert[]):Promise<void> {
+    await db.insert(Gallery).values(images)
   }
 
   static async findImagePathById(id: string): Promise<string | null> {

@@ -1,9 +1,14 @@
 import fs from "node:fs";
 import { MemberRepository } from "@src/repositories/MemberRepository";
-import { generateHashFromStream } from "@src/utils/Hash";
+import { MemberTypeRepository } from "@src/repositories/MemberTypeRepository";
+import { generateHashFromFile, generateHashFromStream } from "@src/utils/Hash";
 import { Readable } from "node:stream"
 import { MemberSchema } from "@db/schemas";
 import { generateIdFromEntropySize } from "lucia";
+import type { MemberInsert } from "@src/repositories/MemberRepository";
+
+const seedPath = "./seed_data/production/members"
+const storagePath = "storage/members"
 
 export class MemberService {
   static async createMember(formData: FormData): Promise<{ status: number, message: string }> {
@@ -56,7 +61,7 @@ export class MemberService {
     }
 
     // Check if type of member is valid
-    const isValidType = await MemberRepository.findMemberTypeByName(typeOfMember)
+    const isValidType = await MemberTypeRepository.findMemberTypeByName(typeOfMember)
     if (!isValidType) {
       return {
         status: 400,
@@ -77,19 +82,20 @@ export class MemberService {
     })
 
     // Insert in the db
-    await MemberRepository.createMember({
+    const member = {
       id: generateIdFromEntropySize(10),
       fullName: fullName,
       position: position,
       typeOfMember: typeOfMember,
       photo: outputPath
-    })
+    }
+
+    await MemberRepository.insertMembers([member])
 
     return {
       status: 200,
       message: "Miembro creado correctamente"
     }
-
   }
 
   static async deleteMember(formData: FormData): Promise<{ status: number, message: string }> {
@@ -146,5 +152,37 @@ export class MemberService {
 
     // Delete the table data
     await MemberRepository.clearTable()
+  }
+
+  static async seedData(): Promise<void> {
+    // Create the directory if it doesn't exist 
+    if (!fs.existsSync(`./public/${storagePath}`)) {
+      fs.mkdirSync(`./public/${storagePath}`, { recursive: true })
+    }
+
+    const membersJSON = JSON.parse(fs.readFileSync(`${seedPath}/members.json`, 'utf-8')) as Omit<MemberInsert, 'id'>[]
+    const membersImages = fs.readdirSync(`${seedPath}/images_improved`)
+
+    // Copy images to the storage path
+    await Promise.all(membersImages.map(async (file) => {
+      const inputPath = `${seedPath}/images_improved/${file}`
+      const extension = file.split('.').pop()
+
+      const hashname = await generateHashFromFile(inputPath)
+
+      fs.copyFileSync(`${seedPath}/images_improved/${file}`, `./public/${storagePath}/${hashname}.${extension}`)
+
+      membersJSON.find(member => member.photo === file)!.photo = `${storagePath}/${hashname}.${extension}`
+    }))
+
+    const members = membersJSON.map(member => {
+      return {
+        id: generateIdFromEntropySize(10),
+        ...member,
+        photo: member.photo ? member.photo : null,
+      }
+    })
+
+    await MemberRepository.insertMembers(members)
   }
 }

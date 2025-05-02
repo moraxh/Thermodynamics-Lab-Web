@@ -1,10 +1,9 @@
 import { db } from "@db/connection";
-import { Member, MemberType } from "@db/tables";
+import { Member } from "@db/tables";
 import { eq, like } from "drizzle-orm";
 
-type NewMember = typeof Member.$inferInsert
-type MemberSelect = typeof Member.$inferSelect
-type MemberTypeSelect = typeof MemberType.$inferSelect
+export type MemberInsert = typeof Member.$inferInsert
+export type MemberSelect = typeof Member.$inferSelect
 
 export class MemberRepository {
   static async findMemberByHash(hash: string): Promise<MemberSelect | null> {
@@ -16,17 +15,9 @@ export class MemberRepository {
     return result.length > 0 ? result[0] : null;
   }
 
-  static async findMemberTypeByName(name: string): Promise<MemberTypeSelect | null> {
-    const result =
-      await db
-        .select()
-        .from(MemberType)
-        .where(eq(MemberType.name, name));
-    return result.length > 0 ? result[0] : null;
-  }
+  static async insertMembers(members: MemberInsert[]): Promise<void> {
+    await db.insert(Member).values(members).execute()
 
-  static async createMember(member: NewMember): Promise<void> {
-    await db.insert(Member).values(member)
   }
 
   static async findMemberImagePathById(id: string): Promise<string | null> {

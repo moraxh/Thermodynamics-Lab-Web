@@ -1,7 +1,12 @@
 import fs from 'node:fs'
 import { GalleryRepository } from "@src/repositories/GalleryRepository"
-import { generateHashFromStream } from "@src/utils/Hash"
+import { generateHashFromFile, generateHashFromStream } from "@src/utils/Hash"
 import { Readable } from "node:stream"
+import type { GalleryInsert } from '@src/repositories/GalleryRepository'
+import { generateIdFromEntropySize } from 'lucia'
+
+const seedPath = "./seed_data/production/gallery"
+const storagePath = "storage/gallery"
 
 export class GalleryService {
   static async createImage(formData: FormData):Promise<{ status: number, message: string }> {
@@ -39,7 +44,12 @@ export class GalleryService {
     })
 
     // Insert in the db
-    await GalleryRepository.insertImage(outputPath)
+    const insertImage: GalleryInsert = {
+      id: generateIdFromEntropySize(10),
+      path: outputPath
+    }
+
+    await GalleryRepository.insertImages([insertImage])
 
     return {
       status: 200,
@@ -101,5 +111,35 @@ export class GalleryService {
 
     // Delete the table data
     await GalleryRepository.clearTable()
+  }
+
+  static async seedData(): Promise<void> {
+    // Create storage path if it doesn't exist
+    if (!fs.existsSync(`./public/${storagePath}`)) {
+      fs.mkdirSync(`./public/${storagePath}`, { recursive: true })
+    }
+
+    const images = fs.readdirSync(seedPath)
+
+    const galleryImages: GalleryInsert[] = []
+
+    await Promise.all(images.map(async (image) => {
+      const inputPath = `${seedPath}/${image}`
+      const extension = image.split('.').pop()
+
+      // Hash name based on file's content
+      const hashName = await generateHashFromFile(inputPath)
+
+      const outputPath = `${storagePath}/${hashName}.${extension}`
+
+      fs.copyFileSync(inputPath, `./public/${outputPath}`)
+
+      galleryImages.push({
+        id: generateIdFromEntropySize(10),
+        path: outputPath
+      })
+    }))
+
+    await GalleryRepository.insertImages(galleryImages)
   }
 }

@@ -2,6 +2,9 @@ import { UserSchema } from "@db/schemas";
 import { hash } from "@node-rs/argon2";
 import { passwordHashingOptions } from "@src/pages/api/login";
 import { UserRepository } from "@src/repositories/UserRepository";
+import * as crypto from 'node:crypto'
+import type { UserInsert } from "@src/repositories/UserRepository";
+import { generateIdFromEntropySize } from "lucia";
 
 export class UserService {
   static async updateUser(formData: FormData): Promise<{ status: number, message: string }> {
@@ -58,5 +61,22 @@ export class UserService {
   static async clearData(): Promise<void> {
     // Delete the table data
     await UserRepository.clearTable()
+  }
+
+  static async seedData(): Promise<void> {
+    const defaultPassword = 
+      import.meta.env.PROD
+        ? crypto.randomBytes(10).toString('hex')
+        : "admin"
+    
+    console.info(`Default credentials: \nUsername: admin \nPassword: ${defaultPassword}`)
+
+    const defaultUser: UserInsert = {
+      id: generateIdFromEntropySize(10),
+      username: "admin",
+      passwordHash: await hash(defaultPassword, passwordHashingOptions),
+    }
+
+    await UserRepository.insertUsers([defaultUser])
   }
 }

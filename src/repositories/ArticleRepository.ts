@@ -2,7 +2,8 @@ import { count, desc } from "drizzle-orm"
 import { db } from "@db/connection"
 import { Article } from "@db/tables"
 
-type ArticleSelect = typeof Article.$inferSelect
+export type ArticleSelect = typeof Article.$inferSelect
+export type ArticleInsert = typeof Article.$inferInsert
 
 export class ArticleRepository {
   static async getArticles(page: number = 1, max_size: number = 5): Promise<ArticleSelect[]> {
@@ -25,6 +26,10 @@ export class ArticleRepository {
       .from(Article)
 
     return articlesCount[0].count
+  }
+
+  static async insertArticles(articles: ArticleInsert[]): Promise<void> {
+    await db.insert(Article).values(articles).execute()
   }
 
   static async clearTable(): Promise<void> {
