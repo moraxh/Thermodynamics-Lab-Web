@@ -6,7 +6,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "jest",
+    "test:unit": "jest tests/unit",
+    "test:integration": "jest tests/integration"
   },
   "dependencies": {
     "@lucia-auth/adapter-drizzle": "^1.1.0",
@@ -23,9 +26,13 @@
     "zod": "^3.24.3"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.14",
     "@types/pg": "^8.11.13",
+    "jest": "^29.7.0",
     "sharp": "^0.33.5",
-    "standard": "^17.1.2"
+    "standard": "^17.1.2",
+    "ts-jest": "^29.3.2",
+    "typescript": "^5.8.3"
   },
   "eslintConfig": {
     "extends": "./node_modules/standard/eslintrc.json"
