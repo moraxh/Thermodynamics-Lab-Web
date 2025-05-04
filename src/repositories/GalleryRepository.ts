@@ -1,3 +1,4 @@
+import { desc } from "drizzle-orm"
 import{ db } from "@db/connection"
 import { Gallery } from "@db/tables"
 import { eq, like } from "drizzle-orm"
@@ -6,6 +7,16 @@ export type GallerySelect = typeof Gallery.$inferSelect
 export type GalleryInsert = typeof Gallery.$inferInsert
 
 export class GalleryRepository {
+  static async getImages(): Promise<GallerySelect[]> {
+  const images = 
+    await db
+    .select()
+    .from(Gallery)
+    .orderBy(desc(Gallery.uploadedAt))
+
+    return images
+  }
+
   static async findImageByHash(hash: string):Promise<GallerySelect | null> {
     const result = 
       await db

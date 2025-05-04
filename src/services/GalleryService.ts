@@ -2,13 +2,22 @@ import fs from 'node:fs'
 import { GalleryRepository } from "@src/repositories/GalleryRepository"
 import { generateHashFromFile, generateHashFromStream } from "@src/utils/Hash"
 import { Readable } from "node:stream"
-import type { GalleryInsert } from '@src/repositories/GalleryRepository'
+import type { GalleryInsert, GallerySelect } from '@src/repositories/GalleryRepository'
 import { generateIdFromEntropySize } from 'lucia'
 
 const seedPath = "./seed_data/production/gallery"
 const storagePath = "storage/gallery"
 
 export class GalleryService {
+  static async getImages(): Promise<{ status: number, images: GallerySelect[]}> {
+    const images = await GalleryRepository.getImages()
+
+    return {
+      status: 200,
+      images
+    }
+  }
+
   static async createImage(formData: FormData):Promise<{ status: number, message: string }> {
     const image = formData.get('image') as File;
 
