@@ -6,6 +6,16 @@ export type MemberInsert = typeof Member.$inferInsert
 export type MemberSelect = typeof Member.$inferSelect
 
 export class MemberRepository {
+  static async getMembers(): Promise<MemberSelect[]> {
+    const members = 
+      await db
+      .select()
+      .from(Member)
+      .orderBy(Member.fullName)
+
+    return members
+  }
+
   static async findMemberByHash(hash: string): Promise<MemberSelect | null> {
     const result =
       await db
@@ -17,7 +27,6 @@ export class MemberRepository {
 
   static async insertMembers(members: MemberInsert[]): Promise<void> {
     await db.insert(Member).values(members).execute()
-
   }
 
   static async findMemberImagePathById(id: string): Promise<string | null> {

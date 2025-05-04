@@ -6,6 +6,16 @@ export type MemberTypeSelect = typeof MemberType.$inferSelect
 export type MemberTypeInsert = typeof MemberType.$inferInsert
 
 export class MemberTypeRepository {
+  static async getMemberTypes(): Promise<MemberTypeSelect[]> {
+    const memberTypes =
+      await db
+        .select()
+        .from(MemberType)
+        .orderBy(MemberType.order)
+
+    return memberTypes
+  }
+
   static async findMemberTypeByName(name: string): Promise<MemberTypeSelect | null> {
     const result =
       await db

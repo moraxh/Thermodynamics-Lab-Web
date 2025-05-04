@@ -5,12 +5,49 @@ import { generateHashFromFile, generateHashFromStream } from "@src/utils/Hash";
 import { Readable } from "node:stream"
 import { MemberSchema } from "@db/schemas";
 import { generateIdFromEntropySize } from "lucia";
-import type { MemberInsert } from "@src/repositories/MemberRepository";
+import type { MemberInsert, MemberSelect } from "@src/repositories/MemberRepository";
+import type { CommonResponse } from "@src/types";
 
 const seedPath = "./seed_data/production/members"
 const storagePath = "storage/members"
 
+interface MembersResponse extends CommonResponse {
+  members: Record<string, MemberSelect[]>
+}
+
 export class MemberService {
+  static async getMembersByTypes(): Promise<MembersResponse> {
+    const members: Record<string, MemberSelect[]> = {}
+
+    const allMembers = await MemberRepository.getMembers()
+    const memberTypes = await MemberTypeRepository.getMemberTypes()
+
+    // Group by type
+    for (const member of allMembers) {
+      if (member.typeOfMember && members[member.typeOfMember] === undefined) {
+        members[member.typeOfMember] = []
+      }
+      if (member.typeOfMember !== null) {
+        members[member.typeOfMember].push(member)
+      }
+    }
+
+    // Sort by order using the order property of the member type
+    const sortedMembers = Object.fromEntries(
+      Object.entries(members).sort((a, b) => {
+        const aOrder = memberTypes.find(type => type.name === a[0])?.order || 0
+        const bOrder = memberTypes.find(type => type.name === b[0])?.order || 0
+        return aOrder - bOrder
+      })
+    )
+
+    return {
+      status: 200,
+      message: "Miembros obtenidos correctamente",
+      members: sortedMembers,
+    }
+  }
+
   static async createMember(formData: FormData): Promise<{ status: number, message: string }> {
     const image = formData.get('memberPhoto') as File
     const fullName = formData.get('name') as string

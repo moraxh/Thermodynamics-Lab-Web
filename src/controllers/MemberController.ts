@@ -2,6 +2,17 @@ import { MemberService } from "@src/services/MemberService";
 import type { APIContext } from "astro";
 
 export class MemberController {
+  static async getMembers(context: APIContext): Promise<Response> {
+    try {
+      const response = await MemberService.getMembersByTypes()
+      return new Response(JSON.stringify(response), { status: response.status })
+    } catch (error) {
+      return new Response(JSON.stringify({
+        message: "Error al obtener los miembros"
+      }), { status: 500 })
+    }
+  }
+
   static async createMember(context: APIContext): Promise<Response> {
     try {
       const formData = await context.request.formData();
