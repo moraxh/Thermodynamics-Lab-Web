@@ -143,7 +143,7 @@
       formData.append('typeOfMember', typeOfMember.value)
       formData.append('memberPhoto', file)
 
-      fetch("/api/admin/member", {
+      fetch("/api/members", {
         method: "POST",
         body: formData
       }).then(res => res.json()).then(data => {
@@ -172,7 +172,7 @@
       const formData = new FormData()
       formData.append('id', imageId)
 
-      fetch('/api/admin/member', {
+      fetch('/api/members', {
         method: 'DELETE',
         body: formData
       }).then(res => res.json()).then(data => {

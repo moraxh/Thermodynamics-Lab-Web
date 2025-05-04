@@ -77,10 +77,10 @@
         body: formData
       }).then(res => res.json()).then(data => {
         submit.disabled = false;
-        if (data.error) {
-          window.customAlert.error.show('Error', data.error);
-        } else {
+        if (data.status === 200) {
           navigate('/admin')
+        } else {
+          window.customAlert.error.show('Error', data.error);
         }
       })
     })

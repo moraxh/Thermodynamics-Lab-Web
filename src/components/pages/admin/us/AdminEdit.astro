@@ -79,7 +79,7 @@
     formData.append("password", passwordValue);
     formData.append("confirm_password", confirmPasswordValue);
 
-    fetch("/api/admin/user", {
+    fetch("/api/users", {
       method: 'PATCH',
       body: formData,
     }).then(res => res.json()).then(data => {

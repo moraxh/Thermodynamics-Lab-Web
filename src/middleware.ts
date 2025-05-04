@@ -1,12 +1,26 @@
 import { lucia } from "./auth";
 import { defineMiddleware } from "astro:middleware";
 
-const protectedRoutes = ["/admin", "/api/admin"]
+const protectedRoutes = {
+	"/admin"                   : ["GET", "POST"],
+	"/api/articles"            : ["POST", "PATCH", "DELETE"],
+	"/api/educational_material": ["POST", "PATCH", "DELETE"],
+	"/api/events"              : ["POST", "PATCH", "DELETE"],
+	"/api/gallery"             : ["POST", "PATCH", "DELETE"],
+	"/api/members"             : ["POST", "PATCH", "DELETE"],
+	"/api/publications"        : ["POST", "PATCH", "DELETE"],
+	"/api/users"               : ["POST", "PATCH", "DELETE"],
+	"/api/videos"              : ["POST", "PATCH", "DELETE"],
+}
 const redirectUrl = "/login"
 
 export const onRequest = defineMiddleware(async (context, next) => {
 	const sessionId = context.cookies.get(lucia.sessionCookieName)?.value ?? null;
-	const isProtectedRoute = protectedRoutes.filter((route) => context.url.pathname.startsWith(route)).length > 0
+	const isProtectedRoute = Object.keys(protectedRoutes).some((route) => {
+		const isRoute = context.url.pathname.startsWith(route);
+		const isMethod = protectedRoutes[route as keyof typeof protectedRoutes].includes(context.request.method);
+		return isRoute && isMethod;
+	})
 
 	if (!sessionId) {
 		context.locals.user = null;

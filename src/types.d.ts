@@ -8,3 +8,8 @@ export interface PaginatedResponse {
     limit: number;
   },
 }
+
+export interface CommonResponse {
+  status: number;
+  message?: string;
+}

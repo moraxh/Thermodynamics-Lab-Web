@@ -88,7 +88,7 @@
       const file = realUpload.files?.[0];
       if (file) {
         formData.append('image', file);
-        fetch('/api/admin/gallery', {
+        fetch('/api/gallery', {
           method: 'POST',
           body: formData,
         }).then(res => res.json()).then(data => {
@@ -110,7 +110,7 @@
       const formData = new FormData();
       formData.append('id', imageId);
 
-      fetch('/api/admin/gallery', {
+      fetch('/api/gallery', {
         method: 'DELETE',
         body: formData,
       }).then(res => res.json()).then(data => {

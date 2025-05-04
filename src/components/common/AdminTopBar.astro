@@ -6,6 +6,35 @@
   <a href="/admin">Admin Panel</a>
   <a href="/admin/publications_divulgation">Divulgación y Publicaciones</a>
   <a href="/admin/us">Nosotros</a>
-  <a class="hover:cursor-pointer" onclick="document.getElementById('logoutForm').submit();">Cerrar Sesión</a>
-  <form hidden id="logoutForm" method="post" action="/api/logout"></form>
+  <a id="logout" class="hover:cursor-pointer">Cerrar Sesión</a>
 </TopBarTemplate>
+
+<script>
+  import { navigate } from "astro:transitions/client";
+
+  const handleLogout = async () => {
+    const logoutButton = document.getElementById('logout');
+
+    if (!logoutButton) {
+      return;
+    }
+
+    logoutButton.addEventListener('click', async (event) => {
+      event.preventDefault();
+
+      const response = await fetch('/api/logout', {
+        method: 'POST',
+      });
+
+      const data = await response.json();
+
+      if (data.status === 200) {
+        navigate('/');
+      } else {
+        window.customAlert.error.show('Error', data.error);
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", handleLogout);
+</script>
