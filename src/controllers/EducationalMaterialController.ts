@@ -2,10 +2,10 @@ import { EducationalMaterialService } from "@src/services/EducationalMaterialSer
 import type { APIContext } from "astro"
 
 export class EducationalMaterialController {
-  static async getResources(context: APIContext): Promise<Response> {
+  static async getEducationalMaterial(context: APIContext): Promise<Response> {
     try {
       const searchParams = context.url.searchParams
-      const response = await EducationalMaterialService.getResources(searchParams)
+      const response = await EducationalMaterialService.getEducationalMaterial(searchParams)
       return new Response(JSON.stringify(response), { status: response.status })
     } catch (error) {
       return new Response(JSON.stringify({

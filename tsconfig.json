@@ -9,22 +9,22 @@
         "db/*"
       ],
       "@src/*": [
-        "./src/*"
+        "src/*"
       ],
       "@components/*": [
-        "./src/components/*"
+        "src/components/*"
       ],
       "@layouts/*": [
-        "./src/layouts/*"
+        "src/layouts/*"
       ],
       "@assets/*": [
-        "./src/assets/*"
+        "src/assets/*"
       ],
       "@api/*": [
-        "./src/pages/api/*"
+        "src/pages/api/*"
       ],
       "@integrations/*": [
-        "./src/integrations/*"
+        "src/integrations/*"
       ],
     }
   }

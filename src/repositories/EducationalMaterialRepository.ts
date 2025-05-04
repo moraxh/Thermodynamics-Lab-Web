@@ -6,7 +6,7 @@ export type EducationalMaterialSelect = typeof EducationalMaterial.$inferSelect
 export type EducationalMaterialInsert = typeof EducationalMaterial.$inferSelect
 
 export class EducationalMaterialRepository {
-  static async getResources(page: number = 1, max_size: number = 5): Promise<EducationalMaterialSelect[]> {
+  static async getEducationalMaterial(page: number = 1, max_size: number = 5): Promise<EducationalMaterialSelect[]> {
     const offset = (page - 1) * max_size
     const limit = max_size
 
@@ -20,7 +20,7 @@ export class EducationalMaterialRepository {
     return resources
   }
 
-  static async getNumberOfResources(): Promise<number> {
+  static async getNumberOfEducationalMaterial(): Promise<number> {
     const resourcesCount = await db
       .select({ count: count() })
       .from(EducationalMaterial)

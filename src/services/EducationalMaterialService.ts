@@ -6,28 +6,28 @@ import { generateIdFromEntropySize } from "lucia";
 import { fips } from "node:crypto";
 
 interface EducationalMaterialResponse extends PaginatedResponse {
-  resources?: EducationalMaterialSelect[];
+  educational_materials?: EducationalMaterialSelect[];
 }
 
 const storagePath = "storage/educational_material"
 
 export class EducationalMaterialService {
-  static async getResources(searchParams: URLSearchParams): Promise<EducationalMaterialResponse> {
+  static async getEducationalMaterial(searchParams: URLSearchParams): Promise<EducationalMaterialResponse> {
     const page = Number(searchParams.get('page')) || 1;
     const limit = Number(searchParams.get('limit')) || 5;
 
-    const resources = await EducationalMaterialRepository.getResources(page, limit);
-    const total = await EducationalMaterialRepository.getNumberOfResources()
+    const educational_materials = await EducationalMaterialRepository.getEducationalMaterial(page, limit);
+    const total = await EducationalMaterialRepository.getNumberOfEducationalMaterial()
 
     return {
       status: 200,
       info: {
         total,
         page,
-        size: resources.length,
+        size: educational_materials.length,
         limit
       },
-      resources
+      educational_materials
     }
   }
 

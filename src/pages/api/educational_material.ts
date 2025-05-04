@@ -2,5 +2,5 @@ import { EducationalMaterialController } from "@src/controllers/EducationalMater
 import type { APIContext } from "astro";
 
 export async function GET(context: APIContext): Promise<Response> {
-  return EducationalMaterialController.getResources(context);
+  return EducationalMaterialController.getEducationalMaterial(context);
 }
