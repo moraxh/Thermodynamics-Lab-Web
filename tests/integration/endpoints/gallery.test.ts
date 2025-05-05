@@ -9,11 +9,6 @@ import { generateHashFromStream } from "@__mocks__/scripts/hash"
 vi.mock('fs', () => import('@__mocks__/modules/fs'))
 vi.mock('hash', () => import('@__mocks__/scripts/hash'))
 vi.mock('@src/repositories/GalleryRepository')
-vi.mock('@db/connection', () => ({
-  db: {
-    query: vi.fn()
-  }
-}))
 
 const mockImages: GallerySelect[] = [
   {

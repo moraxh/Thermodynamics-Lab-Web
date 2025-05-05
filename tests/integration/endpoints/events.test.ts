@@ -5,11 +5,6 @@ import type { EventSelect } from '@src/repositories/EventRepository';
 import type { APIContext } from 'astro';
 
 vi.mock('@src/repositories/EventRepository');
-vi.mock('@db/connection', () => ({
-  db: {
-    query: vi.fn()
-  }
-}));
 
 const mockEvents: EventSelect[] = [
   {

@@ -7,6 +7,7 @@ import { MemberSchema } from "@db/schemas";
 import { generateIdFromEntropySize } from "lucia";
 import type { MemberInsert, MemberSelect } from "@src/repositories/MemberRepository";
 import type { CommonResponse } from "@src/types";
+import { validateImage } from "@src/utils/image";
 
 const seedPath = "./seed_data/production/members"
 const storagePath = "storage/members"
@@ -65,6 +66,16 @@ export class MemberService {
       return {
         status: 400,
         message: error
+      }
+    }
+
+    // Validate image
+    try {
+      await validateImage(image)
+    } catch (error) {
+      return {
+        status: 400,
+        message: (error as Error).message
       }
     }
 

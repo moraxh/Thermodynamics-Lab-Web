@@ -5,11 +5,7 @@ import type { EducationalMaterialSelect } from "@src/repositories/EducationalMat
 import type { APIContext } from 'astro'
 
 vi.mock('@src/repositories/EducationalMaterialRepository')
-vi.mock('@db/connection', () => ({
-  db: {
-    query: vi.fn()
-  }
-}))
+vi.mock('@src/repositories/MemberRepository')
 
 const mockEducationalMaterials: EducationalMaterialSelect[] = [
   {

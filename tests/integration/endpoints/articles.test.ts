@@ -5,11 +5,6 @@ import type { ArticleSelect } from '@src/repositories/ArticleRepository';
 import type { APIContext } from 'astro';
 
 vi.mock('@src/repositories/ArticleRepository')
-vi.mock('@db/connection', () => ({
-  db: {
-    query: vi.fn()
-  }
-}))
 
 const mockArticles: ArticleSelect[] = [
   {
