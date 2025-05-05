@@ -96,7 +96,7 @@ export class UserService {
     }
   }
 
-  static async updateUser(formData: FormData): Promise<{ status: number, message: string }> {
+  static async updateUser(formData: FormData): Promise<CommonResponse> {
     const username = formData.get('username') as string
     const password = formData.get('password') as string
     const confirmPassword = formData.get('confirm_password') as string

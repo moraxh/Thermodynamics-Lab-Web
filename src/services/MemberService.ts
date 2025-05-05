@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import { MemberRepository } from "@src/repositories/MemberRepository";
 import { MemberTypeRepository } from "@src/repositories/MemberTypeRepository";
-import { generateHashFromFile, generateHashFromStream } from "@src/utils/Hash";
+import { generateHashFromFile, generateHashFromStream } from "@src/utils/hash";
 import { Readable } from "node:stream"
 import { MemberSchema } from "@db/schemas";
 import { generateIdFromEntropySize } from "lucia";
@@ -48,7 +48,7 @@ export class MemberService {
     }
   }
 
-  static async createMember(formData: FormData): Promise<{ status: number, message: string }> {
+  static async createMember(formData: FormData): Promise<CommonResponse> {
     const image = formData.get('memberPhoto') as File
     const fullName = formData.get('name') as string
     const position = formData.get('position') as string
@@ -135,7 +135,7 @@ export class MemberService {
     }
   }
 
-  static async deleteMember(formData: FormData): Promise<{ status: number, message: string }> {
+  static async deleteMember(formData: FormData): Promise<CommonResponse> {
     const memberId = formData.get('id') as string;
 
     if (!memberId) {
