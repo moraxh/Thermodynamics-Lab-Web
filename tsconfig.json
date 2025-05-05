@@ -26,6 +26,9 @@
       "@integrations/*": [
         "src/integrations/*"
       ],
+      "@__mocks__/*": [
+        "__mocks__/*"
+      ]
     }
   }
 }

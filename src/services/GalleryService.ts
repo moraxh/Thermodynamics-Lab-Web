@@ -1,12 +1,22 @@
 import fs from 'node:fs'
 import { GalleryRepository } from "@src/repositories/GalleryRepository"
-import { generateHashFromFile, generateHashFromStream } from "@src/utils/Hash"
+import { generateHashFromFile, generateHashFromStream } from "@src/utils/hash"
 import { Readable } from "node:stream"
 import type { GalleryInsert, GallerySelect } from '@src/repositories/GalleryRepository'
 import { generateIdFromEntropySize } from 'lucia'
+import type { CommonResponse } from '@src/types'
 
 const seedPath = "./seed_data/production/gallery"
 const storagePath = "storage/gallery"
+
+const supportedImageTypes = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+]
+
+const maxImageSize = 10 * 1024 * 1024 // 10MB
 
 export class GalleryService {
   static async getImages(): Promise<{ status: number, images: GallerySelect[]}> {
@@ -18,13 +28,37 @@ export class GalleryService {
     }
   }
 
-  static async createImage(formData: FormData):Promise<{ status: number, message: string }> {
+  static async createImage(formData: FormData):Promise<CommonResponse> {
     const image = formData.get('image') as File;
 
+    // Check if the file exists
     if (!image) {
       return {
         status: 400,
         message: "La imagen es requerida"
+      }
+    }
+
+    // Check if the image is a valid file
+    if (image.type.startsWith("image/") === false) {
+      return {
+        status: 400,
+        message: "El archivo no es una imagen"
+      }
+    }
+
+    // Check if the image is a supported type
+    if (!supportedImageTypes.includes(image.type)) {
+      return {
+        status: 400,
+        message: "Formato de imagen no soportado"
+      } 
+    }
+
+    if (image.size > maxImageSize) {
+      return {
+        status: 400,
+        message: "La imagen es demasiado grande (10MB máximo)"
       }
     }
 
@@ -66,7 +100,7 @@ export class GalleryService {
     }
   }
 
-  static async deleteImage(formData: FormData):Promise<{ status: number, message: string }> {
+  static async deleteImage(formData: FormData):Promise<CommonResponse> {
     const imageId = formData.get('id') as string;
 
     if (!imageId) {

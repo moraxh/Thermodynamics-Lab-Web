@@ -8,7 +8,7 @@ export class GalleryController {
       return new Response(JSON.stringify(response), { status: response.status })
     } catch (error) {
       return new Response(JSON.stringify({
-        message: "Error al obtener las imagenes"
+        message: "Error al obtener las imágenes"
       }), { status: 500 })
     }
   }
@@ -20,7 +20,7 @@ export class GalleryController {
       return new Response(JSON.stringify(response), { status: response.status })
     } catch (error) {
       return new Response(JSON.stringify({
-        message: "Error interno del servidor"
+        message: "No se pudo crear la imagen"
       }), { status: 500 })
     }
   }
@@ -32,7 +32,7 @@ export class GalleryController {
       return new Response(JSON.stringify(response), { status: response.status })
     } catch (error) {
       return new Response(JSON.stringify({
-        message: "Error interno del servidor"
+        message: "No se pudo eliminar la imagen"
       }), { status: 500 })
     }
   }
