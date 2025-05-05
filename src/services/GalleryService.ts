@@ -106,7 +106,7 @@ export class GalleryService {
     if (!imageId) {
       return {
         status: 400,
-        message: "ID de imagen requerido"
+        message: "El ID de la imagen es requerido"
       }
     }
 
@@ -123,24 +123,6 @@ export class GalleryService {
     await GalleryRepository.deleteImageById(imageId)
     // Delete the image from the filesystem
     fs.rmSync(`./public/${imagePath}`, { force: true })
-
-    // Check if image still exists in the filesystem
-    if (fs.existsSync(`./public/${imagePath}`)) {
-      return {
-        status: 500,
-        message: "Error al eliminar la imagen del sistema de archivos"
-      }
-    }
-
-    // Check if the image was deleted from the database
-    const deletedImage = await GalleryRepository.findImagePathById(imageId)
-
-    if (deletedImage) {
-      return {
-        status: 500,
-        message: "Error al eliminar la imagen de la base de datos"
-      }
-    }
 
     return { 
       status: 200, 

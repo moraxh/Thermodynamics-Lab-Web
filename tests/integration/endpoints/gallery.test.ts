@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { GET, POST } from "@api/gallery"
+import { describe, it, expect, vi, beforeEach, afterAll, afterEach } from 'vitest'
+import { GET, POST, DELETE } from "@api/gallery"
 import { GalleryRepository } from "@src/repositories/GalleryRepository"
 import type { GallerySelect } from "@src/repositories/GalleryRepository"
 import type { APIContext } from "astro"
@@ -25,7 +25,8 @@ const mockImages: GallerySelect[] = [
     id: '2',
     path: 'path/to/image2.jpg',
     uploadedAt: new Date('2023-01-02')
-  }]
+  }
+]
 
 describe('GET /gallery', async () => {
   it('should return a list of images', async () => {
@@ -234,5 +235,96 @@ describe('POST /gallery', async () => {
     expect(response.status).toBe(500)
     const body = await response.json()
     expect(body.message).toEqual('No se pudo crear la imagen')
+  })
+})
+
+describe("DELETE /gallery", async () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it("should delete an image", async () => {
+    vi.spyOn(GalleryRepository, 'findImagePathById').mockResolvedValueOnce("path/image1.png")
+
+    const formData = new FormData()
+    formData.append('id', '123')
+
+    const context = createMockContext(
+      new Request("http://localhost/api/gallery", {
+        method: "DELETE",
+        body: formData
+      })
+    )
+    const response = await DELETE(context)
+    expect(response.status).toBe(200)
+    const body = await response.json()
+    expect(body.message).toEqual('Imagen eliminada correctamente')
+  })
+
+  it("should return an error if formdata is not provided", async () => {
+    vi.spyOn(GalleryRepository, 'findImagePathById').mockResolvedValueOnce("path/image1.png")
+
+    const context = createMockContext(
+      new Request("http://localhost/api/gallery", {
+        method: "DELETE",
+      })
+    )
+    const response = await DELETE(context)
+    expect(response.status).toBe(500)
+    const body = await response.json()
+    expect(body.message).toEqual('No se pudo eliminar la imagen')
+  })
+
+  it("should return an error if the image id is not provided", async () => {
+    vi.spyOn(GalleryRepository, 'findImagePathById').mockResolvedValueOnce("path/image1.png")
+
+    const formData = new FormData()
+
+    const context = createMockContext(
+      new Request("http://localhost/api/gallery", {
+        method: "DELETE",
+        body: formData
+      })
+    )
+    const response = await DELETE(context)
+    expect(response.status).toBe(400)
+    const body = await response.json()
+    expect(body.message).toEqual('El ID de la imagen es requerido')
+  })
+
+  it("should return an error if the image id does not exist", async () => {
+    vi.spyOn(GalleryRepository, 'findImagePathById').mockResolvedValueOnce(null)
+
+    const formData = new FormData()
+    formData.append('id', '123')
+
+    const context = createMockContext(
+      new Request("http://localhost/api/gallery", {
+        method: "DELETE",
+        body: formData
+      })
+    )
+    const response = await DELETE(context)
+    expect(response.status).toBe(400)
+    const body = await response.json()
+    expect(body.message).toEqual('El ID de imagen no existe')
+  })
+
+  it("should return an error if something goes wrong", async () => {
+    vi.spyOn(GalleryRepository, 'findImagePathById').mockRejectedValueOnce(new Error('Database Error'))
+
+    const formData = new FormData()
+    formData.append('id', '123')
+
+    const context = createMockContext(
+      new Request("http://localhost/api/gallery", {
+        method: "DELETE",
+        body: formData
+      })
+    )
+    const response = await DELETE(context)
+    expect(response.status).toBe(500)
+    const body = await response.json()
+    expect(body.message).toEqual('No se pudo eliminar la imagen')
   })
 })

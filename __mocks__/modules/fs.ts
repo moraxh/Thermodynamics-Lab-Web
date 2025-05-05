@@ -9,7 +9,10 @@ const createWriteStream = vi.fn(() => {
   return stream
 })
 
+const rmSync = vi.fn()
+
 export default {
+  rmSync,
   mkdirSync,
   createWriteStream,
 }
