@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@types/pg": "^8.11.13",
+    "eslint": "^9.26.0",
     "sharp": "^0.33.5",
     "standard": "^17.1.2",
     "supertest": "^7.1.0",
