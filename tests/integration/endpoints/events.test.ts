@@ -1,10 +1,14 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GET } from '@api/events';
 import { EventRepository } from '@src/repositories/EventRepository';
 import type { EventSelect } from '@src/repositories/EventRepository';
 import type { APIContext } from 'astro';
 
 vi.mock('@src/repositories/EventRepository');
+
+beforeEach(() => {
+  vi.clearAllMocks()
+})
 
 const mockEvents: EventSelect[] = [
   {

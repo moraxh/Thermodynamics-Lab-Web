@@ -1,10 +1,14 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GET } from "@api/publications"
 import { PublicationRepository } from '@src/repositories/PublicationRepository';
 import type { PublicationSelect } from '@src/repositories/PublicationRepository';
 import { createMockContext } from '@__mocks__/utils';
 
 vi.mock('@src/repositories/PublicationRepository')
+
+beforeEach(() => {
+  vi.clearAllMocks()
+})
 
 const mockPublications: PublicationSelect[] = [
   {

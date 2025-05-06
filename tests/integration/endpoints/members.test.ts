@@ -5,8 +5,10 @@ import type { MemberSelect } from '@src/repositories/MemberRepository';
 import type { MemberTypeSelect } from '@src/repositories/MemberTypeRepository';
 import { createMockContext, createMockImageFile } from '@__mocks__/utils';
 import { GET, POST, DELETE } from '@api/members';
-import { mock } from 'node:test';
-import { fromRoutingStrategy } from 'node_modules/astro/dist/i18n/utils';
+
+beforeEach(() => {
+  vi.clearAllMocks()
+})
 
 vi.mock('fs', () => import('@__mocks__/modules/fs'));
 vi.mock('@src/repositories/MemberRepository')
@@ -43,10 +45,6 @@ const mockMembers: MemberSelect[] = [
 ]
 
 describe('GET /members', async () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
   it('should return a list of members', async () => {
     vi.spyOn(MemberRepository, 'getMembers').mockResolvedValueOnce(mockMembers)
     vi.spyOn(MemberTypeRepository, 'getMemberTypes').mockResolvedValueOnce(mockMemberTypes)

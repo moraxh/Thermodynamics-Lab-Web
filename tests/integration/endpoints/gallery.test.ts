@@ -10,6 +10,10 @@ vi.mock('fs', () => import('@__mocks__/modules/fs'))
 vi.mock('hash', () => import('@__mocks__/scripts/hash'))
 vi.mock('@src/repositories/GalleryRepository')
 
+beforeEach(() => {
+  vi.clearAllMocks()
+})
+
 const mockImages: GallerySelect[] = [
   {
     id: '1',
@@ -70,10 +74,6 @@ describe('GET /gallery', async () => {
 })
 
 describe('POST /gallery', async () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
   it('should create a new image', async () => {
     generateHashFromStream.mockResolvedValueOnce('mockedHash')
     vi.spyOn(GalleryRepository, 'findImageByHash').mockResolvedValue(null)
@@ -234,10 +234,6 @@ describe('POST /gallery', async () => {
 })
 
 describe("DELETE /gallery", async () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
   it("should delete an image", async () => {
     vi.spyOn(GalleryRepository, 'findImagePathById').mockResolvedValueOnce("path/image1.png")
 

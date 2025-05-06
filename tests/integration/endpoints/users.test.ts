@@ -187,10 +187,6 @@ describe('PATCH /users', async() => {
 })
 
 describe('GET /login', async() => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
   it('should redirect to /login', async() => {
     const context = {
       redirect: vi.fn()

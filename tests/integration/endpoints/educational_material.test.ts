@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { GET } from "@api/educational_material"
 import { EducationalMaterialRepository } from "@src/repositories/EducationalMaterialRepository"
 import type { EducationalMaterialSelect } from "@src/repositories/EducationalMaterialRepository"
@@ -6,6 +6,10 @@ import type { APIContext } from 'astro'
 
 vi.mock('@src/repositories/EducationalMaterialRepository')
 vi.mock('@src/repositories/MemberRepository')
+
+beforeEach(() => {
+  vi.clearAllMocks()
+})
 
 const mockEducationalMaterials: EducationalMaterialSelect[] = [
   {
