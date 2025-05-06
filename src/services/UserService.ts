@@ -10,7 +10,7 @@ import type { CommonResponse } from "@src/types";
 import { lucia } from "@src/auth";
 import type { APIContext, AstroCookies } from "astro";
 
-const passwordHashingOptions = {
+export const passwordHashingOptions = {
   memoryCost: 19456,
   timeCost: 2,
   outputLen: 32,
@@ -83,7 +83,7 @@ export class UserService {
     if (!session) {
       return {
         status: 400,
-        message: "No se encontró la sesión"
+        message: "La sesión no es válida"
       }
     }
 
@@ -99,7 +99,7 @@ export class UserService {
   static async updateUser(formData: FormData): Promise<CommonResponse> {
     const username = formData.get('username') as string
     const password = formData.get('password') as string
-    const confirmPassword = formData.get('confirm_password') as string
+    const confirmPassword = formData.get('confirmPassword') as string
 
     // Check if all the fields are filled
     if (!username || !password || !confirmPassword) {

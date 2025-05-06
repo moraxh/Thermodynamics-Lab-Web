@@ -1,4 +1,3 @@
-import { lucia } from "@src/auth";
 import { UserService } from "@src/services/UserService";
 import type { APIContext } from "astro";
 
@@ -27,7 +26,6 @@ export class UserController {
       }), { status: 500 })
     }
   }
-
 
   static async updateUser(context: APIContext): Promise<Response> {
     try {

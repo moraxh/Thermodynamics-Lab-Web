@@ -4,7 +4,6 @@ import type { PaginatedResponse } from "@src/types";
 import type { PublicationInsert, PublicationSelect } from "@src/repositories/PublicationRepository";
 import { publicationTypeEnum } from "@db/tables";
 import { generateIdFromEntropySize } from "lucia";
-import { file } from "astro/loaders";
 
 interface PublicationResponse extends PaginatedResponse {
   publications?: PublicationSelect[];
