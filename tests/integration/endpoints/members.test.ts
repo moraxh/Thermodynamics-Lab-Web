@@ -335,7 +335,7 @@ describe('DELETE /members', async () => {
     expect(data.message).toEqual("Miembro eliminado correctamente")
   })
 
-  it('should return an error if formdata is not provided', async() => {
+  it('should return an error if FormData is not provided', async() => {
     vi.spyOn(MemberRepository, 'findMemberImagePathById').mockResolvedValueOnce('path/to/image.jpg')
 
     const context = createValidContext()
