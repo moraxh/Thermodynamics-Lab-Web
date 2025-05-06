@@ -19,6 +19,7 @@ export class MemberController {
       const response = await MemberService.createMember(formData)
       return new Response(JSON.stringify(response), { status: response.status })
     } catch (error) {
+      console.log(error)
       return new Response(JSON.stringify({
         message: "Error al crear el miembro"
       }), { status: 500 })

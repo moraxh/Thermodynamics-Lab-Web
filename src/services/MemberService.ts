@@ -7,7 +7,6 @@ import { MemberSchema } from "@db/schemas";
 import { generateIdFromEntropySize } from "lucia";
 import type { MemberInsert, MemberSelect } from "@src/repositories/MemberRepository";
 import type { CommonResponse } from "@src/types";
-import { validateImage } from "@src/utils/image";
 
 const seedPath = "./seed_data/production/members"
 const storagePath = "storage/members"
@@ -50,41 +49,10 @@ export class MemberService {
   }
 
   static async createMember(formData: FormData): Promise<CommonResponse> {
-    const image = formData.get('memberPhoto') as File
-    const fullName = formData.get('fullName') as string
-    const position = formData.get('position') as string
-    const typeOfMember = formData.get('typeOfMember') as string
+    const fields = Object.fromEntries(formData.entries())
 
-    if (!image || !fullName || !position || !typeOfMember) {
-      let error;
-      if (!image) error = "La imagen es requerida"
-      else if (!fullName) error = "El nombre es requerido"
-      else if (!position) error = "La posición es requerida"
-      else if (!typeOfMember) error = "El tipo de miembro es requerido"
-      else error = "Todos los campos son requeridos"
-
-      return {
-        status: 400,
-        message: error
-      }
-    }
-
-    // Validate image
-    try {
-      await validateImage(image)
-    } catch (error) {
-      return {
-        status: 400,
-        message: (error as Error).message
-      }
-    }
-
-    // Validate
-    const validation = MemberSchema.safeParse({
-      fullName,
-      position,
-      typeOfMember
-    })
+    // Validate inputs
+    const validation = MemberSchema.safeParse(fields)
 
     if (!validation.success) {
       return {
@@ -93,11 +61,13 @@ export class MemberService {
       }
     }
 
+    const { memberPhoto, fullName, position, typeOfMember } = validation.data
+
     // Get extension
-    const extension = image.type.split('/').pop()
+    const extension = memberPhoto.type.split('/').pop()
 
     // Get hash
-    const hash = await generateHashFromStream(image.stream()) as string
+    const hash = await generateHashFromStream(memberPhoto.stream()) as string
 
     // Check if the image is duplicated
     const duplacatedImage = await MemberRepository.findMemberByHash(hash)
@@ -121,7 +91,7 @@ export class MemberService {
     const outputPath = `storage/members/${hash}.${extension}`
     fs.mkdirSync("./public/storage/members", { recursive: true })
     const writableStream = fs.createWriteStream(`./public/${outputPath}`)
-    const readableStream = Readable.from(image.stream())
+    const readableStream = Readable.from(memberPhoto.stream())
 
     await new Promise<void>((resolve, reject) => {
       readableStream.pipe(writableStream)
