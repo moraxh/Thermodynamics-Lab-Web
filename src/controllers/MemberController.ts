@@ -20,7 +20,7 @@ export class MemberController {
       return new Response(JSON.stringify(response), { status: response.status })
     } catch (error) {
       return new Response(JSON.stringify({
-        message: "Error al obtener el miembro"
+        message: "Error al crear el miembro"
       }), { status: 500 })
     }
   }

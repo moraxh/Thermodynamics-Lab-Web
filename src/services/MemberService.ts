@@ -51,7 +51,7 @@ export class MemberService {
 
   static async createMember(formData: FormData): Promise<CommonResponse> {
     const image = formData.get('memberPhoto') as File
-    const fullName = formData.get('name') as string
+    const fullName = formData.get('fullName') as string
     const position = formData.get('position') as string
     const typeOfMember = formData.get('typeOfMember') as string
 
@@ -158,6 +158,8 @@ export class MemberService {
 
     // Get the path of the image
     const imagePath = await MemberRepository.findMemberImagePathById(memberId)
+
+    // Check if the image exists
     if (!imagePath) {
       return {
         status: 400,
@@ -167,26 +169,9 @@ export class MemberService {
 
     // Delete the register from the database
     await MemberRepository.deleteMember(memberId)
+
     // Delete from the filesystem
     fs.rmSync(`./public/${imagePath}`, { force: true })
-
-    // Check if the register was deleted from the filesystem
-    if (fs.existsSync(`./public/${imagePath}`)) {
-      return {
-        status: 500,
-        message: "Error al eliminar el miembro del sistema de archivos"
-      }
-    }
-
-    // Check if the register was deleted from the database
-    const deletedMember = await MemberRepository.findMemberImagePathById(memberId)
-
-    if (deletedMember) {
-      return {
-        status: 400,
-        message: "Error al eliminar el miembro de la base de datos"
-      }
-    }
 
     return {
       status: 200,
