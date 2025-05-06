@@ -5,6 +5,7 @@ import type { GallerySelect } from "@src/repositories/GalleryRepository"
 import type { APIContext } from "astro"
 import { createMockImageFile, createMockContext } from '@__mocks__/utils'
 import { generateHashFromStream } from "@__mocks__/scripts/hash"
+import { copyFormData } from '@src/utils/formData'
 
 vi.mock('fs', () => import('@__mocks__/modules/fs'))
 vi.mock('hash', () => import('@__mocks__/scripts/hash'))
@@ -28,12 +29,20 @@ const mockImages: GallerySelect[] = [
 ]
 
 describe('GET /gallery', async () => {
+  const createValidContext = (): APIContext => {
+    return createMockContext(
+      new Request('http://localhost/api/gallery', {
+        method: 'GET',
+      })
+    )
+  }
+
   it('should return a list of images', async () => {
     vi.spyOn(GalleryRepository, 'getImages').mockResolvedValueOnce(mockImages)
 
-    const url = new URL("http://localhost/api/gallery")
-    const response = await GET({ url } as APIContext)
+    const context = createValidContext()
 
+    const response = await GET(context)
     expect(response.status).toBe(200)
     const body = await response.json()
     expect(body.images).toEqual(
@@ -49,9 +58,9 @@ describe('GET /gallery', async () => {
   it('should return an empty list of images', async () => {
     vi.spyOn(GalleryRepository, 'getImages').mockResolvedValueOnce([])
 
-    const url = new URL("http://localhost/api/gallery")
-    const response = await GET({ url } as APIContext)
+    const context = createValidContext()
 
+    const response = await GET(context)
     expect(response.status).toBe(200)
     const body = await response.json()
     expect(body.images).toEqual([])
@@ -62,9 +71,9 @@ describe('GET /gallery', async () => {
   it('should return an error if something goes wrong', async () => {
     vi.spyOn(GalleryRepository, 'getImages').mockRejectedValueOnce(new Error("Database error"))
 
-    const url = new URL("http://localhost/api/gallery")
-    const response = await GET({ url } as APIContext)
+    const context = createValidContext()
 
+    const response = await GET(context)
     expect(response.status).toBe(500)
     const body = await response.json()
     expect(body.message).toBeDefined()
@@ -74,116 +83,110 @@ describe('GET /gallery', async () => {
 })
 
 describe('POST /gallery', async () => {
+  const validFormData = new FormData()
+  validFormData.append('image', createMockImageFile())
+
+  const createValidContext = (formData: FormData | null = null): APIContext => {
+    return createMockContext(
+      new Request('http://localhost/api/gallery', {
+        method: 'POST',
+        body: formData
+      })
+    )
+  }
+
   it('should create a new image', async () => {
     generateHashFromStream.mockResolvedValueOnce('mockedHash')
     vi.spyOn(GalleryRepository, 'findImageByHash').mockResolvedValue(null)
     vi.spyOn(GalleryRepository, 'insertImages').mockResolvedValueOnce(undefined)
     
-    const file = createMockImageFile()
-    const formData = new FormData()
-    formData.append('image', file)
-
-    const context = createMockContext(
-      new Request('http://localhost/api/gallery', {
-        method: 'POST',
-        body: formData,
-      })
-    )
+    const context = createValidContext(validFormData)
 
     const response = await POST(context)
-
     expect(response.status).toBe(200)
     const body = await response.json()
     expect(body.message).toEqual('Imagen creada correctamente')
   })
 
-  it('should return an error if formdata is not provided', async () => {
-    const context = createMockContext(
-      new Request('http://localhost/api/gallery', {
-        method: 'POST',
-      })
-    )
+  it('should return an error if FormData is not provided', async () => {
+    const context = createValidContext()
 
     const response = await POST(context)
-
     expect(response.status).toBe(500)
     const body = await response.json()
     expect(body.message).toEqual('No se pudo crear la imagen')
   })
 
-  it('should return an error if the image is not provided', async () => {
-    const formData = new FormData()
+  it('should return an error if the image is not valid', async () => {
+    // No image provided
+    await (async() => {
+      const formData = copyFormData(validFormData)
+      formData.delete('image')
 
-    const context = createMockContext(
-      new Request('http://localhost/api/gallery', {
-        method: 'POST',
-        body: formData,
-      })
-    )
+      const context = createValidContext(formData)
 
-    const response = await POST(context)
+      const response = await POST(context)
+      expect(response.status).toBe(400)
+      const data = await response.json()
+      expect(data.message).toEqual("La imagen es requerida")
+    })()
 
-    expect(response.status).toBe(400)
-    const body = await response.json()
-    expect(body.message).toEqual('La imagen es requerida')
-  })
+    // Invalid file type
+    await (async() => {
+      const invalidFile = createMockImageFile(
+        "test.txt",
+        'text/plain',
+        'This is not an image'
+      ) 
+      
+      const formData = copyFormData(validFormData)
+      formData.set('image', invalidFile)
 
-  it('should return an error if the image is not an image', async () => {
-    const file = createMockImageFile('no image.txt', 'text/plain', 'Hola')
-    const formData = new FormData()
-    formData.append('image', file)
+      const context = createValidContext(formData)
 
-    const context = createMockContext(
-      new Request('http://localhost/api/gallery', {
-        method: 'POST',
-        body: formData,
-      })
-    )
+      const response = await POST(context)
+      expect(response.status).toBe(400)
+      const data = await response.json()
+      expect(data.message).toEqual("El archivo debe ser una imagen")
+    })()
 
-    const response = await POST(context)
+    // No supported format
+    await (async() => {
+      const noSupportedFile = createMockImageFile(
+        "test.gif",
+        'image/gif',
+        'This is a gif'
+      ) 
+      
+      const formData = copyFormData(validFormData)
+      formData.set('image', noSupportedFile)
 
-    expect(response.status).toBe(400)
-    const body = await response.json()
-    expect(body.message).toEqual('El archivo no es una imagen')
+      const context = createValidContext(formData)
 
-  })
+      const response = await POST(context)
+      expect(response.status).toBe(400)
+      const data = await response.json()
+      expect(data.message).toEqual("Formato de imagen no soportado")
+    })()
 
-  it('should return an error if the image has an invalid format', async () => {
-    const file = createMockImageFile('gif.gif', 'image/gif', 'Hola')
-    const formData = new FormData()
-    formData.append('image', file)
+    // Too large image
+    await (async() => {
+      const tooLargeFile = createMockImageFile(
+        "test.png",
+        'image/png',
+        'H'.repeat(20 * 1024 * 1024) // 20MB
+      ) 
+      
+      const formData = copyFormData(validFormData)
+      formData.set('image', tooLargeFile)
 
-    const context = createMockContext(
-      new Request('http://localhost/api/gallery', {
-        method: 'POST',
-        body: formData,
-      })
-    )
+      const context = createValidContext(formData)
 
-    const response = await POST(context)
-
-    expect(response.status).toBe(400)
-    const body = await response.json()
-    expect(body.message).toEqual('Formato de imagen no soportado')
-  })
-
-  it('should return an error if the image is too large', async () => {
-    const file = createMockImageFile('image.png', 'image/png', 'H'.repeat(11 * 1024 * 1024)) // 11MB
-    const formData = new FormData()
-    formData.append('image', file)
-
-    const context = createMockContext(
-      new Request('http://localhost/api/gallery', {
-        method: 'POST',
-        body: formData,
-      })
-    )
-
-    const response = await POST(context)
-
-    expect(response.status).toBe(400)
-    const body = await response.json()
-    expect(body.message).toEqual('La imagen es demasiado grande (10MB máximo)')
+      const response = await POST(context)
+      expect(response.status).toBe(400)
+      const data = await response.json()
+      expect(data.message).toEqual("El tamaño de la imagen no puede ser mayor a 10MB")
+    })()
   })
 
   it('should return an error if the image already exists', async () => {
@@ -191,19 +194,9 @@ describe('POST /gallery', async () => {
     vi.spyOn(GalleryRepository, 'findImageByHash').mockResolvedValue(mockImages[0])
     vi.spyOn(GalleryRepository, 'insertImages').mockResolvedValueOnce(undefined)
     
-    const file = createMockImageFile()
-    const formData = new FormData()
-    formData.append('image', file)
-
-    const context = createMockContext(
-      new Request('http://localhost/api/gallery', {
-        method: 'POST',
-        body: formData,
-      })
-    )
+    const context = createValidContext(validFormData)
 
     const response = await POST(context)
-
     expect(response.status).toBe(400)
     const body = await response.json()
     expect(body.message).toEqual('La imagen ya existe')
@@ -214,19 +207,9 @@ describe('POST /gallery', async () => {
     vi.spyOn(GalleryRepository, 'findImageByHash').mockRejectedValue(new Error("Database error"))
     vi.spyOn(GalleryRepository, 'insertImages').mockRejectedValue(new Error("Database error"))
     
-    const file = createMockImageFile()
-    const formData = new FormData()
-    formData.append('image', file)
-
-    const context = createMockContext(
-      new Request('http://localhost/api/gallery', {
-        method: 'POST',
-        body: formData,
-      })
-    )
+    const context = createValidContext(validFormData)
 
     const response = await POST(context)
-
     expect(response.status).toBe(500)
     const body = await response.json()
     expect(body.message).toEqual('No se pudo crear la imagen')
@@ -234,32 +217,34 @@ describe('POST /gallery', async () => {
 })
 
 describe("DELETE /gallery", async () => {
-  it("should delete an image", async () => {
-    vi.spyOn(GalleryRepository, 'findImagePathById').mockResolvedValueOnce("path/image1.png")
+  const validFormData = new FormData()
+  validFormData.append('id', '123')
 
-    const formData = new FormData()
-    formData.append('id', '123')
-
-    const context = createMockContext(
-      new Request("http://localhost/api/gallery", {
-        method: "DELETE",
+  const createValidContext = (formData: FormData | null = null): APIContext => {
+    return createMockContext(
+      new Request('http://localhost/api/gallery', {
+        method: 'DELETE',
         body: formData
       })
     )
+  }
+
+  it("should delete an image", async () => {
+    vi.spyOn(GalleryRepository, 'findImagePathById').mockResolvedValueOnce("path/image1.png")
+
+    const context = createValidContext(validFormData)
+
     const response = await DELETE(context)
     expect(response.status).toBe(200)
     const body = await response.json()
     expect(body.message).toEqual('Imagen eliminada correctamente')
   })
 
-  it("should return an error if formdata is not provided", async () => {
+  it("should return an error if FormData is not provided", async () => {
     vi.spyOn(GalleryRepository, 'findImagePathById').mockResolvedValueOnce("path/image1.png")
 
-    const context = createMockContext(
-      new Request("http://localhost/api/gallery", {
-        method: "DELETE",
-      })
-    )
+    const context = createValidContext()
+
     const response = await DELETE(context)
     expect(response.status).toBe(500)
     const body = await response.json()
@@ -269,14 +254,11 @@ describe("DELETE /gallery", async () => {
   it("should return an error if the image id is not provided", async () => {
     vi.spyOn(GalleryRepository, 'findImagePathById').mockResolvedValueOnce("path/image1.png")
 
-    const formData = new FormData()
+    const formData = copyFormData(validFormData)
+    formData.delete('id')
 
-    const context = createMockContext(
-      new Request("http://localhost/api/gallery", {
-        method: "DELETE",
-        body: formData
-      })
-    )
+    const context = createValidContext(formData)
+
     const response = await DELETE(context)
     expect(response.status).toBe(400)
     const body = await response.json()
@@ -286,15 +268,8 @@ describe("DELETE /gallery", async () => {
   it("should return an error if the image id does not exist", async () => {
     vi.spyOn(GalleryRepository, 'findImagePathById').mockResolvedValueOnce(null)
 
-    const formData = new FormData()
-    formData.append('id', '123')
+    const context = createValidContext(validFormData)
 
-    const context = createMockContext(
-      new Request("http://localhost/api/gallery", {
-        method: "DELETE",
-        body: formData
-      })
-    )
     const response = await DELETE(context)
     expect(response.status).toBe(400)
     const body = await response.json()
@@ -304,15 +279,8 @@ describe("DELETE /gallery", async () => {
   it("should return an error if something goes wrong", async () => {
     vi.spyOn(GalleryRepository, 'findImagePathById').mockRejectedValueOnce(new Error('Database Error'))
 
-    const formData = new FormData()
-    formData.append('id', '123')
+    const context = createValidContext(validFormData)
 
-    const context = createMockContext(
-      new Request("http://localhost/api/gallery", {
-        method: "DELETE",
-        body: formData
-      })
-    )
     const response = await DELETE(context)
     expect(response.status).toBe(500)
     const body = await response.json()

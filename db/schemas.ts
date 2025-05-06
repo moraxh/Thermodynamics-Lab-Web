@@ -50,7 +50,7 @@ export const MemberTypeSchema = z.object({
 })
 
 export const GallerySchema = z.object({
-  path: z.string({ message: "La ruta de la imagen es requerida"})
+  image: ImageSchema.shape.image,
 })
 
 export const PublicationSchema = z.object({

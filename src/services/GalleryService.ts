@@ -6,6 +6,7 @@ import type { GalleryInsert, GallerySelect } from '@src/repositories/GalleryRepo
 import { generateIdFromEntropySize } from 'lucia'
 import type { CommonResponse } from '@src/types'
 import { validateImage } from '@src/utils/image'
+import { GallerySchema } from '@db/schemas'
 
 const seedPath = "./seed_data/production/gallery"
 const storagePath = "storage/gallery"
@@ -21,17 +22,20 @@ export class GalleryService {
   }
 
   static async createImage(formData: FormData):Promise<CommonResponse> {
-    const image = formData.get('image') as File;
+    const fields = Object.fromEntries(formData.entries())
     
-    try {
-      await validateImage(image)
-    } catch (error) {
+    // Validate inputs
+    const validation = GallerySchema.safeParse(fields)
+
+    if (!validation.success) {
       return {
         status: 400,
-        message: (error as Error).message
+        message: validation.error.issues[0].message || "Campos inválidos"
       }
     }
 
+    const { image } = validation.data
+    
     const extension = image.type.split('/').pop()
     const hash = await generateHashFromStream(image.stream()) as string
 
