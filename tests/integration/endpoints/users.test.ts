@@ -10,7 +10,6 @@ import type { APIContext } from 'astro';
 import type { UserSelect } from '@src/repositories/UserRepository';
 import { lucia } from '@src/auth';
 import { copyFormData } from '@src/utils/formData';
-import { V } from 'vitest/dist/chunks/reporters.d.79o4mouw.js';
 
 vi.mock('@src/repositories/UserRepository')
 vi.mock('lucia', () => import('@__mocks__/modules/lucia'))
@@ -221,7 +220,10 @@ describe('POST /login', async() => {
   it('should return an error if password is incorrect', async () => {
     vi.spyOn(UserRepository, 'findUserByUsername').mockResolvedValueOnce(mockUser)
 
-    const context = createValidContext(validFormData)
+    const formData = copyFormData(validFormData)
+    formData.set('password', 'wrongpassword')
+
+    const context = createValidContext(formData)
 
     const response = await LoginPOST(context)
     expect(response.status).toBe(400)
