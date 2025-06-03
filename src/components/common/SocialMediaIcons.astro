@@ -4,25 +4,34 @@
   import Icon from "@components/common/Icon.astro"
 ---
 
-<nav class:list={[className]} class="">
+<nav class:list={[className]}>
   {FACEBOOK_URL && (
     <a href={FACEBOOK_URL} target="_blank">
-      <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-6" name="facebook"/>
+      <Icon class="hover:brightness-90 hover:scale-105 hover:cursor-pointer h-6" name="facebook"/>
     </a>
   )}
   {INSTAGRAM_URL && (
     <a href={INSTAGRAM_URL} target="_blank">
-      <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-5" name="instagram"/>
+      <Icon class="hover:brightness-90 hover:scale-105 hover:cursor-pointer h-5" name="instagram"/>
     </a>
   )}
   {TIKTOK_URL && (
     <a href={TIKTOK_URL} target="_blank">
-      <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-5" name="tiktok"/>
+      <Icon class="hover:brightness-90 hover:scale-105 hover:cursor-pointer h-5" name="tiktok"/>
     </a>
   )}
   {YOUTUBE_URL && (
     <a href={YOUTUBE_URL} target="_blank">
-      <Icon class="hover:brightness-75 hover:scale-105 hover:cursor-pointer h-5" name="youtube"/>
+      <Icon class="hover:brightness-90 hover:scale-105 hover:cursor-pointer h-5" name="youtube"/>
     </a>
   )}
 </nav>
+
+<style>
+  @import "../../styles/global.css";
+
+  a {
+    @apply bg-gray1 rounded-full p-2;
+  }
+
+</style>

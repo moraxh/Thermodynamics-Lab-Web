@@ -4,7 +4,7 @@
 
 <h2 class="text-accent text-3xl font-bold">Publicaciones Científicas</h2>
 
-<div id="categoryNav" class="flex flex-wrap gap-2 max-w-full">
+<div id="categoryNav" class="flex flex-wrap gap-2 max-w-full text-text">
   <button data-filter="all" class="active">Todos</button>
   <button data-filter="article">Artículos</button>
   <button data-filter="book">Libros</button>
@@ -17,17 +17,17 @@
 <section id="publicationsSection" class="flex flex-wrap justify-center gap-5 max-w-full">
 </section>
 
-<div hidden id="pagination" class="w-full flex flex-wrap justify-center items-center gap-2 max-w-[90vw]">
+<div hidden id="pagination" class="w-full flex flex-wrap justify-center items-center gap-2 max-w-[90vw] text-text">
   <!-- Previous -->
   <button id="previousPage">
-    <Icon name="right_arrow" class="fill-white w-5 h-5 rotate-180" />
+    <Icon name="right_arrow" class="fill-text w-5 h-5 rotate-180" />
   </button>
   <div class="flex gap-2">
 
   </div>
   <!-- Next -->
   <button id="nextPage">
-    <Icon name="right_arrow" class="fill-white w-5 h-5" />
+    <Icon name="right_arrow" class="fill-text w-5 h-5" />
   </button>
 </div>
 
@@ -39,11 +39,11 @@
   }
 
   #categoryNav > button.active {
-    @apply bg-gray1;
+    @apply bg-gray2;
   }
 
   #pagination button {
-    @apply bg-gray0 rounded-md flex justify-center items-center w-fit min-h-12 min-w-12 hover:bg-gray1 transition-all duration-200 ease-in-out hover:cursor-pointer;
+    @apply bg-gray1 rounded-md flex justify-center items-center w-fit min-h-12 min-w-12 hover:bg-gray1 hover:cursor-pointer;
   }
 
   #pagination button.active {
@@ -60,8 +60,6 @@
 </style>
 
 <script>
-import { info } from "node_modules/astro/dist/core/logger/core"
-
   const DEFAULT_LIMIT_PER_PAGE = 6
 
   const handlePublications = () => {

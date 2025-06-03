@@ -1,6 +1,7 @@
 ---
   import Layout from '@layouts/Layout.astro';
-  import bgImage from '@assets/images/bg/home.webp'
+  import bgImageDark from '@assets/images/bg/home/dark.webp'
+  import bgImageLight from '@assets/images/bg/home/light.webp'
 
   import { Image } from 'astro:assets';
 ---
@@ -11,13 +12,24 @@
       <h1 class="font-bold text-accent text-4xl xs:text-6xl sm:text-7xl md:text-8xl xl:text-9xl font-serif">
         ¿QUIÉNES<br>SOMOS?
       </h1>
-      <p class="text-justify text-gray3 text-xl sm:text-2xl lg:text-2xl">
+      <p class="text-justify text-text text-xl sm:text-2xl lg:text-2xl">
         Somos una <strong>unidad de investigación</strong> de la Universidad de Guanajuato. Enfocada principalmente en el análisis de <strong>sistemas termodinámicos</strong>.
       </p>
     </div>
   </section>
 
-  <Image loading="eager" class="bg-images -z-10 top-5 w-auto object-contain -translate-x-1/2 absolute blur-xs brightness-[20%] h-[700px] left-1/2 lg:blur-none lg:brightness-100 lg:left-3/4 lg:h-[900px]" src={bgImage} alt="bg" />
+  <Image
+    alt="bg" 
+    src={bgImageLight}
+    loading="eager" 
+    class="bg-images -z-10 w-auto object-contain -translate-x-1/2 absolute blur-xs h-[600px] left-1/2 lg:blur-none opacity-40 lg:opacity-100 lg:left-3/4 lg:h-[500px] xl:h-[600px] 2xl:h-[700px] dark:hidden"
+  />
+  <Image
+    alt="bg" 
+    src={bgImageDark}
+    loading="eager" 
+    class="bg-images -z-10 top-5 w-auto object-contain -translate-x-1/2 absolute blur-xs brightness-[20%] h-[700px] left-1/2 lg:blur-none lg:brightness-100 lg:left-3/4 lg:h-[900px] hidden dark:block"
+  />
 </Layout>
  
 <style>
