@@ -1,17 +1,89 @@
 import fs from "node:fs"
 import { ArticleRepository } from "@src/repositories/ArticleRepository";
-import { Article } from "@db/tables";
-import type { PaginatedResponse } from "@src/types";
+import type { CommonResponse, PaginatedResponse } from "@src/types";
 import type { ArticleSelect, ArticleInsert } from "@src/repositories/ArticleRepository";
 import { generateIdFromEntropySize } from "lucia";
+import { ArticleSchema } from "@db/schemas";
+import { generateHashFromStream } from "@src/utils/hash";
 
 interface ArticleResponse extends PaginatedResponse {
   articles?: ArticleSelect[];
 }
 
 const storagePath = "storage/articles"
+const filesPath = `${storagePath}/files`
+const thumbnailsPath = `${storagePath}/thumbnails`  
 
 export class ArticleService {
+  static async createArticle(formData: FormData): Promise<CommonResponse> {
+    const fields = Object.fromEntries(formData.entries())
+    const validation = ArticleSchema.safeParse(fields)
+
+    if (!validation.success) {
+      return {
+        status: 400,
+        message: validation.error.errors[0].message,
+      }
+    }
+
+    const { title, description, publicationDate, file, thumbnail } = validation.data
+
+    // Check if the title is already in use
+    if (await ArticleRepository.getArticleByTitle(title)) {
+      return {
+        status: 400,
+        message: "El título ya está en uso",
+      }
+    }
+
+    // Get the file & thumbnail hashes
+    const fileHash = await generateHashFromStream(file.stream())
+    const thumbnailHash = await generateHashFromStream(thumbnail.stream())
+
+    // Check if the file is already in use
+    if (await ArticleRepository.getArticleByFileHash(fileHash)) {
+      return {
+        status: 400,
+        message: "El archivo ya está en uso",
+      }
+    }
+
+    // Check if the thumbnail is already in use
+    if (await ArticleRepository.getArticleByThumbnailHash(thumbnailHash)) {
+      return {
+        status: 400,
+        message: "La miniatura ya está en uso",
+      }
+    }
+
+    // Save the file & thumbnail
+    fs.mkdirSync(`./public/${filesPath}`, { recursive: true })
+    fs.mkdirSync(`./public/${thumbnailsPath}`, { recursive: true })
+
+    const filePath = `${filesPath}/${fileHash}.${file.name.split('.').pop()}`
+    const thumbnailPath = `${thumbnailsPath}/${thumbnailHash}.${thumbnail.name.split('.').pop()}`
+
+    fs.writeFileSync(`./public/${filePath}`, Buffer.from(await file.arrayBuffer()))
+    fs.writeFileSync(`./public/${thumbnailPath}`, Buffer.from(await thumbnail.arrayBuffer()))
+
+    // Insert in the database
+    ArticleRepository.insertArticles([
+      {
+        id: generateIdFromEntropySize(10),
+        title,
+        description,
+        publicationDate: new Date(publicationDate),
+        filePath,
+        thumbnailPath,
+      }
+    ])
+
+    return {
+      status: 200,
+      message: "Articulo creado correctamente",
+    }
+  }
+
   static async getArticles(searchParams: URLSearchParams): Promise<ArticleResponse> {
     const page = Number(searchParams.get('page')) || 1;
     const limit = Number(searchParams.get('limit')) || 9;
@@ -40,9 +112,6 @@ export class ArticleService {
   }
 
   static async seedData(): Promise<void> {
-    const filesPath = `${storagePath}/files`
-    const thumbnailsPath = `${storagePath}/thumbnails`  
-
     // Create the directories if they don't exist
     if (!fs.existsSync(`./public/${filesPath}`)) {
       fs.mkdirSync(`./public/${filesPath}`, { recursive: true })

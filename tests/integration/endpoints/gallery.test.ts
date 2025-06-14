@@ -12,7 +12,7 @@ vi.mock('hash', () => import('@__mocks__/scripts/hash'))
 vi.mock('@src/repositories/GalleryRepository')
 
 beforeEach(() => {
-  vi.clearAllMocks()
+  vi.restoreAllMocks()
 })
 
 const mockImages: GallerySelect[] = [

@@ -7,7 +7,7 @@ import { createMockContext } from '@__mocks__/utils';
 vi.mock('@src/repositories/VideoRepository')
 
 beforeEach(() => {
-  vi.clearAllMocks()
+  vi.restoreAllMocks()
 })
 
 const mockVideos: VideoSelect[] = [
@@ -96,3 +96,8 @@ describe('GET /videos', async () => {
     expect(data.message).toBe('Error al obtener los videos')
   })
 })
+
+
+describe('POST /videos', () => {})
+describe('PATCH /videos', () => {})
+describe('DELETE /videos', () => {})

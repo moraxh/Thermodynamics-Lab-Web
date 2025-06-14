@@ -15,7 +15,7 @@ vi.mock('@src/repositories/UserRepository')
 vi.mock('lucia', () => import('@__mocks__/modules/lucia'))
 
 beforeEach(() => {
-  vi.clearAllMocks()
+  vi.restoreAllMocks()
 })
 
 const mockUser: UserSelect = {
@@ -214,6 +214,7 @@ describe('POST /login', async() => {
     const response = await LoginPOST(context)
     expect(response.status).toBe(400)
     const data = await response.json()
+    console.log(data)
     expect(data.message).toBe("El usuario o la contraseña no son correctos")
   })
 

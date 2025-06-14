@@ -7,7 +7,7 @@ import { createMockContext } from '@__mocks__/utils';
 vi.mock('@src/repositories/PublicationRepository')
 
 beforeEach(() => {
-  vi.clearAllMocks()
+  vi.restoreAllMocks()
 })
 
 const mockPublications: PublicationSelect[] = [
@@ -116,3 +116,7 @@ describe('GET /publications', () => {
     expect(data.message).toBe("Error al obtener las publicaciones")
   })
 })
+
+describe('POST /publications', () => {})
+describe('PATCH /publications', () => {})
+describe('DELETE /publications', () => {})

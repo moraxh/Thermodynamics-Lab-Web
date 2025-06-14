@@ -9,12 +9,19 @@ export const supportedImageTypes = [
 ]
 
 export const maxImageSize = 10 * 1024 * 1024 // 10MB
+export const maxPDFSize = 20 * 1024 * 1024 // 10MB
 
 export const ImageSchema = z.object({
   image: z.instanceof(File, { message: "La imagen es requerida"})
     .refine((file) => file.type.startsWith("image/"), { message: "El archivo debe ser una imagen"})
     .refine((file) => supportedImageTypes.includes(file.type), { message: "Formato de imagen no soportado"})
     .refine((file) => file.size <= maxImageSize, { message: "El tamaño de la imagen no puede ser mayor a 10MB"})
+})
+
+export const PDFSchema = z.object({
+  file: z.instanceof(File, { message: "El archivo es requerido"})
+    .refine((file) => file.type === "application/pdf", { message: "El archivo debe ser un PDF"})
+    .refine((file) => file.size <= maxPDFSize, { message: "El tamaño del archivo no puede ser mayor a 10MB"})
 })
 
 export const UserSchema = z.object({
@@ -74,7 +81,7 @@ export const ArticleSchema = z.object({
   description: z.string({ message: "La descripción es requerida"})
     .min(3, { message: "La descripción debe tener al menos 3 caracteres de longitud"})
     .max(5000, { message: "La descripción no puede tener mas de 5000 caracteres de longitud"}),
-  filePath: z.string({ message: "La ruta del archivo es requerida"}),
-  thumbnailPath: z.string({ message: "La ruta de la miniatura es requerida"}),
-  publicationDate: z.string({ message: "La fecha de publicación es requerida"})
+  publicationDate: z.string({ message: "La fecha de publicación es requerida"}),
+  thumbnail: ImageSchema.shape.image,
+  file: PDFSchema.shape.file,
 })

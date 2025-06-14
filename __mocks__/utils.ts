@@ -11,6 +11,16 @@ export function createMockImageFile(
   return new File([blob], name, { type: mime })
 }
 
+export function createMockPDFFile(
+  name: string = 'test.pdf',
+  mime: string = 'application/pdf',
+  content: string = 'fake content'
+): File {
+  const buffer = Buffer.from(content)
+  const blob = new Blob([buffer], { type: mime })
+  return new File([blob], name, { type: mime })
+}
+
 export function createMockContext(
   request: Request = new Request('http://localhost/api/test', {
     method: 'GET',

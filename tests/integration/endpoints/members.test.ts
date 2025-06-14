@@ -9,7 +9,7 @@ import { copyFormData } from '@src/utils/formData';
 import { fromRoutingStrategy } from 'node_modules/astro/dist/i18n/utils';
 
 beforeEach(() => {
-  vi.clearAllMocks()
+  vi.restoreAllMocks()
 })
 
 vi.mock('fs', () => import('@__mocks__/modules/fs'));

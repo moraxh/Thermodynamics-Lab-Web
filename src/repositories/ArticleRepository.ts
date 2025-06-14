@@ -1,4 +1,4 @@
-import { count, desc } from "drizzle-orm"
+import { count, desc, eq, like } from "drizzle-orm"
 import { db } from "@db/connection"
 import { Article } from "@db/tables"
 
@@ -6,6 +6,36 @@ export type ArticleSelect = typeof Article.$inferSelect
 export type ArticleInsert = typeof Article.$inferInsert
 
 export class ArticleRepository {
+  static async getArticleByTitle(title: string): Promise<ArticleSelect | null> {
+    const article = await db
+      .select()
+      .from(Article)
+      .where(eq(Article.title, title))
+      .limit(1)
+
+    return article[0]
+  }
+
+  static async getArticleByFileHash(fileHash: string): Promise<ArticleSelect | null> {
+    const article = await db
+      .select()
+      .from(Article)
+      .where(like(Article.filePath, `%${fileHash}%`))
+      .limit(1)
+
+    return article[0]
+  }
+
+  static async getArticleByThumbnailHash(thumbnailHash: string): Promise<ArticleSelect | null> {
+    const article = await db
+      .select()
+      .from(Article)
+      .where(like(Article.thumbnailPath, `%${thumbnailHash}%`))
+      .limit(1)
+
+    return article[0] 
+  }
+
   static async getArticles(page: number = 1, max_size: number = 5): Promise<ArticleSelect[]> {
     const offset = (page - 1 ) *  max_size
     const limit = max_size

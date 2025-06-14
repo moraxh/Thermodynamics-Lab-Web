@@ -8,7 +8,7 @@ vi.mock('@src/repositories/EducationalMaterialRepository')
 vi.mock('@src/repositories/MemberRepository')
 
 beforeEach(() => {
-  vi.clearAllMocks()
+  vi.restoreAllMocks()
 })
 
 const mockEducationalMaterials: EducationalMaterialSelect[] = [
@@ -114,3 +114,7 @@ describe('GET /educational_material', async () => {
     expect(body.message).toBeDefined()
   })
 })
+
+describe('POST /educational_material', async () => {})
+describe('PATCH /educational_material', async () => {})
+describe('DELETE /educational_material', async () => {})

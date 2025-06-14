@@ -1,7 +1,6 @@
 import { UserSchema } from "@db/schemas";
-import { hash } from "@node-rs/argon2";
+import { hash, verify } from "@node-rs/argon2";
 import { UserRepository } from "@src/repositories/UserRepository";
-import { verify } from "@node-rs/argon2"
 import { generateIdFromEntropySize } from "lucia";
 import * as crypto from 'node:crypto'
 

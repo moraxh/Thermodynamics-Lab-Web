@@ -7,7 +7,7 @@ import type { APIContext } from 'astro';
 vi.mock('@src/repositories/EventRepository');
 
 beforeEach(() => {
-  vi.clearAllMocks()
+  vi.restoreAllMocks()
 })
 
 const mockEvents: EventSelect[] = [
@@ -125,3 +125,7 @@ describe('GET /events', async () => {
     expect(body.message).toBeDefined()
   })
 })
+
+describe('POST /events', async () => {})
+describe('PATCH /events', async () => {})
+describe('DELETE /events', async () => {})
