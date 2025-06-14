@@ -20,12 +20,7 @@ export default async function seedDatabase() {
   await new Promise((resolve, reject) => {
     exec("npx drizzle-kit generate", async (error, stdout, stderr) => {
       if (error) {
-        console.error(`Error generating migrations: ${error}`);
-        reject(error)
-      }
-      if (stderr) {
-        console.log(`Error in the standard error: ${stderr}`);
-        reject(stderr)
+        throw new Error(`Error generating migrations: ${error}`);
       }
       resolve(stdout)
     });

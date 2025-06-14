@@ -37,7 +37,7 @@ export async function ensureDatabaseExists() {
 
     await client.query(`CREATE DATABASE "${databaseName}"`);
   } catch (error) {
-    console.error("An error occurred while checking/creating the database:", error);
+    throw new Error(`Error ensuring database exists, does your database is up?: ${error}`);
   } finally {
     await client.end();
   }
