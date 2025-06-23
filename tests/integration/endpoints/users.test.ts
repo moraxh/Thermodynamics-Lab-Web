@@ -1,15 +1,22 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { hash } from '@node-rs/argon2';
-import { PATCH } from "@api/users"
-import { GET as LoginGET, POST as LoginPOST } from "@api/login"
-import { GET as LogoutGET, POST as LogoutPOST } from "@api/logout"
-import { UserRepository } from '@src/repositories/UserRepository';
+import {
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi
+  } from 'vitest';
+import { copyFormData } from '@src/utils/formData';
 import { createMockContext } from '@__mocks__/utils';
+import { GET as LoginGET, POST as LoginPOST } from '@api/login';
+import { GET as LogoutGET, POST as LogoutPOST } from '@api/logout';
+import { hash } from '@node-rs/argon2';
+import { lucia } from '@src/auth';
 import { passwordHashingOptions } from '@src/services/UserService';
+import { PATCH } from '@api/users';
+import { UserRepository } from '@src/repositories/UserRepository';
 import type { APIContext } from 'astro';
 import type { UserSelect } from '@src/repositories/UserRepository';
-import { lucia } from '@src/auth';
-import { copyFormData } from '@src/utils/formData';
 
 vi.mock('@src/repositories/UserRepository')
 vi.mock('lucia', () => import('@__mocks__/modules/lucia'))
@@ -18,11 +25,15 @@ beforeEach(() => {
   vi.restoreAllMocks()
 })
 
-const mockUser: UserSelect = {
-  id: '123',
-  username: 'testuser',
-  passwordHash: await hash('testpassword', passwordHashingOptions)
-}
+let mockUser: UserSelect;
+
+beforeAll(async () => {
+  mockUser = {
+    id: '123',
+    username: 'testuser',
+    passwordHash: await hash('testpassword', passwordHashingOptions)
+  };
+});
 
 describe('PATCH /users', async() => {
   const validFormData = new FormData()
@@ -214,7 +225,6 @@ describe('POST /login', async() => {
     const response = await LoginPOST(context)
     expect(response.status).toBe(400)
     const data = await response.json()
-    console.log(data)
     expect(data.message).toBe("El usuario o la contraseña no son correctos")
   })
 
