@@ -1,5 +1,16 @@
-import { pgTable, text, varchar, boolean, integer, timestamp, json, pgEnum, date, time } from "drizzle-orm/pg-core";
-import { EndpointDidNotReturnAResponse } from "node_modules/astro/dist/core/errors/errors-data";
+import {
+  boolean,
+  date,
+  integer,
+  json,
+  pgEnum,
+  pgTable,
+  text,
+  time,
+  timestamp,
+  varchar
+  } from 'drizzle-orm/pg-core';
+import { EndpointDidNotReturnAResponse } from 'node_modules/astro/dist/core/errors/errors-data';
 
 export const User = pgTable("users", {
   id: varchar("id", { length: 255 })
@@ -140,11 +151,9 @@ export const Event = pgTable("events", {
   id: varchar("id", { length: 255 })
     .primaryKey(),
   title: text("title")
-    .notNull()
-    .unique(),
+    .notNull(),
   description: text("description")
-    .notNull()
-    .unique(),
+    .notNull(),
   typeOfEvent: varchar("type_of_event", { length: 255 })
     .notNull(),
   eventDate: date("event_date")

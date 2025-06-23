@@ -1,5 +1,5 @@
-import { z } from "zod"
-import { publicationTypeEnum } from "@db/tables"
+import { publicationTypeEnum } from '@db/tables';
+import { z } from 'zod';
 
 export const supportedImageTypes = [
   "image/jpeg",
@@ -81,7 +81,57 @@ export const ArticleSchema = z.object({
   description: z.string({ message: "La descripción es requerida"})
     .min(3, { message: "La descripción debe tener al menos 3 caracteres de longitud"})
     .max(5000, { message: "La descripción no puede tener mas de 5000 caracteres de longitud"}),
-  publicationDate: z.string({ message: "La fecha de publicación es requerida"}),
+  publicationDate: z.string({ message: "La fecha de publicación es requerida"})
+    .date(),
   thumbnail: ImageSchema.shape.image,
   file: PDFSchema.shape.file,
 })
+
+export const EventSchema = z.object({
+  title: z.string({ message: "El título es requerido"})
+    .min(3, { message: "El título debe tener al menos 3 caracteres de longitud"})
+    .max(500, { message: "El título no puede tener mas de 500 caracteres de longitud"}),
+  description: z.string({ message: "La descripción es requerida"})
+    .min(3, { message: "La descripción debe tener al menos 3 caracteres de longitud"})
+    .max(5000, { message: "La descripción no puede tener mas de 5000 caracteres de longitud"}),
+  typeOfEvent: z.string({ message: "El tipo de evento es requerido"})
+    .min(3, { message: "El tipo de evento debe tener al menos 3 caracteres de longitud"})
+    .max(255, { message: "El tipo de evento no puede tener mas de 255 caracteres de longitud"}),
+  eventDate: z.string({ message: "La fecha del evento es requerida"})
+    .date(),
+  startTime: z.string({ message: "La hora de inicio del evento es requerida"})
+    .min(5, { message: "La hora de inicio del evento debe tener al menos 5 caracteres de longitud"})
+    .max(5, { message: "La hora de inicio del evento no puede tener mas de 5 caracteres de longitud"}),
+  endTime: z.string({ message: "La hora de fin del evento es requerida"})
+    .min(5, { message: "La hora de fin del evento debe tener al menos 5 caracteres de longitud"})
+    .max(5, { message: "La hora de fin del evento no puede tener mas de 5 caracteres de longitud"}),
+  location: z.string({ message: "La ubicación del evento es requerida"})
+    .min(3, { message: "La ubicación del evento debe tener al menos 3 caracteres de longitud"})
+    .max(255, { message: "La ubicación del evento no puede tener mas de 255 caracteres de longitud"}),
+  link: z.string()
+    .url({ message: "El enlace del evento debe ser una URL válida"})
+    .min(1, { message: "El enlace del evento es requerido"})
+    .max(500, { message: "El enlace del evento no puede tener mas de 500 caracteres de longitud"})
+    .optional(),
+}).refine(data => {
+  const startTime = data.startTime.split(":").map(Number);
+  const endTime = data.endTime.split(":").map(Number);
+
+  if (startTime.length !== 2 || endTime.length !== 2) {
+    return false;
+  }
+
+  const startDate = new Date(data.eventDate);
+  startDate.setHours(startTime[0], startTime[1]);
+
+  const endDate = new Date(data.eventDate);
+  endDate.setHours(endTime[0], endTime[1]);
+
+  return startDate < endDate;
+}, { message: "La hora de inicio debe ser anterior a la hora de fin" })
+.refine(data => {
+  const eventDate = new Date(data.eventDate);
+  const now = new Date();
+
+  return eventDate >= now;
+}, { message: "La fecha del evento no puede ser anterior a la fecha actual" });
