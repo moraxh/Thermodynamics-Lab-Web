@@ -1,4 +1,4 @@
-import { publicationTypeEnum } from '@db/tables';
+import { Article, publicationTypeEnum } from '@db/tables';
 import { z } from 'zod';
 
 export const supportedImageTypes = [
@@ -8,7 +8,9 @@ export const supportedImageTypes = [
   "image/webp",
 ]
 
+export const maxFileSize = 100 * 1024 * 1024 // 50MB
 export const maxImageSize = 10 * 1024 * 1024 // 10MB
+export const maxVideoSize = 50 * 1024 * 1024 // 50MB
 export const maxPDFSize = 20 * 1024 * 1024 // 10MB
 
 export const ImageSchema = z.object({
@@ -22,6 +24,17 @@ export const PDFSchema = z.object({
   file: z.instanceof(File, { message: "El archivo es requerido"})
     .refine((file) => file.type === "application/pdf", { message: "El archivo debe ser un PDF"})
     .refine((file) => file.size <= maxPDFSize, { message: "El tamaño del archivo no puede ser mayor a 10MB"})
+})
+
+export const VideoMediaSchema = z.object({
+  video: z.instanceof(File, { message: "El video es requerido"})
+    .refine((file) => file.type.startsWith("video/"), { message: "El archivo debe ser un video"})
+    .refine((file) => file.size <= maxVideoSize, { message: "El tamaño del video no puede ser mayor a 50MB"}),
+})
+
+export const FileSchema = z.object({
+  file: z.instanceof(File, { message: "El archivo es requerido"})
+    .refine((file) => file.size <= maxFileSize, { message: "El tamaño del archivo no puede ser mayor a 50MB"})
 })
 
 export const UserSchema = z.object({
@@ -74,18 +87,53 @@ export const PublicationSchema = z.object({
     .date()
 })
 
-export const ArticleSchema = z.object({
+export const BaseArticleSchema = z.object({
   title: z.string({ message: "El título es requerido"})
     .min(3, { message: "El título debe tener al menos 3 caracteres de longitud"})
     .max(500, { message: "El título no puede tener mas de 500 caracteres de longitud"}),
   description: z.string({ message: "La descripción es requerida"})
     .min(3, { message: "La descripción debe tener al menos 3 caracteres de longitud"})
     .max(5000, { message: "La descripción no puede tener mas de 5000 caracteres de longitud"}),
+  authors: z.array(z.string({ message: "El autor es requerido"}))
+    .min(1, { message: "El autor es requerido"}),
   publicationDate: z.string({ message: "La fecha de publicación es requerida"})
     .date(),
   thumbnail: ImageSchema.shape.image,
-  file: PDFSchema.shape.file,
+  file: PDFSchema.shape.file.optional(),
+  fileUrl: z.string({ message: "La URL del archivo es requerida"})
+    .url({ message: "La URL del archivo debe ser una URL válida"})
+    .optional(),
 })
+
+export const ArticleSchema = BaseArticleSchema
+  .refine(data => {
+    if (data.file && data.fileUrl) {
+      return false; // Cannot provide both file and file URL
+    }
+    return true;  
+  }, { message: "Debe proporcionar un archivo o una URL, pero no ambos" })
+  .refine(data => {
+    if (!data.file && !data.fileUrl) {
+      return false; // At least one of file or file URL must be provided
+    }
+    return true;
+  }, { message: "Debe proporcionar un archivo o una URL" })
+  .refine(data => {
+    if (data.file) {
+      return data.thumbnail ? true : false; // If a file is provided, a thumbnail is required
+    }
+    return true
+  });
+
+export const ArticleUpdateSchema = BaseArticleSchema
+  .extend({
+    thumbnail: ImageSchema.shape.image.optional(),
+  })
+  .refine(data => {
+    if (data.file && data.fileUrl) {
+      return false; // Cannot provide both file and file URL
+    }
+  }, { message: "Debe proporcionar un archivo o una URL, pero no ambos" })
 
 export const EventSchema = z.object({
   title: z.string({ message: "El título es requerido"})
@@ -135,3 +183,63 @@ export const EventSchema = z.object({
 
   return eventDate >= now;
 }, { message: "La fecha del evento no puede ser anterior a la fecha actual" });
+
+export const BaseVideoSchema = z.object({
+  title: z.string({ message: "El título es requerido"})
+    .min(3, { message: "El título debe tener al menos 3 caracteres de longitud"})
+    .max(500, { message: "El título no puede tener mas de 500 caracteres de longitud"}),
+  description: z.string({ message: "La descripción es requerida"})
+    .min(3, { message: "La descripción debe tener al menos 3 caracteres de longitud"})
+    .max(5000, { message: "La descripción no puede tener mas de 5000 caracteres de longitud"}),
+  thumbnail: ImageSchema.shape.image
+    .optional(),
+  videoFile: VideoMediaSchema.shape.video
+    .optional(),
+  videoUrl: z.string({ message: "La URL del video es requerida"})
+    .url({ message: "La URL del video debe ser una URL válida"})
+    .optional(),
+})
+
+export const VideoSchema = BaseVideoSchema
+  .refine(data => {
+    if (data.videoFile && data.videoUrl) {
+      return false; // Cannot provide both video file and video URL
+    }
+    return true;  
+  }, { message: "Debe proporcionar un archivo de video o una URL de video, pero no ambos" })
+  .refine(data => {
+    if (!data.videoFile && !data.videoUrl) {
+      return false; // At least one of video file or video URL must be provided
+    }
+    return true;
+  }, { message: "Debe proporcionar un archivo de video o una URL de video" })
+  .refine(data => {
+    if (data.videoFile) {
+      return data.thumbnail ? true : false; // If a video file is provided, a thumbnail is required
+    }
+    return true
+  });
+
+export const EducationalMaterialSchema = z.object({
+  title: z.string({ message: "El título es requerido"})
+    .min(3, { message: "El título debe tener al menos 3 caracteres de longitud"})
+    .max(500, { message: "El título no puede tener mas de 500 caracteres de longitud"}),
+  description: z.string({ message: "La descripción es requerida"})
+    .min(3, { message: "La descripción debe tener al menos 3 caracteres de longitud"})
+    .max(5000, { message: "La descripción no puede tener mas de 5000 caracteres de longitud"}),
+  file: FileSchema.shape.file
+    .optional(),
+  fileUrl: z.string({ message: "La URL del archivo es requerida"})
+    .url({ message: "La URL del archivo debe ser una URL válida"})
+    .optional(), 
+}).refine(data => {
+  if (data.file && data.fileUrl) {
+    return false; // Cannot provide both file and file URL
+  }
+  return true;  
+}, { message: "Debe proporcionar un archivo o una URL, pero no ambos" })
+.refine(data => {
+  if (!data.file && !data.fileUrl) {
+    return false; // At least one of file or file URL must be provided
+  }
+})

@@ -1,5 +1,5 @@
 {
-  "id": "df5b8e1d-bb5a-45e6-9918-63db969b79b1",
+  "id": "8252e2d9-c2a0-405e-b9aa-53658068c8a3",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -23,6 +23,12 @@
         "description": {
           "name": "description",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "authors": {
+          "name": "authors",
+          "type": "json",
           "primaryKey": false,
           "notNull": true
         },
@@ -210,22 +216,7 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "events_title_unique": {
-          "name": "events_title_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "title"
-          ]
-        },
-        "events_description_unique": {
-          "name": "events_description_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "description"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -574,12 +565,6 @@
         "description": {
           "name": "description",
           "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "duration_in_seconds": {
-          "name": "duration_in_seconds",
-          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },

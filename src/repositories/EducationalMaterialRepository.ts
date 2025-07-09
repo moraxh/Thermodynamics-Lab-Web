@@ -1,6 +1,6 @@
-import { desc, count } from "drizzle-orm";
-import { db } from "@db/connection";
-import { EducationalMaterial } from "@db/tables";
+import { count, desc, eq } from 'drizzle-orm';
+import { db } from '@db/connection';
+import { EducationalMaterial } from '@db/tables';
 
 export type EducationalMaterialSelect = typeof EducationalMaterial.$inferSelect
 export type EducationalMaterialInsert = typeof EducationalMaterial.$inferSelect
@@ -18,6 +18,43 @@ export class EducationalMaterialRepository {
       .offset(offset)
 
     return resources
+  }
+
+  static async getEducationalMaterialByTitle(title: string): Promise<EducationalMaterialSelect | null> {
+    const resource = await db
+      .select()
+      .from(EducationalMaterial)
+      .where(eq(EducationalMaterial.title, title))
+      .limit(1)
+
+    return resource[0] || null
+  }
+
+  static async getEducationalMetarialById(id: string): Promise<EducationalMaterialSelect | null> {
+    const resource = await db
+      .select()
+      .from(EducationalMaterial)
+      .where(eq(EducationalMaterial.id, id))
+      .limit(1)
+
+    return resource[0] || null
+  }
+
+  static async getEducationalMaterialByFileHash(fileHash: string): Promise<EducationalMaterialSelect | null> {
+    const resource = await db
+      .select()
+      .from(EducationalMaterial)
+      .where(eq(EducationalMaterial.filePath, `%${fileHash}%`))
+      .limit(1)
+
+    return resource[0] || null
+  }
+
+  static async deleteEducationalMaterial(id: string): Promise<void> {
+    await db
+      .delete(EducationalMaterial)
+      .where(eq(EducationalMaterial.id, id))
+      .execute()
   }
 
   static async getNumberOfEducationalMaterial(): Promise<number> {

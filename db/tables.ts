@@ -102,8 +102,6 @@ export const Video = pgTable("videos", {
   description: text("description")
     .notNull()
     .unique(),
-  duration: integer("duration_in_seconds")
-    .notNull(),
   thumbnailPath: text("thumbnail_path"),
   videoPath: text("video_path")
     .notNull()
@@ -120,6 +118,8 @@ export const Article = pgTable("articles", {
     .notNull()
     .unique(),
   description: text("description")
+    .notNull(),
+  authors: json("authors")
     .notNull(),
   publicationDate: timestamp("publication_date")
     .notNull(),

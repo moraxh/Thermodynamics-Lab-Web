@@ -1,10 +1,11 @@
 import { ArticleRepository } from '@src/repositories/ArticleRepository';
-import { ArticleSchema } from '@db/schemas';
+import { ArticleSchema, ArticleUpdateSchema } from '@db/schemas';
 import { generateHashFromStream } from '@src/utils/Hash';
 import { generateIdFromEntropySize } from 'lucia';
 import fs from "node:fs"
 import type { CommonResponse, PaginatedResponse } from "@src/types";
 import type { ArticleSelect, ArticleInsert } from "@src/repositories/ArticleRepository";
+import { randomUUID } from 'node:crypto';
 
 interface ArticleResponse extends PaginatedResponse {
   articles?: ArticleSelect[];
@@ -26,7 +27,17 @@ export class ArticleService {
       }
     }
 
-    const { title, description, publicationDate, file, thumbnail } = validation.data
+    const { title, description, publicationDate, file, fileUrl, thumbnail, authors } = validation.data
+
+    let data: ArticleInsert = {
+      id: randomUUID(),
+      title,
+      description,
+      authors,
+      publicationDate: new Date(publicationDate),
+      filePath: "",
+      thumbnailPath: "",
+    }
 
     // Check if the title is already in use
     if (await ArticleRepository.getArticleByTitle(title)) {
@@ -36,17 +47,31 @@ export class ArticleService {
       }
     }
 
-    // Get the file & thumbnail hashes
-    const fileHash = await generateHashFromStream(file.stream())
-    const thumbnailHash = await generateHashFromStream(thumbnail.stream())
+    if (fileUrl) {
+      data.filePath = fileUrl
+    } else if (file) {
+      const fileHash = await generateHashFromStream(file.stream())
 
-    // Check if the file is already in use
-    if (await ArticleRepository.getArticleByFileHash(fileHash)) {
+      if (await ArticleRepository.getArticleByFileHash(fileHash)) {
+        return {
+          status: 400,
+          message: "El archivo ya está en uso",
+        }
+      }
+
+      fs.mkdirSync(`./public/${filesPath}`, { recursive: true })
+      const filePath = `${filesPath}/${fileHash}.${file.name.split('.').pop()}`
+      fs.writeFileSync(`./public/${filePath}`, Buffer.from(await file.arrayBuffer()))
+
+      data.filePath = filePath
+    } else {
       return {
         status: 400,
-        message: "El archivo ya está en uso",
+        message: "El archivo o la URL del archivo es requerido",
       }
     }
+
+    const thumbnailHash = await generateHashFromStream(thumbnail.stream())
 
     // Check if the thumbnail is already in use
     if (await ArticleRepository.getArticleByThumbnailHash(thumbnailHash)) {
@@ -56,14 +81,8 @@ export class ArticleService {
       }
     }
 
-    // Save the file & thumbnail
-    fs.mkdirSync(`./public/${filesPath}`, { recursive: true })
     fs.mkdirSync(`./public/${thumbnailsPath}`, { recursive: true })
-
-    const filePath = `${filesPath}/${fileHash}.${file.name.split('.').pop()}`
     const thumbnailPath = `${thumbnailsPath}/${thumbnailHash}.${thumbnail.name.split('.').pop()}`
-
-    fs.writeFileSync(`./public/${filePath}`, Buffer.from(await file.arrayBuffer()))
     fs.writeFileSync(`./public/${thumbnailPath}`, Buffer.from(await thumbnail.arrayBuffer()))
 
     // Insert in the database
@@ -72,8 +91,10 @@ export class ArticleService {
         id: generateIdFromEntropySize(10),
         title,
         description,
+        authors,
         publicationDate: new Date(publicationDate),
-        filePath,
+        
+        filePath: data.filePath,
         thumbnailPath,
       }
     ])
@@ -81,6 +102,147 @@ export class ArticleService {
     return {
       status: 200,
       message: "Articulo creado correctamente",
+    }
+  }
+
+  static async updateArticle(formData: FormData): Promise<CommonResponse> {
+    const articleId = formData.get("id") as string;
+
+    if (!articleId) {
+      return {
+        status: 400,
+        message: "El ID del artículo es requerido",
+      }
+    }
+
+    const article = await ArticleRepository.getArticleById(articleId)
+
+    if (!article) {
+      return {
+        status: 404,
+        message: "No hay ningún artículo con ese ID",
+      }
+    }
+
+    const fields = Object.fromEntries(formData.entries())
+    const validation = ArticleUpdateSchema.safeParse(fields)
+
+    if (!validation.success) {
+      return {
+        status: 400,
+        message: validation.error.errors[0].message,
+      }
+    }
+
+    const { title, description, publicationDate, file, fileUrl, thumbnail, authors } = validation.data
+
+    // Check if the title is already in use
+    const existingArticle = await ArticleRepository.getArticleByTitle(title);
+    if (existingArticle && existingArticle.id !== articleId) {
+      return {
+        status: 400,
+        message: "El título ya está en uso",
+      }
+    }
+
+    let updateData: Partial<ArticleInsert> = {
+      title,
+      description,
+      authors,
+      publicationDate: new Date(publicationDate),
+    }
+
+    // Get the file & thumbnail hashes
+    if (file || fileUrl) {
+      // Delete the old file
+      fs.rmSync(`./public/${article.filePath}`, { force: true, recursive: true })
+
+      if (fileUrl) {
+        updateData.filePath = fileUrl;
+      } else if (file) {
+        const fileHash = await generateHashFromStream(file.stream())
+
+        // Check if the file is already in use
+        const existingArticle = await ArticleRepository.getArticleByFileHash(fileHash);
+        if (existingArticle && existingArticle.id !== articleId) {
+          return {
+            status: 400,
+            message: "El archivo ya está en uso",
+          }
+        }
+
+        fs.mkdirSync(`./public/${filesPath}`, { recursive: true })
+        const filePath = `${filesPath}/${fileHash}.${file.name.split('.').pop()}`
+        fs.writeFileSync(`./public/${filePath}`, Buffer.from(await file.arrayBuffer()))
+
+        updateData.filePath = filePath
+      }
+    } else {
+      updateData.filePath = article.filePath; // Keep the old file path if no new file is provided
+    }
+
+    if (thumbnail) {
+      // Delete the old thumbnail
+      fs.rmSync(`./public/${article.thumbnailPath}`, { force: true, recursive: true })
+
+      const thumbnailHash = await generateHashFromStream(thumbnail.stream())
+
+      // Check if the thumbnail is already in use
+      const existingArticle = await ArticleRepository.getArticleByThumbnailHash(thumbnailHash);
+      if (existingArticle && existingArticle.id !== articleId) {
+        return {
+          status: 400,
+          message: "La miniatura ya está en uso",
+        }
+      }
+
+      fs.mkdirSync(`./public/${thumbnailsPath}`, { recursive: true })
+      const thumbnailPath = `${thumbnailsPath}/${thumbnailHash}.${thumbnail.name.split('.').pop()}`
+      fs.writeFileSync(`./public/${thumbnailPath}`, Buffer.from(await thumbnail.arrayBuffer()))
+
+      updateData.thumbnailPath = thumbnailPath
+    } else {
+      updateData.thumbnailPath = article.thumbnailPath; // Keep the old thumbnail path if no new thumbnail is provided
+    }
+
+    ArticleRepository.updateArticleById(articleId, updateData)
+
+    return {
+      status: 200,
+      message: "Artículo actualizado correctamente",
+    }
+  }
+
+  static async deleteArticle(formData: FormData): Promise<CommonResponse> {
+    const articleId = formData.get("id") as string;
+
+    if (!articleId) {
+      return {
+        status: 400,
+        message: "El ID del artículo es requerido",
+      }
+    }
+
+    // Check if the article exists
+    const article = await ArticleRepository.getArticleById(articleId)
+
+    if (!article) {
+      return {
+        status: 404,
+        message: "No hay ningún artículo con ese ID",
+      }
+    }
+
+    // Delete the files
+    fs.rmSync(`./public/${article.filePath}`, { force: true, recursive: true })
+    fs.rmSync(`./public/${article.thumbnailPath}`, { force: true, recursive: true })
+
+    // Delete the article from the database
+    await ArticleRepository.deleteArticleById(articleId)
+
+    return {
+      status: 200,
+      message: "Artículo eliminado correctamente",
     }
   }
 
@@ -140,6 +302,7 @@ export class ArticleService {
         id: generateIdFromEntropySize(10),
         title: `Title of the article ${i + 1}`,
         description: `Description of the article ${i + 1}`,
+        authors: [`Author ${i + 1}`],
         publicationDate: new Date(Date.now() - Math.floor(Math.random() * 10000000000)),
         filePath: `${filesPath}/${file}`,
         thumbnailPath: `${thumbnailsPath}/${imgs[i]}`

@@ -3,6 +3,7 @@ CREATE TABLE "articles" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
 	"description" text NOT NULL,
+	"authors" json NOT NULL,
 	"publication_date" timestamp NOT NULL,
 	"file_path" text NOT NULL,
 	"thumbnail_path" text,
@@ -32,9 +33,7 @@ CREATE TABLE "events" (
 	"end_time" time NOT NULL,
 	"location" text NOT NULL,
 	"link" text,
-	"uploaded_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "events_title_unique" UNIQUE("title"),
-	CONSTRAINT "events_description_unique" UNIQUE("description")
+	"uploaded_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "gallery" (
@@ -93,7 +92,6 @@ CREATE TABLE "videos" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
 	"description" text NOT NULL,
-	"duration_in_seconds" integer NOT NULL,
 	"thumbnail_path" text,
 	"video_path" text NOT NULL,
 	"uploaded_at" timestamp DEFAULT now() NOT NULL,

@@ -1,17 +1,17 @@
-import { ensureDatabaseExists } from "@db/utils";
-import { migrate } from "drizzle-orm/node-postgres/migrator";
-import { db } from "@db/connection";
-import { exec } from "child_process"
+import { ArticleService } from '@src/services/ArticleService';
+import { db } from '@db/connection';
+import { EducationalMaterialService } from '@src/services/EducationalMaterialService';
+import { ensureDatabaseExists } from '@db/utils';
+import { EventService } from '@src/services/EventService';
+import { exec } from 'child_process';
+import { GalleryService } from '@src/services/GalleryService';
+import { MemberService } from '@src/services/MemberService';
+import { MemberTypeService } from '@src/services/MemberTypeService';
+import { migrate } from 'drizzle-orm/node-postgres/migrator';
+import { PublicationService } from '@src/services/PublicationService';
+import { UserService } from '@src/services/UserService';
+import { VideoService } from '@src/services/VideoService';
 
-import { ArticleService } from "@src/services/ArticleService";
-import { EventService } from "@src/services/EventService";
-import { GalleryService } from "@src/services/GalleryService";
-import { EducationalMaterialService } from "@src/services/EducationalMaterialService";
-import { MemberTypeService } from "@src/services/MemberTypeService";
-import { MemberService } from "@src/services/MemberService";
-import { PublicationService } from "@src/services/PublicationService";
-import { UserService } from "@src/services/UserService";
-import { VideoService } from "@src/services/VideoService";
 
 export default async function seedDatabase() {
   await ensureDatabaseExists();

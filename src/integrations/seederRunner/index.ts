@@ -1,5 +1,6 @@
+import { executeSeedFile, getTempViteServer } from './executeSeedFile';
+import { fileURLToPath } from 'url';
 import type { AstroIntegration  } from "astro";
-import { executeSeedFile, getTempViteServer } from "./executeSeedFile";
 
 export default function seederRunnerIntegration(): AstroIntegration {
   let root: URL;
@@ -13,11 +14,17 @@ export default function seederRunnerIntegration(): AstroIntegration {
         fileUrl = new URL("./db/seed.ts", root)
       },
       'astro:server:setup': async ({ server, logger }) => {
-        await executeSeedFile({ fileUrl, viteServer: server })
+        await executeSeedFile({ 
+          filePath: fileURLToPath(fileUrl), 
+          viteServer: server
+        })
       },
 			'astro:build:setup': async ({ vite }) => {
         const tempViteServer = await getTempViteServer({ viteConfig: vite });
-        await executeSeedFile({ fileUrl, viteServer: tempViteServer })
+        await executeSeedFile({ 
+          filePath: fileURLToPath(fileUrl), 
+          viteServer: tempViteServer
+        })
 			},
     }
   }

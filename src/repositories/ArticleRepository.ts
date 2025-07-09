@@ -1,11 +1,26 @@
-import { count, desc, eq, like } from "drizzle-orm"
-import { db } from "@db/connection"
-import { Article } from "@db/tables"
+import { Article } from '@db/tables';
+import {
+  count,
+  desc,
+  eq,
+  like
+  } from 'drizzle-orm';
+import { db } from '@db/connection';
 
 export type ArticleSelect = typeof Article.$inferSelect
 export type ArticleInsert = typeof Article.$inferInsert
 
 export class ArticleRepository {
+  static async getArticleById(id: string): Promise<ArticleSelect | null> {
+    const article = await db
+      .select()
+      .from(Article)
+      .where(eq(Article.id, id))
+      .limit(1)
+
+    return article[0] || null
+  }
+
   static async getArticleByTitle(title: string): Promise<ArticleSelect | null> {
     const article = await db
       .select()
@@ -60,6 +75,21 @@ export class ArticleRepository {
 
   static async insertArticles(articles: ArticleInsert[]): Promise<void> {
     await db.insert(Article).values(articles).execute()
+  }
+
+  static async updateArticleById(id: string, article: Partial<ArticleInsert>): Promise<void> {
+    await db
+      .update(Article)
+      .set(article)
+      .where(eq(Article.id, id))
+      .execute()
+  }
+
+  static async deleteArticleById(id: string): Promise<void> {
+    await db
+      .delete(Article)
+      .where(eq(Article.id, id))
+      .execute()
   }
 
   static async clearTable(): Promise<void> {

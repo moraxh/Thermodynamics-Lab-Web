@@ -1,6 +1,6 @@
-import { desc, count } from "drizzle-orm"
-import { db } from "@db/connection"
-import { Video } from "@db/tables"
+import { count, desc, eq } from 'drizzle-orm';
+import { db } from '@db/connection';
+import { Video } from '@db/tables';
 
 export type VideoSelect = typeof Video.$inferSelect
 export type VideoInsert = typeof Video.$inferInsert
@@ -18,6 +18,65 @@ export class VideoRepository {
       .offset(offset)
 
     return videos
+  }
+
+  static async getVideoById(id: string): Promise<VideoSelect | null> {
+    const video = await db
+      .select()
+      .from(Video)
+      .where(eq(Video.id, id))
+      .limit(1)
+
+    return video[0] || null
+  }
+
+  static async getVideoByTitle(title: string): Promise<VideoSelect | null> {
+    const video = await db
+      .select()
+      .from(Video)
+      .where(eq(Video.title, title))
+      .limit(1)
+
+    return video[0] || null
+  }
+
+  static async getVideoByVideoHash(videoHash: string): Promise<VideoSelect | null> {
+    const video = await db
+      .select()
+      .from(Video)
+      .where(eq(Video.videoPath, `%${videoHash}%`))
+      .limit(1)
+
+    return video[0] || null
+  }
+
+  static async getVideoByThumbnailHash(thumbnailHash: string): Promise<VideoSelect | null> {
+    const video = await db
+      .select()
+      .from(Video)
+      .where(eq(Video.thumbnailPath, `%${thumbnailHash}%`))
+      .limit(1)
+
+    return video[0] || null
+  }
+
+  static async createVideos(videos: VideoInsert[]): Promise<void> {
+    await db.insert(Video)
+      .values(videos)
+      .execute()
+  }
+
+  static async updateVideo(id: string, video: Partial<VideoInsert>): Promise<void> {
+    await db.update(Video)
+      .set(video)
+      .where(eq(Video.id, id))
+      .execute()
+  }
+
+  static async deleteVideo(id: string): Promise<void> {
+    await db.delete(Video)
+      .where(eq(Video.id, id))
+      .execute()
   }
 
   static async getNumberOfVideos(): Promise<number> {

@@ -1,16 +1,13 @@
 import { createServer, mergeConfig, type HMRPayload, type UserConfig, type ViteDevServer } from 'vite';
 
 export async function executeSeedFile({
-	fileUrl,
+	filePath,
 	viteServer,
 }: {
-	fileUrl: URL;
+	filePath: string;
 	viteServer: ViteDevServer;
 }) {
-	// Use decodeURIComponent to handle paths with spaces correctly
-	// This ensures that %20 in the pathname is properly handled
-	const pathname = decodeURIComponent(fileUrl.pathname);
-	const mod = await viteServer.ssrLoadModule(pathname);
+	const mod = await viteServer.ssrLoadModule(filePath);
 	if (typeof mod.default !== 'function') {
     throw new Error("The seed file does not export a default function.");
 	}
