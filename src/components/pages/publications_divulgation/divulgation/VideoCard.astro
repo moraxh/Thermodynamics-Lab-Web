@@ -1,0 +1,41 @@
+---
+  const { thumbnailPath, title, description, filePath, ...rest } = Astro.props;
+
+  import { Image } from "astro:assets";
+
+  const defaultImage = (await import("../../../../assets/images/default.webp")).default;
+
+  let thumbnailUrl = thumbnailPath;
+
+  if (!thumbnailPath || thumbnailPath === "default") {
+    thumbnailUrl = defaultImage;
+  } else {
+    const fullPath = `${Astro.url.origin}/${thumbnailPath}`;
+    try {
+      const response = await fetch(fullPath);
+      thumbnailUrl = response.ok ? fullPath : defaultImage;
+    } catch (err) {
+      thumbnailUrl = defaultImage;
+    }
+  }
+---
+
+<!-- TODO Make the video card play  -->
+<article 
+  class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 hover:outline-accent hover:cursor-pointer rounded-lg w-full max-w-[300px] min-w-[300px] min-h-[350px] max-h-[350px] text-text overflow-hidden" {...rest} 
+  onclick={`window.videoViewer.show("${filePath}", "${title}", "${description}")`};
+>
+  { typeof thumbnailUrl !== "string" ? (
+    <Image class="w-full aspect-video object-cover" src={thumbnailUrl} alt="thumbnail" />
+  ): (
+     <img src={thumbnailUrl} alt="thumbnail" class="w-full aspect-video object-cover">
+  )}
+  <section class="flex flex-col gap-1 p-5 h-full">
+    <!-- Title -->
+    <h3 title={title} class="title text-2xl font-bold text-ellipsis-multiline line-clamp-3" style="-webkit-line-clamp: 3;">{title}</h3>
+    <!-- Description -->
+    <p class="description text-gray3 text-ellipsis-multiline line-clamp-4" style="-webkit-line-clamp: 4;">
+      {description}
+    </p>
+  </section>
+</article>

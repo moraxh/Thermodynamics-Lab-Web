@@ -1,0 +1,92 @@
+---
+  import CustomModal from "./CustomModal.astro"
+---
+
+<CustomModal id="videoViewerDialog">
+  <video autoplay controls class="w-90% max-w-[90%] max-h-[90vh] h-auto outline-2 outline-gray3/50 rounded-md object-contain" style="width: -webkit-fill-available;" src="">
+</CustomModal>
+
+<script>
+  interface videoViewerInterface {
+    show: (videoSrc: string, title: string, description: string) => void;
+    hide: () => void;
+  }
+
+  declare global {
+    interface Window {
+      videoViewer: videoViewerInterface;  
+    }
+  }
+
+  const dialog = document.getElementById('videoViewerDialog') as HTMLDialogElement;
+
+  const videoViewerModal = {
+    show: function(videoSrc: string, title: string, description: string) {
+      window.customModal.show('videoViewerDialog')
+      dialog.querySelector('video')!.setAttribute('src', videoSrc);
+    },
+    hide: function() {
+      window.customModal.hide('videoViewerDialog');
+      dialog.querySelector('video')!.removeAttribute('src');
+    }
+  }
+
+  window.videoViewer = videoViewerModal;
+
+  dialog.addEventListener('close', () => {
+    dialog.querySelector('video')!.removeAttribute('src');
+    dialog.querySelector('video')!.pause();
+  })
+</script>
+
+<!-- <script>
+  const handleImgViewer = () => {
+    const dialog = document.getElementById('imgViewerDialog') as HTMLDialogElement;
+
+    const handleImages = () => {
+      const images = document.querySelectorAll('.imgViewer') as NodeListOf<HTMLImageElement>;
+
+      images.forEach(image => {
+        image.addEventListener('click', () => {
+          const img = dialog.querySelector('img') as HTMLImageElement;
+          img.src = image.src;
+          window.customModal.show('imgViewerDialog')  
+        })
+      })
+    }
+
+    handleImages()
+  }
+
+  document.addEventListener("astro:page-load", handleImgViewer)
+</script>
+
+<style is:global>
+  .imgViewer {
+    cursor: pointer;
+  }    
+</style>
+
+<style>
+  @reference "../../styles/global.css";
+
+  #imgViewerDialog::backdrop {
+    background-color: rgb(0 0 0 / .5);
+    backdrop-filter: blur(3px);
+  }
+
+  #imgViewerDialog[open] {
+    animation: fadeIn .2s ease-in-out forwards;
+  }
+
+  @keyframes fadeIn{
+    0%{
+      opacity:0;
+      scale: .5;
+    }
+    100%{
+      opacity:1;
+      scale: 1;
+    }
+  }
+</style> -->

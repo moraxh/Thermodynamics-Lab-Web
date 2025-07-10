@@ -1,6 +1,9 @@
 ---
   import { db } from "@db/connection"
   import { Video } from "@db/tables";
+  import VideoCard from "./VideoCard.astro";
+  import ComponentCarrousel from "@src/components/common/ComponentCarrousel.astro";
+  import VideoViewer from "@src/components/common/VideoViewer.astro";
 
   const videos = await db
     .select()
@@ -8,4 +11,17 @@
     .orderBy(Video.uploadedAt)
 ---
 
-<h3 class="text-2xl font-bold text-text">Videos Explicativos</h3>
+<h3 class="text-xl xs:text-2xl font-bold text-text">Videos Explicativos</h3>
+
+<ComponentCarrousel>
+  {videos.map(video => (
+    <VideoCard
+      title={video.title}
+      description={video.description}
+      thumbnailPath={video.thumbnailPath}
+      filePath={video.videoPath}
+    />
+  ))}
+</ComponentCarrousel>
+
+<VideoViewer />
