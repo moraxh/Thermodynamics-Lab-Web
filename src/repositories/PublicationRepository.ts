@@ -1,6 +1,6 @@
-import { eq, count, desc } from "drizzle-orm"
-import { db } from "@db/connection"
-import { Publication, publicationTypeEnum } from "@db/tables"
+import { count, desc, eq } from 'drizzle-orm';
+import { db } from '@db/connection';
+import { Publication, publicationTypeEnum } from '@db/tables';
 
 export type PublicationSelect = typeof Publication.$inferSelect
 export type PublicationInsert = typeof Publication.$inferInsert
@@ -20,6 +20,61 @@ export class PublicationRepository {
       .offset(offset)
 
     return publications
+  }
+
+  static async getPublicationById(id: string): Promise<PublicationSelect | null> {
+    const publication = await db
+      .select()
+      .from(Publication)
+      .where(eq(Publication.id, id))
+      .limit(1)
+
+    return publication.length > 0 ? publication[0] : null
+  }
+
+  static async getPublicationByTitle(title: string): Promise<PublicationSelect | null> {
+    const publication = await db
+      .select()
+      .from(Publication)
+      .where(eq(Publication.title, title))
+      .limit(1)
+
+    return publication.length > 0 ? publication[0] : null
+  }
+
+  static async getPublicationByFileHash(fileHash: string): Promise<PublicationSelect | null> {
+    const publication = await db
+      .select()
+      .from(Publication)
+      .where(eq(Publication.filePath, `%${fileHash}%`))
+      .limit(1)
+
+    return publication.length > 0 ? publication[0] : null
+  }
+
+  static async getPublicationByThumbnailHash(thumbnailHash: string): Promise<PublicationSelect | null> {
+    const publication = await db
+      .select()
+      .from(Publication)
+      .where(eq(Publication.thumbnailPath, `%${thumbnailHash}%`))
+      .limit(1)
+
+    return publication.length > 0 ? publication[0] : null
+  }
+
+  static async updatePublicationById(id: string, updateData: Partial<PublicationInsert>): Promise<void> {
+    await db
+      .update(Publication)
+      .set(updateData)
+      .where(eq(Publication.id, id))
+      .execute()
+  }
+
+  static async deletePublicationById(id: string): Promise<void> {
+    await db
+      .delete(Publication)
+      .where(eq(Publication.id, id))
+      .execute()
   }
 
   static async getNumberOfPublications(type: string = 'all'): Promise<number> {

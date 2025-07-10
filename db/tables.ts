@@ -10,7 +10,6 @@ import {
   timestamp,
   varchar
   } from 'drizzle-orm/pg-core';
-import { EndpointDidNotReturnAResponse } from 'node_modules/astro/dist/core/errors/errors-data';
 
 export const User = pgTable("users", {
   id: varchar("id", { length: 255 })

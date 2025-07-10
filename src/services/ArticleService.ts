@@ -1,7 +1,9 @@
+import { Article } from '@db/tables';
 import { ArticleRepository } from '@src/repositories/ArticleRepository';
 import { ArticleSchema, ArticleUpdateSchema } from '@db/schemas';
 import { generateHashFromStream } from '@src/utils/Hash';
 import { generateIdFromEntropySize } from 'lucia';
+import { isValidUrl } from '@src/utils/url';
 import fs from "node:fs"
 import type { CommonResponse, PaginatedResponse } from "@src/types";
 import type { ArticleSelect, ArticleInsert } from "@src/repositories/ArticleRepository";
@@ -84,20 +86,10 @@ export class ArticleService {
     fs.mkdirSync(`./public/${thumbnailsPath}`, { recursive: true })
     const thumbnailPath = `${thumbnailsPath}/${thumbnailHash}.${thumbnail.name.split('.').pop()}`
     fs.writeFileSync(`./public/${thumbnailPath}`, Buffer.from(await thumbnail.arrayBuffer()))
+    data.thumbnailPath = thumbnailPath
 
     // Insert in the database
-    ArticleRepository.insertArticles([
-      {
-        id: generateIdFromEntropySize(10),
-        title,
-        description,
-        authors,
-        publicationDate: new Date(publicationDate),
-        
-        filePath: data.filePath,
-        thumbnailPath,
-      }
-    ])
+    ArticleRepository.insertArticles([data])
 
     return {
       status: 200,
@@ -155,7 +147,9 @@ export class ArticleService {
     // Get the file & thumbnail hashes
     if (file || fileUrl) {
       // Delete the old file
-      fs.rmSync(`./public/${article.filePath}`, { force: true, recursive: true })
+      if (!isValidUrl(article.filePath)) {
+        fs.rmSync(`./public/${article.filePath}`, { force: true, recursive: true })
+      }
 
       if (fileUrl) {
         updateData.filePath = fileUrl;
@@ -234,7 +228,9 @@ export class ArticleService {
     }
 
     // Delete the files
-    fs.rmSync(`./public/${article.filePath}`, { force: true, recursive: true })
+    if (!isValidUrl(article.filePath)) {
+      fs.rmSync(`./public/${article.filePath}`, { force: true, recursive: true })
+    }
     fs.rmSync(`./public/${article.thumbnailPath}`, { force: true, recursive: true })
 
     // Delete the article from the database

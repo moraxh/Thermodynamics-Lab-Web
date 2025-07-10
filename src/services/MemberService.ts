@@ -1,4 +1,4 @@
-import { generateHashFromFile, generateHashFromStream } from '@src/utils/hash';
+import { generateHashFromFile, generateHashFromStream } from '@src/utils/Hash';
 import { generateIdFromEntropySize } from 'lucia';
 import { MemberRepository } from '@src/repositories/MemberRepository';
 import { MemberSchema } from '@db/schemas';

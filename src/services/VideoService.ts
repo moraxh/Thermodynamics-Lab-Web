@@ -1,5 +1,6 @@
 import { generateHashFromStream } from '@src/utils/Hash';
 import { generateIdFromEntropySize } from 'lucia';
+import { isValidUrl } from '@src/utils/url';
 import { Video } from '@db/tables';
 import { VideoRepository } from '@src/repositories/VideoRepository';
 import { VideoSchema } from '@db/schemas';
@@ -173,7 +174,9 @@ export class VideoService {
       updateData.videoPath = videoUrl;
     } else if (videoFile) {
       // Delete the existing video file if it exists
-      fs.rmSync(`./public/${video.videoPath}`, { force: true, recursive: true })
+      if (!isValidUrl(video.videoPath)) {
+        fs.rmSync(`./public/${video.videoPath}`, { force: true, recursive: true })
+      }
 
       const videoHash = await generateHashFromStream(videoFile.stream())
 
@@ -243,7 +246,9 @@ export class VideoService {
     }
 
     // Delete the video file
-    fs.rmSync(`./public/${video.videoPath}`, { force: true, recursive: true })
+    if (!isValidUrl(video.videoPath)) {
+      fs.rmSync(`./public/${video.videoPath}`, { force: true, recursive: true })
+    }
     fs.rmSync(`./public/${video.thumbnailPath}`, { force: true, recursive: true })
 
     // Delete the video from the database

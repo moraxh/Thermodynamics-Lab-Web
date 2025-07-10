@@ -1,4 +1,5 @@
 import { Article, publicationTypeEnum } from '@db/tables';
+import { file } from 'zod/v4';
 import { z } from 'zod';
 
 export const supportedImageTypes = [
@@ -73,7 +74,7 @@ export const GallerySchema = z.object({
   image: ImageSchema.shape.image,
 })
 
-export const PublicationSchema = z.object({
+export const BasePublicationSchema = z.object({
   title: z.string({ message: "El título es requerido"})
     .min(3, { message: "El título debe tener al menos 3 caracteres de longitud"})
     .max(500, { message: "El título no puede tener mas de 500 caracteres de longitud"}),
@@ -84,8 +85,43 @@ export const PublicationSchema = z.object({
   authors: z.array(z.string({ message: "El autor es requerido"}))
     .min(1, { message: "El autor es requerido"}),
   publicationDate: z.string({ message: "La fecha de publicación es requerida"})
-    .date()
+    .date(),
+  file: PDFSchema.shape.file.optional(),
+  fileUrl: z.string({ message: "La URL del archivo es requerida"})
+    .url({ message: "La URL del archivo debe ser una URL válida"})
+    .optional(),
+  thumbnail: ImageSchema.shape.image
 })
+
+export const PublicationSchema = BasePublicationSchema
+  .refine(data => {
+    if (data.file && data.fileUrl) {
+      return false; // Cannot provide both file and file URL
+    }
+    return true;  
+  }, { message: "Debe proporcionar un archivo o una URL, pero no ambos" })
+  .refine(data => {
+    if (!data.file && !data.fileUrl) {
+      return false; // At least one of file or file URL must be provided
+    }
+    return true;
+  }, { message: "Debe proporcionar un archivo o una URL" })
+  .refine(data => {
+    if (data.file) {
+      return data.thumbnail ? true : false; // If a file is provided, a thumbnail is required
+    }
+    return true
+  });
+
+export const PublicationUpdateSchema = BasePublicationSchema
+  .extend({
+    thumbnail: ImageSchema.shape.image.optional(),
+  })
+  .refine(data => {
+    if (data.file && data.fileUrl) {
+      return false; // Cannot provide both file and file URL
+    }
+  }, { message: "Debe proporcionar un archivo o una URL, pero no ambos" })
 
 export const BaseArticleSchema = z.object({
   title: z.string({ message: "El título es requerido"})
