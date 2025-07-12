@@ -1,6 +1,7 @@
 ---
   const { thumbnailPath, title, description, filePath, ...rest } = Astro.props;
 
+  import Icon from "@src/components/common/Icon.astro";
   import { Image } from "astro:assets";
 
   const defaultImage = (await import("../../../../assets/images/default.webp")).default;
@@ -20,17 +21,21 @@
   }
 ---
 
-<!-- TODO Make the video card play  -->
 <article 
   class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 hover:outline-accent hover:cursor-pointer rounded-lg w-full max-w-[300px] min-w-[300px] min-h-[350px] max-h-[350px] text-text overflow-hidden" {...rest} 
   onclick={`window.videoViewer.show("${filePath}", "${title}", "${description}")`};
 >
-  { typeof thumbnailUrl !== "string" ? (
-    <Image class="w-full aspect-video object-cover" src={thumbnailUrl} alt="thumbnail" />
-  ): (
-     <img src={thumbnailUrl} alt="thumbnail" class="w-full aspect-video object-cover">
-  )}
-  <section class="flex flex-col gap-1 p-5 h-full">
+  <div class="relative w-full aspect-video">
+    <span class="flex justify-center items-center w-full h-full absolute backdrop-blur-xs bg-black/30">
+      <Icon class="fill-white/80 w-12 hover:scale-110" name="play" />
+    </span>
+    { typeof thumbnailUrl !== "string" ? (
+      <Image class="w-full aspect-video object-cover" src={thumbnailUrl} alt="thumbnail" />
+    ): (
+      <img src={thumbnailUrl} alt="thumbnail" class="w-full aspect-video object-cover">
+    )}
+  </div>
+  <section class="flex flex-col gap-1 p-4 h-full">
     <!-- Title -->
     <h3 title={title} class="title text-2xl font-bold text-ellipsis-multiline line-clamp-3" style="-webkit-line-clamp: 3;">{title}</h3>
     <!-- Description -->

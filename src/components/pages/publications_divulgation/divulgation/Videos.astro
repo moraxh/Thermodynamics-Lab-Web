@@ -11,25 +11,25 @@
     .orderBy(Video.uploadedAt)
 ---
 
-<h3 class="text-xl xs:text-2xl font-bold text-text">Videos Explicativos</h3>
+<section class="flex flex-col gap-2 max-w-full">
+  <h3 class="text-xl xs:text-2xl font-bold text-text">Videos Explicativos</h3>
 
-{videos.length > 0 && (
-  <ComponentCarrousel>
-    {videos.map(video => (
-      <VideoCard
-        title={video.title}
-        description={video.description}
-        thumbnailPath={video.thumbnailPath}
-        filePath={video.videoPath}
-      />
-    ))}
-  </ComponentCarrousel>
-)}
+  {videos.length > 0 ? (
+    <ComponentCarrousel>
+      {videos.map(video => (
+        <VideoCard
+          title={video.title}
+          description={video.description}
+          thumbnailPath={video.thumbnailPath}
+          filePath={video.videoPath}
+        />
+      ))}
+    </ComponentCarrousel>
+  ) : (
+    <div class="text-text/50 text-center">
+      No hay videos explicativos disponibles.
+    </div>
+  )}
 
-{videos.length === 0 && (
-  <div class="text-text/50 text-center">
-    No hay videos explicativos disponibles.
-  </div>
-)}
-
-<VideoViewer />
+  <VideoViewer />
+</section>

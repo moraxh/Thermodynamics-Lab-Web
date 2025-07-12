@@ -1,1 +1,35 @@
-<h3 class="text-xl xs:text-2xl font-bold text-text">Artículos de Divulgación</h3>
+---
+  import { db } from "@db/connection"
+  import { Article } from "@db/tables";
+  import ComponentCarrousel from "@src/components/common/ComponentCarrousel.astro";
+import ArticleCard from "./ArticleCard.astro";
+
+  const articles = await db
+    .select()
+    .from(Article)
+    .orderBy(Article.publicationDate)
+---
+
+
+<section class="flex flex-col gap-2 max-w-full">
+  <h3 class="text-xl xs:text-2xl font-bold text-text">Artículos de Divulgación</h3>
+
+  {articles.length > 0 ? (
+    <ComponentCarrousel>
+      {articles.map(article => (
+        <ArticleCard 
+          title={article.title}
+          description={article.description}
+          authors={article.authors}
+          publicationDate={article.publicationDate}
+          filePath={article.filePath}
+          thumbnailPath={article.thumbnailPath}
+        />
+      ))}
+    </ComponentCarrousel>
+  ) : (
+    <div class="text-text/50 text-center">
+      No hay artículos disponibles.
+    </div>
+  )}
+</section>

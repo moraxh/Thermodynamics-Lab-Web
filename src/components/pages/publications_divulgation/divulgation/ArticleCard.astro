@@ -1,0 +1,53 @@
+---
+  const { title, description, authors, publicationDate, filePath, thumbnailPath, ...rest } = Astro.props
+
+  import { Image } from "astro:assets";
+
+  const defaultImage = (await import("../../../../assets/images/default.webp")).default;
+
+  let thumbnailUrl = thumbnailPath;
+
+  if (!thumbnailPath || thumbnailPath === "default") {
+    thumbnailUrl = defaultImage;
+  } else {
+    const fullPath = `${Astro.url.origin}/${thumbnailPath}`;
+    try {
+      const response = await fetch(fullPath);
+      thumbnailUrl = response.ok ? fullPath : defaultImage;
+    } catch (err) {
+      thumbnailUrl = defaultImage;
+    }
+  }
+
+  const formattedDate = new Date(publicationDate).toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+---
+
+<!-- Todo: Make it functional (go to file) -->
+<article 
+  class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 hover:outline-accent hover:cursor-pointer rounded-lg w-full max-w-[400px] min-w-[400px] min-h-[450px] max-h-[450px] text-text overflow-hidden"
+  {...rest} 
+>
+  { typeof thumbnailUrl !== "string" ? (
+    <Image class="w-full aspect-video object-cover" src={thumbnailUrl} alt="thumbnail" />
+  ): (
+     <img src={thumbnailUrl} alt="thumbnail" class="w-full aspect-video object-cover">
+  )}
+  <section class="flex flex-col gap-1 p-4 h-full">
+    <!-- Title -->
+    <h3 title={title} class="title text-2xl font-bold text-ellipsis-multiline line-clamp-3" style="-webkit-line-clamp: 3;">{title}</h3>
+    {/* Authors n Date */}
+    <small class="text-sm text-text/50">
+      {authors.join(', ')}
+      •
+      {formattedDate}
+    </small>
+    <!-- Description -->
+    <p class="description text-gray3 text-ellipsis-multiline line-clamp-4" style="-webkit-line-clamp: 4;">
+      {description}
+    </p>
+  </section>
+</article>
