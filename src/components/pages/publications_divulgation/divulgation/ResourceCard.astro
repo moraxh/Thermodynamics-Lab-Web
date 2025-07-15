@@ -1,0 +1,22 @@
+---
+  const { title, description, filePath, ...rest } = Astro.props;
+  import Icon from "@src/components/common/Icon.astro";
+---
+
+<article 
+  class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 hover:outline-accent hover:cursor-pointer rounded-lg w-full max-w-[330px] min-w-[330px] min-h-[240px] max-h-[240px] text-text overflow-hidden"
+  {...rest} 
+>
+  <section class="flex flex-col gap-1 p-4 h-full">
+    <!-- Title -->
+    <h3 title={title} class="title text-2xl font-bold text-ellipsis-multiline line-clamp-3" style="-webkit-line-clamp: 3;">{title}</h3>
+    <!-- Description -->
+    <p class="description text-gray3 text-ellipsis-multiline line-clamp-4" style="-webkit-line-clamp: 4;">
+      {description.repeat(100)}
+    </p>
+    <a download={filePath} class="flex items-center justify-center gap-1 bg-text text-background text-center w-full py-2 px-3 rounded-md mt-auto font-semibold text-sm hover:brightness-75" href="">
+      <Icon class="fill-background w-auto h-3" name="download" />
+      Descargar
+    </a>
+  </section>
+</article>
