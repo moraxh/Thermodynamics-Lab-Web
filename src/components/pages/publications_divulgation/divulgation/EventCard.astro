@@ -32,7 +32,9 @@
     <div class="flex flex-col gap-0">
       <div class="flex items-center justify-between gap-2">
         <!-- Title -->
-        <h3 title={title} class="title text-2xl font-bold text-ellipsis-multiline line-clamp-2" style="-webkit-line-clamp: 2;">{title.repeat(100)}</h3>
+        <h3 title={title} class="title text-2xl font-bold text-ellipsis-multiline line-clamp-2" style="-webkit-line-clamp: 2;">
+          {title}
+        </h3>
         <span title={formattedDate} class="flex flex-col items-center justify-center bg-accent text-black font-extrabold min-w-14 max-w-14 min-h-16 max-h-16 rounded-md hover:scale-105">
           <p class="text-3xl leading-6">{day}</p>
           <p class="text-sm capitalize">{month}.</p>
@@ -43,7 +45,7 @@
     </div>
     <!-- Description -->
     <p title={description} class="description text-text text-lg text-ellipsis-multiline line-clamp-2" style="-webkit-line-clamp: 2;">
-      {description.repeat(100)}
+      {description}
     </p>
     <div class="flex flex-col gap-0 mt-auto">
       <!-- Time -->
