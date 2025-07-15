@@ -2,6 +2,7 @@
   const { title, description, authors, publicationDate, filePath, thumbnailPath, ...rest } = Astro.props
 
   import { Image } from "astro:assets";
+  import Icon from "@components/common/Icon.astro";
 
   const defaultImage = (await import("../../../../assets/images/default.webp")).default;
 
@@ -26,9 +27,8 @@
   });
 ---
 
-<!-- Todo: Make it functional (go to file) -->
 <article 
-  class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 hover:outline-accent hover:cursor-pointer rounded-lg w-full max-w-[400px] min-w-[400px] min-h-[450px] max-h-[450px] text-text overflow-hidden"
+  class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 hover:outline-accent hover:cursor-pointer rounded-lg w-full max-w-[400px] min-w-[400px] min-h-[480px] max-h-[480px] text-text overflow-hidden"
   {...rest} 
 >
   { typeof thumbnailUrl !== "string" ? (
@@ -47,7 +47,11 @@
     </small>
     <!-- Description -->
     <p class="description text-gray3 text-ellipsis-multiline line-clamp-4" style="-webkit-line-clamp: 4;">
-      {description}
+      {description.repeat(1000)}
     </p>
+    <a target="_blank" href={filePath} class="flex gap-1 bg-text text-background w-fit py-2 px-3 rounded-md mt-auto font-semibold text-sm hover:brightness-75" href="">
+      <Icon class="fill-background w-auto h-5" name="document" />
+      Leer Articulo Completo
+    </a>
   </section>
 </article>
