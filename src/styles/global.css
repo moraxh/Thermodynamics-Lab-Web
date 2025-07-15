@@ -1,37 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 
-/* Light Mode */
-:root {
-  --color-background: #eeeded;
-  --color-text: #3f3f3f;
-  --color-primary: #2e3192;
-  --color-accent: #f6c308;
-  --color-gray0: #f5f5f5;
-  --color-gray1: #e0e0e0;
-  --color-gray2: #c2c2c2;
-  --color-gray3: #7e7e7e;
-  --color-danger: #dc3545;
-  --color-success: #28a745;
-  --color-info: #17a2b8;
-}
-
-/* Dark Mode */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #010101;
-    --color-text: #ffffff;
-    --color-primary: #2e3192;
-    --color-accent: #f6c308;
-    --color-gray0: #161a25;
-    --color-gray1: #272d39;
-    --color-gray2: #444b53;
-    --color-gray3: #7b848d;
-    --color-danger: #dc3545;
-    --color-success: #28a745;
-    --color-info: #17a2b8;
-  }
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme {
   --color-background: var(--color-background);
@@ -50,6 +20,36 @@
   --font-serif: montserrat, serif;
 
   --breakpoint-xs: 425px;
+}
+
+/* Light Mode */
+:root:not(.dark) {
+  --color-background: #eeeded;
+  --color-text: #3f3f3f;
+  --color-primary: #2e3192;
+  --color-accent: #f6c308;
+  --color-gray0: #f5f5f5;
+  --color-gray1: #e0e0e0;
+  --color-gray2: #c2c2c2;
+  --color-gray3: #7e7e7e;
+  --color-danger: #dc3545;
+  --color-success: #28a745;
+  --color-info: #17a2b8;
+}
+
+/* Dark Mode */
+.dark {
+  --color-background: #010101;
+  --color-text: #ffffff;
+  --color-primary: #2e3192;
+  --color-accent: #f6c308;
+  --color-gray0: #161a25;
+  --color-gray1: #272d39;
+  --color-gray2: #444b53;
+  --color-gray3: #7b848d;
+  --color-danger: #dc3545;
+  --color-success: #28a745;
+  --color-info: #17a2b8;
 }
 
 * {

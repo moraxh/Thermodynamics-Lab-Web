@@ -6,8 +6,17 @@
 ---
 
 <!doctype html>
-<html lang="es">
+<html class="" lang="es">
 	<head>
+		<script is:inline>
+			(function () {
+				const theme = localStorage.getItem("theme");
+				const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+				if (theme === "dark" || (!theme && prefersDark)) {
+					document.documentElement.classList.add("dark");
+				}
+			})();
+		</script>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
