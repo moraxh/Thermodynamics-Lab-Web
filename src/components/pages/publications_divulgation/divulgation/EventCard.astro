@@ -1,0 +1,63 @@
+---
+  const { title, description, typeOfEvent, eventDate, startTime, endTime, location, link, ...rest } = Astro.props;
+
+  import Icon from "@src/components/common/Icon.astro";
+
+  const formattedTime = (time: string) => {
+    return new Date(`2023-05-31 ${time}`).toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
+
+  const month = new Date(eventDate).toLocaleDateString('es-ES', {
+    month: 'short',
+  });
+  const day = new Date(eventDate).toLocaleDateString('es-ES', {
+    day: 'numeric',
+  });
+  const formattedDate = new Date(eventDate).toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+---
+
+<article 
+  class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 hover:outline-accent hover:cursor-pointer rounded-lg w-full max-w-[620px] min-w-[620px] min-h-[240px] max-h-[240px] text-text overflow-hidden" {...rest} 
+  onclick={link ? `window.open('${link}', '_blank') ` : undefined}
+>
+  <section class="flex flex-col gap-1 p-4 h-full">
+    <div class="flex flex-col gap-0">
+      <div class="flex items-center justify-between gap-2">
+        <!-- Title -->
+        <h3 title={title} class="title text-2xl font-bold text-ellipsis-multiline line-clamp-2" style="-webkit-line-clamp: 2;">{title.repeat(100)}</h3>
+        <span title={formattedDate} class="flex flex-col items-center justify-center bg-accent text-black font-extrabold min-w-14 max-w-14 min-h-16 max-h-16 rounded-md hover:scale-105">
+          <p class="text-3xl leading-6">{day}</p>
+          <p class="text-sm capitalize">{month}.</p>
+        </span>
+      </div>
+      <!-- TypoOfEvent -->
+      <small class="font-bold text-gray3 text-sm">{typeOfEvent}</small>
+    </div>
+    <!-- Description -->
+    <p title={description} class="description text-text text-lg text-ellipsis-multiline line-clamp-2" style="-webkit-line-clamp: 2;">
+      {description.repeat(100)}
+    </p>
+    <div class="flex flex-col gap-0 mt-auto">
+      <!-- Time -->
+      <p class="flex items-center gap-1 text-lg font-bold text-gray3">
+        <Icon name="clock" class="stroke-gray3 h-5" />
+        {formattedTime(startTime)}
+        -
+        {formattedTime(endTime)}
+      </p>
+      <!-- location -->
+      <p class="flex items-center gap-1 text-lg font-bold text-gray3">
+        <Icon name="landmark_outline" class="stroke-gray3 h-5" />
+        {location}
+      </p>
+    </div>
+  </section>
+</article>
