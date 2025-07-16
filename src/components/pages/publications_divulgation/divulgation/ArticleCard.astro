@@ -28,7 +28,7 @@
 ---
 
 <article 
-  class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 hover:outline-accent hover:cursor-pointer rounded-lg w-full max-w-[620px] min-w-[620px] min-h-[590px] max-h-[590px] text-text overflow-hidden"
+  class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 hover:outline-accent hover:cursor-pointer rounded-lg w-full max-w-[620px] min-w-[620px] min-h-[630px] max-h-[630px] text-text overflow-hidden"
   {...rest} 
 >
   { typeof thumbnailUrl !== "string" ? (
@@ -38,7 +38,9 @@
   )}
   <section class="flex flex-col gap-1 p-4 h-full">
     <!-- Title -->
-    <h3 title={title} class="title text-2xl font-bold text-ellipsis-multiline line-clamp-3" style="-webkit-line-clamp: 3;">{title}</h3>
+    <h3 title={title} class="title text-2xl font-bold text-ellipsis-multiline line-clamp-2" style="-webkit-line-clamp: 2;">
+      {title}
+    </h3>
     {/* Authors n Date */}
     <small class="text-sm text-text/50">
       {authors.join(', ')}
@@ -46,7 +48,7 @@
       {formattedDate}
     </small>
     <!-- Description -->
-    <p class="description text-gray3 text-ellipsis-multiline line-clamp-4" style="-webkit-line-clamp: 4;">
+    <p title={description} class="description text-gray3 text-ellipsis-multiline line-clamp-4" style="-webkit-line-clamp: 4;">
       {description}
     </p>
     <a target="_blank" href={filePath} class="flex gap-1 bg-text text-background w-fit py-2 px-3 rounded-md mt-auto font-semibold text-sm hover:brightness-75" href="">

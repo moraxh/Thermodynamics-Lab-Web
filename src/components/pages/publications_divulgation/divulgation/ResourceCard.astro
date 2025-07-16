@@ -4,12 +4,14 @@
 ---
 
 <article 
-  class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 hover:outline-accent hover:cursor-pointer rounded-lg w-full max-w-[300px] min-w-[300px] min-h-[240px] max-h-[240px] text-text overflow-hidden"
+  class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 hover:outline-accent hover:cursor-pointer rounded-lg w-full max-w-[300px] min-w-[300px] min-h-[250px] max-h-[250px] text-text overflow-hidden"
   {...rest} 
 >
   <section class="flex flex-col gap-1 p-4 h-full">
     <!-- Title -->
-    <h3 title={title} class="title text-2xl font-bold text-ellipsis-multiline line-clamp-3" style="-webkit-line-clamp: 3;">{title}</h3>
+    <h3 title={title} class="title text-2xl font-bold text-ellipsis-multiline line-clamp-2" style="-webkit-line-clamp: 2;">
+      {title}
+    </h3>
     <small></small>
     <!-- Description -->
     <p class="description text-gray3 text-ellipsis-multiline line-clamp-4" style="-webkit-line-clamp: 4;">

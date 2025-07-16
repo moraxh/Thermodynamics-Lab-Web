@@ -22,7 +22,7 @@
 ---
 
 <article 
-  class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 hover:outline-accent hover:cursor-pointer rounded-lg w-full max-w-[300px] min-w-[300px] min-h-[350px] max-h-[350px] text-text overflow-hidden" {...rest} 
+  class="flex flex-col gap-2 bg-gray0 outline-2 outline-gray2 hover:outline-accent hover:cursor-pointer rounded-lg w-full max-w-[300px] min-w-[300px] min-h-[370px] max-h-[370px] text-text overflow-hidden" {...rest} 
   onclick={`window.videoViewer.show("${filePath}", "${title}", "${description}")`};
 >
   <div class="relative w-full aspect-video">
@@ -37,9 +37,11 @@
   </div>
   <section class="flex flex-col gap-1 p-4 h-full">
     <!-- Title -->
-    <h3 title={title} class="title text-2xl font-bold text-ellipsis-multiline line-clamp-3" style="-webkit-line-clamp: 3;">{title}</h3>
+    <h3 title={title} class="title text-2xl font-bold text-ellipsis-multiline line-clamp-2" style="-webkit-line-clamp: 2;">
+      {title}
+    </h3>
     <!-- Description -->
-    <p class="description text-gray3 text-ellipsis-multiline line-clamp-4" style="-webkit-line-clamp: 4;">
+    <p title={description} class="description text-gray3 text-ellipsis-multiline line-clamp-4" style="-webkit-line-clamp: 4;">
       {description}
     </p>
   </section>
