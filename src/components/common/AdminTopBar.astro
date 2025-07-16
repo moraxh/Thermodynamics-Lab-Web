@@ -1,5 +1,6 @@
 ---
   import TopBarTemplate from "@components/common/TopBarTemplate.astro";
+  import ThemeToggle from "./ThemeToggle.astro";
 ---
 
 <TopBarTemplate>
@@ -7,6 +8,7 @@
   <a href="/admin/publications_divulgation">Divulgación y Publicaciones</a>
   <a href="/admin/us">Nosotros</a>
   <a id="logout" class="hover:cursor-pointer">Cerrar Sesión</a>
+  <ThemeToggle />
 </TopBarTemplate>
 
 <script>
