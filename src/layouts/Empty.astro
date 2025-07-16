@@ -10,11 +10,16 @@
 	<head>
 		<script is:inline>
 			(function () {
-				const theme = localStorage.getItem("theme");
-				const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-				if (theme === "dark" || (!theme && prefersDark)) {
-					document.documentElement.classList.add("dark");
+				const handleTheme = () => {
+					const theme = localStorage.getItem("theme");
+					const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+					if (theme === "dark" || (!theme && prefersDark)) {
+						document.documentElement.classList.add("dark");
+					}
 				}
+
+				document.addEventListener("astro:after-swap", handleTheme)
+				handleTheme();
 			})();
 		</script>
 		<meta charset="UTF-8" />
