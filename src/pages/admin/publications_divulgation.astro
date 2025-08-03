@@ -1,6 +1,43 @@
 ---
+  import Articles from "@src/components/pages/admin/publications_divulgation/Articles.astro";
+  import Resources from "@src/components/pages/admin/publications_divulgation/Resources.astro";
+  import Events from "@src/components/pages/admin/publications_divulgation/Events.astro";
+  import Hero from "@src/components/pages/admin/publications_divulgation/Hero.astro";
+  import Publications from "@src/components/pages/admin/publications_divulgation/Publications.astro";
+  import Tabs from "@src/components/pages/admin/publications_divulgation/Tabs.astro";
+  import Videos from "@src/components/pages/admin/publications_divulgation/Videos.astro";
   import AdminPanel from "@src/layouts/AdminPanel.astro";
+  import CustomAlert from "@src/components/common/CustomAlert.astro";
 ---
 
-<AdminPanel title="Panel de Administrador">
+<AdminPanel title="Panel de Administrador" class="!mt-0 !mb-auto">
+  <CustomAlert />
+  <Hero />
+  <Tabs>
+    <Publications slot="publications" /> 
+    <Articles slot="articles" />
+    <Videos slot="videos" />
+    <Resources slot="educationalMaterial" />
+    <Events slot="events" />
+  </Tabs>
 </AdminPanel>
+
+<style is:global>
+  @import "../../styles/global.css";
+
+  table { 
+    @apply outline outline-gray2 rounded-lg overflow-hidden border-collapse text-text;
+  }
+
+  table > thead {
+    @apply bg-gray0 text-text;
+  }
+
+  table > thead > tr > th {
+    @apply bg-gray0 text-text px-7 p-2;
+  }
+
+  th, td {
+    @apply border border-gray2 text-center p-2;
+  }
+</style>

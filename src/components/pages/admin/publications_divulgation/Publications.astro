@@ -1,0 +1,888 @@
+---
+  import { db } from '@db/connection'
+  import { Publication } from "@db/tables"
+  import ImgViewer from '@src/components/common/ImgViewer.astro'
+  import Icon from '@src/components/common/Icon.astro'
+  import ActionButtons from './ActionButtons.astro'
+  import AddButton from './AddButton.astro'
+  import CustomModal from '@src/components/common/CustomModal.astro'
+
+  const publications = await db.select().from(Publication).orderBy(Publication.publicationDate)
+
+  const publicationsTypeToSpanish = {
+    'article': 'Artículo',
+    'book': 'Libro',
+    'thesis': 'Tesis',
+    'technical_report': 'Informe Técnico',
+    'monograph': 'Monografía',
+    'other': 'Otro'
+  }
+
+  const formatDate = (date: Date) => {
+    const parts = date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).split(' ');
+
+    if (parts.length >= 5) {
+      parts[2] = parts[2].charAt(0).toUpperCase() + parts[2].slice(1); // Capitaliza el mes
+    }
+
+    return parts.join(' ');
+  }
+---
+
+<ImgViewer />
+
+<section class="flex flex-col gap-4 p-5 rounded-lg border border-gray2">
+  <article>
+    <h2 class="text-2xl font-bold text-text">Gestion de Publicaciones</h2>
+    <p class="text-gray-600">Aquí puedes gestionar todas las publicaciones de la plataforma.</p>
+  </article>
+
+  <AddButton label="Agregar Publicación" onclick="onPublicationAdd()" />
+
+  <div class="overflow-auto max-w-[90vw] max-h-[1000px]">
+    <table id="publicationsTable">
+      <thead>
+        <tr>
+          <th class="min-w-88 max-w-88">Titulo</th>
+          <th class="min-w-72 max-w-72">Descripcion</th>
+          <th class="min-w-32 max-w-32">Tipo</th>
+          <th class="min-w-40 max-w-40">Autores</th>
+          <th class="min-w-42 max-w-42">Fecha de Publicación</th>
+          <th class="min-w-40 max-w-40">Miniatura</th>
+          <th class="min-w-32 max-w-32">Archivo</th>
+          <th class="min-w-32 max-w-32">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {publications.length > 0 ? 
+          publications.map((publication) => (
+            <tr data-id={publication.id}>
+              <td>{publication.title}</td>
+              <td>{publication.description}</td>
+              <td>{publicationsTypeToSpanish[publication.type]}</td>
+              <td>{(publication.authors as string[]).join(', ')}</td>
+              <td>{formatDate(publication.publicationDate)}</td>
+              <td>
+                <img 
+                  src={`/${publication.thumbnailPath}`}
+                  class="min-h-20 max-h-32 h-full rounded mx-auto imgViewer"
+                  alt="Miniatura"
+                  />
+              </td>
+              <td>
+                <a class="flex justify-center" target="_blank" href={`${publication.filePath.startsWith('http') ? publication.filePath : `/${publication.filePath}`}`}>
+                  <Icon name="eye" class="stroke-accent w-8 hover:bg-accent hover:stroke-black stroke-2 outline-2 outline-accent p-2 aspect-square rounded-full" />
+                </a>
+                </td>
+              <td>
+                <ActionButtons 
+                  onEdit={`onPublicationEdit("${publication.id}")`}
+                  onDelete={`onPublicationDelete("${publication.id}")`}
+                />
+              </td>
+            </tr>
+          )) : (
+          <tr>
+            <td colspan="8" class="text-center py-4">No hay publicaciones registradas.</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Modal para agregar publicación -->
+<CustomModal id="addPublicationModal" class="w-full max-w-4xl">
+  <div class="bg-gray0 rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-gray2">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-2xl font-bold text-text">Agregar Nueva Publicación</h3>
+      <button onclick="window.customModal.hide('addPublicationModal')" class="text-gray3 hover:text-text transition-colors">
+        <Icon name="xmark" class="w-6 h-6 fill-current" />
+      </button>
+    </div>
+
+    <form id="addPublicationForm" class="space-y-6">
+      <!-- Título -->
+      <div>
+        <label for="publicationTitle" class="block text-sm font-medium text-text mb-2">Título *</label>
+        <input 
+          type="text" 
+          id="publicationTitle" 
+          name="title" 
+          required
+          class="input-field"
+          placeholder="Ingrese el título de la publicación"
+        />
+      </div>
+
+      <!-- Descripción -->
+      <div>
+        <label for="publicationDescription" class="block text-sm font-medium text-text mb-2">Descripción *</label>
+        <textarea 
+          id="publicationDescription" 
+          name="description" 
+          required
+          rows="4"
+          class="input-field resize-none"
+          placeholder="Ingrese la descripción de la publicación"
+        ></textarea>
+      </div>
+
+      <!-- Tipo de publicación -->
+      <div>
+        <label for="publicationType" class="block text-sm font-medium text-text mb-2">Tipo de Publicación *</label>
+        <select 
+          id="publicationType" 
+          name="type" 
+          required
+          class="input-field"
+        >
+          <option value="">Seleccione un tipo</option>
+          <option value="article">Artículo</option>
+          <option value="book">Libro</option>
+          <option value="thesis">Tesis</option>
+          <option value="technical_report">Informe Técnico</option>
+          <option value="monograph">Monografía</option>
+          <option value="other">Otro</option>
+        </select>
+      </div>
+
+      <!-- Autores -->
+      <div>
+        <label for="publicationAuthors" class="block text-sm font-medium text-text mb-2">Autores *</label>
+        <div id="publicationAuthorsContainer" class="space-y-2">
+          <div class="flex gap-2">
+            <input 
+              type="text" 
+              name="authors[]" 
+              required
+              class="input-field flex-1"
+              placeholder="Ingrese el nombre del autor"
+            />
+            <button 
+              type="button" 
+              onclick="addPublicationAuthorField()"
+              class="px-3 py-2 bg-accent text-black rounded-lg hover:brightness-90 transition-all flex items-center justify-center"
+            >
+              <Icon name="plus" class="w-4 h-4 fill-current" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fecha de publicación -->
+      <div>
+        <label for="publicationPublicationDate" class="block text-sm font-medium text-text mb-2">Fecha de Publicación *</label>
+        <input 
+          type="date" 
+          id="publicationPublicationDate" 
+          name="publicationDate" 
+          required
+          class="input-field"
+        />
+      </div>
+
+      <!-- Archivo -->
+      <div>
+        <label class="block text-sm font-medium text-text mb-2">Archivo *</label>
+        <div class="space-y-4">
+          <!-- Opción 1: Subir archivo -->
+          <div>
+            <label class="flex items-center gap-2 text-text">
+              <input 
+                type="radio" 
+                name="publicationFileOption" 
+                value="upload" 
+                checked
+                onchange="togglePublicationFileOption()"
+                class="text-accent focus:ring-accent"
+              />
+              <span>Subir archivo PDF</span>
+            </label>
+            <div id="publicationFileUploadSection" class="mt-2">
+              <input 
+                type="file" 
+                id="publicationFile" 
+                name="file" 
+                accept=".pdf"
+                class="input-field"
+              />
+            </div>
+          </div>
+
+          <!-- Opción 2: URL -->
+          <div>
+            <label class="flex items-center gap-2 text-text">
+              <input 
+                type="radio" 
+                name="publicationFileOption" 
+                value="url" 
+                onchange="togglePublicationFileOption()"
+                class="text-accent focus:ring-accent"
+              />
+              <span>URL del archivo</span>
+            </label>
+            <div id="publicationFileUrlSection" class="mt-2 hidden">
+              <input 
+                type="url" 
+                id="publicationFileUrl" 
+                name="fileUrl" 
+                class="input-field"
+                placeholder="https://ejemplo.com/archivo.pdf"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Miniatura -->
+      <div>
+        <label for="publicationThumbnail" class="block text-sm font-medium text-text mb-2">Miniatura *</label>
+        <input 
+          type="file" 
+          id="publicationThumbnail" 
+          name="thumbnail" 
+          required
+          accept="image/*"
+          class="input-field"
+        />
+        <p class="text-sm text-gray3 mt-1">Formatos soportados: JPEG, JPG, PNG, WebP. Máximo 10MB.</p>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end gap-4 pt-4">
+        <button 
+          type="button" 
+          onclick="window.customModal.hide('addPublicationModal')"
+          class="px-4 py-2 text-text bg-gray2 rounded-lg hover:bg-gray3 transition-colors"
+        >
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          class="px-4 py-2 bg-accent text-black rounded-lg hover:brightness-90 transition-colors font-medium"
+        >
+          Agregar Publicación
+        </button>
+      </div>
+    </form>
+  </div>
+</CustomModal>
+
+<!-- Modal para editar publicación -->
+<CustomModal id="editPublicationModal" class="w-full max-w-4xl">
+  <div class="bg-gray0 rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-gray2">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-2xl font-bold text-text">Editar Publicación</h3>
+      <button onclick="window.customModal.hide('editPublicationModal')" class="text-gray3 hover:text-text transition-colors">
+        <Icon name="xmark" class="w-6 h-6 fill-current" />
+      </button>
+    </div>
+
+    <form id="editPublicationForm" class="space-y-6">
+      <input type="hidden" id="editPublicationId" name="id" />
+      
+      <!-- Título -->
+      <div>
+        <label for="editPublicationTitle" class="block text-sm font-medium text-text mb-2">Título *</label>
+        <input 
+          type="text" 
+          id="editPublicationTitle" 
+          name="title" 
+          required
+          class="input-field"
+          placeholder="Ingrese el título de la publicación"
+        />
+      </div>
+
+      <!-- Descripción -->
+      <div>
+        <label for="editPublicationDescription" class="block text-sm font-medium text-text mb-2">Descripción *</label>
+        <textarea 
+          id="editPublicationDescription" 
+          name="description" 
+          required
+          rows="4"
+          class="input-field resize-none"
+          placeholder="Ingrese la descripción de la publicación"
+        ></textarea>
+      </div>
+
+      <!-- Tipo de publicación -->
+      <div>
+        <label for="editPublicationType" class="block text-sm font-medium text-text mb-2">Tipo de Publicación *</label>
+        <select 
+          id="editPublicationType" 
+          name="type" 
+          required
+          class="input-field"
+        >
+          <option value="">Seleccione un tipo</option>
+          <option value="article">Artículo</option>
+          <option value="book">Libro</option>
+          <option value="thesis">Tesis</option>
+          <option value="technical_report">Informe Técnico</option>
+          <option value="monograph">Monografía</option>
+          <option value="other">Otro</option>
+        </select>
+      </div>
+
+      <!-- Autores -->
+      <div>
+        <label for="editPublicationAuthors" class="block text-sm font-medium text-text mb-2">Autores *</label>
+        <div id="editPublicationAuthorsContainer" class="space-y-2">
+          <div class="flex gap-2">
+            <input 
+              type="text" 
+              name="authors[]" 
+              required
+              class="input-field flex-1"
+              placeholder="Ingrese el nombre del autor"
+            />
+            <button 
+              type="button" 
+              onclick="addEditPublicationAuthorField()"
+              class="px-3 py-2 bg-accent text-black rounded-lg hover:brightness-90 transition-all flex items-center justify-center"
+            >
+              <Icon name="plus" class="w-4 h-4 fill-current" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fecha de publicación -->
+      <div>
+        <label for="editPublicationPublicationDate" class="block text-sm font-medium text-text mb-2">Fecha de Publicación *</label>
+        <input 
+          type="date" 
+          id="editPublicationPublicationDate" 
+          name="publicationDate" 
+          required
+          class="input-field"
+        />
+      </div>
+
+      <!-- Archivo -->
+      <div>
+        <label class="block text-sm font-medium text-text mb-2">Archivo</label>
+        <div class="space-y-4">
+          <!-- Opción 1: Subir archivo -->
+          <div>
+            <label class="flex items-center gap-2 text-text">
+              <input 
+                type="radio" 
+                name="editFileOption" 
+                value="upload" 
+                checked
+                onchange="toggleEditFileOption()"
+                class="text-accent focus:ring-accent"
+              />
+              <span>Subir archivo PDF</span>
+            </label>
+            <div id="editPublicationFileUploadSection" class="mt-2">
+              <input 
+                type="file" 
+                id="editPublicationFile" 
+                name="file" 
+                accept=".pdf"
+                class="input-field"
+              />
+            </div>
+          </div>
+
+          <!-- Opción 2: URL -->
+          <div>
+            <label class="flex items-center gap-2 text-text">
+              <input 
+                type="radio" 
+                name="editFileOption" 
+                value="url" 
+                onchange="toggleEditFileOption()"
+                class="text-accent focus:ring-accent"
+              />
+              <span>URL del archivo</span>
+            </label>
+            <div id="editPublicationFileUrlSection" class="mt-2 hidden">
+              <input 
+                type="url" 
+                id="editPublicationFileUrl" 
+                name="fileUrl" 
+                class="input-field"
+                placeholder="https://ejemplo.com/archivo.pdf"
+              />
+            </div>
+          </div>
+        </div>
+        <p class="text-sm text-gray3 mt-1">Deja vacío para mantener el archivo actual.</p>
+      </div>
+
+      <!-- Miniatura -->
+      <div>
+        <label for="editPublicationThumbnail" class="block text-sm font-medium text-text mb-2">Miniatura</label>
+        <input 
+          type="file" 
+          id="editPublicationThumbnail" 
+          name="thumbnail" 
+          accept="image/*"
+          class="input-field"
+        />
+        <p class="text-sm text-gray3 mt-1">Formatos soportados: JPEG, JPG, PNG, WebP. Máximo 10MB. Deja vacío para mantener la miniatura actual.</p>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end gap-4 pt-4">
+        <button 
+          type="button" 
+          onclick="window.customModal.hide('editPublicationModal')"
+          class="px-4 py-2 text-text bg-gray2 rounded-lg hover:bg-gray3 transition-colors"
+        >
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          class="px-4 py-2 bg-accent text-black rounded-lg hover:brightness-90 transition-colors font-medium"
+        >
+          Actualizar Publicación
+        </button>
+      </div>
+    </form>
+  </div>
+</CustomModal>
+
+<script is:inline>
+  // Datos de las publicaciones para edición
+  const publicationsData = {
+    publications: []
+  };
+
+  // Función para obtener datos de una publicación específica
+  function getPublicationData(id) {
+    // Buscar en el DOM para obtener los datos
+    const row = document.querySelector(`tr[data-id="${id}"]`);
+    if (row) {
+      const fileLink = row.querySelector('td:nth-child(7) a');
+      const thumbnailImg = row.querySelector('td:nth-child(6) img');
+      
+      return {
+        id: id,
+        title: row.querySelector('td:nth-child(1)').textContent,
+        description: row.querySelector('td:nth-child(2)').textContent,
+        type: getTypeFromText(row.querySelector('td:nth-child(3)').textContent),
+        authors: row.querySelector('td:nth-child(4)').textContent.split(', '),
+        publicationDate: formatDateForInput(row.querySelector('td:nth-child(5)').textContent),
+        filePath: fileLink ? fileLink.href : '',
+        thumbnailPath: thumbnailImg ? thumbnailImg.src.replace(window.location.origin, '') : ''
+      };
+    }
+    return null;
+  }
+
+  function getTypeFromText(text) {
+    const typeMap = {
+      'Artículo': 'article',
+      'Libro': 'book',
+      'Tesis': 'thesis',
+      'Informe Técnico': 'technical_report',
+      'Monografía': 'monograph',
+      'Otro': 'other'
+    };
+    return typeMap[text] || 'other';
+  }
+
+  function formatDateForInput(dateText) {
+    // Convertir fecha de formato español a formato input date
+    const months = {
+      'enero': '01', 'febrero': '02', 'marzo': '03', 'abril': '04',
+      'mayo': '05', 'junio': '06', 'julio': '07', 'agosto': '08',
+      'septiembre': '09', 'octubre': '10', 'noviembre': '11', 'diciembre': '12'
+    };
+    
+    const parts = dateText.split(' ');
+    if (parts.length >= 3) {
+      const day = parts[0].padStart(2, '0');
+      const month = months[parts[2].toLowerCase()] || '01';
+      const year = parts[4];
+      return `${year}-${month}-${day}`;
+    }
+    return '';
+  }
+
+  function onPublicationAdd() {
+    window.customModal.show('addPublicationModal');
+  }
+
+  function onPublicationEdit(id) {
+    const publication = getPublicationData(id);
+    if (!publication) {
+      window.customAlert.error.show(
+        'Error',
+        'No se pudo encontrar la publicación para editar.'
+      );
+      return;
+    }
+
+    // Llenar el formulario con los datos de la publicación
+    document.getElementById('editPublicationId').value = publication.id;
+    document.getElementById('editPublicationTitle').value = publication.title;
+    document.getElementById('editPublicationDescription').value = publication.description;
+    document.getElementById('editPublicationType').value = publication.type;
+    document.getElementById('editPublicationPublicationDate').value = publication.publicationDate;
+
+    // Configurar autores
+    const authorsContainer = document.getElementById('editPublicationAuthorsContainer');
+    authorsContainer.innerHTML = '';
+    
+    publication.authors.forEach((author, index) => {
+      const authorDiv = document.createElement('div');
+      authorDiv.className = 'flex gap-2';
+      authorDiv.innerHTML = `
+        <input 
+          type="text" 
+          name="authors[]" 
+          required
+          class="input-field flex-1"
+          placeholder="Ingrese el nombre del autor"
+          value="${author}"
+        />
+        ${index > 0 ? `
+          <button 
+            type="button" 
+            onclick="removeEditAuthorField(this)"
+            class="px-3 py-2 bg-danger text-white rounded-lg hover:brightness-90 transition-all flex items-center justify-center"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M0.470073 0.46991C0.610698 0.329459 0.801322 0.250569 1.00007 0.250569C1.19882 0.250569 1.38945 0.329459 1.53007 0.46991L5.00007 3.93991L8.47007 0.46991C8.53873 0.396223 8.62153 0.337121 8.71353 0.296129C8.80553 0.255137 8.90485 0.233095 9.00555 0.231318C9.10625 0.229541 9.20628 0.248066 9.29967 0.285787C9.39306 0.323508 9.47789 0.379652 9.54911 0.450871C9.62033 0.52209 9.67647 0.606924 9.7142 0.700312C9.75192 0.7937 9.77044 0.893729 9.76866 0.994432C9.76689 1.09513 9.74485 1.19445 9.70385 1.28645C9.66286 1.37845 9.60376 1.46125 9.53007 1.52991L6.06007 4.99991L9.53007 8.46991C9.60376 8.53857 9.66286 8.62137 9.70385 8.71337C9.74485 8.80537 9.76689 8.90468 9.76866 9.00539C9.77044 9.10609 9.75192 9.20612 9.7142 9.29951C9.67647 9.3929 9.62033 9.47773 9.54911 9.54895C9.47789 9.62017 9.39306 9.67631 9.29967 9.71403C9.20628 9.75175 9.10625 9.77028 9.00555 9.7685C8.90485 9.76672 8.80553 9.74468 8.71353 9.70369C8.62153 9.6627 8.53873 9.6036 8.47007 9.52991L5.00007 6.05991L1.53007 9.52991C1.3879 9.66239 1.19985 9.73451 1.00555 9.73108C0.811249 9.72766 0.625864 9.64894 0.488451 9.51153C0.351038 9.37412 0.272326 9.18873 0.268898 8.99443C0.265469 8.80013 0.337592 8.61208 0.470073 8.46991L3.94007 4.99991L0.470073 1.52991C0.329622 1.38928 0.250732 1.19866 0.250732 0.99991C0.250732 0.801159 0.329622 0.610535 0.470073 0.46991Z"/>
+            </svg>
+          </button>
+        ` : `
+          <button 
+            type="button" 
+            onclick="addEditPublicationAuthorField()"
+            class="px-3 py-2 bg-accent text-black rounded-lg hover:brightness-90 transition-all flex items-center justify-center"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 4V20M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        `}
+      `;
+      authorsContainer.appendChild(authorDiv);
+    });
+
+    // Configurar opción de archivo
+    if (publication.filePath.startsWith('http')) {
+      document.querySelector('input[name="editFileOption"][value="url"]').checked = true;
+      document.getElementById('editPublicationFileUrl').value = publication.filePath;
+      toggleEditFileOption();
+    } else {
+      document.querySelector('input[name="editFileOption"][value="upload"]').checked = true;
+      document.getElementById('editPublicationFileUrl').value = '';
+      toggleEditFileOption();
+    }
+
+    // Limpiar campos de archivo para evitar conflictos
+    document.getElementById('editPublicationFile').value = '';
+    document.getElementById('editPublicationThumbnail').value = '';
+
+    window.customModal.show('editPublicationModal');
+  }
+
+  function onPublicationDelete(id) {
+    const publication = getPublicationData(id);
+    const title = publication ? publication.title : 'esta publicación';
+    
+    if (confirm(`¿Estás seguro de que deseas eliminar "${title}"? Esta acción no se puede deshacer.`)) {
+      const formData = new FormData();
+      formData.append('id', id);
+
+      fetch('/api/publications/', {
+        method: 'DELETE',
+        body: formData
+      }).then(response => {
+        return response.json();
+      }).then(data => {
+        if (data.status === 200) {
+          window.customAlert.success.show(
+            'Publicación eliminada',
+            data.message || 'La publicación ha sido eliminada exitosamente.',
+            '',
+            () => location.reload()
+          );
+        } else {
+          window.customAlert.error.show(
+            'Error al eliminar',
+            data.message || 'Ocurrió un error al eliminar la publicación.',
+          );
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+        window.customAlert.error.show(
+          'Error al eliminar',
+          'Ocurrió un error al eliminar la publicación.',
+        );
+      });
+    }
+  }
+
+  function addPublicationAuthorField() {
+    const container = document.getElementById('publicationAuthorsContainer');
+    const newField = document.createElement('div');
+    newField.className = 'flex gap-2';
+    newField.innerHTML = `
+      <input 
+        type="text" 
+        name="authors[]" 
+        class="input-field flex-1"
+        placeholder="Ingrese el nombre del autor"
+      />
+      <button 
+        type="button" 
+        onclick="removePublicationAuthorField(this)"
+        class="px-3 py-2 bg-danger text-white rounded-lg hover:brightness-90 transition-all flex items-center justify-center"
+      >
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0.470073 0.46991C0.610698 0.329459 0.801322 0.250569 1.00007 0.250569C1.19882 0.250569 1.38945 0.329459 1.53007 0.46991L5.00007 3.93991L8.47007 0.46991C8.53873 0.396223 8.62153 0.337121 8.71353 0.296129C8.80553 0.255137 8.90485 0.233095 9.00555 0.231318C9.10625 0.229541 9.20628 0.248066 9.29967 0.285787C9.39306 0.323508 9.47789 0.379652 9.54911 0.450871C9.62033 0.52209 9.67647 0.606924 9.7142 0.700312C9.75192 0.7937 9.77044 0.893729 9.76866 0.994432C9.76689 1.09513 9.74485 1.19445 9.70385 1.28645C9.66286 1.37845 9.60376 1.46125 9.53007 1.52991L6.06007 4.99991L9.53007 8.46991C9.60376 8.53857 9.66286 8.62137 9.70385 8.71337C9.74485 8.80537 9.76689 8.90468 9.76866 9.00539C9.77044 9.10609 9.75192 9.20612 9.7142 9.29951C9.67647 9.3929 9.62033 9.47773 9.54911 9.54895C9.47789 9.62017 9.39306 9.67631 9.29967 9.71403C9.20628 9.75175 9.10625 9.77028 9.00555 9.7685C8.90485 9.76672 8.80553 9.74468 8.71353 9.70369C8.62153 9.6627 8.53873 9.6036 8.47007 9.52991L5.00007 6.05991L1.53007 9.52991C1.3879 9.66239 1.19985 9.73451 1.00555 9.73108C0.811249 9.72766 0.625864 9.64894 0.488451 9.51153C0.351038 9.37412 0.272326 9.18873 0.268898 8.99443C0.265469 8.80013 0.337592 8.61208 0.470073 8.46991L3.94007 4.99991L0.470073 1.52991C0.329622 1.38928 0.250732 1.19866 0.250732 0.99991C0.250732 0.801159 0.329622 0.610535 0.470073 0.46991Z"/>
+        </svg>
+      </button>
+    `;
+    container.appendChild(newField);
+  }
+
+  function addEditPublicationAuthorField() {
+    const container = document.getElementById('editPublicationAuthorsContainer');
+    const newField = document.createElement('div');
+    newField.className = 'flex gap-2';
+    newField.innerHTML = `
+      <input 
+        type="text" 
+        name="authors[]" 
+        class="input-field flex-1"
+        placeholder="Ingrese el nombre del autor"
+      />
+      <button 
+        type="button" 
+        onclick="removeEditPublicationAuthorField(this)"
+        class="px-3 py-2 bg-danger text-white rounded-lg hover:brightness-90 transition-all flex items-center justify-center"
+      >
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0.470073 0.46991C0.610698 0.329459 0.801322 0.250569 1.00007 0.250569C1.19882 0.250569 1.38945 0.329459 1.53007 0.46991L5.00007 3.93991L8.47007 0.46991C8.53873 0.396223 8.62153 0.337121 8.71353 0.296129C8.80553 0.255137 8.90485 0.233095 9.00555 0.231318C9.10625 0.229541 9.20628 0.248066 9.29967 0.285787C9.39306 0.323508 9.47789 0.379652 9.54911 0.450871C9.62033 0.52209 9.67647 0.606924 9.7142 0.700312C9.75192 0.7937 9.77044 0.893729 9.76866 0.994432C9.76689 1.09513 9.74485 1.19445 9.70385 1.28645C9.66286 1.37845 9.60376 1.46125 9.53007 1.52991L6.06007 4.99991L9.53007 8.46991C9.60376 8.53857 9.66286 8.62137 9.70385 8.71337C9.74485 8.80537 9.76689 8.90468 9.76866 9.00539C9.77044 9.10609 9.75192 9.20612 9.7142 9.29951C9.67647 9.3929 9.62033 9.47773 9.54911 9.54895C9.47789 9.62017 9.39306 9.67631 9.29967 9.71403C9.20628 9.75175 9.10625 9.77028 9.00555 9.7685C8.90485 9.76672 8.80553 9.74468 8.71353 9.70369C8.62153 9.6627 8.53873 9.6036 8.47007 9.52991L5.00007 6.05991L1.53007 9.52991C1.3879 9.66239 1.19985 9.73451 1.00555 9.73108C0.811249 9.72766 0.625864 9.64894 0.488451 9.51153C0.351038 9.37412 0.272326 9.18873 0.268898 8.99443C0.265469 8.80013 0.337592 8.61208 0.470073 8.46991L3.94007 4.99991L0.470073 1.52991C0.329622 1.38928 0.250732 1.19866 0.250732 0.99991C0.250732 0.801159 0.329622 0.610535 0.470073 0.46991Z"/>
+        </svg>
+      </button>
+    `;
+    container.appendChild(newField);
+  }
+
+  function removePublicationAuthorField(button) {
+    button.parentElement.remove();
+  }
+
+  function removeEditPublicationAuthorField(button) {
+    button.parentElement.remove();
+  }
+
+  function togglePublicationFileOption() {
+    const fileUploadSection = document.getElementById('publicationFileUploadSection');
+    const fileUrlSection = document.getElementById('publicationFileUrlSection');
+    const fileInput = document.getElementById('publicationFile');
+    const fileUrlInput = document.getElementById('publicationFileUrl');
+    
+    const selectedOption = document.querySelector('input[name="publicationFileOption"]:checked').value;
+    
+    if (selectedOption === 'upload') {
+      fileUploadSection.classList.remove('hidden');
+      fileUrlSection.classList.add('hidden');
+      fileInput.required = true;
+      fileUrlInput.required = false;
+      fileUrlInput.value = '';
+    } else {
+      fileUploadSection.classList.add('hidden');
+      fileUrlSection.classList.remove('hidden');
+      fileInput.required = false;
+      fileUrlInput.required = true;
+      fileInput.value = '';
+    }
+  }
+
+  function toggleEditFileOption() {
+    const fileUploadSection = document.getElementById('editPublicationFileUploadSection');
+    const fileUrlSection = document.getElementById('editPublicationFileUrlSection');
+    const fileInput = document.getElementById('editPublicationFile');
+    const fileUrlInput = document.getElementById('editPublicationFileUrl');
+    
+    const selectedOption = document.querySelector('input[name="editFileOption"]:checked').value;
+    
+    if (selectedOption === 'upload') {
+      fileUploadSection.classList.remove('hidden');
+      fileUrlSection.classList.add('hidden');
+      fileInput.required = false; // No requerido en edición
+      fileUrlInput.required = false;
+      fileUrlInput.value = '';
+    } else {
+      fileUploadSection.classList.add('hidden');
+      fileUrlSection.classList.remove('hidden');
+      fileInput.required = false;
+      fileUrlInput.required = false; // No requerido en edición
+      fileInput.value = '';
+    }
+  }
+
+  // Manejar el envío del formulario de agregar
+  document.addEventListener('DOMContentLoaded', function() {
+    const addForm = document.getElementById('addPublicationForm');
+    const editForm = document.getElementById('editPublicationForm');
+    
+    addForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(addForm);
+      
+      // Limpiar campos de autores vacíos y convertir a array
+      const authors = formData.getAll('authors[]').filter(author => author.trim() !== '');
+      formData.delete('authors[]');
+      formData.append('authors', JSON.stringify(authors));
+      
+      // Manejar la opción de archivo seleccionada
+      const fileOption = formData.get('publicationFileOption');
+      if (fileOption === 'url') {
+        formData.delete('file');
+      } else {
+        formData.delete('fileUrl');
+      }
+      formData.delete('publicationFileOption');
+      
+      fetch('/api/publications/', {
+        method: 'POST',
+        body: formData
+      }).then(response => {
+        return response.json();
+      }).then(data => {
+        if (data.status === 200) {
+          window.customModal.hide('addPublicationModal');
+          window.customAlert.success.show(
+            'Publicación agregada',
+            data.message || 'La publicación ha sido agregada exitosamente.',
+            '',
+            () => location.reload()
+          );
+          addForm.reset();
+        } else {
+          window.customAlert.error.show(
+            'Error al agregar',
+            data.message || 'Ocurrió un error al agregar la publicación.',
+          );
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+        window.customAlert.error.show(
+          'Error al agregar',
+          'Ocurrió un error al agregar la publicación.',
+        );
+      });
+    });
+
+    // Manejar el envío del formulario de editar
+    editForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(editForm);
+      
+      // Limpiar campos de autores vacíos y convertir a array
+      const authors = formData.getAll('authors[]').filter(author => author.trim() !== '');
+      formData.delete('authors[]');
+      formData.append('authors', JSON.stringify(authors));
+      
+      // Manejar la opción de archivo seleccionada
+      const fileOption = formData.get('editFileOption');
+      if (fileOption === 'url') {
+        formData.delete('file');
+        // Asegurar que la URL del archivo se envíe correctamente
+        const fileUrl = formData.get('fileUrl');
+        if (fileUrl && fileUrl.toString().trim() !== '') {
+          formData.set('fileUrl', fileUrl.toString().trim());
+        }
+      } else {
+        formData.delete('fileUrl');
+        // Solo incluir el archivo si se ha seleccionado uno
+        const file = formData.get('file');
+        if (!file || file.size === 0) {
+          formData.delete('file');
+        }
+      }
+      formData.delete('editFileOption');
+      
+      // Manejar la miniatura - solo incluir si se ha seleccionado una nueva
+      const thumbnail = formData.get('thumbnail');
+      if (!thumbnail || thumbnail.size === 0) {
+        formData.delete('thumbnail');
+      }
+      
+      fetch('/api/publications/', {
+        method: 'PUT',
+        body: formData
+      }).then(response => {
+        return response.json();
+      }).then(data => {
+        if (data.status === 200) {
+          window.customModal.hide('editPublicationModal');
+          window.customAlert.success.show(
+            'Publicación actualizada',
+            data.message || 'La publicación ha sido actualizada exitosamente.',
+            '',
+            () => location.reload()
+          );
+        } else {
+          window.customAlert.error.show(
+            'Error al actualizar',
+            data.message || 'Ocurrió un error al actualizar la publicación.',
+          );
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+        window.customAlert.error.show(
+          'Error al actualizar',
+          'Ocurrió un error al actualizar la publicación.',
+        );
+      });
+    });
+  });
+</script>
+
+<style>
+  @import "../../../../styles//global.css";
+
+  #publicationsTable td:nth-child(1) {
+    @apply min-w-88 max-w-88;
+  }
+
+  #publicationsTable td:nth-child(2) {
+    @apply min-w-72 max-w-72;
+  }
+
+  #publicationsTable td:nth-child(3) {
+    @apply min-w-32 max-w-32;
+  }
+
+  #publicationsTable td:nth-child(4) {
+    @apply min-w-40 max-w-40;
+  }
+
+  #publicationsTable td:nth-child(5) {
+    @apply min-w-42 max-w-42;
+  }
+
+  #publicationsTable td:nth-child(6) {
+    @apply min-w-40 max-w-40;
+  }
+
+  #publicationsTable td:nth-child(7) {
+    @apply min-w-32 max-w-32;
+  }
+
+  #publicationsTable td:nth-child(8) {
+    @apply min-w-32 max-w-32;
+  }
+</style>

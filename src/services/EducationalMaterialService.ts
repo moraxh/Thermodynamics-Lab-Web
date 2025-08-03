@@ -129,6 +129,103 @@ export class EducationalMaterialService {
     }
   }
 
+  static async updateEducationalMaterial(formData: FormData): Promise<CommonResponse> {
+    const educationalMaterialId = formData.get("id") as string;
+
+    if (!educationalMaterialId) {
+      return {
+        status: 400,
+        message: "El ID del recurso educativo es requerido"
+      }
+    }
+
+    // Check if the educational material exists
+    const existingMaterial = await EducationalMaterialRepository.getEducationalMetarialById(educationalMaterialId);
+    if (!existingMaterial) {
+      return {
+        status: 404,
+        message: "Recurso educativo no encontrado"
+      }
+    }
+
+    const fields = Object.fromEntries((formData.entries()))
+    const validation = EducationalMaterialSchema.safeParse({
+      ...fields,
+      file: fields.file || undefined,
+      fileUrl: fields.fileUrl || undefined
+    })
+
+    if (!validation.success) {
+      return {
+        status: 400,
+        message: validation.error.errors[0].message,
+      }
+    }
+
+    const { title, description, file, fileUrl } = validation.data;
+
+    let data: Partial<EducationalMaterialInsert> = {
+      title,
+      description,
+      uploadedAt: new Date()
+    }
+
+    // Check if the title already exists (but not for the current material)
+    const existingByTitle = await EducationalMaterialRepository.getEducationalMaterialByTitle(title);
+    if (existingByTitle && existingByTitle.id !== educationalMaterialId) {
+      return {
+        status: 400,
+        message: "Ya existe un recurso educativo con ese título"
+      }
+    }
+
+    // Handle file update
+    if (fileUrl) {
+      // Delete old file if it exists and is not a URL
+      if (existingMaterial.filePath && !existingMaterial.filePath.startsWith('http')) {
+        const oldFilePath = `./public/${existingMaterial.filePath}`;
+        if (fs.existsSync(oldFilePath)) {
+          fs.unlinkSync(oldFilePath);
+        }
+      }
+      data.filePath = fileUrl;
+    } else if (file && file.size > 0) {
+      const fileHash = await generateHashFromStream(file.stream())
+
+      // Check if another material already has this file
+      const existingByHash = await EducationalMaterialRepository.getEducationalMaterialByFileHash(fileHash);
+      if (existingByHash && existingByHash.id !== educationalMaterialId) {
+        return {
+          status: 400,
+          message: "Ya existe un recurso educativo con ese archivo"
+        }
+      }
+
+      // Delete old file if it exists and is not a URL
+      if (existingMaterial.filePath && !existingMaterial.filePath.startsWith('http')) {
+        const oldFilePath = `./public/${existingMaterial.filePath}`;
+        if (fs.existsSync(oldFilePath)) {
+          fs.unlinkSync(oldFilePath);
+        }
+      }
+
+      // Save the new file
+      fs.mkdirSync(`./public/${storagePath}`, { recursive: true })
+      const filePath = `${storagePath}/${fileHash}.${file.name.split('.').pop()}`
+      fs.writeFileSync(`./public/${filePath}`, Buffer.from(await file.arrayBuffer()))
+
+      data.filePath = filePath;
+    }
+    // If no new file is provided, keep the existing one
+
+    await EducationalMaterialRepository.updateEducationalMaterial(educationalMaterialId, data)
+
+    return {
+      status: 200,
+      message: "Recurso educativo actualizado exitosamente",
+    }
+  }
+
   static async clearData(): Promise<void> {
     // Delete the files
     fs.rmdirSync("./public/storage/resources", { recursive: true });

@@ -9,6 +9,7 @@ export class PublicationController {
       const response = await PublicationService.getPublications(searchParams)
       return new Response(JSON.stringify(response), { status: response.status })
     } catch (error) {
+      console.error("Error fetching publications:", error);
       return new Response(JSON.stringify({
         message: "Error al obtener las publicaciones"
       }), { status: 500 })
@@ -21,6 +22,7 @@ export class PublicationController {
       const response = await PublicationService.createPublication(formData)
       return new Response(JSON.stringify(response), { status: response.status })
     } catch (error){
+      console.error("Error creating publication:", error);
       return new Response(JSON.stringify({
         message: "Error al crear la publicación"
       }), { status: 500 })
@@ -33,8 +35,9 @@ export class PublicationController {
       const response = await PublicationService.updatePublication(formData)
       return new Response(JSON.stringify(response), { status: response.status })
     } catch (error){
+      console.error("Error updating publication:", error);
       return new Response(JSON.stringify({
-        message: "Error al crear la publicación"
+        message: "Error al actualizar la publicación"
       }), { status: 500 })
     }
   }
@@ -45,8 +48,9 @@ export class PublicationController {
       const response = await PublicationService.deletePublication(formData)
       return new Response(JSON.stringify(response), { status: response.status })
     } catch (error){
+      console.error("Error deleting publication:", error);
       return new Response(JSON.stringify({
-        message: "Error al crear la publicación"
+        message: "Error al eliminar la publicación"
       }), { status: 500 })
     }
   }

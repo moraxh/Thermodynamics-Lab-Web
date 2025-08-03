@@ -1,0 +1,607 @@
+---
+  import { db } from '@db/connection'
+  import { EducationalMaterial } from "@db/tables"
+  import Icon from '@src/components/common/Icon.astro'
+  import ActionButtons from './ActionButtons.astro'
+  import AddButton from './AddButton.astro'
+  import CustomModal from '@src/components/common/CustomModal.astro'
+
+  const educationalMaterials = await db.select().from(EducationalMaterial).orderBy(EducationalMaterial.uploadedAt)
+
+  const formatDate = (date: Date) => {
+    const parts = date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).split(' ');
+
+    if (parts.length >= 5) {
+      parts[2] = parts[2].charAt(0).toUpperCase() + parts[2].slice(1); // Capitaliza el mes
+    }
+
+    return parts.join(' ');
+  }
+---
+
+<section class="flex flex-col gap-4 p-5 rounded-lg border border-gray2">
+  <article>
+    <h2 class="text-2xl font-bold text-text">Gestion de Recursos Educativos</h2>
+    <p class="text-gray-600">Aquí puedes gestionar todos los recursos educativos de la plataforma.</p>
+  </article>
+
+  <AddButton label="Agregar Recurso" onclick="onResourceAdd()" />
+
+  <div class="overflow-auto max-w-[90vw] max-h-[1000px]">
+    <table id="educationalMaterialsTable">
+      <thead>
+        <tr>
+          <th class="min-w-88 max-w-88">Titulo</th>
+          <th class="min-w-72 max-w-72">Descripcion</th>
+          <th class="min-w-32 max-w-32">Archivo</th>
+          <th class="min-w-42 max-w-42">Subido el</th>
+          <th class="min-w-32 max-w-32">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {educationalMaterials.length > 0 ? 
+          educationalMaterials.map((material) => (
+            <tr data-id={material.id}>
+              <td>{material.title}</td>
+              <td>{material.description}</td>
+              <td>
+                <a class="flex justify-center" target="_blank" href={material.filePath.startsWith('http://') || material.filePath.startsWith('https://') ? material.filePath : `/${material.filePath}`}>
+                  <Icon name="eye" class="stroke-accent w-8 hover:bg-accent hover:stroke-black stroke-2 outline-2 outline-accent p-2 aspect-square rounded-full" />
+                </a>
+              </td>
+              <td>{formatDate(material.uploadedAt)}</td>
+              <td>
+                <ActionButtons 
+                  onEdit={`onResourceEdit("${material.id}")`}
+                  onDelete={`onResourceDelete("${material.id}")`}
+                />
+              </td>
+            </tr>
+          )) : (
+          <tr>
+            <td colspan="5" class="text-center py-4">No hay recursos educativos registrados.</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Modal para agregar recurso -->
+<CustomModal id="addResourceModal" class="w-full max-w-4xl">
+  <div class="bg-gray0 rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-gray2">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-2xl font-bold text-text">Agregar Nuevo Recurso Educativo</h3>
+      <button onclick="window.customModal.hide('addResourceModal')" class="text-gray3 hover:text-text transition-colors">
+        <Icon name="xmark" class="w-6 h-6 fill-current" />
+      </button>
+    </div>
+
+    <form id="addResourceForm" class="space-y-6">
+      <!-- Título -->
+      <div>
+        <label for="resourceTitle" class="block text-sm font-medium text-text mb-2">Título *</label>
+        <input 
+          type="text" 
+          id="resourceTitle" 
+          name="title" 
+          required
+          class="input-field"
+          placeholder="Ingrese el título del recurso"
+        />
+      </div>
+
+      <!-- Descripción -->
+      <div>
+        <label for="resourceDescription" class="block text-sm font-medium text-text mb-2">Descripción *</label>
+        <textarea 
+          id="resourceDescription" 
+          name="description" 
+          required
+          rows="4"
+          class="input-field resize-none"
+          placeholder="Ingrese la descripción del recurso"
+        ></textarea>
+      </div>
+
+      <!-- Archivo -->
+      <div>
+        <label class="block text-sm font-medium text-text mb-2">Archivo *</label>
+        <div class="space-y-4">
+          <!-- Opción 1: Subir archivo -->
+          <div>
+            <label class="flex items-center gap-2 text-text">
+              <input 
+                type="radio" 
+                name="resourceFileOption" 
+                value="upload" 
+                checked
+                onchange="toggleResourceFileOption()"
+                class="text-accent focus:ring-accent"
+              />
+              <span>Subir archivo</span>
+            </label>
+            <div id="resourceFileUploadSection" class="mt-2">
+              <input 
+                type="file" 
+                id="resourceFile" 
+                name="file" 
+                accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx"
+                class="input-field"
+              />
+            </div>
+          </div>
+
+          <!-- Opción 2: URL -->
+          <div>
+            <label class="flex items-center gap-2 text-text">
+              <input 
+                type="radio" 
+                name="resourceFileOption" 
+                value="url" 
+                onchange="toggleResourceFileOption()"
+                class="text-accent focus:ring-accent"
+              />
+              <span>URL del archivo</span>
+            </label>
+            <div id="resourceFileUrlSection" class="mt-2 hidden">
+              <input 
+                type="url" 
+                id="resourceFileUrl" 
+                name="fileUrl" 
+                class="input-field"
+                placeholder="https://ejemplo.com/recurso.pdf"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end gap-4 pt-4">
+        <button 
+          type="button" 
+          onclick="window.customModal.hide('addResourceModal')"
+          class="px-4 py-2 text-text bg-gray2 rounded-lg hover:bg-gray3 transition-colors"
+        >
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          class="px-4 py-2 bg-accent text-black rounded-lg hover:brightness-90 transition-colors font-medium"
+        >
+          Agregar Recurso
+        </button>
+      </div>
+    </form>
+  </div>
+</CustomModal>
+
+<!-- Modal para editar recurso -->
+<CustomModal id="editResourceModal" class="w-full max-w-4xl">
+  <div class="bg-gray0 rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-gray2">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-2xl font-bold text-text">Editar Recurso Educativo</h3>
+      <button onclick="window.customModal.hide('editResourceModal')" class="text-gray3 hover:text-text transition-colors">
+        <Icon name="xmark" class="w-6 h-6 fill-current" />
+      </button>
+    </div>
+
+    <form id="editResourceForm" class="space-y-6">
+      <input type="hidden" id="editResourceId" name="id" />
+      
+      <!-- Título -->
+      <div>
+        <label for="editResourceTitle" class="block text-sm font-medium text-text mb-2">Título *</label>
+        <input 
+          type="text" 
+          id="editResourceTitle" 
+          name="title" 
+          required
+          class="input-field"
+          placeholder="Ingrese el título del recurso"
+        />
+      </div>
+
+      <!-- Descripción -->
+      <div>
+        <label for="editResourceDescription" class="block text-sm font-medium text-text mb-2">Descripción *</label>
+        <textarea 
+          id="editResourceDescription" 
+          name="description" 
+          required
+          rows="4"
+          class="input-field resize-none"
+          placeholder="Ingrese la descripción del recurso"
+        ></textarea>
+      </div>
+
+      <!-- Archivo -->
+      <div>
+        <label class="block text-sm font-medium text-text mb-2">Archivo</label>
+        <div class="space-y-4">
+          <!-- Opción 1: Subir archivo -->
+          <div>
+            <label class="flex items-center gap-2 text-text">
+              <input 
+                type="radio" 
+                name="editFileOption" 
+                value="upload" 
+                checked
+                onchange="toggleEditResourceFileOption()"
+                class="text-accent focus:ring-accent"
+              />
+              <span>Subir archivo</span>
+            </label>
+            <div id="editResourceFileUploadSection" class="mt-2">
+              <input 
+                type="file" 
+                id="editResourceFile" 
+                name="file" 
+                accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx"
+                class="input-field"
+              />
+            </div>
+          </div>
+
+          <!-- Opción 2: URL -->
+          <div>
+            <label class="flex items-center gap-2 text-text">
+              <input 
+                type="radio" 
+                name="editFileOption" 
+                value="url" 
+                onchange="toggleEditResourceFileOption()"
+                class="text-accent focus:ring-accent"
+              />
+              <span>URL del archivo</span>
+            </label>
+            <div id="editResourceFileUrlSection" class="mt-2 hidden">
+              <input 
+                type="url" 
+                id="editResourceFileUrl" 
+                name="fileUrl" 
+                class="input-field"
+                placeholder="https://ejemplo.com/recurso.pdf"
+              />
+            </div>
+          </div>
+        </div>
+        <p class="text-sm text-gray3 mt-1">Deja vacío para mantener el archivo actual.</p>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end gap-4 pt-4">
+        <button 
+          type="button" 
+          onclick="window.customModal.hide('editResourceModal')"
+          class="px-4 py-2 text-text bg-gray2 rounded-lg hover:bg-gray3 transition-colors"
+        >
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          class="px-4 py-2 bg-accent text-black rounded-lg hover:brightness-90 transition-colors font-medium"
+        >
+          Actualizar Recurso
+        </button>
+      </div>
+    </form>
+  </div>
+</CustomModal>
+
+<script is:inline>
+  // Función para obtener datos de un recurso específico
+  function getResourceData(id) {
+    // Buscar en el DOM para obtener los datos
+    const row = document.querySelector(`tr[data-id="${id}"]`);
+    if (row) {
+      const fileLink = row.querySelector('td:nth-child(3) a');
+      
+      return {
+        id: id,
+        title: row.querySelector('td:nth-child(1)')?.textContent?.trim() || '',
+        description: row.querySelector('td:nth-child(2)')?.textContent?.trim() || '',
+        uploadedAt: formatDateForInput(row.querySelector('td:nth-child(4)')?.textContent?.trim() || ''),
+        filePath: fileLink ? fileLink.getAttribute('href') : ''
+      };
+    }
+    return null;
+  }
+
+  function formatDateForInput(dateText) {
+    // Convertir fecha de formato español a formato input date
+    const months = {
+      'enero': '01', 'febrero': '02', 'marzo': '03', 'abril': '04',
+      'mayo': '05', 'junio': '06', 'julio': '07', 'agosto': '08',
+      'septiembre': '09', 'octubre': '10', 'noviembre': '11', 'diciembre': '12'
+    };
+    
+    const parts = dateText.split(' ');
+    if (parts.length >= 3) {
+      const day = parts[0].padStart(2, '0');
+      const month = months[parts[2].toLowerCase()] || '01';
+      const year = parts[4];
+      return `${year}-${month}-${day}`;
+    }
+    return '';
+  }
+
+  function onResourceAdd() {
+    // Resetear el formulario y configurar el estado inicial
+    const addForm = document.getElementById('addResourceForm');
+    addForm.reset();
+    
+    // Asegurar que la opción de subir archivo esté seleccionada por defecto
+    document.querySelector('input[name="resourceFileOption"][value="upload"]').checked = true;
+    
+    // Configurar la visibilidad inicial
+    toggleResourceFileOption();
+    
+    window.customModal.show('addResourceModal');
+  }
+
+  function onResourceEdit(id) {
+    const resource = getResourceData(id);
+    if (!resource) {
+      window.customAlert.error.show(
+        'Error',
+        'No se pudo encontrar el recurso para editar.'
+      );
+      return;
+    }
+
+    // Llenar el formulario con los datos del recurso
+    document.getElementById('editResourceId').value = resource.id;
+    document.getElementById('editResourceTitle').value = resource.title;
+    document.getElementById('editResourceDescription').value = resource.description;
+
+    // Limpiar campos de archivo para evitar conflictos
+    document.getElementById('editResourceFile').value = '';
+    document.getElementById('editResourceFileUrl').value = '';
+
+    // Configurar opción de archivo
+    // Si la ruta empieza con http:// o https:// es una URL externa
+    if (resource.filePath && (resource.filePath.startsWith('http://') || resource.filePath.startsWith('https://'))) {
+      document.querySelector('input[name="editFileOption"][value="url"]').checked = true;
+      document.getElementById('editResourceFileUrl').value = resource.filePath;
+      toggleEditResourceFileOption();
+    } else {
+      // Es un archivo local, mostrar opción de subida
+      document.querySelector('input[name="editFileOption"][value="upload"]').checked = true;
+      toggleEditResourceFileOption();
+    }
+
+    window.customModal.show('editResourceModal');
+  }
+
+  function onResourceDelete(id) {
+    const resource = getResourceData(id);
+    const title = resource ? resource.title : 'este recurso';
+    
+    if (confirm(`¿Estás seguro de que deseas eliminar "${title}"? Esta acción no se puede deshacer.`)) {
+      const formData = new FormData();
+      formData.append('id', id);
+
+      fetch('/api/educational_material', {
+        method: 'DELETE',
+        body: formData
+      }).then(response => {
+        return response.json();
+      }).then(data => {
+        if (data.status === 200) {
+          window.customAlert.success.show(
+            'Recurso eliminado',
+            data.message || 'El recurso ha sido eliminado exitosamente.',
+            '',
+            () => location.reload()
+          );
+        } else {
+          window.customAlert.error.show(
+            'Error al eliminar',
+            data.message || 'Ocurrió un error al eliminar el recurso.'
+          );
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+        window.customAlert.error.show(
+          'Error al eliminar',
+          'Ocurrió un error al eliminar el recurso.'
+        );
+      });
+    }
+  }
+
+  function toggleResourceFileOption() {
+    const fileUploadSection = document.getElementById('resourceFileUploadSection');
+    const fileUrlSection = document.getElementById('resourceFileUrlSection');
+    const fileInput = document.getElementById('resourceFile');
+    const fileUrlInput = document.getElementById('resourceFileUrl');
+    
+    const selectedOption = document.querySelector('input[name="resourceFileOption"]:checked').value;
+    
+    if (selectedOption === 'upload') {
+      fileUploadSection.classList.remove('hidden');
+      fileUrlSection.classList.add('hidden');
+      fileInput.required = true;
+      fileUrlInput.required = false;
+      fileUrlInput.value = '';
+    } else {
+      fileUploadSection.classList.add('hidden');
+      fileUrlSection.classList.remove('hidden');
+      fileInput.required = false;
+      fileUrlInput.required = true;
+      fileInput.value = '';
+    }
+  }
+
+  function toggleEditResourceFileOption() {
+    const fileUploadSection = document.getElementById('editResourceFileUploadSection');
+    const fileUrlSection = document.getElementById('editResourceFileUrlSection');
+    const fileInput = document.getElementById('editResourceFile');
+    const fileUrlInput = document.getElementById('editResourceFileUrl');
+    
+    const selectedOption = document.querySelector('input[name="editFileOption"]:checked').value;
+    
+    if (selectedOption === 'upload') {
+      fileUploadSection.classList.remove('hidden');
+      fileUrlSection.classList.add('hidden');
+      fileInput.required = false; // No requerido en edición
+      fileUrlInput.required = false;
+      // No limpiar fileUrlInput aquí para mantener el valor si se está editando una URL
+    } else {
+      fileUploadSection.classList.add('hidden');
+      fileUrlSection.classList.remove('hidden');
+      fileInput.required = false;
+      fileUrlInput.required = false; // No requerido en edición
+      fileInput.value = '';
+    }
+  }
+
+  // Manejar el envío de formularios
+  document.addEventListener('DOMContentLoaded', function() {
+    const addForm = document.getElementById('addResourceForm');
+    const editForm = document.getElementById('editResourceForm');
+    
+    // Inicializar el estado de los formularios
+    toggleResourceFileOption();
+    toggleEditResourceFileOption();
+    
+    // Manejar el envío del formulario de agregar
+    addForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(addForm);
+      
+      // Manejar la opción de archivo seleccionada
+      const fileOption = formData.get('resourceFileOption');
+      if (fileOption === 'url') {
+        formData.delete('file');
+      } else {
+        formData.delete('fileUrl');
+      }
+      formData.delete('resourceFileOption');
+      
+      fetch('/api/educational_material', {
+        method: 'POST',
+        body: formData
+      }).then(response => {
+        return response.json();
+      }).then(data => {
+        if (data.status === 200) {
+          addForm.reset();
+          window.customModal.hide('addResourceModal');
+          window.customAlert.success.show(
+            'Recurso agregado',
+            data.message || 'El recurso ha sido agregado exitosamente.',
+            '',
+            () => location.reload()
+          );
+        } else {
+          window.customAlert.error.show(
+            'Error al agregar',
+            data.message || 'Ocurrió un error al agregar el recurso.'
+          );
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+        window.customAlert.error.show(
+          'Error al agregar',
+          'Ocurrió un error al agregar el recurso.'
+        );
+      });
+    });
+
+    // Manejar el envío del formulario de editar
+    editForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(editForm);
+      
+      // Manejar la opción de archivo seleccionada
+      const fileOption = formData.get('editFileOption');
+      
+      if (fileOption === 'url') {
+        // Si se seleccionó URL, eliminar el campo file
+        formData.delete('file');
+        
+        // Verificar que la URL no esté vacía si se seleccionó esta opción
+        const fileUrl = formData.get('fileUrl');
+        if (fileUrl && fileUrl.toString().trim() !== '') {
+          formData.set('fileUrl', fileUrl.toString().trim());
+        } else {
+          // Si no hay URL, eliminar el campo para mantener el archivo actual
+          formData.delete('fileUrl');
+        }
+      } else {
+        // Si se seleccionó upload, eliminar el campo fileUrl
+        formData.delete('fileUrl');
+        
+        // Solo incluir el archivo si se ha seleccionado uno
+        const file = formData.get('file');
+        if (!file || file.size === 0) {
+          formData.delete('file');
+        }
+      }
+      
+      // Eliminar el campo de opción ya que no es necesario en el servidor
+      formData.delete('editFileOption');
+      
+      fetch('/api/educational_material', {
+        method: 'PATCH',
+        body: formData
+      }).then(response => {
+        return response.json();
+      }).then(data => {
+        if (data.status === 200) {
+          window.customModal.hide('editResourceModal');
+          window.customAlert.success.show(
+            'Recurso actualizado',
+            data.message || 'El recurso ha sido actualizado exitosamente.',
+            '',
+            () => location.reload()
+          );
+        } else {
+          window.customAlert.error.show(
+            'Error al actualizar',
+            data.message || 'Ocurrió un error al actualizar el recurso.'
+          );
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+        window.customAlert.error.show(
+          'Error al actualizar',
+          'Ocurrió un error al actualizar el recurso.'
+        );
+      });
+    });
+  });
+</script>
+
+<style>
+  @import "../../../../styles//global.css";
+
+  #educationalMaterialsTable td:nth-child(1) {
+    @apply min-w-88 max-w-88;
+  }
+
+  #educationalMaterialsTable td:nth-child(2) {
+    @apply min-w-72 max-w-72;
+  }
+
+  #educationalMaterialsTable td:nth-child(3) {
+    @apply min-w-32 max-w-32;
+  }
+
+  #educationalMaterialsTable td:nth-child(4) {
+    @apply min-w-42 max-w-42;
+  }
+
+  #educationalMaterialsTable td:nth-child(5) {
+    @apply min-w-32 max-w-32;
+  }
+</style>

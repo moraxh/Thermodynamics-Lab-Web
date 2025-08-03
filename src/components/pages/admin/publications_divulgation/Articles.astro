@@ -1,0 +1,821 @@
+---
+  import { db } from '@db/connection'
+  import { Article } from "@db/tables"
+  import ImgViewer from '@src/components/common/ImgViewer.astro'
+  import Icon from '@src/components/common/Icon.astro'
+  import ActionButtons from './ActionButtons.astro'
+  import AddButton from './AddButton.astro'
+  import CustomModal from '@src/components/common/CustomModal.astro'
+
+  const articles = await db.select().from(Article).orderBy(Article.publicationDate)
+
+  const formatDate = (date: Date) => {
+    const parts = date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).split(' ');
+
+    if (parts.length >= 5) {
+      parts[2] = parts[2].charAt(0).toUpperCase() + parts[2].slice(1); // Capitaliza el mes
+    }
+
+    return parts.join(' ');
+  }
+---
+
+<ImgViewer />
+
+<section class="flex flex-col gap-4 p-5 rounded-lg border border-gray2">
+  <article>
+    <h2 class="text-2xl font-bold text-text">Gestion de Artículos</h2>
+    <p class="text-gray-600">Aquí puedes gestionar todos los artículos de la plataforma.</p>
+  </article>
+
+  <AddButton label="Agregar Artículo" onclick="onArticleAdd()" />
+
+  <div class="overflow-auto max-w-[90vw] max-h-[1000px]">
+    <table id="articlesTable">
+      <thead>
+        <tr>
+          <th class="min-w-88 max-w-88">Titulo</th>
+          <th class="min-w-72 max-w-72">Descripcion</th>
+          <th class="min-w-40 max-w-40">Autores</th>
+          <th class="min-w-42 max-w-42">Fecha de Publicación</th>
+          <th class="min-w-40 max-w-40">Miniatura</th>
+          <th class="min-w-32 max-w-32">Archivo</th>
+          <th class="min-w-32 max-w-32">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {articles.length > 0 ? 
+          articles.map((article) => (
+            <tr data-id={article.id}>
+              <td>{article.title}</td>
+              <td>{article.description}</td>
+              <td>{(article.authors as string[]).join(', ')}</td>
+              <td>{formatDate(article.publicationDate)}</td>
+              <td>
+                <img 
+                  src={`/${article.thumbnailPath}`}
+                  class="min-h-20 max-h-32 h-full rounded mx-auto imgViewer"
+                  alt="Miniatura"
+                  />
+              </td>
+              <td>
+                <a class="flex justify-center" target="_blank" href={`${article.filePath.startsWith('http') ? article.filePath : `/${article.filePath}`}`}>
+                  <Icon name="eye" class="stroke-accent w-8 hover:bg-accent hover:stroke-black stroke-2 outline-2 outline-accent p-2 aspect-square rounded-full" />
+                </a>
+              </td>
+              <td>
+                <ActionButtons 
+                  onEdit={`onArticleEdit("${article.id}")`}
+                  onDelete={`onArticleDelete("${article.id}")`}
+                />
+              </td>
+            </tr>
+          )) : (
+          <tr>
+            <td colspan="7" class="text-center py-4">No hay artículos registrados.</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Modal para agregar artículo -->
+<CustomModal id="addArticleModal" class="w-full max-w-4xl">
+  <div class="bg-gray0 rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-gray2">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-2xl font-bold text-text">Agregar Nuevo Artículo</h3>
+      <button onclick="window.customModal.hide('addArticleModal')" class="text-gray3 hover:text-text transition-colors">
+        <Icon name="xmark" class="w-6 h-6 fill-current" />
+      </button>
+    </div>
+
+    <form id="addArticleForm" class="space-y-6">
+      <!-- Título -->
+      <div>
+        <label for="articleTitle" class="block text-sm font-medium text-text mb-2">Título *</label>
+        <input 
+          type="text" 
+          id="articleTitle" 
+          name="title" 
+          required
+          class="input-field"
+          placeholder="Ingrese el título del artículo"
+        />
+      </div>
+
+      <!-- Descripción -->
+      <div>
+        <label for="articleDescription" class="block text-sm font-medium text-text mb-2">Descripción *</label>
+        <textarea 
+          id="articleDescription" 
+          name="description" 
+          required
+          rows="4"
+          class="input-field resize-none"
+          placeholder="Ingrese la descripción del artículo"
+        ></textarea>
+      </div>
+
+      <!-- Autores -->
+      <div>
+        <label for="authors" class="block text-sm font-medium text-text mb-2">Autores *</label>
+        <div id="authorsContainer" class="space-y-2">
+          <div class="flex gap-2">
+            <input 
+              type="text" 
+              name="authors[]" 
+              required
+              class="input-field flex-1"
+              placeholder="Ingrese el nombre del autor"
+            />
+            <button 
+              type="button" 
+              onclick="addAuthorField()"
+              class="px-3 py-2 bg-accent text-black rounded-lg hover:brightness-90 transition-all flex items-center justify-center"
+            >
+              <Icon name="plus" class="w-4 h-4 fill-current" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fecha de publicación -->
+      <div>
+        <label for="publicationDate" class="block text-sm font-medium text-text mb-2">Fecha de Publicación *</label>
+        <input 
+          type="date" 
+          id="publicationDate" 
+          name="publicationDate" 
+          required
+          class="input-field"
+        />
+      </div>
+
+      <!-- Archivo -->
+      <div>
+        <label class="block text-sm font-medium text-text mb-2">Archivo *</label>
+        <div class="space-y-4">
+          <!-- Opción 1: Subir archivo -->
+          <div>
+            <label class="flex items-center gap-2 text-text">
+              <input 
+                type="radio" 
+                name="articleFileOption" 
+                value="upload" 
+                checked
+                onchange="toggleArticleFileOption()"
+                class="text-accent focus:ring-accent"
+              />
+              <span>Subir archivo PDF</span>
+            </label>
+            <div id="articleFileUploadSection" class="mt-2">
+              <input 
+                type="file" 
+                id="articleFile" 
+                name="file" 
+                accept=".pdf"
+                class="input-field"
+              />
+            </div>
+          </div>
+
+          <!-- Opción 2: URL -->
+          <div>
+            <label class="flex items-center gap-2 text-text">
+              <input 
+                type="radio" 
+                name="articleFileOption" 
+                value="url" 
+                onchange="toggleArticleFileOption()"
+                class="text-accent focus:ring-accent"
+              />
+              <span>URL del archivo</span>
+            </label>
+            <div id="articleFileUrlSection" class="mt-2 hidden">
+              <input 
+                type="url" 
+                id="articleFileUrl" 
+                name="fileUrl" 
+                class="input-field"
+                placeholder="https://ejemplo.com/archivo.pdf"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Miniatura -->
+      <div>
+        <label for="articleThumbnail" class="block text-sm font-medium text-text mb-2">Miniatura *</label>
+        <input 
+          type="file" 
+          id="articleThumbnail" 
+          name="thumbnail" 
+          required
+          accept="image/*"
+          class="input-field"
+        />
+        <p class="text-sm text-gray3 mt-1">Formatos soportados: JPEG, JPG, PNG, WebP. Máximo 10MB.</p>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end gap-4 pt-4">
+        <button 
+          type="button" 
+          onclick="window.customModal.hide('addArticleModal')"
+          class="px-4 py-2 text-text bg-gray2 rounded-lg hover:bg-gray3 transition-colors"
+        >
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          class="px-4 py-2 bg-accent text-black rounded-lg hover:brightness-90 transition-colors font-medium"
+        >
+          Agregar Artículo
+        </button>
+      </div>
+    </form>
+  </div>
+</CustomModal>
+
+<!-- Modal para editar artículo -->
+<CustomModal id="editArticleModal" class="w-full max-w-4xl">
+  <div class="bg-gray0 rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-gray2">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-2xl font-bold text-text">Editar Artículo</h3>
+      <button onclick="window.customModal.hide('editArticleModal')" class="text-gray3 hover:text-text transition-colors">
+        <Icon name="xmark" class="w-6 h-6 fill-current" />
+      </button>
+    </div>
+
+    <form id="editArticleForm" class="space-y-6">
+      <input type="hidden" id="editArticleId" name="id" />
+      
+      <!-- Título -->
+      <div>
+        <label for="editArticleTitle" class="block text-sm font-medium text-text mb-2">Título *</label>
+        <input 
+          type="text" 
+          id="editArticleTitle" 
+          name="title" 
+          required
+          class="input-field"
+          placeholder="Ingrese el título del artículo"
+        />
+      </div>
+
+      <!-- Descripción -->
+      <div>
+        <label for="editArticleDescription" class="block text-sm font-medium text-text mb-2">Descripción *</label>
+        <textarea 
+          id="editArticleDescription" 
+          name="description" 
+          required
+          rows="4"
+          class="input-field resize-none"
+          placeholder="Ingrese la descripción del artículo"
+        ></textarea>
+      </div>
+
+      <!-- Autores -->
+      <div>
+        <label for="editAuthors" class="block text-sm font-medium text-text mb-2">Autores *</label>
+        <div id="editAuthorsContainer" class="space-y-2">
+          <div class="flex gap-2">
+            <input 
+              type="text" 
+              name="authors[]" 
+              required
+              class="input-field flex-1"
+              placeholder="Ingrese el nombre del autor"
+            />
+            <button 
+              type="button" 
+              onclick="addEditAuthorField()"
+              class="px-3 py-2 bg-accent text-black rounded-lg hover:brightness-90 transition-all flex items-center justify-center"
+            >
+              <Icon name="plus" class="w-4 h-4 fill-current" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fecha de publicación -->
+      <div>
+        <label for="editPublicationDate" class="block text-sm font-medium text-text mb-2">Fecha de Publicación *</label>
+        <input 
+          type="date" 
+          id="editPublicationDate" 
+          name="publicationDate" 
+          required
+          class="input-field"
+        />
+      </div>
+
+      <!-- Archivo -->
+      <div>
+        <label class="block text-sm font-medium text-text mb-2">Archivo</label>
+        <div class="space-y-4">
+          <!-- Opción 1: Subir archivo -->
+          <div>
+            <label class="flex items-center gap-2 text-text">
+              <input 
+                type="radio" 
+                name="editFileOption" 
+                value="upload" 
+                checked
+                onchange="toggleEditFileOption()"
+                class="text-accent focus:ring-accent"
+              />
+              <span>Subir archivo PDF</span>
+            </label>
+            <div id="editArticleFileUploadSection" class="mt-2">
+              <input 
+                type="file" 
+                id="editArticleFile" 
+                name="file" 
+                accept=".pdf"
+                class="input-field"
+              />
+            </div>
+          </div>
+
+          <!-- Opción 2: URL -->
+          <div>
+            <label class="flex items-center gap-2 text-text">
+              <input 
+                type="radio" 
+                name="editFileOption" 
+                value="url" 
+                onchange="toggleEditFileOption()"
+                class="text-accent focus:ring-accent"
+              />
+              <span>URL del archivo</span>
+            </label>
+            <div id="editArticleFileUrlSection" class="mt-2 hidden">
+              <input 
+                type="url" 
+                id="editArticleFileUrl" 
+                name="fileUrl" 
+                class="input-field"
+                placeholder="https://ejemplo.com/archivo.pdf"
+              />
+            </div>
+          </div>
+        </div>
+        <p class="text-sm text-gray3 mt-1">Deja vacío para mantener el archivo actual.</p>
+      </div>
+
+      <!-- Miniatura -->
+      <div>
+        <label for="editArticleThumbnail" class="block text-sm font-medium text-text mb-2">Miniatura</label>
+        <input 
+          type="file" 
+          id="editArticleThumbnail" 
+          name="thumbnail" 
+          accept="image/*"
+          class="input-field"
+        />
+        <p class="text-sm text-gray3 mt-1">Formatos soportados: JPEG, JPG, PNG, WebP. Máximo 10MB. Deja vacío para mantener la miniatura actual.</p>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end gap-4 pt-4">
+        <button 
+          type="button" 
+          onclick="window.customModal.hide('editArticleModal')"
+          class="px-4 py-2 text-text bg-gray2 rounded-lg hover:bg-gray3 transition-colors"
+        >
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          class="px-4 py-2 bg-accent text-black rounded-lg hover:brightness-90 transition-colors font-medium"
+        >
+          Actualizar Artículo
+        </button>
+      </div>
+    </form>
+  </div>
+</CustomModal>
+
+<script is:inline>
+  // Datos de los artículos para edición
+  const articlesData = {
+    articles: []
+  };
+
+  // Función para obtener datos de un artículo específico
+  function getArticleData(id) {
+    // Buscar en el DOM para obtener los datos
+    const row = document.querySelector(`tr[data-id="${id}"]`);
+    if (row) {
+      const fileLink = row.querySelector('td:nth-child(6) a');
+      const thumbnailImg = row.querySelector('td:nth-child(5) img');
+      
+      return {
+        id: id,
+        title: row.querySelector('td:nth-child(1)').textContent,
+        description: row.querySelector('td:nth-child(2)').textContent,
+        authors: row.querySelector('td:nth-child(3)').textContent.split(', '),
+        publicationDate: formatDateForInput(row.querySelector('td:nth-child(4)').textContent),
+        filePath: fileLink ? fileLink.href : '',
+        thumbnailPath: thumbnailImg ? thumbnailImg.src.replace(window.location.origin, '') : ''
+      };
+    }
+    return null;
+  }
+
+  function formatDateForInput(dateText) {
+    // Convertir fecha de formato español a formato input date
+    const months = {
+      'enero': '01', 'febrero': '02', 'marzo': '03', 'abril': '04',
+      'mayo': '05', 'junio': '06', 'julio': '07', 'agosto': '08',
+      'septiembre': '09', 'octubre': '10', 'noviembre': '11', 'diciembre': '12'
+    };
+    
+    const parts = dateText.split(' ');
+    if (parts.length >= 3) {
+      const day = parts[0].padStart(2, '0');
+      const month = months[parts[2].toLowerCase()] || '01';
+      const year = parts[4];
+      return `${year}-${month}-${day}`;
+    }
+    return '';
+  }
+
+  function onArticleAdd() {
+    window.customModal.show('addArticleModal');
+  }
+
+  function onArticleEdit(id) {
+    const article = getArticleData(id);
+    if (!article) {
+      window.customAlert.error.show(
+        'Error',
+        'No se pudo encontrar el artículo para editar.'
+      );
+      return;
+    }
+
+    // Llenar el formulario con los datos del artículo
+    document.getElementById('editArticleId').value = article.id;
+    document.getElementById('editArticleTitle').value = article.title;
+    document.getElementById('editArticleDescription').value = article.description;
+    document.getElementById('editPublicationDate').value = article.publicationDate;
+
+    // Configurar autores
+    const authorsContainer = document.getElementById('editAuthorsContainer');
+    authorsContainer.innerHTML = '';
+    
+    article.authors.forEach((author, index) => {
+      const authorDiv = document.createElement('div');
+      authorDiv.className = 'flex gap-2';
+      authorDiv.innerHTML = `
+        <input 
+          type="text" 
+          name="authors[]" 
+          required
+          class="input-field flex-1"
+          placeholder="Ingrese el nombre del autor"
+          value="${author}"
+        />
+        ${index > 0 ? `
+          <button 
+            type="button" 
+            onclick="removeEditAuthorField(this)"
+            class="px-3 py-2 bg-danger text-white rounded-lg hover:brightness-90 transition-all flex items-center justify-center"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M0.470073 0.46991C0.610698 0.329459 0.801322 0.250569 1.00007 0.250569C1.19882 0.250569 1.38945 0.329459 1.53007 0.46991L5.00007 3.93991L8.47007 0.46991C8.53873 0.396223 8.62153 0.337121 8.71353 0.296129C8.80553 0.255137 8.90485 0.233095 9.00555 0.231318C9.10625 0.229541 9.20628 0.248066 9.29967 0.285787C9.39306 0.323508 9.47789 0.379652 9.54911 0.450871C9.62033 0.52209 9.67647 0.606924 9.7142 0.700312C9.75192 0.7937 9.77044 0.893729 9.76866 0.994432C9.76689 1.09513 9.74485 1.19445 9.70385 1.28645C9.66286 1.37845 9.60376 1.46125 9.53007 1.52991L6.06007 4.99991L9.53007 8.46991C9.60376 8.53857 9.66286 8.62137 9.70385 8.71337C9.74485 8.80537 9.76689 8.90468 9.76866 9.00539C9.77044 9.10609 9.75192 9.20612 9.7142 9.29951C9.67647 9.3929 9.62033 9.47773 9.54911 9.54895C9.47789 9.62017 9.39306 9.67631 9.29967 9.71403C9.20628 9.75175 9.10625 9.77028 9.00555 9.7685C8.90485 9.76672 8.80553 9.74468 8.71353 9.70369C8.62153 9.6627 8.53873 9.6036 8.47007 9.52991L5.00007 6.05991L1.53007 9.52991C1.3879 9.66239 1.19985 9.73451 1.00555 9.73108C0.811249 9.72766 0.625864 9.64894 0.488451 9.51153C0.351038 9.37412 0.272326 9.18873 0.268898 8.99443C0.265469 8.80013 0.337592 8.61208 0.470073 8.46991L3.94007 4.99991L0.470073 1.52991C0.329622 1.38928 0.250732 1.19866 0.250732 0.99991C0.250732 0.801159 0.329622 0.610535 0.470073 0.46991Z"/>
+            </svg>
+          </button>
+        ` : `
+          <button 
+            type="button" 
+            onclick="addEditAuthorField()"
+            class="px-3 py-2 bg-accent text-black rounded-lg hover:brightness-90 transition-all flex items-center justify-center"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 4V20M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        `}
+      `;
+      authorsContainer.appendChild(authorDiv);
+    });
+
+    // Configurar opción de archivo
+    if (article.filePath.startsWith('http')) {
+      document.querySelector('input[name="editFileOption"][value="url"]').checked = true;
+      document.getElementById('editArticleFileUrl').value = article.filePath;
+      toggleEditFileOption();
+    } else {
+      document.querySelector('input[name="editFileOption"][value="upload"]').checked = true;
+      document.getElementById('editArticleFileUrl').value = '';
+      toggleEditFileOption();
+    }
+
+    // Limpiar campos de archivo para evitar conflictos
+    document.getElementById('editArticleFile').value = '';
+    document.getElementById('editArticleThumbnail').value = '';
+
+    window.customModal.show('editArticleModal');
+  }
+
+  function onArticleDelete(id) {
+    const article = getArticleData(id);
+    const title = article ? article.title : 'este artículo';
+    
+    if (confirm(`¿Estás seguro de que deseas eliminar "${title}"? Esta acción no se puede deshacer.`)) {
+      const formData = new FormData();
+      formData.append('id', id);
+
+      fetch('/api/articles/', {
+        method: 'DELETE',
+        body: formData
+      }).then(response => {
+        return response.json();
+      }).then(data => {
+        if (data.status === 200) {
+          window.customAlert.success.show(
+            'Artículo eliminado',
+            data.message || 'El artículo ha sido eliminado exitosamente.',
+            '',
+            () => location.reload()
+          );
+        } else {
+          window.customAlert.error.show(
+            'Error al eliminar',
+            data.message || 'Ocurrió un error al eliminar el artículo.',
+          );
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+        window.customAlert.error.show(
+          'Error al eliminar',
+          'Ocurrió un error al eliminar el artículo.',
+        );
+      });
+    }
+  }
+
+  function addAuthorField() {
+    const container = document.getElementById('authorsContainer');
+    const newField = document.createElement('div');
+    newField.className = 'flex gap-2';
+    newField.innerHTML = `
+      <input 
+        type="text" 
+        name="authors[]" 
+        class="input-field flex-1"
+        placeholder="Ingrese el nombre del autor"
+      />
+      <button 
+        type="button" 
+        onclick="removeAuthorField(this)"
+        class="px-3 py-2 bg-danger text-white rounded-lg hover:brightness-90 transition-all flex items-center justify-center"
+      >
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0.470073 0.46991C0.610698 0.329459 0.801322 0.250569 1.00007 0.250569C1.19882 0.250569 1.38945 0.329459 1.53007 0.46991L5.00007 3.93991L8.47007 0.46991C8.53873 0.396223 8.62153 0.337121 8.71353 0.296129C8.80553 0.255137 8.90485 0.233095 9.00555 0.231318C9.10625 0.229541 9.20628 0.248066 9.29967 0.285787C9.39306 0.323508 9.47789 0.379652 9.54911 0.450871C9.62033 0.52209 9.67647 0.606924 9.7142 0.700312C9.75192 0.7937 9.77044 0.893729 9.76866 0.994432C9.76689 1.09513 9.74485 1.19445 9.70385 1.28645C9.66286 1.37845 9.60376 1.46125 9.53007 1.52991L6.06007 4.99991L9.53007 8.46991C9.60376 8.53857 9.66286 8.62137 9.70385 8.71337C9.74485 8.80537 9.76689 8.90468 9.76866 9.00539C9.77044 9.10609 9.75192 9.20612 9.7142 9.29951C9.67647 9.3929 9.62033 9.47773 9.54911 9.54895C9.47789 9.62017 9.39306 9.67631 9.29967 9.71403C9.20628 9.75175 9.10625 9.77028 9.00555 9.7685C8.90485 9.76672 8.80553 9.74468 8.71353 9.70369C8.62153 9.6627 8.53873 9.6036 8.47007 9.52991L5.00007 6.05991L1.53007 9.52991C1.3879 9.66239 1.19985 9.73451 1.00555 9.73108C0.811249 9.72766 0.625864 9.64894 0.488451 9.51153C0.351038 9.37412 0.272326 9.18873 0.268898 8.99443C0.265469 8.80013 0.337592 8.61208 0.470073 8.46991L3.94007 4.99991L0.470073 1.52991C0.329622 1.38928 0.250732 1.19866 0.250732 0.99991C0.250732 0.801159 0.329622 0.610535 0.470073 0.46991Z"/>
+        </svg>
+      </button>
+    `;
+    container.appendChild(newField);
+  }
+
+  function addEditAuthorField() {
+    const container = document.getElementById('editAuthorsContainer');
+    const newField = document.createElement('div');
+    newField.className = 'flex gap-2';
+    newField.innerHTML = `
+      <input 
+        type="text" 
+        name="authors[]" 
+        class="input-field flex-1"
+        placeholder="Ingrese el nombre del autor"
+      />
+      <button 
+        type="button" 
+        onclick="removeEditAuthorField(this)"
+        class="px-3 py-2 bg-danger text-white rounded-lg hover:brightness-90 transition-all flex items-center justify-center"
+      >
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0.470073 0.46991C0.610698 0.329459 0.801322 0.250569 1.00007 0.250569C1.19882 0.250569 1.38945 0.329459 1.53007 0.46991L5.00007 3.93991L8.47007 0.46991C8.53873 0.396223 8.62153 0.337121 8.71353 0.296129C8.80553 0.255137 8.90485 0.233095 9.00555 0.231318C9.10625 0.229541 9.20628 0.248066 9.29967 0.285787C9.39306 0.323508 9.47789 0.379652 9.54911 0.450871C9.62033 0.52209 9.67647 0.606924 9.7142 0.700312C9.75192 0.7937 9.77044 0.893729 9.76866 0.994432C9.76689 1.09513 9.74485 1.19445 9.70385 1.28645C9.66286 1.37845 9.60376 1.46125 9.53007 1.52991L6.06007 4.99991L9.53007 8.46991C9.60376 8.53857 9.66286 8.62137 9.70385 8.71337C9.74485 8.80537 9.76689 8.90468 9.76866 9.00539C9.77044 9.10609 9.75192 9.20612 9.7142 9.29951C9.67647 9.3929 9.62033 9.47773 9.54911 9.54895C9.47789 9.62017 9.39306 9.67631 9.29967 9.71403C9.20628 9.75175 9.10625 9.77028 9.00555 9.7685C8.90485 9.76672 8.80553 9.74468 8.71353 9.70369C8.62153 9.6627 8.53873 9.6036 8.47007 9.52991L5.00007 6.05991L1.53007 9.52991C1.3879 9.66239 1.19985 9.73451 1.00555 9.73108C0.811249 9.72766 0.625864 9.64894 0.488451 9.51153C0.351038 9.37412 0.272326 9.18873 0.268898 8.99443C0.265469 8.80013 0.337592 8.61208 0.470073 8.46991L3.94007 4.99991L0.470073 1.52991C0.329622 1.38928 0.250732 1.19866 0.250732 0.99991C0.250732 0.801159 0.329622 0.610535 0.470073 0.46991Z"/>
+        </svg>
+      </button>
+    `;
+    container.appendChild(newField);
+  }
+
+  function removeAuthorField(button) {
+    button.parentElement.remove();
+  }
+
+  function removeEditAuthorField(button) {
+    button.parentElement.remove();
+  }
+
+  function toggleArticleFileOption() {
+    const fileUploadSection = document.getElementById('articleFileUploadSection');
+    const fileUrlSection = document.getElementById('articleFileUrlSection');
+    const fileInput = document.getElementById('articleFile');
+    const fileUrlInput = document.getElementById('articleFileUrl');
+    
+    const selectedOption = document.querySelector('input[name="articleFileOption"]:checked').value;
+    
+    if (selectedOption === 'upload') {
+      fileUploadSection.classList.remove('hidden');
+      fileUrlSection.classList.add('hidden');
+      fileInput.required = true;
+      fileUrlInput.required = false;
+      fileUrlInput.value = '';
+    } else {
+      fileUploadSection.classList.add('hidden');
+      fileUrlSection.classList.remove('hidden');
+      fileInput.required = false;
+      fileUrlInput.required = true;
+      fileInput.value = '';
+    }
+  }
+
+  function toggleEditFileOption() {
+    const fileUploadSection = document.getElementById('editArticleFileUploadSection');
+    const fileUrlSection = document.getElementById('editArticleFileUrlSection');
+    const fileInput = document.getElementById('editArticleFile');
+    const fileUrlInput = document.getElementById('editArticleFileUrl');
+    
+    const selectedOption = document.querySelector('input[name="editFileOption"]:checked').value;
+    
+    if (selectedOption === 'upload') {
+      fileUploadSection.classList.remove('hidden');
+      fileUrlSection.classList.add('hidden');
+      fileInput.required = false; // No requerido en edición
+      fileUrlInput.required = false;
+      fileUrlInput.value = '';
+    } else {
+      fileUploadSection.classList.add('hidden');
+      fileUrlSection.classList.remove('hidden');
+      fileInput.required = false;
+      fileUrlInput.required = false; // No requerido en edición
+      fileInput.value = '';
+    }
+  }
+
+  // Manejar el envío del formulario de agregar
+  document.addEventListener('DOMContentLoaded', function() {
+    const addForm = document.getElementById('addArticleForm');
+    const editForm = document.getElementById('editArticleForm');
+    
+    addForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(addForm);
+      
+      // Limpiar campos de autores vacíos y convertir a array
+      const authors = formData.getAll('authors[]').filter(author => author.trim() !== '');
+      formData.delete('authors[]');
+      formData.append('authors', JSON.stringify(authors));
+      
+      // Manejar la opción de archivo seleccionada
+      const fileOption = formData.get('articleFileOption');
+      if (fileOption === 'url') {
+        formData.delete('file');
+      } else {
+        formData.delete('fileUrl');
+      }
+      formData.delete('articleFileOption');
+      
+      fetch('/api/articles/', {
+        method: 'POST',
+        body: formData
+      }).then(response => {
+        return response.json();
+      }).then(data => {
+        if (data.status === 200) {
+          window.customModal.hide('addArticleModal');
+          window.customAlert.success.show(
+            'Artículo agregado',
+            data.message || 'El artículo ha sido agregado exitosamente.',
+            '',
+            () => location.reload()
+          );
+          addForm.reset();
+        } else {
+          window.customAlert.error.show(
+            'Error al agregar',
+            data.message || 'Ocurrió un error al agregar el artículo.',
+          );
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+        window.customAlert.error.show(
+          'Error al agregar',
+          'Ocurrió un error al agregar el artículo.',
+        );
+      });
+    });
+
+    // Manejar el envío del formulario de editar
+    editForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(editForm);
+      
+      // Limpiar campos de autores vacíos y convertir a array
+      const authors = formData.getAll('authors[]').filter(author => author.trim() !== '');
+      formData.delete('authors[]');
+      formData.append('authors', JSON.stringify(authors));
+      
+      // Manejar la opción de archivo seleccionada
+      const fileOption = formData.get('editFileOption');
+      if (fileOption === 'url') {
+        formData.delete('file');
+        // Asegurar que la URL del archivo se envíe correctamente
+        const fileUrl = formData.get('fileUrl');
+        if (fileUrl && fileUrl.toString().trim() !== '') {
+          formData.set('fileUrl', fileUrl.toString().trim());
+        }
+      } else {
+        formData.delete('fileUrl');
+        // Solo incluir el archivo si se ha seleccionado uno
+        const file = formData.get('file');
+        if (!file || file.size === 0) {
+          formData.delete('file');
+        }
+      }
+      formData.delete('editFileOption');
+      
+      // Manejar la miniatura - solo incluir si se ha seleccionado una nueva
+      const thumbnail = formData.get('thumbnail');
+      if (!thumbnail || thumbnail.size === 0) {
+        formData.delete('thumbnail');
+      }
+      
+      fetch('/api/articles/', {
+        method: 'PATCH',
+        body: formData
+      }).then(response => {
+        return response.json();
+      }).then(data => {
+        if (data.status === 200) {
+          window.customModal.hide('editArticleModal');
+          window.customAlert.success.show(
+            'Artículo actualizado',
+            data.message || 'El artículo ha sido actualizado exitosamente.',
+            '',
+            () => location.reload()
+          );
+        } else {
+          window.customAlert.error.show(
+            'Error al actualizar',
+            data.message || 'Ocurrió un error al actualizar el artículo.',
+          );
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+        window.customAlert.error.show(
+          'Error al actualizar',
+          'Ocurrió un error al actualizar el artículo.',
+        );
+      });
+    });
+  });
+</script>
+
+<style>
+  @import "../../../../styles//global.css";
+
+  #articlesTable td:nth-child(1) {
+    @apply min-w-88 max-w-88;
+  }
+
+  #articlesTable td:nth-child(2) {
+    @apply min-w-72 max-w-72;
+  }
+
+  #articlesTable td:nth-child(3) {
+    @apply min-w-40 max-w-40;
+  }
+
+  #articlesTable td:nth-child(4) {
+    @apply min-w-42 max-w-42;
+  }
+
+  #articlesTable td:nth-child(5) {
+    @apply min-w-40 max-w-40;
+  }
+
+  #articlesTable td:nth-child(6) {
+    @apply min-w-32 max-w-32;
+  }
+
+  #articlesTable td:nth-child(7) {
+    @apply min-w-32 max-w-32;
+  }
+</style>

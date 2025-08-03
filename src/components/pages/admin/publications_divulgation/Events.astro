@@ -1,0 +1,592 @@
+---
+  import { db } from '@db/connection'
+  import { Event } from "@db/tables"
+  import Icon from '@src/components/common/Icon.astro'
+  import ActionButtons from './ActionButtons.astro'
+  import AddButton from './AddButton.astro'
+  import CustomModal from '@src/components/common/CustomModal.astro'
+
+  const events = await db.select().from(Event).orderBy(Event.uploadedAt)
+
+  const formatDateFromString = (date: string) => {
+    const parts = new Date(date).toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).split(' ');
+
+    if (parts.length >= 5) {
+      parts[2] = parts[2].charAt(0).toUpperCase() + parts[2].slice(1); // Capitaliza el mes
+    }
+
+    return parts.join(' ');
+  }
+---
+
+<section class="flex flex-col gap-4 p-5 rounded-lg border border-gray2">
+  <article>
+    <h2 class="text-2xl font-bold text-text">Gestion de Eventos</h2>
+    <p class="text-gray-600">Aquí puedes gestionar todos los eventos de la plataforma.</p>
+  </article>
+
+  <AddButton label="Agregar Evento" onclick="onEventAdd()" />
+
+  <div class="overflow-auto max-w-[90vw] max-h-[1000px]">
+    <table id="eventsTable">
+      <thead>
+        <tr>
+          <th class="min-w-88 max-w-88">Titulo</th>
+          <th class="min-w-72 max-w-72">Descripcion</th>
+          <th class="min-w-40 max-w-40">Tipo de Evento</th>
+          <th class="min-w-42 max-w-42">Fecha de Evento</th>
+          <th class="min-w-40 max-w-40">Horario</th>
+          <th class="min-w-32 max-w-32">Ubicación</th>
+          <th class="min-w-40 max-w-40">Link</th>
+          <th class="min-w-32 max-w-32">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {events.length > 0 ? 
+          events.map((event) => (
+            <tr data-id={event.id}>
+              <td>{event.title}</td>
+              <td>{event.description}</td>
+              <td>{event.typeOfEvent}</td>
+              <td>{formatDateFromString(event.eventDate)}</td>
+              <td>{event.startTime} - {event.endTime}</td>
+              <td>{event.location}</td>
+              <td>
+                {event.link && (
+                  <a class="flex justify-center" target="_blank" href={event.link}>
+                    <Icon name="eye" class="stroke-accent w-8 hover:bg-accent hover:stroke-black stroke-2 outline-2 outline-accent p-2 aspect-square rounded-full" />
+                  </a>
+                )}
+              </td>
+              <td>
+                <ActionButtons 
+                  onEdit={`onEventEdit("${event.id}")`}
+                  onDelete={`onEventDelete("${event.id}")`}
+                />
+              </td>
+            </tr>
+          )) : (
+          <tr>
+            <td colspan="8" class="text-center py-4">No hay eventos registrados.</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Modal para agregar evento -->
+<CustomModal id="addEventModal" class="w-full max-w-4xl">
+  <div class="bg-gray0 rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-gray2">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-2xl font-bold text-text">Agregar Nuevo Evento</h3>
+      <button onclick="window.customModal.hide('addEventModal')" class="text-gray3 hover:text-text transition-colors">
+        <Icon name="xmark" class="w-6 h-6 fill-current" />
+      </button>
+    </div>
+
+    <form id="addEventForm" class="space-y-6">
+      <!-- Título -->
+      <div>
+        <label for="eventTitle" class="block text-sm font-medium text-text mb-2">Título *</label>
+        <input 
+          type="text" 
+          id="eventTitle" 
+          name="title" 
+          required
+          class="input-field"
+          placeholder="Ingrese el título del evento"
+        />
+      </div>
+
+      <!-- Descripción -->
+      <div>
+        <label for="eventDescription" class="block text-sm font-medium text-text mb-2">Descripción *</label>
+        <textarea 
+          id="eventDescription" 
+          name="description" 
+          required
+          rows="4"
+          class="input-field resize-none"
+          placeholder="Ingrese la descripción del evento"
+        ></textarea>
+      </div>
+
+      <!-- Tipo de evento -->
+      <div>
+        <label for="eventTypeOfEvent" class="block text-sm font-medium text-text mb-2">Tipo de Evento *</label>
+        <select 
+          id="eventTypeOfEvent" 
+          name="typeOfEvent" 
+          required
+          class="input-field"
+        >
+          <option value="">Seleccione un tipo</option>
+          <option value="Conferencia">Conferencia</option>
+          <option value="Seminario">Seminario</option>
+          <option value="Taller">Taller</option>
+          <option value="Curso">Curso</option>
+          <option value="Webinar">Webinar</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+
+      <!-- Fecha del evento -->
+      <div>
+        <label for="eventEventDate" class="block text-sm font-medium text-text mb-2">Fecha del Evento *</label>
+        <input 
+          type="date" 
+          id="eventEventDate" 
+          name="eventDate" 
+          required
+          class="input-field"
+        />
+      </div>
+
+      <!-- Horarios -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="eventStartTime" class="block text-sm font-medium text-text mb-2">Hora de Inicio *</label>
+          <input 
+            type="time" 
+            id="eventStartTime" 
+            name="startTime" 
+            required
+            class="input-field"
+          />
+        </div>
+        <div>
+          <label for="eventEndTime" class="block text-sm font-medium text-text mb-2">Hora de Fin *</label>
+          <input 
+            type="time" 
+            id="eventEndTime" 
+            name="endTime" 
+            required
+            class="input-field"
+          />
+        </div>
+      </div>
+
+      <!-- Ubicación -->
+      <div>
+        <label for="eventLocation" class="block text-sm font-medium text-text mb-2">Ubicación *</label>
+        <input 
+          type="text" 
+          id="eventLocation" 
+          name="location" 
+          required
+          class="input-field"
+          placeholder="Ingrese la ubicación del evento"
+        />
+      </div>
+
+      <!-- Link (opcional) -->
+      <div>
+        <label for="eventLink" class="block text-sm font-medium text-text mb-2">Link del Evento (Opcional)</label>
+        <input 
+          type="url" 
+          id="eventLink" 
+          name="link" 
+          class="input-field"
+          placeholder="https://ejemplo.com/evento"
+        />
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end gap-4 pt-4">
+        <button 
+          type="button" 
+          onclick="window.customModal.hide('addEventModal')"
+          class="px-4 py-2 text-text bg-gray2 rounded-lg hover:bg-gray3 transition-colors"
+        >
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          class="px-4 py-2 bg-accent text-black rounded-lg hover:brightness-90 transition-colors font-medium"
+        >
+          Agregar Evento
+        </button>
+      </div>
+    </form>
+  </div>
+</CustomModal>
+
+<!-- Modal para editar evento -->
+<CustomModal id="editEventModal" class="w-full max-w-4xl">
+  <div class="bg-gray0 rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-gray2">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-2xl font-bold text-text">Editar Evento</h3>
+      <button onclick="window.customModal.hide('editEventModal')" class="text-gray3 hover:text-text transition-colors">
+        <Icon name="xmark" class="w-6 h-6 fill-current" />
+      </button>
+    </div>
+
+    <form id="editEventForm" class="space-y-6">
+      <input type="hidden" id="editEventId" name="id" />
+      
+      <!-- Título -->
+      <div>
+        <label for="editEventTitle" class="block text-sm font-medium text-text mb-2">Título *</label>
+        <input 
+          type="text" 
+          id="editEventTitle" 
+          name="title" 
+          required
+          class="input-field"
+          placeholder="Ingrese el título del evento"
+        />
+      </div>
+
+      <!-- Descripción -->
+      <div>
+        <label for="editEventDescription" class="block text-sm font-medium text-text mb-2">Descripción *</label>
+        <textarea 
+          id="editEventDescription" 
+          name="description" 
+          required
+          rows="4"
+          class="input-field resize-none"
+          placeholder="Ingrese la descripción del evento"
+        ></textarea>
+      </div>
+
+      <!-- Tipo de evento -->
+      <div>
+        <label for="editEventTypeOfEvent" class="block text-sm font-medium text-text mb-2">Tipo de Evento *</label>
+        <select 
+          id="editEventTypeOfEvent" 
+          name="typeOfEvent" 
+          required
+          class="input-field"
+        >
+          <option value="">Seleccione un tipo</option>
+          <option value="Conferencia">Conferencia</option>
+          <option value="Seminario">Seminario</option>
+          <option value="Taller">Taller</option>
+          <option value="Curso">Curso</option>
+          <option value="Webinar">Webinar</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+
+      <!-- Fecha del evento -->
+      <div>
+        <label for="editEventEventDate" class="block text-sm font-medium text-text mb-2">Fecha del Evento *</label>
+        <input 
+          type="date" 
+          id="editEventEventDate" 
+          name="eventDate" 
+          required
+          class="input-field"
+        />
+      </div>
+
+      <!-- Horarios -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="editEventStartTime" class="block text-sm font-medium text-text mb-2">Hora de Inicio *</label>
+          <input 
+            type="time" 
+            id="editEventStartTime" 
+            name="startTime" 
+            required
+            class="input-field"
+          />
+        </div>
+        <div>
+          <label for="editEventEndTime" class="block text-sm font-medium text-text mb-2">Hora de Fin *</label>
+          <input 
+            type="time" 
+            id="editEventEndTime" 
+            name="endTime" 
+            required
+            class="input-field"
+          />
+        </div>
+      </div>
+
+      <!-- Ubicación -->
+      <div>
+        <label for="editEventLocation" class="block text-sm font-medium text-text mb-2">Ubicación *</label>
+        <input 
+          type="text" 
+          id="editEventLocation" 
+          name="location" 
+          required
+          class="input-field"
+          placeholder="Ingrese la ubicación del evento"
+        />
+      </div>
+
+      <!-- Link (opcional) -->
+      <div>
+        <label for="editEventLink" class="block text-sm font-medium text-text mb-2">Link del Evento (Opcional)</label>
+        <input 
+          type="url" 
+          id="editEventLink" 
+          name="link" 
+          class="input-field"
+          placeholder="https://ejemplo.com/evento"
+        />
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end gap-4 pt-4">
+        <button 
+          type="button" 
+          onclick="window.customModal.hide('editEventModal')"
+          class="px-4 py-2 text-text bg-gray2 rounded-lg hover:bg-gray3 transition-colors"
+        >
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          class="px-4 py-2 bg-accent text-black rounded-lg hover:brightness-90 transition-colors font-medium"
+        >
+          Actualizar Evento
+        </button>
+      </div>
+    </form>
+  </div>
+</CustomModal>
+
+<script is:inline>
+  // Función para obtener datos de un evento específico
+  function getEventData(id) {
+    // Buscar en el DOM para obtener los datos
+    const row = document.querySelector(`tr[data-id="${id}"]`);
+    if (row) {
+      const linkElement = row.querySelector('td:nth-child(7) a');
+      
+      return {
+        id: id,
+        title: row.querySelector('td:nth-child(1)')?.textContent?.trim() || '',
+        description: row.querySelector('td:nth-child(2)')?.textContent?.trim() || '',
+        typeOfEvent: row.querySelector('td:nth-child(3)')?.textContent?.trim() || '',
+        eventDate: formatDateForInput(row.querySelector('td:nth-child(4)')?.textContent?.trim() || ''),
+        timeRange: row.querySelector('td:nth-child(5)')?.textContent?.trim() || '',
+        location: row.querySelector('td:nth-child(6)')?.textContent?.trim() || '',
+        link: linkElement ? linkElement.getAttribute('href') : ''
+      };
+    }
+    return null;
+  }
+
+  function formatDateForInput(dateText) {
+    // Convertir fecha de formato español a formato input date
+    const months = {
+      'enero': '01', 'febrero': '02', 'marzo': '03', 'abril': '04',
+      'mayo': '05', 'junio': '06', 'julio': '07', 'agosto': '08',
+      'septiembre': '09', 'octubre': '10', 'noviembre': '11', 'diciembre': '12'
+    };
+    
+    const parts = dateText.split(' ');
+    if (parts.length >= 3) {
+      const day = parts[0].padStart(2, '0');
+      const month = months[parts[2].toLowerCase()] || '01';
+      const year = parts[4];
+      return `${year}-${month}-${day}`;
+    }
+    return '';
+  }
+
+  function parseTimeRange(timeRange) {
+    // Parsear "09:00 - 17:00" en startTime y endTime
+    const times = timeRange.split(' - ');
+    return {
+      startTime: times[0] || '',
+      endTime: times[1] || ''
+    };
+  }
+
+  function onEventAdd() {
+    // Resetear el formulario y configurar el estado inicial
+    const addForm = document.getElementById('addEventForm');
+    addForm.reset();
+    
+    window.customModal.show('addEventModal');
+  }
+
+  function onEventEdit(id) {
+    const event = getEventData(id);
+    if (!event) {
+      window.customAlert.error.show(
+        'Error',
+        'No se pudo encontrar el evento para editar.'
+      );
+      return;
+    }
+
+    // Llenar el formulario con los datos del evento
+    document.getElementById('editEventId').value = event.id;
+    document.getElementById('editEventTitle').value = event.title;
+    document.getElementById('editEventDescription').value = event.description;
+    document.getElementById('editEventTypeOfEvent').value = event.typeOfEvent;
+    document.getElementById('editEventEventDate').value = event.eventDate;
+    document.getElementById('editEventLocation').value = event.location;
+    document.getElementById('editEventLink').value = event.link || '';
+
+    // Parsear y establecer los horarios
+    const times = parseTimeRange(event.timeRange);
+    document.getElementById('editEventStartTime').value = times.startTime;
+    document.getElementById('editEventEndTime').value = times.endTime;
+
+    window.customModal.show('editEventModal');
+  }
+
+  function onEventDelete(id) {
+    const event = getEventData(id);
+    const title = event ? event.title : 'este evento';
+    
+    if (confirm(`¿Estás seguro de que deseas eliminar "${title}"? Esta acción no se puede deshacer.`)) {
+      const formData = new FormData();
+      formData.append('id', id);
+
+      fetch('/api/events', {
+        method: 'DELETE',
+        body: formData
+      }).then(response => {
+        return response.json();
+      }).then(data => {
+        if (data.status === 200) {
+          window.customAlert.success.show(
+            'Evento eliminado',
+            data.message || 'El evento ha sido eliminado exitosamente.',
+            '',
+            () => location.reload()
+          );
+        } else {
+          window.customAlert.error.show(
+            'Error al eliminar',
+            data.message || 'Ocurrió un error al eliminar el evento.'
+          );
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+        window.customAlert.error.show(
+          'Error al eliminar',
+          'Ocurrió un error al eliminar el evento.'
+        );
+      });
+    }
+  }
+
+  // Manejar el envío de formularios
+  document.addEventListener('DOMContentLoaded', function() {
+    const addForm = document.getElementById('addEventForm');
+    const editForm = document.getElementById('editEventForm');
+    
+    // Manejar el envío del formulario de agregar
+    addForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(addForm);
+      
+      fetch('/api/events', {
+        method: 'POST',
+        body: formData
+      }).then(response => {
+        return response.json();
+      }).then(data => {
+        if (data.status === 200) {
+          addForm.reset();
+          window.customModal.hide('addEventModal');
+          window.customAlert.success.show(
+            'Evento agregado',
+            data.message || 'El evento ha sido agregado exitosamente.',
+            '',
+            () => location.reload()
+          );
+        } else {
+          window.customAlert.error.show(
+            'Error al agregar',
+            data.message || 'Ocurrió un error al agregar el evento.'
+          );
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+        window.customAlert.error.show(
+          'Error al agregar',
+          'Ocurrió un error al agregar el evento.'
+        );
+      });
+    });
+
+    // Manejar el envío del formulario de editar
+    editForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(editForm);
+      
+      fetch('/api/events', {
+        method: 'PATCH',
+        body: formData
+      }).then(response => {
+        return response.json();
+      }).then(data => {
+        if (data.status === 200) {
+          window.customModal.hide('editEventModal');
+          window.customAlert.success.show(
+            'Evento actualizado',
+            data.message || 'El evento ha sido actualizado exitosamente.',
+            '',
+            () => location.reload()
+          );
+        } else {
+          window.customAlert.error.show(
+            'Error al actualizar',
+            data.message || 'Ocurrió un error al actualizar el evento.'
+          );
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+        window.customAlert.error.show(
+          'Error al actualizar',
+          'Ocurrió un error al actualizar el evento.'
+        );
+      });
+    });
+  });
+</script>
+
+<style>
+  @import "../../../../styles//global.css";
+
+  #eventsTable td:nth-child(1) {
+    @apply min-w-88 max-w-88;
+  }
+
+  #eventsTable td:nth-child(2) {
+    @apply min-w-72 max-w-72;
+  }
+
+  #eventsTable td:nth-child(3) {
+    @apply min-w-32 max-w-32;
+  }
+
+  #eventsTable td:nth-child(4) {
+    @apply min-w-40 max-w-40;
+  }
+
+  #eventsTable td:nth-child(5) {
+    @apply min-w-42 max-w-42;
+  }
+
+  #eventsTable td:nth-child(6) {
+    @apply min-w-40 max-w-40;
+  }
+
+  #eventsTable td:nth-child(7) {
+    @apply min-w-32 max-w-32;
+  }
+
+  #eventsTable td:nth-child(8) {
+    @apply min-w-32 max-w-32;
+  }
+</style>
+

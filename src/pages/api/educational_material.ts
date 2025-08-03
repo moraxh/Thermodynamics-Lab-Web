@@ -11,4 +11,8 @@ export async function POST(context: APIContext): Promise<Response> {
 
 export async function DELETE(context: APIContext): Promise<Response> {
   return EducationalMaterialController.deleteEducationalMaterial(context);
+}
+
+export async function PATCH(context: APIContext): Promise<Response> {
+  return EducationalMaterialController.updateEducationalMaterial(context);
 } 

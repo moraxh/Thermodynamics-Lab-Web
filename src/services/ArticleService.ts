@@ -19,7 +19,25 @@ const thumbnailsPath = `${storagePath}/thumbnails`
 
 export class ArticleService {
   static async createArticle(formData: FormData): Promise<CommonResponse> {
-    const fields = Object.fromEntries(formData.entries())
+    // Extraer los autores como un array desde el JSON string
+    const authorsJson = formData.get('authors') as string;
+    let authors: string[] = [];
+    
+    if (authorsJson) {
+      try {
+        authors = JSON.parse(authorsJson);
+      } catch (error) {
+        return {
+          status: 400,
+          message: "Formato de autores inválido"
+        };
+      }
+    }
+    
+    const fields: any = Object.fromEntries(formData.entries())
+    // Reemplazar el string JSON con el array de autores
+    fields.authors = authors;
+    
     const validation = ArticleSchema.safeParse(fields)
 
     if (!validation.success) {
@@ -29,13 +47,13 @@ export class ArticleService {
       }
     }
 
-    const { title, description, publicationDate, file, fileUrl, thumbnail, authors } = validation.data
+    const { title, description, publicationDate, file, fileUrl, thumbnail, authors: validatedAuthors } = validation.data
 
     let data: ArticleInsert = {
       id: randomUUID(),
       title,
       description,
-      authors,
+      authors: validatedAuthors,
       publicationDate: new Date(publicationDate),
       filePath: "",
       thumbnailPath: "",
@@ -116,7 +134,25 @@ export class ArticleService {
       }
     }
 
-    const fields = Object.fromEntries(formData.entries())
+    // Extraer los autores como un array desde el JSON string
+    const authorsJson = formData.get('authors') as string;
+    let authors: string[] = [];
+    
+    if (authorsJson) {
+      try {
+        authors = JSON.parse(authorsJson);
+      } catch (error) {
+        return {
+          status: 400,
+          message: "Formato de autores inválido"
+        };
+      }
+    }
+    
+    const fields: any = Object.fromEntries(formData.entries())
+    // Reemplazar el string JSON con el array de autores
+    fields.authors = authors;
+    
     const validation = ArticleUpdateSchema.safeParse(fields)
 
     if (!validation.success) {
@@ -126,7 +162,7 @@ export class ArticleService {
       }
     }
 
-    const { title, description, publicationDate, file, fileUrl, thumbnail, authors } = validation.data
+    const { title, description, publicationDate, file, fileUrl, thumbnail, authors: validatedAuthors } = validation.data
 
     // Check if the title is already in use
     const existingArticle = await ArticleRepository.getArticleByTitle(title);
@@ -140,20 +176,24 @@ export class ArticleService {
     let updateData: Partial<ArticleInsert> = {
       title,
       description,
-      authors,
+      authors: validatedAuthors,
       publicationDate: new Date(publicationDate),
     }
 
-    // Get the file & thumbnail hashes
-    if (file || fileUrl) {
-      // Delete the old file
+    // Solo actualizar el archivo si se proporciona uno nuevo
+    if (file && file.size > 0 || (fileUrl && fileUrl.trim() !== '')) {
+      // Eliminar el archivo anterior si no es una URL
       if (!isValidUrl(article.filePath)) {
-        fs.rmSync(`./public/${article.filePath}`, { force: true, recursive: true })
+        try {
+          fs.rmSync(`./public/${article.filePath}`, { force: true });
+        } catch (error) {
+          console.warn('No se pudo eliminar el archivo anterior:', error);
+        }
       }
 
-      if (fileUrl) {
+      if (fileUrl && fileUrl.trim() !== '') {
         updateData.filePath = fileUrl;
-      } else if (file) {
+      } else if (file && file.size > 0) {
         const fileHash = await generateHashFromStream(file.stream())
 
         // Check if the file is already in use
@@ -172,12 +212,18 @@ export class ArticleService {
         updateData.filePath = filePath
       }
     } else {
-      updateData.filePath = article.filePath; // Keep the old file path if no new file is provided
+      // Mantener el archivo existente
+      updateData.filePath = article.filePath;
     }
 
-    if (thumbnail) {
-      // Delete the old thumbnail
-      fs.rmSync(`./public/${article.thumbnailPath}`, { force: true, recursive: true })
+    // Solo actualizar la miniatura si se proporciona una nueva
+    if (thumbnail && thumbnail.size > 0) {
+      // Eliminar la miniatura anterior
+      try {
+        fs.rmSync(`./public/${article.thumbnailPath}`, { force: true });
+      } catch (error) {
+        console.warn('No se pudo eliminar la miniatura anterior:', error);
+      }
 
       const thumbnailHash = await generateHashFromStream(thumbnail.stream())
 
@@ -196,7 +242,8 @@ export class ArticleService {
 
       updateData.thumbnailPath = thumbnailPath
     } else {
-      updateData.thumbnailPath = article.thumbnailPath; // Keep the old thumbnail path if no new thumbnail is provided
+      // Mantener la miniatura existente
+      updateData.thumbnailPath = article.thumbnailPath;
     }
 
     ArticleRepository.updateArticleById(articleId, updateData)

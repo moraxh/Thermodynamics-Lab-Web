@@ -90,10 +90,29 @@ export const BasePublicationSchema = z.object({
   fileUrl: z.string({ message: "La URL del archivo es requerida"})
     .url({ message: "La URL del archivo debe ser una URL válida"})
     .optional(),
+  thumbnail: ImageSchema.shape.image.optional()
+})
+
+export const BasePublicationCreateSchema = z.object({
+  title: z.string({ message: "El título es requerido"})
+    .min(3, { message: "El título debe tener al menos 3 caracteres de longitud"})
+    .max(500, { message: "El título no puede tener mas de 500 caracteres de longitud"}),
+  description: z.string({ message: "La descripción es requerida"})
+    .min(3, { message: "La descripción debe tener al menos 3 caracteres de longitud"})
+    .max(5000, { message: "La descripción no puede tener mas de 5000 caracteres de longitud"}),
+  type: z.enum(publicationTypeEnum.enumValues, { message: "El tipo de publicación es requerido"}),
+  authors: z.array(z.string({ message: "Los autores son requeridos"}))
+    .min(1, { message: "Los autores son requeridos"}),
+  publicationDate: z.string({ message: "La fecha de publicación es requerida"})
+    .date(),
+  file: PDFSchema.shape.file.optional(),
+  fileUrl: z.string({ message: "La URL del archivo es requerida"})
+    .url({ message: "La URL del archivo debe ser una URL válida"})
+    .optional(),
   thumbnail: ImageSchema.shape.image
 })
 
-export const PublicationSchema = BasePublicationSchema
+export const PublicationSchema = BasePublicationCreateSchema
   .refine(data => {
     if (data.file && data.fileUrl) {
       return false; // Cannot provide both file and file URL
@@ -121,7 +140,16 @@ export const PublicationUpdateSchema = BasePublicationSchema
     if (data.file && data.fileUrl) {
       return false; // Cannot provide both file and file URL
     }
+    return true;
   }, { message: "Debe proporcionar un archivo o una URL, pero no ambos" })
+  .refine(data => {
+    // Si no se proporciona ni archivo ni URL, está bien (mantiene el archivo existente)
+    if (!data.file && !data.fileUrl) {
+      return true;
+    }
+    // Si se proporciona al menos uno, está bien
+    return true;
+  }, { message: "Si proporciona un archivo o URL, debe ser válido" })
 
 export const BaseArticleSchema = z.object({
   title: z.string({ message: "El título es requerido"})
@@ -134,14 +162,32 @@ export const BaseArticleSchema = z.object({
     .min(1, { message: "El autor es requerido"}),
   publicationDate: z.string({ message: "La fecha de publicación es requerida"})
     .date(),
-  thumbnail: ImageSchema.shape.image,
   file: PDFSchema.shape.file.optional(),
   fileUrl: z.string({ message: "La URL del archivo es requerida"})
     .url({ message: "La URL del archivo debe ser una URL válida"})
     .optional(),
+  thumbnail: ImageSchema.shape.image.optional()
 })
 
-export const ArticleSchema = BaseArticleSchema
+export const BaseArticleCreateSchema = z.object({
+  title: z.string({ message: "El título es requerido"})
+    .min(3, { message: "El título debe tener al menos 3 caracteres de longitud"})
+    .max(500, { message: "El título no puede tener mas de 500 caracteres de longitud"}),
+  description: z.string({ message: "La descripción es requerida"})
+    .min(3, { message: "La descripción debe tener al menos 3 caracteres de longitud"})
+    .max(5000, { message: "La descripción no puede tener mas de 5000 caracteres de longitud"}),
+  authors: z.array(z.string({ message: "El autor es requerido"}))
+    .min(1, { message: "El autor es requerido"}),
+  publicationDate: z.string({ message: "La fecha de publicación es requerida"})
+    .date(),
+  file: PDFSchema.shape.file.optional(),
+  fileUrl: z.string({ message: "La URL del archivo es requerida"})
+    .url({ message: "La URL del archivo debe ser una URL válida"})
+    .optional(),
+  thumbnail: ImageSchema.shape.image
+})
+
+export const ArticleSchema = BaseArticleCreateSchema
   .refine(data => {
     if (data.file && data.fileUrl) {
       return false; // Cannot provide both file and file URL
@@ -153,13 +199,7 @@ export const ArticleSchema = BaseArticleSchema
       return false; // At least one of file or file URL must be provided
     }
     return true;
-  }, { message: "Debe proporcionar un archivo o una URL" })
-  .refine(data => {
-    if (data.file) {
-      return data.thumbnail ? true : false; // If a file is provided, a thumbnail is required
-    }
-    return true
-  });
+  }, { message: "Debe proporcionar un archivo o una URL" });
 
 export const ArticleUpdateSchema = BaseArticleSchema
   .extend({
@@ -169,7 +209,16 @@ export const ArticleUpdateSchema = BaseArticleSchema
     if (data.file && data.fileUrl) {
       return false; // Cannot provide both file and file URL
     }
+    return true;
   }, { message: "Debe proporcionar un archivo o una URL, pero no ambos" })
+  .refine(data => {
+    // Si no se proporciona ni archivo ni URL, está bien (mantiene el archivo existente)
+    if (!data.file && !data.fileUrl) {
+      return true;
+    }
+    // Si se proporciona al menos uno, está bien
+    return true;
+  }, { message: "Si proporciona un archivo o URL, debe ser válido" })
 
 export const EventSchema = z.object({
   title: z.string({ message: "El título es requerido"})
@@ -193,9 +242,18 @@ export const EventSchema = z.object({
     .min(3, { message: "La ubicación del evento debe tener al menos 3 caracteres de longitud"})
     .max(255, { message: "La ubicación del evento no puede tener mas de 255 caracteres de longitud"}),
   link: z.string()
-    .url({ message: "El enlace del evento debe ser una URL válida"})
-    .min(1, { message: "El enlace del evento es requerido"})
-    .max(500, { message: "El enlace del evento no puede tener mas de 500 caracteres de longitud"})
+    .optional()
+    .refine((val) => {
+      // Si está vacío o undefined, está bien (opcional)
+      if (!val || val.trim() === "") return true;
+      // Si tiene contenido, debe ser una URL válida
+      try {
+        new URL(val);
+        return true;
+      } catch {
+        return false;
+      }
+    }, { message: "El enlace del evento de tener mas de 500 caracteres de longitud"})
     .optional(),
 }).refine(data => {
   const startTime = data.startTime.split(":").map(Number);

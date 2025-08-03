@@ -1,4 +1,9 @@
-import { count, desc, eq } from 'drizzle-orm';
+import {
+  count,
+  desc,
+  eq,
+  like
+  } from 'drizzle-orm';
 import { db } from '@db/connection';
 import { EducationalMaterial } from '@db/tables';
 
@@ -44,7 +49,7 @@ export class EducationalMaterialRepository {
     const resource = await db
       .select()
       .from(EducationalMaterial)
-      .where(eq(EducationalMaterial.filePath, `%${fileHash}%`))
+      .where(like(EducationalMaterial.filePath, `%${fileHash}%`))
       .limit(1)
 
     return resource[0] || null
@@ -53,6 +58,14 @@ export class EducationalMaterialRepository {
   static async deleteEducationalMaterial(id: string): Promise<void> {
     await db
       .delete(EducationalMaterial)
+      .where(eq(EducationalMaterial.id, id))
+      .execute()
+  }
+
+  static async updateEducationalMaterial(id: string, data: Partial<EducationalMaterialInsert>): Promise<void> {
+    await db
+      .update(EducationalMaterial)
+      .set(data)
       .where(eq(EducationalMaterial.id, id))
       .execute()
   }

@@ -1,0 +1,23 @@
+
+---
+  const { onEdit, onDelete } = Astro.props;
+  import Icon from "@src/components/common/Icon.astro";
+---
+
+<div class="flex justify-center items-center gap-4">
+  <button class="outline-primary hover:bg-primary" onclick={onEdit}>
+    <Icon name="pen" class="fill-primary w-3 hover:scale-110" />
+  </button>
+
+  <button class="outline-red-500 hover:bg-red-500" onclick={onDelete}>
+    <Icon name="xmark" class="fill-red-500 w-3 hover:scale-110" />
+  </button>
+</div>
+
+<style>
+  @import "../../../../styles//global.css";
+
+  button {
+    @apply flex justify-center items-center outline-2 p-2 aspect-square rounded-full hover:cursor-pointer hover:*:fill-text;
+  }
+</style>

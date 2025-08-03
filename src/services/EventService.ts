@@ -71,7 +71,7 @@ export class EventService {
     }])
 
     return { 
-      status: 201,
+      status: 200,
       message: "Evento creado correctamente",
     }
   }

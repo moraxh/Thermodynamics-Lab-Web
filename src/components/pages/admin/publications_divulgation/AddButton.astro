@@ -1,0 +1,15 @@
+---
+  import Icon from "@src/components/common/Icon.astro";
+
+  const { label, onclick, ...rest } = Astro.props;
+---
+<!-- Add Functionality -->
+<div class="flex justify-end">
+  <button 
+    onclick={onclick}
+    class="flex items-center gap-2 bg-accent text-black px-4 py-2 rounded-lg hover:bg-accent-dark transition-all hover:outline-2 hover:outline-accent hover:bg-transparent hover:text-text hover:*:fill-text hover:cursor-pointer"
+  >
+    <Icon name="plus" class="fill-black w-auto h-4" />
+    <span>{label}</span>
+  </button>
+</div>

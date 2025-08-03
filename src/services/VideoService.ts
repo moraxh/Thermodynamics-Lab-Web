@@ -58,6 +58,7 @@ export class VideoService {
       title, 
       description,
       videoPath: "", // Will be set below if available
+      thumbnailPath: null, // Default to null, will be set if available
     }
 
     // Check if the title is already in use
@@ -96,7 +97,7 @@ export class VideoService {
       }
     }
 
-    if (videoFile && thumbnail) {
+    if (thumbnail) {
       const thumbnailHash = await generateHashFromStream(thumbnail.stream())
 
       // Check if the thumbnail is already in use
@@ -196,9 +197,11 @@ export class VideoService {
       updateData.videoPath = filePath;
     }
 
-    if (!videoUrl && thumbnail) {
+    if (thumbnail) {
       // Delete the existing thumbnail if it exists
-      fs.rmSync(`./public/${video.thumbnailPath}`, { force: true, recursive: true })
+      if (video.thumbnailPath) {
+        fs.rmSync(`./public/${video.thumbnailPath}`, { force: true, recursive: true })
+      }
 
       const thumbnailHash = await generateHashFromStream(thumbnail.stream())
 
@@ -249,7 +252,9 @@ export class VideoService {
     if (!isValidUrl(video.videoPath)) {
       fs.rmSync(`./public/${video.videoPath}`, { force: true, recursive: true })
     }
-    fs.rmSync(`./public/${video.thumbnailPath}`, { force: true, recursive: true })
+    if (video.thumbnailPath) {
+      fs.rmSync(`./public/${video.thumbnailPath}`, { force: true, recursive: true })
+    }
 
     // Delete the video from the database
     await VideoRepository.deleteVideo(videoId)

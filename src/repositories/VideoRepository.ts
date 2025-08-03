@@ -1,4 +1,9 @@
-import { count, desc, eq } from 'drizzle-orm';
+import {
+  count,
+  desc,
+  eq,
+  like
+  } from 'drizzle-orm';
 import { db } from '@db/connection';
 import { Video } from '@db/tables';
 
@@ -44,7 +49,7 @@ export class VideoRepository {
     const video = await db
       .select()
       .from(Video)
-      .where(eq(Video.videoPath, `%${videoHash}%`))
+      .where(like(Video.videoPath, `%${videoHash}%`))
       .limit(1)
 
     return video[0] || null
@@ -54,7 +59,7 @@ export class VideoRepository {
     const video = await db
       .select()
       .from(Video)
-      .where(eq(Video.thumbnailPath, `%${thumbnailHash}%`))
+      .where(like(Video.thumbnailPath, `%${thumbnailHash}%`))
       .limit(1)
 
     return video[0] || null

@@ -42,7 +42,41 @@ export class PublicationService {
   }
 
   static async createPublication(formData: FormData): Promise<CommonResponse> {
-    const fields = Object.fromEntries(formData.entries());
+    // Extraer los autores como un array desde el JSON string
+    const authorsJson = formData.get('authors') as string;
+    let authors: string[] = [];
+    
+    if (authorsJson) {
+      try {
+        authors = JSON.parse(authorsJson);
+      } catch (error) {
+        return {
+          status: 400,
+          message: "Formato de autores inválido"
+        };
+      }
+    }
+    
+    // Crear un objeto con los campos básicos
+    const fields: any = {
+      title: formData.get('title'),
+      description: formData.get('description'),
+      type: formData.get('type'),
+      authors: authors,
+      publicationDate: formData.get('publicationDate'),
+      thumbnail: formData.get('thumbnail')
+    };
+
+    // Manejar el archivo o URL
+    const file = formData.get('file') as File | null;
+    const fileUrl = formData.get('fileUrl') as string | null;
+
+    if (file && file.size > 0) {
+      fields.file = file;
+    } else if (fileUrl && fileUrl.trim() !== '') {
+      fields.fileUrl = fileUrl;
+    }
+
     const validation = PublicationSchema.safeParse(fields);
 
     if (!validation.success) {
@@ -52,14 +86,14 @@ export class PublicationService {
       };
     }
 
-    const { title, description, type, authors, publicationDate, file, fileUrl, thumbnail } = validation.data
+    const { title, description, type, publicationDate, thumbnail } = validation.data
 
     let data: PublicationInsert = {
       id: randomUUID(),
       title,
       description, 
       type,
-      authors,
+      authors: validation.data.authors,
       publicationDate: new Date(publicationDate),
       filePath: "",
       thumbnailPath: ""
@@ -73,9 +107,9 @@ export class PublicationService {
       };
     }
 
-    if (fileUrl) {
+    if (fileUrl && fileUrl.trim() !== '') {
       data.filePath = fileUrl;
-    } else if (file) {
+    } else if (file && file.size > 0) {
       const fileHash = await generateHashFromStream(file.stream())
 
       if (await PublicationRepository.getPublicationByFileHash(fileHash)) {
@@ -86,7 +120,7 @@ export class PublicationService {
       }
 
       fs.mkdirSync(`./public/${storagePath}/files`, { recursive: true });
-      const filePath = `${storagePath}/${fileHash}.${file.name.split('.').pop()}`;
+      const filePath = `${storagePath}/files/${fileHash}.${file.name.split('.').pop()}`;
       fs.writeFileSync(`./public/${filePath}`, Buffer.from(await file.arrayBuffer()));
 
       data.filePath = filePath
@@ -108,7 +142,7 @@ export class PublicationService {
     }
 
     fs.mkdirSync(`./public/${storagePath}/thumbnails`, { recursive: true });
-    const thumbnailPath = `${storagePath}/${thumbnailHash}.${thumbnail.name.split('.').pop()}`
+    const thumbnailPath = `${storagePath}/thumbnails/${thumbnailHash}.${thumbnail.name.split('.').pop()}`
     fs.writeFileSync(`./public/${thumbnailPath}`, Buffer.from(await thumbnail.arrayBuffer()));
     data.thumbnailPath = thumbnailPath
 
@@ -139,7 +173,47 @@ export class PublicationService {
       };
     }
 
-    const fields = Object.fromEntries(formData.entries());
+    // Extraer los autores como un array desde el JSON string
+    const authorsJson = formData.get('authors') as string;
+    let authors: string[] = [];
+    
+    if (authorsJson) {
+      try {
+        authors = JSON.parse(authorsJson);
+      } catch (error) {
+        return {
+          status: 400,
+          message: "Formato de autores inválido"
+        };
+      }
+    }
+    
+    // Crear un objeto con los campos básicos
+    const fields: any = {
+      title: formData.get('title'),
+      description: formData.get('description'),
+      type: formData.get('type'),
+      authors: authors,
+      publicationDate: formData.get('publicationDate')
+    };
+
+    // Manejar el archivo o URL
+    const file = formData.get('file') as File | null;
+    const fileUrl = formData.get('fileUrl') as string | null;
+
+    // Solo incluir archivo o URL si se proporciona uno nuevo
+    if (file && file.size > 0) {
+      fields.file = file;
+    } else if (fileUrl && fileUrl.trim() !== '') {
+      fields.fileUrl = fileUrl;
+    }
+
+    // Manejar la miniatura si se proporciona
+    const thumbnail = formData.get('thumbnail') as File | null;
+    if (thumbnail && thumbnail.size > 0) {
+      fields.thumbnail = thumbnail;
+    }
+
     const validation = PublicationUpdateSchema.safeParse(fields);
 
     if (!validation.success) {
@@ -149,7 +223,7 @@ export class PublicationService {
       };
     }
 
-    const { title, description, type, authors, publicationDate, file, fileUrl, thumbnail } = validation.data;
+    const { title, description, type, publicationDate } = validation.data;
     
     const existingPublication = await PublicationRepository.getPublicationByTitle(title);
 
@@ -164,18 +238,24 @@ export class PublicationService {
       title,
       description,
       type,
-      authors,
+      authors: validation.data.authors,
       publicationDate: new Date(publicationDate)
     }
 
-    if (file || fileUrl) {
+    // Solo actualizar el archivo si se proporciona uno nuevo
+    if (file && file.size > 0 || (fileUrl && fileUrl.trim() !== '')) {
+      // Eliminar el archivo anterior si no es una URL
       if (!isValidUrl(publication.filePath)) {
-        fs.rmdirSync(`./public/${publication.filePath}`, { recursive: true });
+        try {
+          fs.rmSync(`./public/${publication.filePath}`, { force: true });
+        } catch (error) {
+          console.warn('No se pudo eliminar el archivo anterior:', error);
+        }
       }
 
-      if (fileUrl) {
+      if (fileUrl && fileUrl.trim() !== '') {
         updateData.filePath = fileUrl;
-      } else if (file) {
+      } else if (file && file.size > 0) {
         const fileHash = await generateHashFromStream(file.stream());
 
         const existingFile = await PublicationRepository.getPublicationByFileHash(fileHash);
@@ -187,18 +267,24 @@ export class PublicationService {
         }
 
         fs.mkdirSync(`./public/${storagePath}/files`, { recursive: true });
-        const filePath = `${storagePath}/${fileHash}.${file.name.split('.').pop()}`;
+        const filePath = `${storagePath}/files/${fileHash}.${file.name.split('.').pop()}`;
         fs.writeFileSync(`./public/${filePath}`, Buffer.from(await file.arrayBuffer()));
 
         updateData.filePath = filePath;
       }
     } else {
-      updateData.filePath = publication.filePath; // Keep the existing file path if no new file is provided
+      // Mantener el archivo existente
+      updateData.filePath = publication.filePath;
     }
 
-    if (thumbnail) {
-      // Delete the old thumbnail
-      fs.rmdirSync(`./public/${publication.thumbnailPath}`, { recursive: true });
+    // Solo actualizar la miniatura si se proporciona una nueva
+    if (thumbnail && thumbnail.size > 0) {
+      // Eliminar la miniatura anterior
+      try {
+        fs.rmSync(`./public/${publication.thumbnailPath}`, { force: true });
+      } catch (error) {
+        console.warn('No se pudo eliminar la miniatura anterior:', error);
+      }
 
       const thumbnailHash = await generateHashFromStream(thumbnail.stream());
 
@@ -212,11 +298,12 @@ export class PublicationService {
       }
 
       fs.mkdirSync(`./public/${storagePath}/thumbnails`, { recursive: true });
-      const thumbnailPath = `${storagePath}/${thumbnailHash}.${thumbnail.name.split('.').pop()}`;
+      const thumbnailPath = `${storagePath}/thumbnails/${thumbnailHash}.${thumbnail.name.split('.').pop()}`;
       fs.writeFileSync(`./public/${thumbnailPath}`, Buffer.from(await thumbnail.arrayBuffer()));
       updateData.thumbnailPath = thumbnailPath;
     } else {
-      updateData.thumbnailPath = publication.thumbnailPath; // Keep the existing thumbnail path if no new thumbnail is provided
+      // Mantener la miniatura existente
+      updateData.thumbnailPath = publication.thumbnailPath;
     }
 
     PublicationRepository.updatePublicationById(publicationId, updateData);
@@ -248,9 +335,9 @@ export class PublicationService {
 
     // Delete the file and thumbnail 
     if (!isValidUrl(publication.filePath)) {
-      fs.rmdirSync(`./public/${publication.filePath}`, { recursive: true });
+      fs.rmSync(`./public/${publication.filePath}`, { recursive: true });
     }
-    fs.rmdirSync(`./public/${publication.thumbnailPath}`, { recursive: true });
+    fs.rmSync(`./public/${publication.thumbnailPath}`, { recursive: true });
 
     // Delete the publication from the database
     await PublicationRepository.deletePublicationById(publicationId);
@@ -263,7 +350,7 @@ export class PublicationService {
 
   static async clearData(): Promise<void> {
     // Clear the files
-    fs.rmdirSync("./public/storage/publications", { recursive: true });
+    fs.rmSync("./public/storage/publications", { recursive: true });
 
     // Delete the table data
     await PublicationRepository.clearTable()
