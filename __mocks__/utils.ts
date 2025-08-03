@@ -1,4 +1,4 @@
-import { createContext } from 'astro/middleware'
+import { createContext } from 'astro/middleware';
 import type { APIContext } from "astro";
 
 export function createMockImageFile(
@@ -15,6 +15,16 @@ export function createMockPDFFile(
   name: string = 'test.pdf',
   mime: string = 'application/pdf',
   content: string = 'fake content'
+): File {
+  const buffer = Buffer.from(content)
+  const blob = new Blob([buffer], { type: mime })
+  return new File([blob], name, { type: mime })
+}
+
+export function createMockVideoFile(
+  name: string = 'test.mp4',
+  mime: string = 'video/mp4',
+  content: string = 'fake video content'
 ): File {
   const buffer = Buffer.from(content)
   const blob = new Blob([buffer], { type: mime })
