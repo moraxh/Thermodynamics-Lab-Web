@@ -1,5 +1,4 @@
-import { Article, publicationTypeEnum } from '@db/tables';
-import { file } from 'zod/v4';
+import { publicationTypeEnum } from '@db/tables';
 import { z } from 'zod';
 
 export const supportedImageTypes = [

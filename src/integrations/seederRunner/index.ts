@@ -14,17 +14,17 @@ export default function seederRunnerIntegration(): AstroIntegration {
         fileUrl = new URL("./db/seed.ts", root)
       },
       'astro:server:setup': async ({ server, logger }) => {
-        await executeSeedFile({ 
-          filePath: fileURLToPath(fileUrl), 
-          viteServer: server
-        })
+        // Solo ejecutar el seed en desarrollo
+        if (process.env.NODE_ENV !== 'production') {
+          await executeSeedFile({ 
+            filePath: fileURLToPath(fileUrl), 
+            viteServer: server
+          })
+        }
       },
 			'astro:build:setup': async ({ vite }) => {
-        const tempViteServer = await getTempViteServer({ viteConfig: vite });
-        await executeSeedFile({ 
-          filePath: fileURLToPath(fileUrl), 
-          viteServer: tempViteServer
-        })
+        // No ejecutar seed durante el build para evitar problemas de BD
+        console.log('Skipping seed execution during build...');
 			},
     }
   }

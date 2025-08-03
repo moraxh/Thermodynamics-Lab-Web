@@ -4,12 +4,14 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "cross-env NODE_ENV=production astro build",
+    "build:local": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest"
   },
   "dependencies": {
+    "@astrojs/vercel": "^8.2.5",
     "@lucia-auth/adapter-drizzle": "^1.1.0",
     "@node-rs/argon2": "^2.0.2",
     "@tailwindcss/vite": "^4.1.10",
@@ -26,6 +28,7 @@
   },
   "devDependencies": {
     "@types/pg": "^8.15.4",
+    "cross-env": "^10.0.0",
     "eslint": "^9.29.0",
     "sharp": "^0.33.5",
     "standard": "^17.1.2",
