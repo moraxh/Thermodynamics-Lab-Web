@@ -321,7 +321,7 @@ export const EducationalMaterialSchema = z.object({
   description: z.string({ message: "La descripción es requerida"})
     .min(3, { message: "La descripción debe tener al menos 3 caracteres de longitud"})
     .max(5000, { message: "La descripción no puede tener mas de 5000 caracteres de longitud"}),
-  file: FileSchema.shape.file
+  file: PDFSchema.shape.file
     .optional(),
   fileUrl: z.string({ message: "La URL del archivo es requerida"})
     .url({ message: "La URL del archivo debe ser una URL válida"})
@@ -336,4 +336,5 @@ export const EducationalMaterialSchema = z.object({
   if (!data.file && !data.fileUrl) {
     return false; // At least one of file or file URL must be provided
   }
-})
+  return true;
+}, { message: "Debe proporcionar un archivo o una URL de archivo" })
