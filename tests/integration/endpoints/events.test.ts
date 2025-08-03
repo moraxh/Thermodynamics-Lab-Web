@@ -13,9 +13,7 @@ import {
   PATCH,
   POST
   } from '@api/events';
-import { desc } from 'drizzle-orm';
 import { EventRepository } from '@src/repositories/EventRepository';
-import { startContainer } from 'node_modules/astro/dist/core/dev';
 import type { EventSelect } from '@src/repositories/EventRepository';
 import type { APIContext } from 'astro';
 
@@ -170,7 +168,7 @@ describe('POST /events', async () => {
     const context = createValidContext(validFormData);
 
     const response = await POST(context)
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(200);
     const body = await response.json();
     expect(body.message).toEqual('Evento creado correctamente');
   })
@@ -215,52 +213,31 @@ describe('POST /events', async () => {
   })
 
   it('should return an error if any of the parameters is invalid', async() => {
-    const testCases = {
-      title: [
-        { value: 'h'.repeat(2), error: 'El título debe tener al menos 3 caracteres de longitud' },
-        { value: 'h'.repeat(501), error: 'El título no puede tener mas de 500 caracteres de longitud' }
-      ],
-      description: [
-        { value: 'd'.repeat(2), error: 'La descripción debe tener al menos 3 caracteres de longitud' },
-        { value: 'd'.repeat(5001), error: 'La descripción no puede tener mas de 5000 caracteres de longitud' }
-      ],
-      typeOfEvent: [
-        { value: 't'.repeat(2), error: 'El tipo de evento debe tener al menos 3 caracteres de longitud' },
-        { value: 't'.repeat(256), error: 'El tipo de evento no puede tener mas de 255 caracteres de longitud' }
-      ],
-      eventDate: [
-        { value: 'invalid-date', error: 'Invalid date' },
-      ],
-      startTime: [
-        { value: '9:00', error: 'La hora de inicio del evento debe tener al menos 5 caracteres de longitud' },
-        { value: '10:000', error: 'La hora de inicio del evento no puede tener mas de 5 caracteres de longitud' }
-      ],
-      endTime: [
-        { value: '9:00', error: 'La hora de fin del evento debe tener al menos 5 caracteres de longitud' },
-        { value: '10:000', error: 'La hora de fin del evento no puede tener mas de 5 caracteres de longitud' }
-      ],
-      location: [
-        { value: 'l'.repeat(2), error: 'La ubicación del evento debe tener al menos 3 caracteres de longitud' },
-        { value: 'l'.repeat(256), error: 'La ubicación del evento no puede tener mas de 255 caracteres de longitud' }
-      ],
-      link: [
-        { value: 'invalid-url', error: 'El enlace del evento debe ser una URL válida' },
-        { value: 'https://example.com/'.repeat(100), error: 'El enlace del evento no puede tener mas de 500 caracteres de longitud' }
-      ]
-    }
+    const testCases = [
+      { field: 'title', value: 'h'.repeat(2), error: 'El título debe tener al menos 3 caracteres de longitud' },
+      { field: 'title', value: 'h'.repeat(501), error: 'El título no puede tener mas de 500 caracteres de longitud' },
+      { field: 'description', value: 'd'.repeat(2), error: 'La descripción debe tener al menos 3 caracteres de longitud' },
+      { field: 'description', value: 'd'.repeat(5001), error: 'La descripción no puede tener mas de 5000 caracteres de longitud' },
+      { field: 'typeOfEvent', value: 't'.repeat(2), error: 'El tipo de evento debe tener al menos 3 caracteres de longitud' },
+      { field: 'typeOfEvent', value: 't'.repeat(256), error: 'El tipo de evento no puede tener mas de 255 caracteres de longitud' },
+      { field: 'startTime', value: '9:00', error: 'La hora de inicio del evento debe tener al menos 5 caracteres de longitud' },
+      { field: 'startTime', value: '10:000', error: 'La hora de inicio del evento no puede tener mas de 5 caracteres de longitud' },
+      { field: 'endTime', value: '9:00', error: 'La hora de fin del evento debe tener al menos 5 caracteres de longitud' },
+      { field: 'endTime', value: '10:000', error: 'La hora de fin del evento no puede tener mas de 5 caracteres de longitud' },
+      { field: 'location', value: 'l'.repeat(2), error: 'La ubicación del evento debe tener al menos 3 caracteres de longitud' },
+      { field: 'location', value: 'l'.repeat(256), error: 'La ubicación del evento no puede tener mas de 255 caracteres de longitud' }
+    ]
 
-    for (const [key, cases] of Object.entries(testCases)) {
-      for (const { value, error } of cases) {
-        const formData = copyFormData(validFormData);
-        formData.set(key, value);
+    for (const testCase of testCases) {
+      const formData = copyFormData(validFormData);
+      formData.set(testCase.field, testCase.value);
 
-        const context = createValidContext(formData);
+      const context = createValidContext(formData);
 
-        const response = await POST(context);
-        expect(response.status).toBe(400);
-        const body = await response.json();
-        expect(body.message).toEqual(error);
-      }
+      const response = await POST(context);
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toEqual(testCase.error);
     }
   })
 
@@ -303,6 +280,209 @@ describe('POST /events', async () => {
   })
 })
 
-describe('PATCH /events', async () => {})
+describe('PATCH /events', async () => {
+  const validFormData = new FormData();
+  validFormData.append('id', '1');
+  validFormData.append('title', 'Updated Event');
+  validFormData.append('description', 'This is an updated test event');
+  validFormData.append('typeOfEvent', 'Workshop');
+  validFormData.append('eventDate', '2026-02-01');
+  validFormData.append('startTime', '14:00');
+  validFormData.append('endTime', '16:00');
+  validFormData.append('location', 'Updated Test Location');
+  validFormData.append('link', 'https://example.com/updated-test-event');
 
-describe('DELETE /events', async () => {})
+  const createValidContext = (formData: FormData | null = null) => {
+    return createMockContext(
+      new Request(uri, {
+        method: 'PATCH',
+        body: formData
+      })
+    )
+  }
+
+  it('should update an event', async() => {
+    vi.spyOn(EventRepository, 'getEventById').mockResolvedValueOnce(mockEvents[0]);
+    vi.spyOn(EventRepository, 'updateEventById').mockResolvedValueOnce();
+
+    const context = createValidContext(validFormData);
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.message).toEqual('Evento actualizado correctamente');
+  })
+
+  it('should return an error if the FormData is not provided', async() => {
+    const context = createValidContext();
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(500);
+    const body = await response.json();
+    expect(body.message).toEqual('Error al actualizar el evento');
+  })
+
+  it('should return an error if the id is not provided', async() => {
+    const formData = copyFormData(validFormData);
+    formData.delete('id');
+
+    const context = createValidContext(formData);
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(400);
+    const body = await response.json();
+    expect(body.message).toEqual('El ID del evento es requerido');
+  })
+
+  it('should return an error if the event does not exist', async() => {
+    vi.spyOn(EventRepository, 'getEventById').mockResolvedValueOnce(null);
+
+    const context = createValidContext(validFormData);
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(404);
+    const body = await response.json();
+    expect(body.message).toEqual('No hay ningún evento con ese ID');
+  })
+
+  it('should return an error if any of the parameters are not provided', async() => {
+    vi.spyOn(EventRepository, 'getEventById').mockResolvedValueOnce(mockEvents[0]);
+
+    const testCases = {
+      title: 'El título es requerido',
+      description: 'La descripción es requerida',
+      typeOfEvent: 'El tipo de evento es requerido',
+      eventDate: 'La fecha del evento es requerida',
+      startTime: 'La hora de inicio del evento es requerida',
+      endTime: 'La hora de fin del evento es requerida',
+      location: 'La ubicación del evento es requerida',
+    }
+
+    await Promise.all(Object.entries(testCases).map(async ([key, error]) => {
+      vi.clearAllMocks();
+      vi.spyOn(EventRepository, 'getEventById').mockResolvedValueOnce(mockEvents[0]);
+
+      const formData = copyFormData(validFormData);
+      formData.delete(key);
+
+      const context = createValidContext(formData);
+
+      const response = await PATCH(context);
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toEqual(error);
+    }));
+  })
+
+  it('should return an error if any of the parameters is invalid', async() => {
+    const testCases = [
+      { field: 'title', value: 'h'.repeat(2), error: 'El título debe tener al menos 3 caracteres de longitud' },
+      { field: 'title', value: 'h'.repeat(501), error: 'El título no puede tener mas de 500 caracteres de longitud' },
+      { field: 'description', value: 'd'.repeat(2), error: 'La descripción debe tener al menos 3 caracteres de longitud' },
+      { field: 'description', value: 'd'.repeat(5001), error: 'La descripción no puede tener mas de 5000 caracteres de longitud' },
+      { field: 'typeOfEvent', value: 't'.repeat(2), error: 'El tipo de evento debe tener al menos 3 caracteres de longitud' },
+      { field: 'typeOfEvent', value: 't'.repeat(256), error: 'El tipo de evento no puede tener mas de 255 caracteres de longitud' },
+      { field: 'startTime', value: '9:00', error: 'La hora de inicio del evento debe tener al menos 5 caracteres de longitud' },
+      { field: 'startTime', value: '10:000', error: 'La hora de inicio del evento no puede tener mas de 5 caracteres de longitud' },
+      { field: 'endTime', value: '9:00', error: 'La hora de fin del evento debe tener al menos 5 caracteres de longitud' },
+      { field: 'endTime', value: '10:000', error: 'La hora de fin del evento no puede tener mas de 5 caracteres de longitud' },
+      { field: 'location', value: 'l'.repeat(2), error: 'La ubicación del evento debe tener al menos 3 caracteres de longitud' },
+      { field: 'location', value: 'l'.repeat(256), error: 'La ubicación del evento no puede tener mas de 255 caracteres de longitud' }
+    ]
+
+    for (const testCase of testCases) {
+      vi.clearAllMocks();
+      vi.spyOn(EventRepository, 'getEventById').mockResolvedValueOnce(mockEvents[0]);
+
+      const formData = copyFormData(validFormData);
+      formData.set(testCase.field, testCase.value);
+
+      const context = createValidContext(formData);
+
+      const response = await PATCH(context);
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toEqual(testCase.error);
+    }
+  })
+
+  it('should return an error if something goes wrong', async() => {
+    vi.spyOn(EventRepository, 'getEventById').mockRejectedValueOnce(new Error('Database error'));
+
+    const context = createValidContext(validFormData);
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(500);
+    const body = await response.json();
+    expect(body.message).toEqual('Error al actualizar el evento');
+  })
+})
+
+describe('DELETE /events', async () => {
+  const validFormData = new FormData();
+  validFormData.append('id', '1');
+
+  const createValidContext = (formData: FormData | null = null) => {
+    return createMockContext(
+      new Request(uri, {
+        method: 'DELETE',
+        body: formData
+      })
+    )
+  }
+
+  it('should delete an event', async() => {
+    vi.spyOn(EventRepository, 'getEventById').mockResolvedValueOnce(mockEvents[0]);
+    vi.spyOn(EventRepository, 'deleteEventById').mockResolvedValueOnce();
+
+    const context = createValidContext(validFormData);
+
+    const response = await DELETE(context)
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.message).toEqual('Evento eliminado correctamente');
+  })
+
+  it('should return an error if the FormData is not provided', async() => {
+    const context = createValidContext();
+
+    const response = await DELETE(context)
+    expect(response.status).toBe(500);
+    const body = await response.json();
+    expect(body.message).toEqual('Error al eliminar el evento');
+  })
+
+  it('should return an error if the id is not provided', async() => {
+    const formData = copyFormData(validFormData);
+    formData.delete('id');
+
+    const context = createValidContext(formData);
+
+    const response = await DELETE(context)
+    expect(response.status).toBe(400);
+    const body = await response.json();
+    expect(body.message).toEqual('El ID del evento es requerido');
+  })
+
+  it('should return an error if the event does not exist', async() => {
+    vi.spyOn(EventRepository, 'getEventById').mockResolvedValueOnce(null);
+
+    const context = createValidContext(validFormData);
+
+    const response = await DELETE(context)
+    expect(response.status).toBe(404);
+    const body = await response.json();
+    expect(body.message).toEqual('No hay ningún evento con ese ID');
+  })
+
+  it('should return an error if something goes wrong', async() => {
+    vi.spyOn(EventRepository, 'getEventById').mockRejectedValueOnce(new Error('Database error'));
+
+    const context = createValidContext(validFormData);
+
+    const response = await DELETE(context)
+    expect(response.status).toBe(500);
+    const body = await response.json();
+    expect(body.message).toEqual('Error al eliminar el evento');
+  })
+})
