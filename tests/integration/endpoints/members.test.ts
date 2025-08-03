@@ -314,8 +314,6 @@ describe('POST /members', async () => {
   })
 })
 
-describe('PATCH /members', async() => {})
-
 describe('DELETE /members', async () => {
   const validFormData = new FormData()  
   validFormData.append('id', '1')

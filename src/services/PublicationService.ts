@@ -335,9 +335,9 @@ export class PublicationService {
 
     // Delete the file and thumbnail 
     if (!isValidUrl(publication.filePath)) {
-      fs.rmSync(`./public/${publication.filePath}`, { recursive: true });
+      fs.rmSync(`./public/${publication.filePath}`, { force: true });
     }
-    fs.rmSync(`./public/${publication.thumbnailPath}`, { recursive: true });
+    fs.rmSync(`./public/${publication.thumbnailPath}`, { force: true });
 
     // Delete the publication from the database
     await PublicationRepository.deletePublicationById(publicationId);

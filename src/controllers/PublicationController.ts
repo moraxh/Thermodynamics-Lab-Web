@@ -1,4 +1,3 @@
-import Publications from '@src/components/pages/publications_divulgation/Publications.astro';
 import { PublicationService } from '@src/services/PublicationService';
 import type { APIContext } from "astro";
 
