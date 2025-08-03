@@ -8,7 +8,12 @@ import {
   } from 'vitest';
 import { copyFormData } from '@src/utils/formData';
 import { createMockContext, createMockImageFile, createMockPDFFile } from '@__mocks__/utils';
-import { GET, POST } from '@api/articles';
+import {
+  DELETE,
+  GET,
+  PATCH,
+  POST
+  } from '@api/articles';
 import { maxImageSize, maxPDFSize } from '@db/schemas';
 import type { ArticleSelect } from '@src/repositories/ArticleRepository';
 import type { APIContext } from 'astro';
@@ -134,6 +139,7 @@ describe('POST /articles', async() => {
   const validFormData = new FormData()
   validFormData.append('title', 'Article 1')
   validFormData.append('description', 'Description of article 1')
+  validFormData.append('authors', JSON.stringify(['Author 1', 'Author 2']))
   validFormData.append('publicationDate', '2023-01-01')
   validFormData.append('file', createMockPDFFile())
   validFormData.append('thumbnail', createMockImageFile())
@@ -151,6 +157,7 @@ describe('POST /articles', async() => {
     vi.spyOn(ArticleRepository, 'getArticleByTitle').mockResolvedValueOnce(null)
     vi.spyOn(ArticleRepository, 'getArticleByFileHash').mockResolvedValueOnce(null)
     vi.spyOn(ArticleRepository, 'getArticleByThumbnailHash').mockResolvedValueOnce(null)
+    vi.spyOn(ArticleRepository, 'insertArticles').mockResolvedValueOnce(undefined)
 
     const context = createValidContext(validFormData)
 
@@ -181,9 +188,10 @@ describe('POST /articles', async() => {
     const testCases = {
       title: "El título es requerido",
       description: "La descripción es requerida",
+      authors: "El autor es requerido",
       publicationDate: "La fecha de publicación es requerida",
       thumbnail: "La imagen es requerida",
-      file: "El archivo es requerido",
+      file: "Debe proporcionar un archivo o una URL",
     }
 
     await Promise.all(Object.entries(testCases).map(async ([key, errorMessage]) => {
@@ -418,24 +426,324 @@ describe('POST /articles', async() => {
 
 // TODO: Checar si la implementacion es la correcta para ver lo que querian los doctores
 describe('PATCH /articles', async() => {
-  it('should update an article', async() => {})
-  it('should return an error if the FormData is not provided', async() => {})
-  it('should return an error if the parameters are no provided', async() => {})
-  it('should return an error if the parameters are invalid', async() => {})
-  it('should return an error if the id is not provided', async() => {})
-  it('should return an error if the id not in use', async() => {})
-  it('should return an error if the image is invalid', async() => {})
-  it('should return an error if the file is invalid', async() => {})
-  it('should return an error if the title is already in use', async() => {})
-  it('should return an error if the file is already in use', async() => {}) 
-  it('should return an error if the thumbnail is already in use', async() => {})
-  it('should return an error if something goes wrong', async() => {})
+  const validFormData = new FormData()
+  validFormData.append('id', '1')
+  validFormData.append('title', 'Updated Article')
+  validFormData.append('description', 'Updated description')
+  validFormData.append('authors', JSON.stringify(['Updated Author']))
+  validFormData.append('publicationDate', '2023-06-01')
+  validFormData.append('file', createMockPDFFile())
+  validFormData.append('thumbnail', createMockImageFile())
+
+  const createValidContext = (formData: FormData | null = null): APIContext => {
+    return createMockContext(
+      new Request('http://localhost/api/articles', {
+        method: 'PATCH',
+        body: formData,
+      })
+    )
+  }
+
+  it('should update an article', async() => {
+    vi.spyOn(ArticleRepository, 'getArticleById').mockResolvedValueOnce(mockArticles[0])
+    vi.spyOn(ArticleRepository, 'getArticleByTitle').mockResolvedValueOnce(null)
+    vi.spyOn(ArticleRepository, 'getArticleByFileHash').mockResolvedValueOnce(null)
+    vi.spyOn(ArticleRepository, 'getArticleByThumbnailHash').mockResolvedValueOnce(null)
+    vi.spyOn(ArticleRepository, 'updateArticleById').mockResolvedValueOnce(undefined)
+
+    const context = createValidContext(validFormData)
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(200)
+    const data = await response.json()
+    expect(data.message).toBe('Artículo actualizado correctamente')
+  })
+
+  it('should return an error if the FormData is not provided', async() => {
+    const context = createValidContext()
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(500)
+    const data = await response.json()
+    expect(data.message).toBe("Error al actualizar el articulo")
+  })
+
+  it('should return an error if the parameters are no provided', async() => {
+    vi.spyOn(ArticleRepository, 'getArticleById').mockResolvedValueOnce(mockArticles[0])
+    vi.spyOn(ArticleRepository, 'getArticleByTitle').mockResolvedValueOnce(null)
+    
+    const testCases = {
+      title: "El título es requerido",
+      description: "La descripción es requerida",
+      authors: "El autor es requerido",
+      publicationDate: "La fecha de publicación es requerida",
+    }
+
+    await Promise.all(Object.entries(testCases).map(async ([key, errorMessage]) => {
+      vi.clearAllMocks()
+      vi.spyOn(ArticleRepository, 'getArticleById').mockResolvedValueOnce(mockArticles[0])
+      vi.spyOn(ArticleRepository, 'getArticleByTitle').mockResolvedValueOnce(null)
+
+      const formData = copyFormData(validFormData)
+      formData.delete(key)
+
+      const context = createValidContext(formData)
+
+      const response = await PATCH(context)
+      expect(response.status).toBe(400)
+      const data = await response.json()
+      expect(data.message).toBe(errorMessage)
+    }))
+  })
+
+  it('should return an error if the parameters are invalid', async() => {
+    vi.spyOn(ArticleRepository, 'getArticleById').mockResolvedValueOnce(mockArticles[0])
+    vi.spyOn(ArticleRepository, 'getArticleByTitle').mockResolvedValueOnce(null)
+    
+    const testCases = {
+      title: {
+        "limits": {
+          min: 3,
+          max: 500,
+        },
+        "errorMessages": {
+          min: "El título debe tener al menos 3 caracteres de longitud",
+          max: "El título no puede tener mas de 500 caracteres de longitud",
+        }
+      },
+      description: {
+        "limits": {
+          min: 3,
+          max: 5000,
+        },
+        "errorMessages": {
+          min: "La descripción debe tener al menos 3 caracteres de longitud",
+          max: "La descripción no puede tener mas de 5000 caracteres de longitud",
+        }
+      },
+    }
+
+    await Promise.all(Object.entries(testCases).map(async ([key, info]) => {
+      // Test minimum length
+      vi.clearAllMocks()
+      vi.spyOn(ArticleRepository, 'getArticleById').mockResolvedValueOnce(mockArticles[0])
+      vi.spyOn(ArticleRepository, 'getArticleByTitle').mockResolvedValueOnce(null)
+
+      const shortFormData = copyFormData(validFormData)
+      shortFormData.set(key, 'a'.repeat(info.limits.min - 1))
+
+      const shortContext = createValidContext(shortFormData)
+      const shortResponse = await PATCH(shortContext)
+      expect(shortResponse.status).toBe(400)
+      const shortData = await shortResponse.json()
+      expect(shortData.message).toBe(info.errorMessages.min)
+
+      // Test maximum length
+      vi.clearAllMocks()
+      vi.spyOn(ArticleRepository, 'getArticleById').mockResolvedValueOnce(mockArticles[0])
+      vi.spyOn(ArticleRepository, 'getArticleByTitle').mockResolvedValueOnce(null)
+
+      const longFormData = copyFormData(validFormData)
+      longFormData.set(key, 'a'.repeat(info.limits.max + 1))
+
+      const longContext = createValidContext(longFormData)
+      const longResponse = await PATCH(longContext)
+      expect(longResponse.status).toBe(400)
+      const longData = await longResponse.json()
+      expect(longData.message).toBe(info.errorMessages.max)
+    }))
+  })
+
+  it('should return an error if the id is not provided', async() => {
+    const formData = copyFormData(validFormData)
+    formData.delete('id')
+
+    const context = createValidContext(formData)
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(400)
+    const data = await response.json()
+    expect(data.message).toBe('El ID del artículo es requerido')
+  })
+
+  it('should return an error if the id not in use', async() => {
+    vi.spyOn(ArticleRepository, 'getArticleById').mockResolvedValueOnce(null)
+
+    const context = createValidContext(validFormData)
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(404)
+    const data = await response.json()
+    expect(data.message).toBe('No hay ningún artículo con ese ID')
+  })
+
+  it('should return an error if the image is invalid', async() => {
+    vi.spyOn(ArticleRepository, 'getArticleById').mockResolvedValueOnce(mockArticles[0])
+    vi.spyOn(ArticleRepository, 'getArticleByTitle').mockResolvedValueOnce(null)
+
+    const image = createMockImageFile(
+      "text.txt",
+      "text/plain",
+      "this is not an image file"
+    )
+
+    const formData = copyFormData(validFormData)
+    formData.set('thumbnail', image)
+
+    const context = createValidContext(formData)
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(400)
+    const data = await response.json()
+    expect(data.message).toBe("El archivo debe ser una imagen")
+  })
+
+  it('should return an error if the file is invalid', async() => {
+    vi.spyOn(ArticleRepository, 'getArticleById').mockResolvedValueOnce(mockArticles[0])
+    vi.spyOn(ArticleRepository, 'getArticleByTitle').mockResolvedValueOnce(null)
+
+    const file = createMockPDFFile(
+      "text.txt",
+      "text/plain",
+      "this is not a pdf file"
+    )
+
+    const formData = copyFormData(validFormData)
+    formData.set('file', file)
+
+    const context = createValidContext(formData)
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(400)
+    const data = await response.json()
+    expect(data.message).toBe("El archivo debe ser un PDF")
+  })
+
+  it('should return an error if the title is already in use', async() => {
+    vi.spyOn(ArticleRepository, 'getArticleById').mockResolvedValueOnce(mockArticles[0])
+    vi.spyOn(ArticleRepository, 'getArticleByTitle').mockResolvedValueOnce({
+      ...mockArticles[1],
+      id: '2'
+    })
+
+    const context = createValidContext(validFormData)
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(400)
+    const data = await response.json()
+    expect(data.message).toBe('El título ya está en uso')
+  })
+
+  it('should return an error if the file is already in use', async() => {
+    vi.spyOn(ArticleRepository, 'getArticleById').mockResolvedValueOnce(mockArticles[0])
+    vi.spyOn(ArticleRepository, 'getArticleByTitle').mockResolvedValueOnce(null)
+    vi.spyOn(ArticleRepository, 'getArticleByFileHash').mockResolvedValueOnce({
+      ...mockArticles[1],
+      id: '2'
+    })
+
+    const context = createValidContext(validFormData)
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(400)
+    const data = await response.json()
+    expect(data.message).toBe('El archivo ya está en uso')
+  }) 
+
+  it('should return an error if the thumbnail is already in use', async() => {
+    vi.spyOn(ArticleRepository, 'getArticleById').mockResolvedValueOnce(mockArticles[0])
+    vi.spyOn(ArticleRepository, 'getArticleByTitle').mockResolvedValueOnce(null)
+    vi.spyOn(ArticleRepository, 'getArticleByFileHash').mockResolvedValueOnce(null)
+    vi.spyOn(ArticleRepository, 'getArticleByThumbnailHash').mockResolvedValueOnce({
+      ...mockArticles[1],
+      id: '2'
+    })
+
+    const context = createValidContext(validFormData)
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(400)
+    const data = await response.json()
+    expect(data.message).toBe('La miniatura ya está en uso')
+  })
+
+  it('should return an error if something goes wrong', async() => {
+    vi.spyOn(ArticleRepository, 'getArticleById').mockRejectedValueOnce(new Error('Database error'))
+
+    const context = createValidContext(validFormData)
+
+    const response = await PATCH(context)
+    expect(response.status).toBe(500)
+    const data = await response.json()
+    expect(data.message).toBe("Error al actualizar el articulo")
+  })
 })
 
 describe('DELETE /articles', async() => {
-  it('should delete an article', async() => {})
-  it('should return an error if the FormData is not provided', async() => {})
-  it('should return an error if the id is not provided', async() => {})
-  it('should return an error if the id not in use', async() => {})
-  it('should return an error if something goes wrong', async() => {})
+  const validFormData = new FormData()
+  validFormData.append('id', '1')
+
+  const createValidContext = (formData: FormData | null = null): APIContext => {
+    return createMockContext(
+      new Request('http://localhost/api/articles', {
+        method: 'DELETE',
+        body: formData,
+      })
+    )
+  }
+
+  it('should delete an article', async() => {
+    vi.spyOn(ArticleRepository, 'getArticleById').mockResolvedValueOnce(mockArticles[0])
+    vi.spyOn(ArticleRepository, 'deleteArticleById').mockResolvedValueOnce(undefined)
+
+    const context = createValidContext(validFormData)
+
+    const response = await DELETE(context)
+    expect(response.status).toBe(200)
+    const data = await response.json()
+    expect(data.message).toBe('Artículo eliminado correctamente')
+  })
+
+  it('should return an error if the FormData is not provided', async() => {
+    const context = createValidContext()
+
+    const response = await DELETE(context)
+    expect(response.status).toBe(500)
+    const data = await response.json()
+    expect(data.message).toBe("Error al eliminar el artículo")
+  })
+
+  it('should return an error if the id is not provided', async() => {
+    const formData = copyFormData(validFormData)
+    formData.delete('id')
+
+    const context = createValidContext(formData)
+
+    const response = await DELETE(context)
+    expect(response.status).toBe(400)
+    const data = await response.json()
+    expect(data.message).toBe('El ID del artículo es requerido')
+  })
+
+  it('should return an error if the id not in use', async() => {
+    vi.spyOn(ArticleRepository, 'getArticleById').mockResolvedValueOnce(null)
+
+    const context = createValidContext(validFormData)
+
+    const response = await DELETE(context)
+    expect(response.status).toBe(404)
+    const data = await response.json()
+    expect(data.message).toBe('No hay ningún artículo con ese ID')
+  })
+
+  it('should return an error if something goes wrong', async() => {
+    vi.spyOn(ArticleRepository, 'getArticleById').mockRejectedValueOnce(new Error('Database error'))
+
+    const context = createValidContext(validFormData)
+
+    const response = await DELETE(context)
+    expect(response.status).toBe(500)
+    const data = await response.json()
+    expect(data.message).toBe("Error al eliminar el artículo")
+  })
 })
