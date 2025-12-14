@@ -38,6 +38,8 @@ export async function POST(request: NextRequest) {
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'application/vnd.ms-powerpoint',
         'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        'application/zip',
+        'application/x-zip-compressed',
       ],
     });
 
@@ -83,6 +85,8 @@ export async function PUT(request: NextRequest) {
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
           'application/vnd.ms-powerpoint',
           'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+          'application/zip',
+          'application/x-zip-compressed',
         ],
       });
       updateData.filePath = filePath;
