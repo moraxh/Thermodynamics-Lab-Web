@@ -1,6 +1,7 @@
 "use client"
 
 import Button from "@components/common/Button";
+import AtomAnimation from "@components/common/AtomAnimation";
 import { ChevronRight, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
@@ -24,6 +25,9 @@ export default function Hero() {
   return (
     <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden bg-lab-black">
       
+      {/* Atom Animation Canvas */}
+      <AtomAnimation />
+
       {/* Background Grid Effect */}
       <div className="absolute inset-0 z-0 opacity-20">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgb(59_130_246)_1px,transparent_1px),linear-gradient(to_bottom,rgb(59_130_246)_1px,transparent_1px)] bg-size-[4rem_4rem] h-[200vh] origin-top" />

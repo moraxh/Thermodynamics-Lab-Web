@@ -61,13 +61,13 @@ export default function NavBar() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-6">
             <div className="flex items-baseline space-x-8">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="relative uppercase px-2 py-1 text-lg font-medium text-lab-gray-400 hover:text-lab-white transition-colors group"
+                  className="relative uppercase px-2 py-1 text-lg font-medium text-lab-gray-400 hover:text-lab-white transition-colors group whitespace-nowrap"
                 >
                   {link.name}
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-lab-yellow transition-all duration-300 group-hover:w-full"></span>
@@ -78,7 +78,7 @@ export default function NavBar() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center gap-3">
+          <div className="lg:hidden flex items-center gap-3">
             <ThemeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -94,7 +94,7 @@ export default function NavBar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-lab-black/95 backdrop-blur-xl border-b border-lab-white/10">
+        <div className="lg:hidden bg-lab-black/95 backdrop-blur-xl border-b border-lab-white/10">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
               <a
