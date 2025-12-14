@@ -82,12 +82,9 @@ export default function MembersPage() {
       const response = await fetch('/api/members');
       if (!response.ok) throw new Error('Failed to fetch members');
       const data = await response.json();
-      console.log('Fetched members data:', data);
-      console.log('Members array:', data.data);
       setMembers(data.data || []);
     } catch (error) {
       toast.error('Error al cargar los miembros');
-      console.error('Error fetching members:', error);
     } finally {
       setLoading(false);
     }
@@ -173,7 +170,6 @@ export default function MembersPage() {
       fetchMembers();
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Error al guardar el miembro');
-      console.error(error);
     } finally {
       setSubmitting(false);
     }
@@ -196,7 +192,6 @@ export default function MembersPage() {
       fetchMembers();
     } catch (error) {
       toast.error('Error al eliminar el miembro');
-      console.error(error);
     } finally {
       setSubmitting(false);
     }
@@ -208,10 +203,6 @@ export default function MembersPage() {
     const matchesType = filterType === 'all' || member.typeOfMember === filterType;
     return matchesSearch && matchesType;
   });
-
-  console.log('Members state:', members);
-  console.log('Filtered members:', filteredMembers);
-  console.log('Loading:', loading);
 
   const getMemberTypeColor = (type: string) => {
     const colors: Record<string, string> = {

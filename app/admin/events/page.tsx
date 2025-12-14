@@ -97,7 +97,6 @@ export default function EventsPage() {
       setEvents(data.data || []);
     } catch (error) {
       toast.error('Error al cargar los eventos');
-      console.error('Error fetching events:', error);
     } finally {
       setLoading(false);
     }
@@ -205,7 +204,6 @@ export default function EventsPage() {
       toast.error(
         error instanceof Error ? error.message : 'Error al guardar el evento'
       );
-      console.error('Error saving event:', error);
     } finally {
       setSubmitting(false);
     }
@@ -234,7 +232,6 @@ export default function EventsPage() {
       toast.error(
         error instanceof Error ? error.message : 'Error al eliminar el evento'
       );
-      console.error('Error deleting event:', error);
     } finally {
       setSubmitting(false);
     }

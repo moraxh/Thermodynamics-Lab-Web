@@ -45,7 +45,6 @@ export function EducationalProvider({ children }: { children: ReactNode }) {
       setItems(data);
     } catch (error) {
       toast.error('Error loading educational content');
-      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -70,7 +69,6 @@ export function EducationalProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to create educational content');
-      console.error(error);
       return false;
     }
   };
@@ -90,7 +88,6 @@ export function EducationalProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to update educational content');
-      console.error(error);
       return false;
     }
   };
@@ -112,7 +109,6 @@ export function EducationalProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to delete educational content');
-      console.error(error);
       return false;
     }
   };

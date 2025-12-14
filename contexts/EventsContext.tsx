@@ -45,7 +45,6 @@ export function EventsProvider({ children }: { children: ReactNode }) {
       setEvents(data);
     } catch (error) {
       toast.error('Error loading events');
-      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -70,7 +69,6 @@ export function EventsProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to create event');
-      console.error(error);
       return false;
     }
   };
@@ -90,7 +88,6 @@ export function EventsProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to update event');
-      console.error(error);
       return false;
     }
   };
@@ -112,7 +109,6 @@ export function EventsProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to delete event');
-      console.error(error);
       return false;
     }
   };

@@ -40,7 +40,6 @@ export function GalleryProvider({ children }: { children: ReactNode }) {
       setItems(data);
     } catch (error) {
       toast.error('Error loading gallery');
-      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +68,6 @@ export function GalleryProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to create gallery item');
-      console.error(error);
       return false;
     }
   };
@@ -94,7 +92,6 @@ export function GalleryProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to update gallery item');
-      console.error(error);
       return false;
     }
   };
@@ -116,7 +113,6 @@ export function GalleryProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to delete gallery item');
-      console.error(error);
       return false;
     }
   };

@@ -89,7 +89,6 @@ export default function PublicationsPage() {
       setPublications(data.data || []);
     } catch (error) {
       toast.error('Error al cargar las publicaciones');
-      console.error('Error fetching publications:', error);
     } finally {
       setLoading(false);
     }
@@ -176,7 +175,6 @@ export default function PublicationsPage() {
       fetchPublications();
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Error al guardar la publicación');
-      console.error(error);
     } finally {
       setSubmitting(false);
     }
@@ -199,7 +197,6 @@ export default function PublicationsPage() {
       fetchPublications();
     } catch (error) {
       toast.error('Error al eliminar la publicación');
-      console.error(error);
     } finally {
       setSubmitting(false);
     }

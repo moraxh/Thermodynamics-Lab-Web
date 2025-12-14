@@ -41,7 +41,6 @@ export function MembersProvider({ children }: { children: ReactNode }) {
       setMembers(data);
     } catch (error) {
       toast.error('Error loading members');
-      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +70,6 @@ export function MembersProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to create member');
-      console.error(error);
       return false;
     }
   };
@@ -97,7 +95,6 @@ export function MembersProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to update member');
-      console.error(error);
       return false;
     }
   };
@@ -119,7 +116,6 @@ export function MembersProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to delete member');
-      console.error(error);
       return false;
     }
   };

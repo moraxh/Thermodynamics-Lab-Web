@@ -30,7 +30,7 @@ export default function EducationalMaterial() {
           setMaterials(data.data || []);
         }
       } catch (error) {
-        console.error('Error fetching materials:', error);
+        // Error fetching materials
       } finally {
         setLoading(false);
       }

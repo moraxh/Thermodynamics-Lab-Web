@@ -50,7 +50,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.setItem('theme', theme);
     } catch (e) {
-      console.error('Failed to save theme preference:', e);
+      // Failed to save theme preference
     }
 
     const root = document.documentElement;

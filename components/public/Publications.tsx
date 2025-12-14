@@ -47,7 +47,7 @@ export default function Publications () {
           setPublications(data.data || []);
         }
       } catch (error) {
-        console.error('Error fetching publications:', error);
+        // Error fetching publications
       } finally {
         setLoading(false);
       }

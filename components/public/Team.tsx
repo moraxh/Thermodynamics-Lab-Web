@@ -49,7 +49,7 @@ export default function Team() {
       });
       setMembers(sortedMembers);
     } catch (error) {
-      console.error('Error fetching members:', error);
+      // Error fetching members
     } finally {
       setLoading(false);
     }

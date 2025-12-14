@@ -42,7 +42,6 @@ export function VideosProvider({ children }: { children: ReactNode }) {
       setVideos(data);
     } catch (error) {
       toast.error('Error loading videos');
-      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -72,7 +71,6 @@ export function VideosProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to create video');
-      console.error(error);
       return false;
     }
   };
@@ -98,7 +96,6 @@ export function VideosProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to update video');
-      console.error(error);
       return false;
     }
   };
@@ -120,7 +117,6 @@ export function VideosProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to delete video');
-      console.error(error);
       return false;
     }
   };

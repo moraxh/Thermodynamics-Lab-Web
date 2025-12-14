@@ -52,7 +52,6 @@ export function PublicationsProvider({ children }: { children: ReactNode }) {
       setPublications(data);
     } catch (error) {
       toast.error('Error loading publications');
-      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -80,7 +79,6 @@ export function PublicationsProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to create publication');
-      console.error(error);
       return false;
     }
   };
@@ -104,7 +102,6 @@ export function PublicationsProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to update publication');
-      console.error(error);
       return false;
     }
   };
@@ -126,7 +123,6 @@ export function PublicationsProvider({ children }: { children: ReactNode }) {
       return true;
     } catch (error) {
       toast.error('Failed to delete publication');
-      console.error(error);
       return false;
     }
   };

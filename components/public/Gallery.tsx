@@ -50,7 +50,7 @@ export default function Gallery() {
           setImages(data.data || []);
         }
       } catch (error) {
-        console.error('Error fetching gallery images:', error);
+        // Error fetching gallery images
       } finally {
         setLoading(false);
       }

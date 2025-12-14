@@ -33,7 +33,7 @@ export default function Videos() {
           setVideos(data.data || []);
         }
       } catch (error) {
-        console.error('Error fetching videos:', error);
+        // Error fetching videos
       } finally {
         setLoading(false);
       }

@@ -50,7 +50,6 @@ export default function GalleryPage() {
       setImages(data.data || []);
     } catch (error) {
       toast.error('Error al cargar las imágenes');
-      console.error('Error fetching images:', error);
     } finally {
       setLoading(false);
     }
@@ -109,7 +108,6 @@ export default function GalleryPage() {
       fetchImages();
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Error al subir la imagen');
-      console.error(error);
     } finally {
       setSubmitting(false);
     }
@@ -132,7 +130,6 @@ export default function GalleryPage() {
       fetchImages();
     } catch (error) {
       toast.error('Error al eliminar la imagen');
-      console.error(error);
     } finally {
       setSubmitting(false);
     }

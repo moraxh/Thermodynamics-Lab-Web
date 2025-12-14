@@ -95,7 +95,7 @@ export async function handleFileUpload(
   // Usar Supabase Storage si está configurado
   const useSupabase = shouldUseSupabase();
   
-  if (useSupabase) {
+  if (useSupabase && supabaseAdmin) {
     console.log('📤 Subiendo a Supabase Storage...');
     
     // Determinar el bucket según el tipo de archivo

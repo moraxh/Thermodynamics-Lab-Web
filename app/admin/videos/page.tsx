@@ -67,7 +67,6 @@ export default function VideosPage() {
       setVideos(data.data || []);
     } catch (error) {
       toast.error('Error al cargar los videos');
-      console.error('Error fetching videos:', error);
     } finally {
       setLoading(false);
     }
@@ -151,7 +150,6 @@ export default function VideosPage() {
       fetchVideos();
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Error al guardar el video');
-      console.error(error);
     } finally {
       setSubmitting(false);
     }
@@ -174,7 +172,6 @@ export default function VideosPage() {
       fetchVideos();
     } catch (error) {
       toast.error('Error al eliminar el video');
-      console.error(error);
     } finally {
       setSubmitting(false);
     }

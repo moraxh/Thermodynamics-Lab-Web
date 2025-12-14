@@ -61,7 +61,6 @@ export default function EducationalMaterialPage() {
       setMaterials(data.data || []);
     } catch (error) {
       toast.error('Error al cargar el material educativo');
-      console.error('Error fetching materials:', error);
     } finally {
       setLoading(false);
     }
@@ -139,7 +138,6 @@ export default function EducationalMaterialPage() {
       toast.error(
         error instanceof Error ? error.message : 'Error al guardar el material'
       );
-      console.error('Error saving material:', error);
     } finally {
       setSubmitting(false);
     }
@@ -168,7 +166,6 @@ export default function EducationalMaterialPage() {
       toast.error(
         error instanceof Error ? error.message : 'Error al eliminar el material'
       );
-      console.error('Error deleting material:', error);
     } finally {
       setSubmitting(false);
     }

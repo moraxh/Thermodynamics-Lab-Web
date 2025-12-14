@@ -46,7 +46,7 @@ export default function Events() {
           setEvents(data.data || []);
         }
       } catch (error) {
-        console.error('Error fetching events:', error);
+        // Error fetching events
       } finally {
         setLoading(false);
       }

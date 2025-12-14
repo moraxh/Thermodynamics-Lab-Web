@@ -65,7 +65,6 @@ export default function SettingsPage() {
       toast.error(
         error instanceof Error ? error.message : 'Error al actualizar el nombre de usuario'
       );
-      console.error('Error updating username:', error);
     } finally {
       setSubmitting(false);
     }
@@ -121,7 +120,6 @@ export default function SettingsPage() {
       toast.error(
         error instanceof Error ? error.message : 'Error al actualizar la contraseña'
       );
-      console.error('Error updating password:', error);
     } finally {
       setSubmitting(false);
     }
