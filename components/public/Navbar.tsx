@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from "react";
 import ThemeToggle from '@components/common/ThemeToggle';
+import UserMenu from '@components/common/UserMenu';
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -75,6 +76,7 @@ export default function NavBar() {
               ))}
             </div>
             <ThemeToggle />
+            <UserMenu />
           </div>
 
           {/* Mobile menu button */}

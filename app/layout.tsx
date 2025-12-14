@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Lato, Montserrat } from 'next/font/google'
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeProvider";
+import AuthProvider from "@/components/providers/AuthProvider";
 
 export const lato = Lato({
   subsets: ['latin'],
@@ -30,9 +31,11 @@ export default function RootLayout({
       <body
         className={`${lato.variable} ${montserrat.variable} antialiased`}
       >
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

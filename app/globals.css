@@ -62,6 +62,15 @@ html.light body {
   background: var(--color-lab-yellow);
 }
 
+/* Hide scrollbar for navbar */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 .text-glow {
   text-shadow: 0 0 10px rgba(246, 195, 8, 0.5);
 }
@@ -130,21 +139,22 @@ html.light body {
   /* Using lab colors */
   --background: 1 1 1; /* lab-black */
   --foreground: 255 255 255; /* lab-white */
-  --card: 22 26 37; /* lab-gray-100 */
+  --card: 39 45 57; /* lab-gray-200 - más claro para mejor contraste */
   --card-foreground: 255 255 255;
-  --popover: 22 26 37;
+  --popover: 39 45 57; /* lab-gray-200 - más claro */
   --popover-foreground: 255 255 255;
   --primary: 59 130 246; /* lab-blue */
   --primary-foreground: 255 255 255;
   --secondary: 39 45 57; /* lab-gray-200 */
   --secondary-foreground: 255 255 255;
   --muted: 68 75 83; /* lab-gray-300 */
-  --muted-foreground: 123 132 141; /* lab-gray-400 */
+  --muted-foreground: 156 163 175; /* lab-gray-400 */
   --accent: 246 195 8; /* lab-yellow */
   --accent-foreground: 1 1 1;
   --destructive: 239 68 68;
-  --border: 68 75 83 / 30%;
-  --input: 68 75 83 / 50%;
+  --destructive-foreground: 255 255 255;
+  --border: 68 75 83 / 40%;
+  --input: 39 45 57; /* lab-gray-200 - fondo más visible */
   --ring: 59 130 246;
   --chart-1: 59 130 246; /* lab-blue */
   --chart-2: 246 195 8; /* lab-yellow */
@@ -165,21 +175,22 @@ html.light body {
   /* Same as root since we're already dark */
   --background: 1 1 1;
   --foreground: 255 255 255;
-  --card: 22 26 37;
+  --card: 39 45 57;
   --card-foreground: 255 255 255;
-  --popover: 22 26 37;
+  --popover: 39 45 57;
   --popover-foreground: 255 255 255;
   --primary: 59 130 246;
   --primary-foreground: 255 255 255;
   --secondary: 39 45 57;
   --secondary-foreground: 255 255 255;
   --muted: 68 75 83;
-  --muted-foreground: 123 132 141;
+  --muted-foreground: 156 163 175;
   --accent: 246 195 8;
   --accent-foreground: 1 1 1;
   --destructive: 239 68 68;
-  --border: 68 75 83 / 30%;
-  --input: 68 75 83 / 50%;
+  --destructive-foreground: 255 255 255;
+  --border: 68 75 83 / 40%;
+  --input: 39 45 57;
   --ring: 59 130 246;
   --chart-1: 59 130 246;
   --chart-2: 246 195 8;
@@ -196,6 +207,28 @@ html.light body {
   --sidebar-ring: 59 130 246;
 }
 
+.light {
+  --background: 249 250 251;
+  --foreground: 17 24 39;
+  --card: 255 255 255;
+  --card-foreground: 17 24 39;
+  --popover: 255 255 255;
+  --popover-foreground: 17 24 39;
+  --primary: 59 130 246;
+  --primary-foreground: 255 255 255;
+  --secondary: 243 244 246;
+  --secondary-foreground: 17 24 39;
+  --muted: 229 231 235;
+  --muted-foreground: 107 114 128;
+  --accent: 245 158 11;
+  --accent-foreground: 17 24 39;
+  --destructive: 239 68 68;
+  --destructive-foreground: 255 255 255;
+  --border: 229 231 235;
+  --input: 243 244 246;
+  --ring: 59 130 246;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -203,4 +236,69 @@ html.light body {
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Toaster styles - mejor contraste */
+  [data-sonner-toast] {
+    background-color: rgb(var(--card)) !important;
+    border: 1px solid rgb(var(--border)) !important;
+  }
+  
+  [data-sonner-toast][data-type="success"] {
+    background-color: rgb(34 197 94 / 0.15) !important;
+    border-color: rgb(34 197 94 / 0.5) !important;
+  }
+  
+  [data-sonner-toast][data-type="error"] {
+    background-color: rgb(239 68 68 / 0.15) !important;
+    border-color: rgb(239 68 68 / 0.5) !important;
+  }
+  
+  [data-sonner-toast][data-type="warning"] {
+    background-color: rgb(245 158 11 / 0.15) !important;
+    border-color: rgb(245 158 11 / 0.5) !important;
+  }
+  
+  [data-sonner-toast][data-type="info"] {
+    background-color: rgb(59 130 246 / 0.15) !important;
+    border-color: rgb(59 130 246 / 0.5) !important;
+  }
+}
+
+/* View Transitions API */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out, scale-down;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in, scale-up;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes scale-up {
+  from { transform: scale(0.98); }
+  to { transform: scale(1); }
+}
+
+@keyframes scale-down {
+  from { transform: scale(1); }
+  to { transform: scale(0.98); }
 }
