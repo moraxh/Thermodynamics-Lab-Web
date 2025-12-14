@@ -9,7 +9,7 @@ const intlMiddleware = createMiddleware({
   localeDetection: true // Enable automatic locale detection from browser
 });
 
-export default function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   // Skip middleware for API routes, static files, and admin routes
   const { pathname } = request.nextUrl;
   
