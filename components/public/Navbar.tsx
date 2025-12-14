@@ -1,15 +1,17 @@
 "use client"
 
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User, LayoutDashboard, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from "react";
+import { useSession, signOut } from 'next-auth/react';
 import ThemeToggle from '@components/common/ThemeToggle';
 import UserMenu from '@components/common/UserMenu';
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -108,6 +110,60 @@ export default function NavBar() {
                 {link.name}
               </a>
             ))}
+            
+            {/* User Menu Mobile */}
+            <div className="border-t border-lab-white/10 mt-3 pt-3">
+              {status === 'loading' ? (
+                <div className="px-3 py-2">
+                  <div className="w-10 h-10 rounded-full bg-lab-gray-200/50 animate-pulse border border-lab-white/10" />
+                </div>
+              ) : session?.user ? (
+                <>
+                  <div className="px-3 py-2 mb-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-linear-to-br from-lab-blue to-blue-700 flex items-center justify-center text-white text-sm font-bold shadow-lg">
+                        {session.user.name?.charAt(0).toUpperCase() || 'A'}
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-lab-white text-sm font-bold">
+                          {session.user.name}
+                        </p>
+                        <p className="text-lab-gray-400 text-xs">
+                          Administrador
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <Link
+                    href="/admin"
+                    className="flex items-center gap-3 px-3 py-2 text-lab-white hover:text-lab-blue hover:bg-lab-white/5 rounded-md transition-all"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <LayoutDashboard size={18} />
+                    <span className="text-base font-medium">Panel Administrativo</span>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      signOut({ callbackUrl: '/' });
+                      setIsOpen(false);
+                    }}
+                    className="w-full flex items-center gap-3 px-3 py-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-md transition-all mt-1"
+                  >
+                    <LogOut size={18} />
+                    <span className="text-base font-medium">Cerrar Sesión</span>
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  className="flex items-center gap-3 px-3 py-2 text-lab-white hover:text-lab-yellow hover:bg-lab-white/5 rounded-md transition-all"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <User size={18} />
+                  <span className="text-base font-medium">Iniciar Sesión</span>
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       )}

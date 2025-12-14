@@ -4,6 +4,8 @@ import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -46,6 +48,14 @@ export default function LoginPage() {
         className="max-w-md w-full"
       >
         <div className="bg-lab-gray-100/50 backdrop-blur-xl rounded-2xl border border-lab-white/10 p-8 shadow-2xl">
+          <Link 
+            href="/"
+            className="inline-flex items-center gap-2 text-lab-gray-400 hover:text-lab-white transition-colors mb-6 group"
+          >
+            <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+            <span className="text-sm font-medium">Volver al inicio</span>
+          </Link>
+          
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-lab-blue/10 border border-lab-blue/20 mb-4">
               <svg className="w-8 h-8 text-lab-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
