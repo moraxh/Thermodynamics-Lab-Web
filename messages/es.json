@@ -1,0 +1,244 @@
+{
+  "Hero": {
+    "badge": "Laboratorio de Vanguardia",
+    "title": "EL FUTURO DE LA",
+    "titleHighlight": "ENERGÍA",
+    "typewriterText": "Innovación en Termodinámica y Sistemas Complejos",
+    "cta1": "Explorar Investigación",
+    "cta2": "Nuestra Tecnología",
+    "scrollIndicator": "Scroll"
+  },
+  "Research": {
+    "title": "Áreas de",
+    "titleHighlight": "Investigación",
+    "subtitle": "Explorando los límites de la física y la computación para resolver los desafíos energéticos del mañana.",
+    "areas": {
+      "equilibrium": {
+        "title": "Termodinamica de Equilibrio y no Equilibrio",
+        "description": "Análisis de sistemas en equilibrio térmico y procesos irreversibles, estudiando la generación de entropía y fluctuaciones en escalas micro y nanométricas."
+      },
+      "patterns": {
+        "title": "Reconocimiento de Patrones",
+        "description": "Aplicación de algoritmos de machine learning y redes neuronales para identificar patrones térmicos complejos y predecir comportamientos energéticos."
+      },
+      "renewable": {
+        "title": "Energías Renovables",
+        "description": "Investigación en tecnologías de energía limpia, optimización de sistemas solares, eólicos y desarrollo de materiales para almacenamiento energético eficiente."
+      },
+      "heat": {
+        "title": "Transferencia de Calor",
+        "description": "Estudio de mecanismos de conducción, convección y radiación térmica en sistemas complejos, con aplicaciones en refrigeración avanzada e intercambiadores."
+      }
+    }
+  },
+  "Team": {
+    "title": "Nuestro",
+    "titleHighlight": "Equipo",
+    "subtitle": "Mentes brillantes unidas por la pasión de descubrir lo desconocido.",
+    "emptyTitle": "¡Aquí no hay nadie!",
+    "emptySubtitle": "Parece que el equipo está en una dimensión paralela investigando.",
+    "emptyDetail": "O quizás están tomando café... ☕",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "Publications": {
+    "title": "Publicaciones",
+    "titleHighlight": "Científicas",
+    "filterAll": "Todas",
+    "types": {
+      "article": "Artículo",
+      "book": "Libro",
+      "thesis": "Tesis",
+      "technical_report": "Reporte Técnico",
+      "monograph": "Monografía",
+      "other": "Otro"
+    },
+    "emptyTitle": "¡Nada por aquí todavía!",
+    "emptySubtitle": "Parece que las publicaciones están en proceso de revisión por pares.",
+    "emptyDetail": "O tal vez están en otra dimensión temporal... ⏰📚",
+    "authors": "Autores:",
+    "download": "Descargar PDF",
+    "viewLink": "Ver Enlace",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "Videos": {
+    "title": "Videos",
+    "titleHighlight": "Educativos",
+    "emptyTitle": "¡El canal está en modo buffer!",
+    "emptySubtitle": "Los videos están cargando... o tal vez están en otro laboratorio.",
+    "emptyDetail": "¡Vuelve pronto para ver contenido increíble! 🎥✨",
+    "watchVideo": "Ver Video",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "EducationalMaterial": {
+    "title": "Material",
+    "titleHighlight": "Educativo",
+    "emptyTitle": "¡La biblioteca está vacía!",
+    "emptySubtitle": "Los libros de texto están tomando un descanso termodinámico.",
+    "emptyDetail": "¡Pronto habrá contenido para expandir tu conocimiento! 🔬📖",
+    "download": "Descargar",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "Events": {
+    "title": "Próximos",
+    "titleHighlight": "Eventos",
+    "emptyTitle": "¡Nada en el calendario!",
+    "emptySubtitle": "Los eventos están en una superposición cuántica... o simplemente en planificación.",
+    "emptyDetail": "¡Vuelve pronto para descubrir qué hay! 🎪✨",
+    "upcoming": "Próximo",
+    "types": {
+      "conference": "Conferencia",
+      "workshop": "Taller",
+      "seminar": "Seminario",
+      "lecture": "Clase Magistral",
+      "symposium": "Simposio",
+      "meeting": "Reunión",
+      "other": "Otro"
+    },
+    "viewLink": "Ver Enlace",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "Gallery": {
+    "emptyTitle": "¡La galería está en el vacío cuántico!",
+    "emptySubtitle": "Parece que las imágenes decidieron entrar en un estado de superposición.",
+    "emptyDetail": "Schödinger aprobaría esto... 🐱📦",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "openLightbox": "Ver imagen completa"
+  },
+  "Contact": {
+    "title": "Contacto",
+    "subtitle": "Inicie una colaboración o solicite información sobre nuestros proyectos.",
+    "addressTitle": "Laboratorio Central",
+    "emailTitle": "Email",
+    "phoneTitle": "Teléfono"
+  },
+  "Footer": {
+    "description": "Avanzando en la frontera de la termodinámica, la inteligencia artificial y la sostenibilidad energética.",
+    "rights": "Todos los derechos reservados",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Uso",
+    "accessibility": "Accesibilidad",
+    "developedBy": "Desarrollado con 💙 por"
+  },
+  "Navbar": {
+    "home": "Inicio",
+    "research": "Investigación",
+    "team": "Equipo",
+    "publications": "Publicaciones",
+    "contact": "Contacto",
+    "login": "Iniciar Sesión"
+  },
+  "Login": {
+    "backHome": "Volver al inicio",
+    "title": "Panel Administrativo",
+    "subtitle": "Ingresa tus credenciales de acceso",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "usernamePlaceholder": "Ingresa tu usuario",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "submit": "Iniciar Sesión",
+    "loading": "Iniciando sesión...",
+    "errorInvalid": "Credenciales inválidas",
+    "errorGeneric": "Error al iniciar sesión"
+  },
+  "UserMenu": {
+    "administrator": "Administrador",
+    "adminPanel": "Panel Administrativo",
+    "logout": "Cerrar Sesión",
+    "adminFooter": "Panel Administrativo LISTER",
+    "adminAccess": "Acceso administrativo"
+  },
+  "AdminUserMenu": {
+    "administrator": "Administrador",
+    "viewWebsite": "Ver Sitio Web",
+    "dashboard": "Dashboard",
+    "logout": "Cerrar Sesión",
+    "adminFooter": "Panel Administrativo LISTER"
+  },
+  "AdminLayout": {
+    "title": "Admin Panel",
+    "subtitle": "Content Management System"
+  },
+  "AdminNavbar": {
+    "dashboard": "Dashboard",
+    "members": "Members",
+    "gallery": "Gallery",
+    "publications": "Publications",
+    "videos": "Videos",
+    "educational": "Educational",
+    "events": "Events",
+    "settings": "Settings"
+  },
+  "Accessibility": {
+    "backHome": "Volver al inicio",
+    "title": "Declaración de",
+    "titleHighlight": "Accesibilidad",
+    "commitment": "Nuestro Compromiso",
+    "commitmentText": "se compromete a garantizar la accesibilidad digital para personas con discapacidades. Estamos continuamente mejorando la experiencia del usuario para todos y aplicando los estándares de accesibilidad relevantes.",
+    "standards": "Estándares de Conformidad",
+    "standardsText": "Nos esforzamos por cumplir con las Pautas de Accesibilidad para el Contenido Web (WCAG) 2.1 nivel AA. Estas pautas explican cómo hacer el contenido web más accesible para personas con una amplia gama de discapacidades.",
+    "measures": "Medidas Implementadas",
+    "measure1": "Navegación por teclado completa",
+    "measure2": "Texto alternativo para imágenes",
+    "measure3": "Contraste de color adecuado",
+    "measure4": "Etiquetas ARIA para elementos interactivos",
+    "measure5": "Estructura semántica HTML5",
+    "measure6": "Tamaños de texto escalables",
+    "measure7": "Focus states visibles para navegación",
+    "technologies": "Tecnologías Compatibles",
+    "technologiesText": "Nuestro sitio web está diseñado para ser compatible con las siguientes tecnologías de asistencia:",
+    "tech1": "Lectores de pantalla (NVDA, JAWS, VoiceOver)",
+    "tech2": "Navegación por teclado",
+    "tech3": "Software de reconocimiento de voz",
+    "tech4": "Magnificadores de pantalla",
+    "limitations": "Limitaciones Conocidas",
+    "limitationsText": "A pesar de nuestros mejores esfuerzos, algunas áreas del sitio pueden no ser completamente accesibles. Estamos trabajando activamente para identificar y corregir estos problemas.",
+    "feedback": "Comentarios y Contacto",
+    "feedbackText": "Valoramos sus comentarios sobre la accesibilidad de nuestro sitio. Si encuentra alguna barrera de accesibilidad, por favor contáctenos:",
+    "email": "Email:",
+    "phone": "Teléfono:",
+    "responseTime": "Nos esforzamos por responder a los comentarios en un plazo de 5 días hábiles.",
+    "evaluation": "Evaluación y Pruebas",
+    "evaluationText": "Realizamos pruebas regulares de accesibilidad utilizando herramientas automatizadas y evaluaciones manuales para asegurar el cumplimiento continuo.",
+    "lastUpdate": "Última actualización: Diciembre 2025"
+  },
+  "Privacy": {
+    "backHome": "Volver al inicio",
+    "title": "Política de",
+    "titleHighlight": "Privacidad",
+    "section1": "1. Información que Recopilamos",
+    "section1Text": "nos comprometemos a proteger su privacidad. Esta política describe cómo recopilamos, usamos y protegemos su información personal cuando visita nuestro sitio web.",
+    "section2": "2. Uso de la Información",
+    "section2Text": "La información que recopilamos se utiliza para mejorar nuestros servicios de investigación, responder a consultas y mantenerlo informado sobre nuestros proyectos y publicaciones científicas.",
+    "section3": "3. Protección de Datos",
+    "section3Text": "Implementamos medidas de seguridad apropiadas para proteger su información personal contra acceso no autorizado, alteración, divulgación o destrucción.",
+    "section4": "4. Cookies",
+    "section4Text": "Nuestro sitio web puede utilizar cookies para mejorar la experiencia del usuario. Puede configurar su navegador para rechazar cookies, aunque esto puede afectar algunas funcionalidades.",
+    "section5": "5. Contacto",
+    "section5Text": "Si tiene preguntas sobre esta política de privacidad, puede contactarnos en",
+    "lastUpdate": "Última actualización: Diciembre 2025"
+  },
+  "Terms": {
+    "backHome": "Volver al inicio",
+    "title": "Términos de",
+    "titleHighlight": "Uso",
+    "section1": "1. Aceptación de Términos",
+    "section1Text": "Al acceder y utilizar este sitio web, usted acepta estar sujeto a estos términos de uso y todas las leyes y regulaciones aplicables. Si no está de acuerdo con alguno de estos términos, no utilice este sitio.",
+    "section2": "2. Uso del Sitio",
+    "section2Text": "Este sitio web es proporcionado por con fines informativos y educativos. El contenido está destinado a la divulgación científica y colaboración académica.",
+    "section3": "3. Propiedad Intelectual",
+    "section3Text": "Todo el contenido de este sitio, incluyendo texto, gráficos, logos, imágenes y software, es propiedad de o sus colaboradores y está protegido por las leyes de propiedad intelectual.",
+    "section4": "4. Publicaciones Científicas",
+    "section4Text": "Las publicaciones científicas presentadas en este sitio están sujetas a sus propios derechos de autor y licencias. El uso de material científico debe respetar las normas académicas de citación.",
+    "section5": "5. Limitación de Responsabilidad",
+    "section5Text": "no será responsable por ningún daño directo, indirecto, incidental o consecuente que resulte del uso o la imposibilidad de usar este sitio web.",
+    "section6": "6. Modificaciones",
+    "section6Text": "Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios entrarán en vigor inmediatamente después de su publicación en el sitio.",
+    "lastUpdate": "Última actualización: Diciembre 2025"
+  }
+}

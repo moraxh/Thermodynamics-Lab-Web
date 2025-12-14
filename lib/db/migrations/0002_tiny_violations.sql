@@ -1,0 +1,1 @@
+ALTER TABLE "publications" DROP COLUMN "thumbnail_path";

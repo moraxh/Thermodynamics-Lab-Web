@@ -1,16 +1,11 @@
-import type { Config } from "drizzle-kit";
-import 'dotenv/config'
+import { defineConfig } from 'drizzle-kit';
+import { env } from './lib/env';
 
-if (!process.env.CONNECTION_STRING) {
-  throw new Error("CONNECTION_STRING is not defined in .env file")
-}
-
-export default {
-  schema: "./db/tables.ts",
-  out: "./drizzle",
-  dialect: "postgresql",
-  driver: "pglite",
+export default defineConfig({
+  schema: './lib/db/schema.ts',
+  out: './lib/db/migrations',
+  dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.CONNECTION_STRING,
+    url: env.DATABASE_URL,
   },
-} satisfies Config;
+});

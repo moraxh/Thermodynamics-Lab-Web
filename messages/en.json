@@ -1,0 +1,244 @@
+{
+  "Hero": {
+    "badge": "Cutting-Edge Laboratory",
+    "title": "THE FUTURE OF",
+    "titleHighlight": "ENERGY",
+    "typewriterText": "Innovation in Thermodynamics and Complex Systems",
+    "cta1": "Explore Research",
+    "cta2": "Our Technology",
+    "scrollIndicator": "Scroll"
+  },
+  "Research": {
+    "title": "Areas of",
+    "titleHighlight": "Research",
+    "subtitle": "Exploring the boundaries of physics and computation to solve tomorrow's energy challenges.",
+    "areas": {
+      "equilibrium": {
+        "title": "Equilibrium and Non-Equilibrium Thermodynamics",
+        "description": "Analysis of systems in thermal equilibrium and irreversible processes, studying entropy generation and fluctuations at micro and nanometric scales."
+      },
+      "patterns": {
+        "title": "Pattern Recognition",
+        "description": "Application of machine learning algorithms and neural networks to identify complex thermal patterns and predict energy behaviors."
+      },
+      "renewable": {
+        "title": "Renewable Energies",
+        "description": "Research in clean energy technologies, optimization of solar and wind systems, and development of materials for efficient energy storage."
+      },
+      "heat": {
+        "title": "Heat Transfer",
+        "description": "Study of conduction, convection, and thermal radiation mechanisms in complex systems, with applications in advanced refrigeration and heat exchangers."
+      }
+    }
+  },
+  "Team": {
+    "title": "Our",
+    "titleHighlight": "Team",
+    "subtitle": "Brilliant minds united by the passion to discover the unknown.",
+    "emptyTitle": "Nobody here!",
+    "emptySubtitle": "Seems like the team is in a parallel dimension researching.",
+    "emptyDetail": "Or maybe they're having coffee... ☕",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "Publications": {
+    "title": "Publications",
+    "titleHighlight": "Scientific",
+    "filterAll": "All",
+    "types": {
+      "article": "Article",
+      "book": "Book",
+      "thesis": "Thesis",
+      "technical_report": "Technical Report",
+      "monograph": "Monograph",
+      "other": "Other"
+    },
+    "emptyTitle": "Nothing here yet!",
+    "emptySubtitle": "Seems like publications are under peer review.",
+    "emptyDetail": "Or maybe they're in another temporal dimension... ⏰📚",
+    "authors": "Authors:",
+    "download": "Download PDF",
+    "viewLink": "View Link",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "Videos": {
+    "title": "Videos",
+    "titleHighlight": "Educational",
+    "emptyTitle": "The channel is in buffer mode!",
+    "emptySubtitle": "Videos are loading... or maybe they're in another lab.",
+    "emptyDetail": "Come back soon for amazing content! 🎥✨",
+    "watchVideo": "Watch Video",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "EducationalMaterial": {
+    "title": "Material",
+    "titleHighlight": "Educational",
+    "emptyTitle": "The library is empty!",
+    "emptySubtitle": "The textbooks are taking a thermodynamic break.",
+    "emptyDetail": "Soon there will be content to expand your knowledge! 🔬📖",
+    "download": "Download",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "Events": {
+    "title": "Upcoming",
+    "titleHighlight": "Events",
+    "emptyTitle": "Nothing on the calendar!",
+    "emptySubtitle": "Events are in quantum superposition... or simply in planning.",
+    "emptyDetail": "Come back soon to discover what's coming! 🎪✨",
+    "upcoming": "Upcoming",
+    "types": {
+      "conference": "Conference",
+      "workshop": "Workshop",
+      "seminar": "Seminar",
+      "lecture": "Lecture",
+      "symposium": "Symposium",
+      "meeting": "Meeting",
+      "other": "Other"
+    },
+    "viewLink": "View Link",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "Gallery": {
+    "emptyTitle": "The gallery is in a quantum vacuum!",
+    "emptySubtitle": "Seems like the images decided to enter a state of superposition.",
+    "emptyDetail": "Schrödinger would approve this... 🐱📦",
+    "previous": "Previous",
+    "next": "Next",
+    "openLightbox": "View full image"
+  },
+  "Contact": {
+    "title": "Contact",
+    "subtitle": "Start a collaboration or request information about our projects.",
+    "addressTitle": "Main Laboratory",
+    "emailTitle": "Email",
+    "phoneTitle": "Phone"
+  },
+  "Footer": {
+    "description": "Advancing the frontier of thermodynamics, artificial intelligence, and energy sustainability.",
+    "rights": "All rights reserved",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "accessibility": "Accessibility",
+    "developedBy": "Developed with 💙 by"
+  },
+  "Navbar": {
+    "home": "Home",
+    "research": "Research",
+    "team": "Team",
+    "publications": "Publications",
+    "contact": "Contact",
+    "login": "Log In"
+  },
+  "Login": {
+    "backHome": "Back to home",
+    "title": "Admin Panel",
+    "subtitle": "Enter your access credentials",
+    "username": "Username",
+    "password": "Password",
+    "usernamePlaceholder": "Enter your username",
+    "passwordPlaceholder": "Enter your password",
+    "submit": "Sign In",
+    "loading": "Signing in...",
+    "errorInvalid": "Invalid credentials",
+    "errorGeneric": "Login error"
+  },
+  "UserMenu": {
+    "administrator": "Administrator",
+    "adminPanel": "Admin Panel",
+    "logout": "Sign Out",
+    "adminFooter": "LISTER Admin Panel",
+    "adminAccess": "Administrative access"
+  },
+  "AdminUserMenu": {
+    "administrator": "Administrator",
+    "viewWebsite": "View Website",
+    "dashboard": "Dashboard",
+    "logout": "Sign Out",
+    "adminFooter": "LISTER Admin Panel"
+  },
+  "AdminLayout": {
+    "title": "Admin Panel",
+    "subtitle": "Content Management System"
+  },
+  "AdminNavbar": {
+    "dashboard": "Dashboard",
+    "members": "Members",
+    "gallery": "Gallery",
+    "publications": "Publications",
+    "videos": "Videos",
+    "educational": "Educational",
+    "events": "Events",
+    "settings": "Settings"
+  },
+  "Accessibility": {
+    "backHome": "Back to home",
+    "title": "Accessibility",
+    "titleHighlight": "Statement",
+    "commitment": "Our Commitment",
+    "commitmentText": "is committed to ensuring digital accessibility for people with disabilities. We are continually improving the user experience for everyone and applying relevant accessibility standards.",
+    "standards": "Conformance Standards",
+    "standardsText": "We strive to comply with the Web Content Accessibility Guidelines (WCAG) 2.1 level AA. These guidelines explain how to make web content more accessible to people with a wide range of disabilities.",
+    "measures": "Implemented Measures",
+    "measure1": "Full keyboard navigation",
+    "measure2": "Alternative text for images",
+    "measure3": "Adequate color contrast",
+    "measure4": "ARIA labels for interactive elements",
+    "measure5": "Semantic HTML5 structure",
+    "measure6": "Scalable text sizes",
+    "measure7": "Visible focus states for navigation",
+    "technologies": "Compatible Technologies",
+    "technologiesText": "Our website is designed to be compatible with the following assistive technologies:",
+    "tech1": "Screen readers (NVDA, JAWS, VoiceOver)",
+    "tech2": "Keyboard navigation",
+    "tech3": "Voice recognition software",
+    "tech4": "Screen magnifiers",
+    "limitations": "Known Limitations",
+    "limitationsText": "Despite our best efforts, some areas of the site may not be fully accessible. We are actively working to identify and fix these issues.",
+    "feedback": "Feedback and Contact",
+    "feedbackText": "We value your feedback on the accessibility of our site. If you encounter any accessibility barriers, please contact us:",
+    "email": "Email:",
+    "phone": "Phone:",
+    "responseTime": "We strive to respond to feedback within 5 business days.",
+    "evaluation": "Evaluation and Testing",
+    "evaluationText": "We conduct regular accessibility testing using automated tools and manual evaluations to ensure ongoing compliance.",
+    "lastUpdate": "Last updated: December 2025"
+  },
+  "Privacy": {
+    "backHome": "Back to home",
+    "title": "Privacy",
+    "titleHighlight": "Policy",
+    "section1": "1. Information We Collect",
+    "section1Text": "is committed to protecting your privacy. This policy describes how we collect, use, and protect your personal information when you visit our website.",
+    "section2": "2. Use of Information",
+    "section2Text": "The information we collect is used to improve our research services, respond to inquiries, and keep you informed about our projects and scientific publications.",
+    "section3": "3. Data Protection",
+    "section3Text": "We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.",
+    "section4": "4. Cookies",
+    "section4Text": "Our website may use cookies to improve user experience. You can configure your browser to reject cookies, although this may affect some functionalities.",
+    "section5": "5. Contact",
+    "section5Text": "If you have questions about this privacy policy, you can contact us at",
+    "lastUpdate": "Last updated: December 2025"
+  },
+  "Terms": {
+    "backHome": "Back to home",
+    "title": "Terms of",
+    "titleHighlight": "Use",
+    "section1": "1. Acceptance of Terms",
+    "section1Text": "By accessing and using this website, you agree to be bound by these terms of use and all applicable laws and regulations. If you do not agree with any of these terms, do not use this site.",
+    "section2": "2. Site Use",
+    "section2Text": "This website is provided by for informational and educational purposes. The content is intended for scientific dissemination and academic collaboration.",
+    "section3": "3. Intellectual Property",
+    "section3Text": "All content on this site, including text, graphics, logos, images, and software, is the property of or its collaborators and is protected by intellectual property laws.",
+    "section4": "4. Scientific Publications",
+    "section4Text": "Scientific publications presented on this site are subject to their own copyrights and licenses. The use of scientific material must respect academic citation standards.",
+    "section5": "5. Limitation of Liability",
+    "section5Text": "will not be liable for any direct, indirect, incidental, or consequential damages resulting from the use or inability to use this website.",
+    "section6": "6. Modifications",
+    "section6Text": "We reserve the right to modify these terms at any time. Changes will take effect immediately after their publication on the site.",
+    "lastUpdate": "Last updated: December 2025"
+  }
+}

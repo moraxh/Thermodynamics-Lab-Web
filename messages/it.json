@@ -1,0 +1,203 @@
+{
+  "Hero": {
+    "badge": "Laboratorio d'Avanguardia",
+    "title": "IL FUTURO DELL'",
+    "titleHighlight": "ENERGIA",
+    "typewriterText": "Innovazione in Termodinamica e Sistemi Complessi",
+    "cta1": "Esplora la Ricerca",
+    "cta2": "La Nostra Tecnologia",
+    "scrollIndicator": "Scorri"
+  },
+  "Research": {
+    "title": "Aree di",
+    "titleHighlight": "Ricerca",
+    "subtitle": "Esplorare i confini della fisica e dell'informatica per risolvere le sfide energetiche di domani.",
+    "areas": {
+      "equilibrium": {
+        "title": "Termodinamica di Equilibrio e Non-Equilibrio",
+        "description": "Analisi dei sistemi in equilibrio termico e dei processi irreversibili, studiando la generazione di entropia e le fluttuazioni su scale micro e nanometriche."
+      },
+      "patterns": {
+        "title": "Riconoscimento di Pattern",
+        "description": "Applicazione di algoritmi di apprendimento automatico e reti neurali per identificare pattern termici complessi e prevedere comportamenti energetici."
+      },
+      "renewable": {
+        "title": "Energie Rinnovabili",
+        "description": "Ricerca su tecnologie di energia pulita, ottimizzazione di sistemi solari ed eolici, e sviluppo di materiali per uno stoccaggio energetico efficiente."
+      },
+      "heat": {
+        "title": "Trasferimento di Calore",
+        "description": "Studio dei meccanismi di conduzione, convezione e radiazione termica in sistemi complessi, con applicazioni nella refrigerazione avanzata e scambiatori di calore."
+      }
+    }
+  },
+  "Team": {
+    "title": "Il Nostro",
+    "titleHighlight": "Team",
+    "subtitle": "Menti brillanti unite dalla passione di scoprire l'ignoto.",
+    "emptyTitle": "Nessuno qui!",
+    "emptySubtitle": "Sembra che il team sia in una dimensione parallela a fare ricerca.",
+    "emptyDetail": "O forse stanno prendendo un caffè... ☕",
+    "previous": "Precedente",
+    "next": "Successivo"
+  },
+  "Publications": {
+    "title": "Pubblicazioni",
+    "titleHighlight": "Scientifiche",
+    "filterAll": "Tutti",
+    "types": {
+      "article": "Articolo",
+      "book": "Libro",
+      "thesis": "Tesi",
+      "technical_report": "Rapporto Tecnico",
+      "monograph": "Monografia",
+      "other": "Altro"
+    },
+    "emptyTitle": "Ancora niente qui!",
+    "emptySubtitle": "Sembra che le pubblicazioni siano in revisione tra pari.",
+    "emptyDetail": "O forse sono in un'altra dimensione temporale... ⏰📚",
+    "authors": "Autori:",
+    "download": "Scarica PDF",
+    "viewLink": "Vedi Link",
+    "previous": "Precedente",
+    "next": "Successivo"
+  },
+  "Videos": {
+    "title": "Video",
+    "titleHighlight": "Educativi",
+    "emptyTitle": "Il canale è in modalità buffer!",
+    "emptySubtitle": "I video stanno caricando... o forse sono in un altro laboratorio.",
+    "emptyDetail": "Torna presto per contenuti incredibili! 🎥✨",
+    "watchVideo": "Guarda Video",
+    "previous": "Precedente",
+    "next": "Successivo"
+  },
+  "EducationalMaterial": {
+    "title": "Materiale",
+    "titleHighlight": "Educativo",
+    "emptyTitle": "La biblioteca è vuota!",
+    "emptySubtitle": "I libri di testo stanno facendo una pausa termodinamica.",
+    "emptyDetail": "Presto ci sarà contenuto per ampliare le tue conoscenze! 🔬📖",
+    "download": "Scarica",
+    "previous": "Precedente",
+    "next": "Successivo"
+  },
+  "Events": {
+    "title": "Eventi",
+    "titleHighlight": "Imminenti",
+    "emptyTitle": "Niente nel calendario!",
+    "emptySubtitle": "Gli eventi sono in sovrapposizione quantistica... o semplicemente in pianificazione.",
+    "emptyDetail": "Torna presto per scoprire cosa sta arrivando! 🎪✨",
+    "upcoming": "Imminenti",
+    "types": {
+      "conference": "Conferenza",
+      "workshop": "Workshop",
+      "seminar": "Seminario",
+      "lecture": "Lezione",
+      "symposium": "Simposio",
+      "meeting": "Riunione",
+      "other": "Altro"
+    },
+    "viewLink": "Vedi Link",
+    "previous": "Precedente",
+    "next": "Successivo"
+  },
+  "Gallery": {
+    "emptyTitle": "La galleria è in un vuoto quantico!",
+    "emptySubtitle": "Sembra che le immagini abbiano deciso di entrare in uno stato di sovrapposizione.",
+    "emptyDetail": "Schrödinger approverebbe... 🐱📦",
+    "previous": "Precedente",
+    "next": "Successivo",
+    "openLightbox": "Vedi immagine completa"
+  },
+  "Contact": {
+    "title": "Contatto",
+    "subtitle": "Inizia una collaborazione o richiedi informazioni sui nostri progetti.",
+    "addressTitle": "Laboratorio Principale",
+    "emailTitle": "E-mail",
+    "phoneTitle": "Telefono"
+  },
+  "Footer": {
+    "description": "Avanzando nella frontiera della termodinamica, intelligenza artificiale e sostenibilità energetica.",
+    "rights": "Tutti i diritti riservati",
+    "privacy": "Informativa sulla Privacy",
+    "terms": "Termini di Utilizzo",
+    "accessibility": "Accessibilità",
+    "developedBy": "Sviluppato con 💙 da"
+  },
+  "Navbar": {
+    "home": "Home",
+    "research": "Ricerca",
+    "team": "Team",
+    "publications": "Pubblicazioni",
+    "contact": "Contatto",
+    "login": "Accedi"
+  },
+  "Accessibility": {
+    "backHome": "Torna alla home",
+    "title": "Dichiarazione di",
+    "titleHighlight": "Accessibilità",
+    "commitment": "Il Nostro Impegno",
+    "commitmentText": "si impegna a garantire l'accessibilità digitale per le persone con disabilità. Stiamo continuamente migliorando l'esperienza utente per tutti e applicando gli standard di accessibilità pertinenti.",
+    "standards": "Standard di Conformità",
+    "standardsText": "Ci sforziamo di rispettare le Web Content Accessibility Guidelines (WCAG) 2.1 livello AA. Queste linee guida spiegano come rendere i contenuti web più accessibili alle persone con una vasta gamma di disabilità.",
+    "measures": "Misure Implementate",
+    "measure1": "Navigazione completa da tastiera",
+    "measure2": "Testo alternativo per le immagini",
+    "measure3": "Contrasto cromatico adeguato",
+    "measure4": "Etichette ARIA per elementi interattivi",
+    "measure5": "Struttura semantica HTML5",
+    "measure6": "Dimensioni del testo scalabili",
+    "measure7": "Stati di focus visibili per la navigazione",
+    "technologies": "Tecnologie Compatibili",
+    "technologiesText": "Il nostro sito è progettato per essere compatibile con le seguenti tecnologie assistive:",
+    "tech1": "Lettori di schermo (NVDA, JAWS, VoiceOver)",
+    "tech2": "Navigazione da tastiera",
+    "tech3": "Software di riconoscimento vocale",
+    "tech4": "Ingranditori di schermo",
+    "limitations": "Limitazioni Note",
+    "limitationsText": "Nonostante i nostri migliori sforzi, alcune aree del sito potrebbero non essere completamente accessibili. Stiamo lavorando attivamente per identificare e correggere questi problemi.",
+    "feedback": "Feedback e Contatto",
+    "feedbackText": "Apprezziamo il vostro feedback sull'accessibilità del nostro sito. Se incontrate barriere all'accessibilità, vi preghiamo di contattarci:",
+    "email": "E-mail:",
+    "phone": "Telefono:",
+    "responseTime": "Ci sforziamo di rispondere ai feedback entro 5 giorni lavorativi.",
+    "evaluation": "Valutazione e Test",
+    "evaluationText": "Eseguiamo test di accessibilità regolari utilizzando strumenti automatizzati e valutazioni manuali per garantire la conformità continua.",
+    "lastUpdate": "Ultimo aggiornamento: Dicembre 2025"
+  },
+  "Privacy": {
+    "backHome": "Torna alla home",
+    "title": "Informativa sulla",
+    "titleHighlight": "Privacy",
+    "section1": "1. Informazioni che Raccogliamo",
+    "section1Text": "si impegna a proteggere la vostra privacy. Questa politica descrive come raccogliamo, utilizziamo e proteggiamo le vostre informazioni personali quando visitate il nostro sito web.",
+    "section2": "2. Utilizzo delle Informazioni",
+    "section2Text": "Le informazioni che raccogliamo sono utilizzate per migliorare i nostri servizi di ricerca, rispondere alle richieste e tenervi informati sui nostri progetti e pubblicazioni scientifiche.",
+    "section3": "3. Protezione dei Dati",
+    "section3Text": "Implementiamo misure di sicurezza appropriate per proteggere le vostre informazioni personali da accessi non autorizzati, alterazioni, divulgazione o distruzione.",
+    "section4": "4. Cookie",
+    "section4Text": "Il nostro sito web può utilizzare cookie per migliorare l'esperienza utente. Potete configurare il vostro browser per rifiutare i cookie, anche se questo potrebbe influenzare alcune funzionalità.",
+    "section5": "5. Contatto",
+    "section5Text": "Se avete domande su questa informativa sulla privacy, potete contattarci all'indirizzo",
+    "lastUpdate": "Ultimo aggiornamento: Dicembre 2025"
+  },
+  "Terms": {
+    "backHome": "Torna alla home",
+    "title": "Termini di",
+    "titleHighlight": "Utilizzo",
+    "section1": "1. Accettazione dei Termini",
+    "section1Text": "Accedendo e utilizzando questo sito web, accettate di essere vincolati da questi termini di utilizzo e da tutte le leggi e regolamenti applicabili. Se non accettate uno di questi termini, non utilizzate questo sito.",
+    "section2": "2. Utilizzo del Sito",
+    "section2Text": "Questo sito web è fornito da per scopi informativi ed educativi. Il contenuto è destinato alla divulgazione scientifica e alla collaborazione accademica.",
+    "section3": "3. Proprietà Intellettuale",
+    "section3Text": "Tutto il contenuto di questo sito, inclusi testo, grafici, loghi, immagini e software, è di proprietà di o dei suoi collaboratori ed è protetto dalle leggi sulla proprietà intellettuale.",
+    "section4": "4. Pubblicazioni Scientifiche",
+    "section4Text": "Le pubblicazioni scientifiche presentate su questo sito sono soggette ai propri diritti d'autore e licenze. L'uso di materiale scientifico deve rispettare gli standard accademici di citazione.",
+    "section5": "5. Limitazione di Responsabilità",
+    "section5Text": "non sarà responsabile per eventuali danni diretti, indiretti, incidentali o consequenziali derivanti dall'uso o dall'impossibilità di utilizzare questo sito web.",
+    "section6": "6. Modifiche",
+    "section6Text": "Ci riserviamo il diritto di modificare questi termini in qualsiasi momento. Le modifiche entreranno in vigore immediatamente dopo la loro pubblicazione sul sito.",
+    "lastUpdate": "Ultimo aggiornamento: Dicembre 2025"
+  }
+}
