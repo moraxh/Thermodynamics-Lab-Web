@@ -12,6 +12,7 @@ import {
   GraduationCap,
   Calendar,
   Home,
+  Settings,
 } from 'lucide-react';
 import ThemeToggle from '@/components/common/ThemeToggle';
 
@@ -23,6 +24,7 @@ const navItems = [
   { href: '/admin/videos', label: 'Videos', icon: Video },
   { href: '/admin/educational-material', label: 'Educational', icon: GraduationCap },
   { href: '/admin/events', label: 'Events', icon: Calendar },
+  { href: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
 export default function AdminNavbar() {
@@ -38,8 +40,7 @@ export default function AdminNavbar() {
       <div className="container mx-auto px-4">
         <div className="flex items-center gap-4 overflow-x-auto scrollbar-hide">
           {/* Logo */}
-          <Link 
-            href="/admin" 
+            <Link href="/" 
             className="shrink-0 flex items-center gap-2 group py-3"
           >
             <Image 

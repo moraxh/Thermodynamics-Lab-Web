@@ -2,6 +2,7 @@
 
 import Contact from "@components/public/Contact";
 import EducationalMaterial from "@components/public/EducationalMaterial";
+import Events from "@components/public/Events";
 import Footer from "@components/public/Footer";
 import Gallery from "@components/public/Gallery";
 import Hero from "@components/public/Hero";
@@ -22,6 +23,7 @@ export default function Home() {
         <Publications />
         <Videos />
         <EducationalMaterial />
+        <Events />
         <Gallery />
         <Contact />
       </main>

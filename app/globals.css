@@ -79,6 +79,26 @@ html.light body {
   box-shadow: 0 0 20px rgba(46, 49, 146, 0.3);
 }
 
+/* Fix autofill background colors */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: #ffffff;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px rgba(39, 45, 57, 0.5);
+}
+
+/* Light theme autofill */
+html.light input:-webkit-autofill,
+html.light input:-webkit-autofill:hover,
+html.light input:-webkit-autofill:focus,
+html.light input:-webkit-autofill:active {
+  -webkit-text-fill-color: #111827;
+  box-shadow: inset 0 0 20px 20px rgba(243, 244, 246, 0.9);
+}
+
 /* Custom Animations */
 @keyframes gradient {
   0%, 100% {

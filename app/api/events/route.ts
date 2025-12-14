@@ -16,12 +16,12 @@ export async function GET(request: NextRequest) {
       const upcomingEvents = await db
         .select()
         .from(events)
-        .where(gte(events.eventDate, today))
-        .orderBy(events.eventDate);
+        .where(gte(events.startDate, today))
+        .orderBy(events.startDate);
       return createSuccessResponse(upcomingEvents);
     }
 
-    const allEvents = await db.select().from(events).orderBy(events.eventDate);
+    const allEvents = await db.select().from(events).orderBy(events.startDate);
     return createSuccessResponse(allEvents);
   } catch {
     return createErrorResponse('Failed to fetch events', 500);
@@ -34,9 +34,9 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { title, description, typeOfEvent, eventDate, startTime, endTime, location, link } = body;
+    const { title, description, typeOfEvent, startDate, endDate, startTime, endTime, location, link } = body;
 
-    if (!title || !description || !typeOfEvent || !eventDate || !startTime || !endTime || !location) {
+    if (!title || !description || !typeOfEvent || !startDate || !startTime || !endTime || !location) {
       return createErrorResponse('Missing required fields');
     }
 
@@ -48,7 +48,8 @@ export async function POST(request: NextRequest) {
         title: title as string,
         description: description as string,
         typeOfEvent: typeOfEvent as string,
-        eventDate: eventDate as string,
+        startDate: startDate as string,
+        endDate: (endDate as string | undefined) || null,
         startTime: startTime as string,
         endTime: endTime as string,
         location: location as string,
@@ -69,7 +70,7 @@ export async function PUT(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { id, title, description, typeOfEvent, eventDate, startTime, endTime, location, link } = body;
+    const { id, title, description, typeOfEvent, startDate, endDate, startTime, endTime, location, link } = body;
 
     if (!id) {
       return createErrorResponse('Missing required field: id');
@@ -79,7 +80,8 @@ export async function PUT(request: NextRequest) {
     if (title) updateData.title = title;
     if (description) updateData.description = description;
     if (typeOfEvent) updateData.typeOfEvent = typeOfEvent;
-    if (eventDate) updateData.eventDate = eventDate;
+    if (startDate) updateData.startDate = startDate;
+    if (endDate !== undefined) updateData.endDate = endDate;
     if (startTime) updateData.startTime = startTime;
     if (endTime) updateData.endTime = endTime;
     if (location) updateData.location = location;
