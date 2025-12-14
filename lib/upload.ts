@@ -93,5 +93,5 @@ export function createErrorResponse(message: string, status: number = 400) {
 }
 
 export function createSuccessResponse(data: unknown, status: number = 200) {
-  return NextResponse.json(data, { status });
+  return NextResponse.json({ data }, { status });
 }

@@ -23,8 +23,9 @@ export async function GET(request: NextRequest) {
 
     const allMembers = await query;
     return createSuccessResponse(allMembers);
-  } catch {
-    return createErrorResponse('Failed to fetch members', 500);
+  } catch (error) {
+    console.error('Error fetching members:', error);
+    return createErrorResponse('Failed to fetch members. Please try again.', 500);
   }
 }
 
@@ -64,8 +65,10 @@ export async function POST(request: NextRequest) {
 
     return createSuccessResponse(newMember, 201);
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to create member';
-    return createErrorResponse(message, 500);
+    // Log the error securely on the server
+    console.error('Error creating member:', error);
+    // Return a safe, generic error message to the client
+    return createErrorResponse('Failed to create member. Please try again.', 500);
   }
 }
 
@@ -106,8 +109,8 @@ export async function PUT(request: NextRequest) {
 
     return createSuccessResponse(updated);
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to update member';
-    return createErrorResponse(message, 500);
+    console.error('Error updating member:', error);
+    return createErrorResponse('Failed to update member. Please try again.', 500);
   }
 }
 
@@ -125,7 +128,8 @@ export async function DELETE(request: NextRequest) {
 
     await db.delete(members).where(eq(members.id, id));
     return createSuccessResponse({ message: 'Member deleted successfully' });
-  } catch {
-    return createErrorResponse('Failed to delete member', 500);
+  } catch (error) {
+    console.error('Error deleting member:', error);
+    return createErrorResponse('Failed to delete member. Please try again.', 500);
   }
 }

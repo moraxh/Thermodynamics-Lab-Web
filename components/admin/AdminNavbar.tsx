@@ -45,19 +45,13 @@ export default function AdminNavbar() {
             href="/admin" 
             className="shrink-0 flex items-center gap-2 group py-3"
           >
-            <motion.div 
-              className="relative w-10 h-10"
-              whileHover={{ scale: 1.1, rotate: 360 }}
-              transition={{ duration: 0.6, ease: 'easeInOut' }}
-            >
-              <Image 
-                src="/assets/logos/logo.webp" 
-                alt="LISTER Logo" 
-                width={40} 
-                height={40} 
-                className="object-contain group-hover:brightness-110"
-              />
-            </motion.div>
+            <Image 
+              src="/assets/logos/logo.webp" 
+              alt="LISTER Logo" 
+              width={40} 
+              height={40} 
+              className="object-contain group-hover:brightness-110"
+            />
             <motion.span 
               className="font-serif font-bold text-lg tracking-wider text-lab-white group-hover:text-lab-blue transition-colors hidden md:block"
               whileHover={{ scale: 1.05 }}

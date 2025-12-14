@@ -42,15 +42,6 @@ CREATE TABLE "gallery" (
 	CONSTRAINT "gallery_path_unique" UNIQUE("path")
 );
 --> statement-breakpoint
-CREATE TABLE "member_types" (
-	"name" varchar(255) PRIMARY KEY NOT NULL,
-	"plural_name" varchar(255) NOT NULL,
-	"order" integer NOT NULL,
-	CONSTRAINT "member_types_name_unique" UNIQUE("name"),
-	CONSTRAINT "member_types_plural_name_unique" UNIQUE("plural_name"),
-	CONSTRAINT "member_types_order_unique" UNIQUE("order")
-);
---> statement-breakpoint
 CREATE TABLE "members" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"full_name" varchar(255) NOT NULL,
@@ -73,6 +64,23 @@ CREATE TABLE "publications" (
 	CONSTRAINT "publications_thumbnail_path_unique" UNIQUE("thumbnail_path")
 );
 --> statement-breakpoint
+CREATE TABLE "sessions" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"sessionToken" text NOT NULL,
+	"userId" uuid NOT NULL,
+	"expires" timestamp NOT NULL,
+	CONSTRAINT "sessions_sessionToken_unique" UNIQUE("sessionToken")
+);
+--> statement-breakpoint
+CREATE TABLE "users" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"name" text NOT NULL,
+	"password" text NOT NULL,
+	"createdAt" timestamp DEFAULT now() NOT NULL,
+	"updatedAt" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "users_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
 CREATE TABLE "videos" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
@@ -84,4 +92,4 @@ CREATE TABLE "videos" (
 	CONSTRAINT "videos_video_path_unique" UNIQUE("video_path")
 );
 --> statement-breakpoint
-ALTER TABLE "members" ADD CONSTRAINT "members_type_of_member_member_types_name_fk" FOREIGN KEY ("type_of_member") REFERENCES "public"."member_types"("name") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "sessions" ADD CONSTRAINT "sessions_userId_users_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
