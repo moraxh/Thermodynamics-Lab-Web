@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning>
+    <html suppressHydrationWarning className="h-full overflow-x-hidden">
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -52,7 +52,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${lato.variable} ${montserrat.variable} antialiased`}
+        className={`${lato.variable} ${montserrat.variable} antialiased h-full overflow-x-hidden`}
       >
         <AuthProvider>
           <ThemeProvider>

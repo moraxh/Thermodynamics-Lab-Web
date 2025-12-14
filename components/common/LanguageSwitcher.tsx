@@ -46,27 +46,18 @@ export default function LanguageSwitcher() {
     // Save locale to localStorage
     localStorage.setItem('locale', newLocale);
     
-    // Dispatch storage event for other tabs/windows
-    window.dispatchEvent(new StorageEvent('storage', {
-      key: 'locale',
-      newValue: newLocale,
-      oldValue: locale,
-    }));
-    
     // Replace the locale in the pathname
     const segments = pathname.split('/');
-    
-    // Check if we're on a locale route or not (admin, login, etc.)
     const validLocales = languages.map(lang => lang.code);
-    if (validLocales.includes(segments[1])) {
-      // We're on a locale route, replace it
+    
+    // Check if first segment (after /) is a valid locale
+    if (segments[1] && validLocales.includes(segments[1])) {
+      // Replace locale in path
       segments[1] = newLocale;
-      const newPath = segments.join('/');
-      router.push(newPath);
+      router.push(segments.join('/'));
     } else {
-      // We're on a non-locale route (like /admin or /login)
-      // Just refresh to reload with new locale from localStorage
-      window.location.reload();
+      // Navigate to home with new locale
+      router.push(`/${newLocale}`);
     }
   };
 
@@ -79,9 +70,9 @@ export default function LanguageSwitcher() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 10 }}
             transition={{ duration: 0.2 }}
-            className="absolute bottom-16 right-0 w-56 bg-lab-gray-100/95 backdrop-blur-xl border border-lab-white/10 rounded-2xl shadow-2xl overflow-hidden"
+            className="absolute bottom-16 right-0 w-56 bg-lab-gray-100/95 backdrop-blur-xl border border-lab-white/10 rounded-2xl shadow-2xl overflow-hidden max-h-[60vh]"
           >
-            <div className="p-2 space-y-1">
+            <div className="p-2 space-y-1 overflow-y-auto max-h-[calc(60vh-16px)] scrollbar-thin scrollbar-thumb-lab-blue/50 scrollbar-track-transparent">
               {languages.map((lang) => (
                 <motion.button
                   key={lang.code}
