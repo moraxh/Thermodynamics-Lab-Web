@@ -9,10 +9,8 @@ import {
   Image as ImageIcon,
   FileText,
   Video,
-  BookOpen,
   GraduationCap,
   Calendar,
-  Tags,
   Home,
 } from 'lucide-react';
 import ThemeToggle from '@/components/common/ThemeToggle';
@@ -23,7 +21,6 @@ const navItems = [
   { href: '/admin/gallery', label: 'Gallery', icon: ImageIcon },
   { href: '/admin/publications', label: 'Publications', icon: FileText },
   { href: '/admin/videos', label: 'Videos', icon: Video },
-  { href: '/admin/articles', label: 'Articles', icon: BookOpen },
   { href: '/admin/educational-material', label: 'Educational', icon: GraduationCap },
   { href: '/admin/events', label: 'Events', icon: Calendar },
 ];

@@ -34,19 +34,24 @@ export async function POST(request: NextRequest) {
 
   try {
     const { fields, files } = await parseFormData(request);
-    const { title, description, type, authors, publicationDate } = fields;
+    const { title, description, type, authors, publicationDate, link } = fields;
 
     if (!title || !description || !type || !authors || !publicationDate) {
       return createErrorResponse('Missing required fields');
     }
 
-    if (!files.file) {
-      return createErrorResponse('No file provided');
+    // Verificar que tenga al menos un archivo o un link
+    if (!files.file && !link) {
+      return createErrorResponse('Must provide either a file or a link');
     }
 
-    const { path: filePath } = await handleFileUpload(files.file, {
-      allowedTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
-    });
+    let filePath: string | undefined;
+    if (files.file) {
+      const result = await handleFileUpload(files.file, {
+        allowedTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+      });
+      filePath = result.path;
+    }
 
     let thumbnailPath: string | undefined;
     if (files.thumbnail) {
@@ -68,6 +73,7 @@ export async function POST(request: NextRequest) {
         publicationDate: new Date(publicationDate as string),
         filePath,
         thumbnailPath,
+        link: link as string | undefined,
       })
       .returning();
 
@@ -84,7 +90,7 @@ export async function PUT(request: NextRequest) {
 
   try {
     const { fields, files } = await parseFormData(request);
-    const { id, title, description, type, authors, publicationDate } = fields;
+    const { id, title, description, type, authors, publicationDate, link } = fields;
 
     if (!id) {
       return createErrorResponse('Missing required field: id');
@@ -96,6 +102,7 @@ export async function PUT(request: NextRequest) {
     if (type) updateData.type = type;
     if (authors) updateData.authors = Array.isArray(authors) ? authors : [authors];
     if (publicationDate) updateData.publicationDate = new Date(publicationDate as string);
+    if (link !== undefined) updateData.link = link;
 
     if (files.file) {
       const { path: filePath } = await handleFileUpload(files.file, {

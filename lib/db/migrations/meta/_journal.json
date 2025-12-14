@@ -8,6 +8,13 @@
       "when": 1765683937498,
       "tag": "0000_bouncy_matthew_murdock",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1765686890520,
+      "tag": "0001_daily_absorbing_man",
+      "breakpoints": true
     }
   ]
 }

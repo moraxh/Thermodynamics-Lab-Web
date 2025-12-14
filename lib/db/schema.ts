@@ -51,8 +51,9 @@ export const publications = pgTable('publications', {
   type: publicationTypeEnum('type').notNull().default('other'),
   authors: json('authors').notNull().$type<string[]>(),
   publicationDate: timestamp('publication_date', { mode: 'date' }).notNull(),
-  filePath: text('file_path').notNull().unique(),
-  thumbnailPath: text('thumbnail_path').unique(),
+  filePath: text('file_path'),
+  thumbnailPath: text('thumbnail_path'),
+  link: text('link'),
 });
 
 // Videos
@@ -63,17 +64,6 @@ export const videos = pgTable('videos', {
   thumbnailPath: text('thumbnail_path'),
   videoPath: text('video_path').notNull().unique(),
   uploadedAt: timestamp('uploaded_at', { mode: 'date' }).notNull().defaultNow(),
-});
-
-// Articles
-export const articles = pgTable('articles', {
-  id: varchar('id', { length: 255 }).primaryKey(),
-  title: text('title').notNull().unique(),
-  description: text('description').notNull(),
-  authors: json('authors').notNull().$type<string[]>(),
-  publicationDate: timestamp('publication_date', { mode: 'date' }).notNull(),
-  filePath: text('file_path').notNull().unique(),
-  thumbnailPath: text('thumbnail_path').unique(),
 });
 
 // Educational material

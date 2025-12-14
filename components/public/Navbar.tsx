@@ -65,12 +65,12 @@ export default function NavBar() {
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-3">
-            <div className="flex items-baseline space-x-8">
+            <div className="flex items-baseline space-x-3">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="relative uppercase px-2 py-1 font-medium text-lab-gray-400 hover:text-lab-white transition-colors group whitespace-nowrap"
+                  className="relative uppercase px-2 py-1 text-md font-medium text-lab-gray-400 hover:text-lab-white transition-colors group whitespace-nowrap"
                 >
                   {link.name}
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-lab-yellow transition-all duration-300 group-hover:w-full"></span>
