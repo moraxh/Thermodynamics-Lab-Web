@@ -18,9 +18,11 @@ export default function NavBar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+      setScrolled(scrollPosition > 50);
     };
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -33,7 +35,7 @@ export default function NavBar() {
   ];
 
   return (
-    <nav className={`fixed top-0 py-3 w-full z-50 transition-all duration-300 border-lab-white/0 ${scrolled ? 'bg-lab-black/90 backdrop-blur-md border-b  border-lab-white/10' : 'bg-transparent'}`}>
+    <nav className={`fixed top-0 py-3 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-lab-black/40 backdrop-blur-md border-b border-lab-white/10' : 'bg-transparent border-b border-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
