@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Download, Calendar, ChevronLeft, ChevronRight, FileText, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useTranslations } from 'next-intl';
 
 interface Material {
   id: string;
@@ -13,6 +14,7 @@ interface Material {
 }
 
 export default function EducationalMaterial() {
+  const t = useTranslations('EducationalMaterial');
   const [materials, setMaterials] = useState<Material[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -98,7 +100,7 @@ export default function EducationalMaterial() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-5xl font-serif font-bold text-lab-white mb-4">
-            Material <span className="text-lab-yellow">Educativo</span>
+            {t('title')} <span className="text-lab-yellow">{t('titleHighlight')}</span>
           </h2>
         </motion.div>
 
@@ -123,11 +125,11 @@ export default function EducationalMaterial() {
                 📚
               </motion.div>
             </div>
-            <h3 className="text-2xl font-bold text-lab-white mb-3">¡La biblioteca está vacía!</h3>
+            <h3 className="text-2xl font-bold text-lab-white mb-3">{t('emptyTitle')}</h3>
             <p className="text-lab-gray-400 text-center max-w-xl">
-              Los libros de texto están tomando un descanso termodinámico.
+              {t('emptySubtitle')}
               <br />
-              <span className="text-lab-yellow">¡Pronto habrá contenido para expandir tu conocimiento! 🔬📖</span>
+              <span className="text-lab-yellow">{t('emptyDetail')}</span>
             </p>
           </motion.div>
         ) : (
@@ -185,7 +187,7 @@ export default function EducationalMaterial() {
                           className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-lg font-medium shadow-lg shadow-green-500/25 hover:shadow-green-500/40 transition-all duration-300 group/btn"
                         >
                           <Download className="w-5 h-5 group-hover/btn:animate-bounce" />
-                          <span>Descargar</span>
+                          <span>{t('download')}</span>
                         </button>
                       </div>
                     </div>

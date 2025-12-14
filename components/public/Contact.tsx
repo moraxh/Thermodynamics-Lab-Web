@@ -3,8 +3,10 @@
 import { MapPin, Phone, Mail } from 'lucide-react';
 import { CONTACT_INFO } from '@lib/constants';
 import { motion } from 'motion/react';
+import { useTranslations } from 'next-intl';
 
 export default function Contact() {
+  const t = useTranslations('Contact');
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -39,10 +41,10 @@ export default function Contact() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-5xl font-serif font-bold text-lab-white mb-4">
-            <span className="text-lab-blue">Contacto</span>
+            <span className="text-lab-blue">{t('title')}</span>
           </h2>
           <p className="text-lab-gray-400 max-w-2xl mx-auto">
-            Inicie una colaboración o solicite información sobre nuestros proyectos.
+            {t('subtitle')}
           </p>
         </motion.div>
 
@@ -84,7 +86,7 @@ export default function Contact() {
                 <MapPin size={24} />
               </div>
               <div>
-                <h4 className="text-lab-white font-bold mb-2">Laboratorio Central</h4>
+                <h4 className="text-lab-white font-bold mb-2">{t('addressTitle')}</h4>
                 <p className="text-lab-gray-400 text-sm">
                   {CONTACT_INFO.address.line1}<br/>
                   {CONTACT_INFO.address.line2}<br/>
@@ -102,7 +104,7 @@ export default function Contact() {
                 <Mail size={24} />
               </div>
               <div>
-                <h4 className="text-lab-white font-bold mb-2">Email</h4>
+                <h4 className="text-lab-white font-bold mb-2">{t('emailTitle')}</h4>
                 <p className="text-lab-gray-400 text-sm">{CONTACT_INFO.emails.general}<br/>{CONTACT_INFO.emails.research}</p>
               </div>
             </motion.div>
@@ -116,7 +118,7 @@ export default function Contact() {
                 <Phone size={24} />
               </div>
               <div>
-                <h4 className="text-lab-white font-bold mb-2">Teléfono</h4>
+                <h4 className="text-lab-white font-bold mb-2">{t('phoneTitle')}</h4>
                 <p className="text-lab-gray-400 text-sm">{CONTACT_INFO.phones.main}<br/>{CONTACT_INFO.phones.secondary}</p>
               </div>
             </motion.div>

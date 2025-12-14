@@ -1,0 +1,203 @@
+{
+  "Hero": {
+    "badge": "Laboratório de Ponta",
+    "title": "O FUTURO DA",
+    "titleHighlight": "ENERGIA",
+    "typewriterText": "Inovação em Termodinâmica e Sistemas Complexos",
+    "cta1": "Explorar Pesquisa",
+    "cta2": "Nossa Tecnologia",
+    "scrollIndicator": "Rolar"
+  },
+  "Research": {
+    "title": "Áreas de",
+    "titleHighlight": "Pesquisa",
+    "subtitle": "Explorando as fronteiras da física e computação para resolver os desafios energéticos de amanhã.",
+    "areas": {
+      "equilibrium": {
+        "title": "Termodinâmica de Equilíbrio e Não-Equilíbrio",
+        "description": "Análise de sistemas em equilíbrio térmico e processos irreversíveis, estudando geração de entropia e flutuações em escalas micro e nanométricas."
+      },
+      "patterns": {
+        "title": "Reconhecimento de Padrões",
+        "description": "Aplicação de algoritmos de aprendizado de máquina e redes neurais para identificar padrões térmicos complexos e prever comportamentos energéticos."
+      },
+      "renewable": {
+        "title": "Energias Renováveis",
+        "description": "Pesquisa em tecnologias de energia limpa, otimização de sistemas solares e eólicos, e desenvolvimento de materiais para armazenamento eficiente de energia."
+      },
+      "heat": {
+        "title": "Transferência de Calor",
+        "description": "Estudo dos mecanismos de condução, convecção e radiação térmica em sistemas complexos, com aplicações em refrigeração avançada e trocadores de calor."
+      }
+    }
+  },
+  "Team": {
+    "title": "Nossa",
+    "titleHighlight": "Equipe",
+    "subtitle": "Mentes brilhantes unidas pela paixão de descobrir o desconhecido.",
+    "emptyTitle": "Ninguém aqui!",
+    "emptySubtitle": "Parece que a equipe está em uma dimensão paralela pesquisando.",
+    "emptyDetail": "Ou talvez estejam tomando café... ☕",
+    "previous": "Anterior",
+    "next": "Próximo"
+  },
+  "Publications": {
+    "title": "Publicações",
+    "titleHighlight": "Científicas",
+    "filterAll": "Todos",
+    "types": {
+      "article": "Artigo",
+      "book": "Livro",
+      "thesis": "Tese",
+      "technical_report": "Relatório Técnico",
+      "monograph": "Monografia",
+      "other": "Outro"
+    },
+    "emptyTitle": "Nada aqui ainda!",
+    "emptySubtitle": "Parece que as publicações estão em revisão por pares.",
+    "emptyDetail": "Ou talvez estejam em outra dimensão temporal... ⏰📚",
+    "authors": "Autores:",
+    "download": "Baixar PDF",
+    "viewLink": "Ver Link",
+    "previous": "Anterior",
+    "next": "Próximo"
+  },
+  "Videos": {
+    "title": "Vídeos",
+    "titleHighlight": "Educacionais",
+    "emptyTitle": "O canal está em modo buffer!",
+    "emptySubtitle": "Os vídeos estão carregando... ou talvez estejam em outro laboratório.",
+    "emptyDetail": "Volte em breve para conteúdo incrível! 🎥✨",
+    "watchVideo": "Assistir Vídeo",
+    "previous": "Anterior",
+    "next": "Próximo"
+  },
+  "EducationalMaterial": {
+    "title": "Material",
+    "titleHighlight": "Educacional",
+    "emptyTitle": "A biblioteca está vazia!",
+    "emptySubtitle": "Os livros didáticos estão fazendo uma pausa termodinâmica.",
+    "emptyDetail": "Em breve haverá conteúdo para expandir seu conhecimento! 🔬📖",
+    "download": "Baixar",
+    "previous": "Anterior",
+    "next": "Próximo"
+  },
+  "Events": {
+    "title": "Próximos",
+    "titleHighlight": "Eventos",
+    "emptyTitle": "Nada no calendário!",
+    "emptySubtitle": "Os eventos estão em superposição quântica... ou simplesmente em planejamento.",
+    "emptyDetail": "Volte em breve para descobrir o que vem por aí! 🎪✨",
+    "upcoming": "Próximos",
+    "types": {
+      "conference": "Conferência",
+      "workshop": "Workshop",
+      "seminar": "Seminário",
+      "lecture": "Palestra",
+      "symposium": "Simpósio",
+      "meeting": "Reunião",
+      "other": "Outro"
+    },
+    "viewLink": "Ver Link",
+    "previous": "Anterior",
+    "next": "Próximo"
+  },
+  "Gallery": {
+    "emptyTitle": "A galeria está em um vácuo quântico!",
+    "emptySubtitle": "Parece que as imagens decidiram entrar em um estado de superposição.",
+    "emptyDetail": "Schrödinger aprovaria isso... 🐱📦",
+    "previous": "Anterior",
+    "next": "Próximo",
+    "openLightbox": "Ver imagem completa"
+  },
+  "Contact": {
+    "title": "Contato",
+    "subtitle": "Inicie uma colaboração ou solicite informações sobre nossos projetos.",
+    "addressTitle": "Laboratório Principal",
+    "emailTitle": "E-mail",
+    "phoneTitle": "Telefone"
+  },
+  "Footer": {
+    "description": "Avançando na fronteira da termodinâmica, inteligência artificial e sustentabilidade energética.",
+    "rights": "Todos os direitos reservados",
+    "privacy": "Política de Privacidade",
+    "terms": "Termos de Uso",
+    "accessibility": "Acessibilidade",
+    "developedBy": "Desenvolvido com 💙 por"
+  },
+  "Navbar": {
+    "home": "Início",
+    "research": "Pesquisa",
+    "team": "Equipe",
+    "publications": "Publicações",
+    "contact": "Contato",
+    "login": "Entrar"
+  },
+  "Accessibility": {
+    "backHome": "Voltar ao início",
+    "title": "Declaração de",
+    "titleHighlight": "Acessibilidade",
+    "commitment": "Nosso Compromisso",
+    "commitmentText": "está comprometido em garantir a acessibilidade digital para pessoas com deficiência. Estamos continuamente melhorando a experiência do usuário para todos e aplicando padrões de acessibilidade relevantes.",
+    "standards": "Padrões de Conformidade",
+    "standardsText": "Nos esforçamos para cumprir as Diretrizes de Acessibilidade para Conteúdo Web (WCAG) 2.1 nível AA. Essas diretrizes explicam como tornar o conteúdo web mais acessível para pessoas com uma ampla gama de deficiências.",
+    "measures": "Medidas Implementadas",
+    "measure1": "Navegação completa por teclado",
+    "measure2": "Texto alternativo para imagens",
+    "measure3": "Contraste de cor adequado",
+    "measure4": "Etiquetas ARIA para elementos interativos",
+    "measure5": "Estrutura semântica HTML5",
+    "measure6": "Tamanhos de texto escaláveis",
+    "measure7": "Estados de foco visíveis para navegação",
+    "technologies": "Tecnologias Compatíveis",
+    "technologiesText": "Nosso site foi projetado para ser compatível com as seguintes tecnologias assistivas:",
+    "tech1": "Leitores de tela (NVDA, JAWS, VoiceOver)",
+    "tech2": "Navegação por teclado",
+    "tech3": "Software de reconhecimento de voz",
+    "tech4": "Ampliadores de tela",
+    "limitations": "Limitações Conhecidas",
+    "limitationsText": "Apesar de nossos melhores esforços, algumas áreas do site podem não ser totalmente acessíveis. Estamos trabalhando ativamente para identificar e corrigir esses problemas.",
+    "feedback": "Comentários e Contato",
+    "feedbackText": "Valorizamos seus comentários sobre a acessibilidade do nosso site. Se você encontrar alguma barreira de acessibilidade, entre em contato conosco:",
+    "email": "E-mail:",
+    "phone": "Telefone:",
+    "responseTime": "Nos esforçamos para responder aos comentários dentro de 5 dias úteis.",
+    "evaluation": "Avaliação e Testes",
+    "evaluationText": "Realizamos testes regulares de acessibilidade usando ferramentas automatizadas e avaliações manuais para garantir a conformidade contínua.",
+    "lastUpdate": "Última atualização: Dezembro 2025"
+  },
+  "Privacy": {
+    "backHome": "Voltar ao início",
+    "title": "Política de",
+    "titleHighlight": "Privacidade",
+    "section1": "1. Informações que Coletamos",
+    "section1Text": "está comprometido em proteger sua privacidade. Esta política descreve como coletamos, usamos e protegemos suas informações pessoais quando você visita nosso site.",
+    "section2": "2. Uso das Informações",
+    "section2Text": "As informações que coletamos são usadas para melhorar nossos serviços de pesquisa, responder a consultas e mantê-lo informado sobre nossos projetos e publicações científicas.",
+    "section3": "3. Proteção de Dados",
+    "section3Text": "Implementamos medidas de segurança apropriadas para proteger suas informações pessoais contra acesso não autorizado, alteração, divulgação ou destruição.",
+    "section4": "4. Cookies",
+    "section4Text": "Nosso site pode usar cookies para melhorar a experiência do usuário. Você pode configurar seu navegador para rejeitar cookies, embora isso possa afetar algumas funcionalidades.",
+    "section5": "5. Contato",
+    "section5Text": "Se você tiver dúvidas sobre esta política de privacidade, pode entrar em contato conosco em",
+    "lastUpdate": "Última atualização: Dezembro 2025"
+  },
+  "Terms": {
+    "backHome": "Voltar ao início",
+    "title": "Termos de",
+    "titleHighlight": "Uso",
+    "section1": "1. Aceitação dos Termos",
+    "section1Text": "Ao acessar e usar este site, você concorda em estar vinculado a estes termos de uso e todas as leis e regulamentos aplicáveis. Se você não concordar com algum destes termos, não use este site.",
+    "section2": "2. Uso do Site",
+    "section2Text": "Este site é fornecido por para fins informativos e educacionais. O conteúdo destina-se à divulgação científica e colaboração acadêmica.",
+    "section3": "3. Propriedade Intelectual",
+    "section3Text": "Todo o conteúdo deste site, incluindo texto, gráficos, logotipos, imagens e software, é propriedade de ou seus colaboradores e está protegido pelas leis de propriedade intelectual.",
+    "section4": "4. Publicações Científicas",
+    "section4Text": "As publicações científicas apresentadas neste site estão sujeitas aos seus próprios direitos autorais e licenças. O uso de material científico deve respeitar os padrões acadêmicos de citação.",
+    "section5": "5. Limitação de Responsabilidade",
+    "section5Text": "não será responsável por quaisquer danos diretos, indiretos, incidentais ou consequentes resultantes do uso ou da impossibilidade de usar este site.",
+    "section6": "6. Modificações",
+    "section6Text": "Reservamos o direito de modificar estes termos a qualquer momento. As alterações entrarão em vigor imediatamente após sua publicação no site.",
+    "lastUpdate": "Última atualização: Dezembro 2025"
+  }
+}

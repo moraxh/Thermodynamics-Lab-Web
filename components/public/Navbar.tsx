@@ -5,13 +5,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from "react";
 import { useSession, signOut } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 import ThemeToggle from '@components/common/ThemeToggle';
 import UserMenu from '@components/common/UserMenu';
+import LanguageSwitcher from '@components/common/LanguageSwitcher';
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { data: session, status } = useSession();
+  const t = useTranslations('Navbar');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,12 +25,11 @@ export default function NavBar() {
   }, []);
 
   const navLinks = [
-    { name: 'Inicio', href: '#home' },
-    { name: 'Investigación', href: '#research' },
-    { name: 'Equipo', href: '#team' },
-    { name: 'Publicaciones', href: '#publications' },
-    { name: 'Galería', href: '#gallery' },
-    { name: 'Contacto', href: '#contact' },
+    { name: t('home'), href: '#home' },
+    { name: t('research'), href: '#research' },
+    { name: t('team'), href: '#team' },
+    { name: t('publications'), href: '#publications' },
+    { name: t('contact'), href: '#contact' },
   ];
 
   return (
@@ -160,7 +162,7 @@ export default function NavBar() {
                   onClick={() => setIsOpen(false)}
                 >
                   <User size={18} />
-                  <span className="text-base font-medium">Iniciar Sesión</span>
+                  <span className="text-base font-medium">{t('login')}</span>
                 </Link>
               )}
             </div>

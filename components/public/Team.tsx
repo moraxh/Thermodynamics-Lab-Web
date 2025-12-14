@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, UserX } from 'lucide-react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'motion/react';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export interface TeamMember {
   id: string;
@@ -25,6 +26,7 @@ const MEMBER_TYPE_ORDER = [
 ];
 
 export default function Team() {
+  const t = useTranslations('Team');
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -137,10 +139,10 @@ export default function Team() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-5xl font-serif font-bold text-lab-white mb-4">
-            Nuestro <span className="text-lab-blue">Equipo</span>
+            {t('title')} <span className="text-lab-blue">{t('titleHighlight')}</span>
           </h2>
           <p className="text-lab-gray-400 max-w-2xl mx-auto">
-            Mentes brillantes unidas por la pasión de descubrir lo desconocido.
+            {t('subtitle')}
           </p>
         </motion.div>
 
@@ -165,11 +167,11 @@ export default function Team() {
                 ?
               </motion.div>
             </div>
-            <h3 className="text-2xl font-bold text-lab-white mb-3">¡Aquí no hay nadie!</h3>
+            <h3 className="text-2xl font-bold text-lab-white mb-3">{t('emptyTitle')}</h3>
             <p className="text-lab-gray-400 text-center max-w-md">
-              Parece que el equipo está en una dimensión paralela investigando.
+              {t('emptySubtitle')}
               <br />
-              <span className="text-lab-blue">O quizás están tomando café... ☕</span>
+              <span className="text-lab-blue">{t('emptyDetail')}</span>
             </p>
           </motion.div>
         ) : (
@@ -180,14 +182,14 @@ export default function Team() {
                 <button
                   onClick={prevSlide}
                   className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-lab-blue/20 hover:bg-lab-blue/40 text-lab-white p-3 rounded-full backdrop-blur-sm border border-lab-blue/50 transition-all hover:scale-110"
-                  aria-label="Anterior"
+                  aria-label={t('previous')}
                 >
                   <ChevronLeft className="w-6 h-6" />
                 </button>
                 <button
                   onClick={nextSlide}
                   className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-lab-blue/20 hover:bg-lab-blue/40 text-lab-white p-3 rounded-full backdrop-blur-sm border border-lab-blue/50 transition-all hover:scale-110"
-                  aria-label="Siguiente"
+                  aria-label={t('next')}
                 >
                   <ChevronRight className="w-6 h-6" />
                 </button>

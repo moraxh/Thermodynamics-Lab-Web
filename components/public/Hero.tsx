@@ -5,10 +5,12 @@ import AtomAnimation from "@components/common/AtomAnimation";
 import { ChevronRight, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import { useTranslations } from 'next-intl';
 
 export default function Hero() {
+  const t = useTranslations('Hero');
   const [text, setText] = useState('');
-  const fullText = "Innovación en Termodinámica y Sistemas Complejos";
+  const fullText = t('typewriterText');
   
   useEffect(() => {
     let index = 0;
@@ -87,7 +89,7 @@ export default function Hero() {
         >
           <span className="text-lab-yellow text-xs font-bold tracking-widest uppercase flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-lab-yellow animate-ping"></span>
-            Laboratorio de Vanguardia
+            {t('badge')}
           </span>
         </motion.div>
         
@@ -97,13 +99,13 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          EL FUTURO DE LA <br/>
+          {t('title')} <br/>
           <span className="relative inline-block">
             <span className="text-transparent bg-clip-text bg-linear-to-r from-lab-blue via-lab-white to-lab-blue animate-gradient bg-size-[200%_auto]">
-              ENERGÍA
+              {t('titleHighlight')}
             </span>
             {/* Subtle glow effect */}
-            <span className="absolute inset-0 text-lab-yellow opacity-0 blur-sm" aria-hidden="true">ENERGÍA</span>
+            <span className="absolute inset-0 text-lab-yellow opacity-0 blur-sm" aria-hidden="true">{t('titleHighlight')}</span>
           </span>
         </motion.h1>
 
@@ -126,12 +128,12 @@ export default function Hero() {
         >
           <a href="#research">
             <Button variant="accent" icon={<ChevronRight size={18} />}>
-              Explorar Investigación
+              {t('cta1')}
             </Button>
           </a>
           <a href="#publications">
             <Button variant="outline" icon={<Zap size={18} />}>
-              Nuestra Tecnología
+              {t('cta2')}
             </Button>
           </a>
         </motion.div>
@@ -150,7 +152,7 @@ export default function Hero() {
             ease: "easeInOut",
           }}
         >
-          <span className="text-xs uppercase tracking-widest text-lab-gray-400">Scroll</span>
+          <span className="text-xs uppercase tracking-widest text-lab-gray-400">{t('scrollIndicator')}</span>
           <div className="w-px h-12 bg-linear-to-b from-lab-yellow to-transparent"></div>
         </motion.div>
       </a>

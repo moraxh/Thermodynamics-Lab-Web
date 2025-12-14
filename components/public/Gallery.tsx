@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useTranslations } from 'next-intl';
 
 interface GalleryImage {
   id: string;
@@ -34,6 +35,7 @@ const swipePower = (offset: number, velocity: number) => {
 };
 
 export default function Gallery() {
+  const t = useTranslations('Gallery');
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [[page, direction], setPage] = useState([0, 0]);
@@ -116,11 +118,11 @@ export default function Gallery() {
                   </motion.div>
                 </div>
               </motion.div>
-              <h3 className="text-3xl font-bold text-lab-white mb-3">¡La galería está en el vacío cuántico!</h3>
+              <h3 className="text-3xl font-bold text-lab-white mb-3">{t('emptyTitle')}</h3>
               <p className="text-lab-gray-400 text-center max-w-xl text-lg">
-                Parece que las imágenes decidieron entrar en un estado de superposición.
+                {t('emptySubtitle')}
                 <br />
-                <span className="text-lab-yellow">Schödinger aprobaría esto... 🐱📦</span>
+                <span className="text-lab-yellow">{t('emptyDetail')}</span>
               </p>
             </motion.div>
           ) : (
@@ -172,7 +174,7 @@ export default function Gallery() {
                     <button
                       onClick={() => paginate(-1)}
                       className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-lab-black/50 hover:bg-lab-yellow/90 backdrop-blur-sm flex items-center justify-center text-white hover:text-lab-black transition-all duration-300 border border-lab-white/10 hover:border-lab-yellow group/btn z-10"
-                      aria-label="Anterior"
+                      aria-label={t('previous')}
                     >
                       <ChevronLeft size={24} className="group-hover/btn:scale-110 transition-transform" />
                     </button>
@@ -180,7 +182,7 @@ export default function Gallery() {
                     <button
                       onClick={() => paginate(1)}
                       className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-lab-black/50 hover:bg-lab-yellow/90 backdrop-blur-sm flex items-center justify-center text-white hover:text-lab-black transition-all duration-300 border border-lab-white/10 hover:border-lab-yellow group/btn z-10"
-                      aria-label="Siguiente"
+                      aria-label={t('next')}
                     >
                       <ChevronRight size={24} className="group-hover/btn:scale-110 transition-transform" />
                     </button>

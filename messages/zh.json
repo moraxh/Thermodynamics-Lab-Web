@@ -1,0 +1,203 @@
+{
+  "Hero": {
+    "badge": "尖端实验室",
+    "title": "能源的",
+    "titleHighlight": "未来",
+    "typewriterText": "热力学与复杂系统创新",
+    "cta1": "探索研究",
+    "cta2": "我们的技术",
+    "scrollIndicator": "滚动"
+  },
+  "Research": {
+    "title": "研究",
+    "titleHighlight": "领域",
+    "subtitle": "探索物理学和计算机科学的前沿，解决明天的能源挑战。",
+    "areas": {
+      "equilibrium": {
+        "title": "平衡与非平衡热力学",
+        "description": "分析热平衡系统和不可逆过程,研究微观和纳米尺度的熵生成和波动。"
+      },
+      "patterns": {
+        "title": "模式识别",
+        "description": "应用机器学习算法和神经网络识别复杂的热模式并预测能量行为。"
+      },
+      "renewable": {
+        "title": "可再生能源",
+        "description": "清洁能源技术研究,太阳能和风能系统优化,以及高效储能材料的开发。"
+      },
+      "heat": {
+        "title": "热传递",
+        "description": "研究复杂系统中的热传导、对流和热辐射机制,应用于先进制冷和热交换器。"
+      }
+    }
+  },
+  "Team": {
+    "title": "我们的",
+    "titleHighlight": "团队",
+    "subtitle": "杰出的头脑因探索未知的激情而团结在一起。",
+    "emptyTitle": "这里没有人!",
+    "emptySubtitle": "看起来团队正在平行维度中进行研究。",
+    "emptyDetail": "或者他们可能在喝咖啡... ☕",
+    "previous": "上一个",
+    "next": "下一个"
+  },
+  "Publications": {
+    "title": "科学",
+    "titleHighlight": "出版物",
+    "filterAll": "全部",
+    "types": {
+      "article": "文章",
+      "book": "书籍",
+      "thesis": "论文",
+      "technical_report": "技术报告",
+      "monograph": "专著",
+      "other": "其他"
+    },
+    "emptyTitle": "这里还没有东西!",
+    "emptySubtitle": "看起来出版物正在同行评审中。",
+    "emptyDetail": "或者它们可能在另一个时间维度... ⏰📚",
+    "authors": "作者:",
+    "download": "下载PDF",
+    "viewLink": "查看链接",
+    "previous": "上一个",
+    "next": "下一个"
+  },
+  "Videos": {
+    "title": "教育",
+    "titleHighlight": "视频",
+    "emptyTitle": "频道处于缓冲模式!",
+    "emptySubtitle": "视频正在加载...或者它们可能在另一个实验室。",
+    "emptyDetail": "敬请期待精彩内容! 🎥✨",
+    "watchVideo": "观看视频",
+    "previous": "上一个",
+    "next": "下一个"
+  },
+  "EducationalMaterial": {
+    "title": "教育",
+    "titleHighlight": "资料",
+    "emptyTitle": "图书馆是空的!",
+    "emptySubtitle": "教科书正在进行热力学休息。",
+    "emptyDetail": "很快就会有内容来扩展您的知识! 🔬📖",
+    "download": "下载",
+    "previous": "上一个",
+    "next": "下一个"
+  },
+  "Events": {
+    "title": "即将",
+    "titleHighlight": "举行的活动",
+    "emptyTitle": "日历上没有活动!",
+    "emptySubtitle": "活动处于量子叠加状态...或者只是在计划中。",
+    "emptyDetail": "敬请期待即将到来的内容! 🎪✨",
+    "upcoming": "即将举行",
+    "types": {
+      "conference": "会议",
+      "workshop": "研讨会",
+      "seminar": "讲座",
+      "lecture": "演讲",
+      "symposium": "座谈会",
+      "meeting": "会面",
+      "other": "其他"
+    },
+    "viewLink": "查看链接",
+    "previous": "上一个",
+    "next": "下一个"
+  },
+  "Gallery": {
+    "emptyTitle": "画廊处于量子真空中!",
+    "emptySubtitle": "看起来图片决定进入叠加状态。",
+    "emptyDetail": "薛定谔会赞同这一点... 🐱📦",
+    "previous": "上一个",
+    "next": "下一个",
+    "openLightbox": "查看完整图片"
+  },
+  "Contact": {
+    "title": "联系",
+    "subtitle": "开始合作或询问有关我们项目的信息。",
+    "addressTitle": "主实验室",
+    "emailTitle": "电子邮件",
+    "phoneTitle": "电话"
+  },
+  "Footer": {
+    "description": "推进热力学、人工智能和能源可持续性的前沿。",
+    "rights": "版权所有",
+    "privacy": "隐私政策",
+    "terms": "使用条款",
+    "accessibility": "无障碍访问",
+    "developedBy": "开发者 💙"
+  },
+  "Navbar": {
+    "home": "首页",
+    "research": "研究",
+    "team": "团队",
+    "publications": "出版物",
+    "contact": "联系",
+    "login": "登录"
+  },
+  "Accessibility": {
+    "backHome": "返回首页",
+    "title": "无障碍",
+    "titleHighlight": "声明",
+    "commitment": "我们的承诺",
+    "commitmentText": "致力于确保残障人士的数字无障碍访问。我们不断改善所有人的用户体验并应用相关的无障碍标准。",
+    "standards": "合规标准",
+    "standardsText": "我们努力遵守Web内容无障碍指南(WCAG)2.1 AA级。这些指南解释了如何使Web内容对各种残障人士更加无障碍。",
+    "measures": "实施的措施",
+    "measure1": "完整的键盘导航",
+    "measure2": "图像的替代文本",
+    "measure3": "适当的颜色对比度",
+    "measure4": "交互元素的ARIA标签",
+    "measure5": "HTML5语义结构",
+    "measure6": "可缩放的文本大小",
+    "measure7": "导航的可见焦点状态",
+    "technologies": "兼容技术",
+    "technologiesText": "我们的网站旨在与以下辅助技术兼容:",
+    "tech1": "屏幕阅读器(NVDA、JAWS、VoiceOver)",
+    "tech2": "键盘导航",
+    "tech3": "语音识别软件",
+    "tech4": "屏幕放大器",
+    "limitations": "已知限制",
+    "limitationsText": "尽管我们尽了最大努力,网站的某些区域可能无法完全无障碍访问。我们正在积极努力识别和解决这些问题。",
+    "feedback": "反馈与联系",
+    "feedbackText": "我们重视您对我们网站无障碍性的反馈。如果您遇到任何无障碍障碍,请联系我们:",
+    "email": "电子邮件:",
+    "phone": "电话:",
+    "responseTime": "我们努力在5个工作日内回复反馈。",
+    "evaluation": "评估和测试",
+    "evaluationText": "我们使用自动化工具和人工评估定期进行无障碍测试,以确保持续合规。",
+    "lastUpdate": "最后更新: 2025年12月"
+  },
+  "Privacy": {
+    "backHome": "返回首页",
+    "title": "隐私",
+    "titleHighlight": "政策",
+    "section1": "1. 我们收集的信息",
+    "section1Text": "致力于保护您的隐私。本政策描述了当您访问我们的网站时,我们如何收集、使用和保护您的个人信息。",
+    "section2": "2. 信息的使用",
+    "section2Text": "我们收集的信息用于改进我们的研究服务,回应查询,并让您了解我们的项目和科学出版物。",
+    "section3": "3. 数据保护",
+    "section3Text": "我们实施适当的安全措施来保护您的个人信息免遭未经授权的访问、更改、披露或销毁。",
+    "section4": "4. Cookies",
+    "section4Text": "我们的网站可能使用cookies来改善用户体验。您可以配置浏览器拒绝cookies,尽管这可能会影响某些功能。",
+    "section5": "5. 联系",
+    "section5Text": "如果您对本隐私政策有任何疑问,可以通过以下方式联系我们",
+    "lastUpdate": "最后更新: 2025年12月"
+  },
+  "Terms": {
+    "backHome": "返回首页",
+    "title": "使用",
+    "titleHighlight": "条款",
+    "section1": "1. 条款的接受",
+    "section1Text": "通过访问和使用本网站,您同意受这些使用条款以及所有适用法律和法规的约束。如果您不同意这些条款中的任何一项,请不要使用本网站。",
+    "section2": "2. 网站的使用",
+    "section2Text": "本网站由提供,用于信息和教育目的。内容旨在用于科学传播和学术合作。",
+    "section3": "3. 知识产权",
+    "section3Text": "本网站的所有内容,包括文本、图形、徽标、图像和软件,均为或其合作者的财产,并受知识产权法保护。",
+    "section4": "4. 科学出版物",
+    "section4Text": "本网站展示的科学出版物受其自身版权和许可证的约束。科学材料的使用必须尊重学术引用标准。",
+    "section5": "5. 责任限制",
+    "section5Text": "对因使用或无法使用本网站而产生的任何直接、间接、偶然或后果性损害概不负责。",
+    "section6": "6. 修改",
+    "section6Text": "我们保留随时修改这些条款的权利。修改将在网站上发布后立即生效。",
+    "lastUpdate": "最后更新: 2025年12月"
+  }
+}

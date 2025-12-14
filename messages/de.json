@@ -1,0 +1,203 @@
+{
+  "Hero": {
+    "badge": "Spitzenlabor",
+    "title": "DIE ZUKUNFT DER",
+    "titleHighlight": "ENERGIE",
+    "typewriterText": "Innovation in Thermodynamik und Komplexen Systemen",
+    "cta1": "Forschung Erkunden",
+    "cta2": "Unsere Technologie",
+    "scrollIndicator": "Scrollen"
+  },
+  "Research": {
+    "title": "Forschungs",
+    "titleHighlight": "bereiche",
+    "subtitle": "Erkundung der Grenzen von Physik und Informatik zur Lösung der Energieherausforderungen von morgen.",
+    "areas": {
+      "equilibrium": {
+        "title": "Gleichgewichts- und Nichtgleichgewichts-Thermodynamik",
+        "description": "Analyse von Systemen im thermischen Gleichgewicht und irreversiblen Prozessen, Untersuchung der Entropieerzeugung und Fluktuationen auf Mikro- und Nanoskalen."
+      },
+      "patterns": {
+        "title": "Mustererkennung",
+        "description": "Anwendung von Algorithmen des maschinellen Lernens und neuronalen Netzen zur Identifizierung komplexer thermischer Muster und Vorhersage energetischer Verhaltensweisen."
+      },
+      "renewable": {
+        "title": "Erneuerbare Energien",
+        "description": "Forschung zu sauberen Energietechnologien, Optimierung von Solar- und Windsystemen und Entwicklung von Materialien für eine effiziente Energiespeicherung."
+      },
+      "heat": {
+        "title": "Wärmeübertragung",
+        "description": "Untersuchung der Mechanismen von Wärmeleitung, Konvektion und thermischer Strahlung in komplexen Systemen, mit Anwendungen in fortgeschrittener Kühlung und Wärmetauschern."
+      }
+    }
+  },
+  "Team": {
+    "title": "Unser",
+    "titleHighlight": "Team",
+    "subtitle": "Brillante Köpfe vereint durch die Leidenschaft, das Unbekannte zu entdecken.",
+    "emptyTitle": "Niemand hier!",
+    "emptySubtitle": "Es scheint, das Team ist in einer parallelen Dimension beim Forschen.",
+    "emptyDetail": "Oder vielleicht trinken sie Kaffee... ☕",
+    "previous": "Zurück",
+    "next": "Weiter"
+  },
+  "Publications": {
+    "title": "Wissenschaftliche",
+    "titleHighlight": "Publikationen",
+    "filterAll": "Alle",
+    "types": {
+      "article": "Artikel",
+      "book": "Buch",
+      "thesis": "Dissertation",
+      "technical_report": "Technischer Bericht",
+      "monograph": "Monographie",
+      "other": "Andere"
+    },
+    "emptyTitle": "Noch nichts hier!",
+    "emptySubtitle": "Es scheint, die Publikationen sind in der Peer-Review.",
+    "emptyDetail": "Oder vielleicht sind sie in einer anderen zeitlichen Dimension... ⏰📚",
+    "authors": "Autoren:",
+    "download": "PDF Herunterladen",
+    "viewLink": "Link Anzeigen",
+    "previous": "Zurück",
+    "next": "Weiter"
+  },
+  "Videos": {
+    "title": "Bildungs",
+    "titleHighlight": "videos",
+    "emptyTitle": "Der Kanal ist im Puffermodus!",
+    "emptySubtitle": "Die Videos laden... oder vielleicht sind sie in einem anderen Labor.",
+    "emptyDetail": "Kommen Sie bald zurück für unglaubliche Inhalte! 🎥✨",
+    "watchVideo": "Video Ansehen",
+    "previous": "Zurück",
+    "next": "Weiter"
+  },
+  "EducationalMaterial": {
+    "title": "Bildungs",
+    "titleHighlight": "material",
+    "emptyTitle": "Die Bibliothek ist leer!",
+    "emptySubtitle": "Die Lehrbücher machen eine thermodynamische Pause.",
+    "emptyDetail": "Bald wird es Inhalte geben, um Ihr Wissen zu erweitern! 🔬📖",
+    "download": "Herunterladen",
+    "previous": "Zurück",
+    "next": "Weiter"
+  },
+  "Events": {
+    "title": "Kommende",
+    "titleHighlight": "Veranstaltungen",
+    "emptyTitle": "Nichts im Kalender!",
+    "emptySubtitle": "Die Veranstaltungen sind in Quantenüberlagerung... oder einfach in Planung.",
+    "emptyDetail": "Kommen Sie bald zurück, um zu entdecken, was kommt! 🎪✨",
+    "upcoming": "Kommende",
+    "types": {
+      "conference": "Konferenz",
+      "workshop": "Workshop",
+      "seminar": "Seminar",
+      "lecture": "Vorlesung",
+      "symposium": "Symposium",
+      "meeting": "Treffen",
+      "other": "Andere"
+    },
+    "viewLink": "Link Anzeigen",
+    "previous": "Zurück",
+    "next": "Weiter"
+  },
+  "Gallery": {
+    "emptyTitle": "Die Galerie ist in einem Quantenvakuum!",
+    "emptySubtitle": "Es scheint, die Bilder haben beschlossen, in einen Zustand der Überlagerung einzutreten.",
+    "emptyDetail": "Schrödinger würde das gutheißen... 🐱📦",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "openLightbox": "Vollbild anzeigen"
+  },
+  "Contact": {
+    "title": "Kontakt",
+    "subtitle": "Beginnen Sie eine Zusammenarbeit oder fordern Sie Informationen über unsere Projekte an.",
+    "addressTitle": "Hauptlabor",
+    "emailTitle": "E-Mail",
+    "phoneTitle": "Telefon"
+  },
+  "Footer": {
+    "description": "Fortschritte an der Grenze von Thermodynamik, künstlicher Intelligenz und Energienachhaltigkeit.",
+    "rights": "Alle Rechte vorbehalten",
+    "privacy": "Datenschutzrichtlinie",
+    "terms": "Nutzungsbedingungen",
+    "accessibility": "Barrierefreiheit",
+    "developedBy": "Entwickelt mit 💙 von"
+  },
+  "Navbar": {
+    "home": "Startseite",
+    "research": "Forschung",
+    "team": "Team",
+    "publications": "Publikationen",
+    "contact": "Kontakt",
+    "login": "Anmelden"
+  },
+  "Accessibility": {
+    "backHome": "Zurück zur Startseite",
+    "title": "Barrierefreiheits",
+    "titleHighlight": "erklärung",
+    "commitment": "Unser Engagement",
+    "commitmentText": "verpflichtet sich, digitale Barrierefreiheit für Menschen mit Behinderungen zu gewährleisten. Wir verbessern kontinuierlich die Benutzererfahrung für alle und wenden relevante Barrierefreiheitsstandards an.",
+    "standards": "Konformitätsstandards",
+    "standardsText": "Wir bemühen uns, die Web Content Accessibility Guidelines (WCAG) 2.1 Level AA einzuhalten. Diese Richtlinien erklären, wie Webinhalte für Menschen mit einer Vielzahl von Behinderungen zugänglicher gemacht werden können.",
+    "measures": "Umgesetzte Maßnahmen",
+    "measure1": "Vollständige Tastaturnavigation",
+    "measure2": "Alternativtext für Bilder",
+    "measure3": "Angemessener Farbkontrast",
+    "measure4": "ARIA-Beschriftungen für interaktive Elemente",
+    "measure5": "Semantische HTML5-Struktur",
+    "measure6": "Skalierbare Textgrößen",
+    "measure7": "Sichtbare Fokuszustände für Navigation",
+    "technologies": "Kompatible Technologien",
+    "technologiesText": "Unsere Website ist so konzipiert, dass sie mit den folgenden Hilfstechnologien kompatibel ist:",
+    "tech1": "Bildschirmlesegeräte (NVDA, JAWS, VoiceOver)",
+    "tech2": "Tastaturnavigation",
+    "tech3": "Spracherkennungssoftware",
+    "tech4": "Bildschirmlupen",
+    "limitations": "Bekannte Einschränkungen",
+    "limitationsText": "Trotz unserer besten Bemühungen sind einige Bereiche der Website möglicherweise nicht vollständig zugänglich. Wir arbeiten aktiv daran, diese Probleme zu identifizieren und zu beheben.",
+    "feedback": "Feedback und Kontakt",
+    "feedbackText": "Wir schätzen Ihr Feedback zur Barrierefreiheit unserer Website. Wenn Sie auf Barrieren stoßen, kontaktieren Sie uns bitte:",
+    "email": "E-Mail:",
+    "phone": "Telefon:",
+    "responseTime": "Wir bemühen uns, Feedback innerhalb von 5 Werktagen zu beantworten.",
+    "evaluation": "Bewertung und Tests",
+    "evaluationText": "Wir führen regelmäßig Barrierefreiheitstests mit automatisierten Tools und manuellen Bewertungen durch, um eine kontinuierliche Konformität zu gewährleisten.",
+    "lastUpdate": "Letzte Aktualisierung: Dezember 2025"
+  },
+  "Privacy": {
+    "backHome": "Zurück zur Startseite",
+    "title": "Datenschutz",
+    "titleHighlight": "richtlinie",
+    "section1": "1. Informationen, die wir sammeln",
+    "section1Text": "verpflichtet sich, Ihre Privatsphäre zu schützen. Diese Richtlinie beschreibt, wie wir Ihre persönlichen Informationen sammeln, verwenden und schützen, wenn Sie unsere Website besuchen.",
+    "section2": "2. Verwendung von Informationen",
+    "section2Text": "Die von uns gesammelten Informationen werden verwendet, um unsere Forschungsdienste zu verbessern, auf Anfragen zu antworten und Sie über unsere Projekte und wissenschaftlichen Publikationen auf dem Laufenden zu halten.",
+    "section3": "3. Datenschutz",
+    "section3Text": "Wir setzen angemessene Sicherheitsmaßnahmen um, um Ihre persönlichen Informationen vor unbefugtem Zugriff, Änderung, Offenlegung oder Zerstörung zu schützen.",
+    "section4": "4. Cookies",
+    "section4Text": "Unsere Website kann Cookies verwenden, um die Benutzererfahrung zu verbessern. Sie können Ihren Browser so konfigurieren, dass er Cookies ablehnt, obwohl dies einige Funktionen beeinträchtigen kann.",
+    "section5": "5. Kontakt",
+    "section5Text": "Wenn Sie Fragen zu dieser Datenschutzrichtlinie haben, können Sie uns kontaktieren unter",
+    "lastUpdate": "Letzte Aktualisierung: Dezember 2025"
+  },
+  "Terms": {
+    "backHome": "Zurück zur Startseite",
+    "title": "Nutzungs",
+    "titleHighlight": "bedingungen",
+    "section1": "1. Annahme der Bedingungen",
+    "section1Text": "Durch den Zugriff auf und die Nutzung dieser Website erklären Sie sich damit einverstanden, an diese Nutzungsbedingungen und alle anwendbaren Gesetze und Vorschriften gebunden zu sein. Wenn Sie mit einer dieser Bedingungen nicht einverstanden sind, verwenden Sie diese Website nicht.",
+    "section2": "2. Nutzung der Website",
+    "section2Text": "Diese Website wird von zu informativen und pädagogischen Zwecken bereitgestellt. Der Inhalt ist für die wissenschaftliche Verbreitung und akademische Zusammenarbeit bestimmt.",
+    "section3": "3. Geistiges Eigentum",
+    "section3Text": "Alle Inhalte dieser Website, einschließlich Text, Grafiken, Logos, Bilder und Software, sind Eigentum von oder seiner Mitarbeiter und sind durch Gesetze zum geistigen Eigentum geschützt.",
+    "section4": "4. Wissenschaftliche Publikationen",
+    "section4Text": "Die auf dieser Website präsentierten wissenschaftlichen Publikationen unterliegen ihren eigenen Urheberrechten und Lizenzen. Die Verwendung wissenschaftlichen Materials muss die akademischen Standards der Zitierung respektieren.",
+    "section5": "5. Haftungsbeschränkung",
+    "section5Text": "ist nicht verantwortlich für direkte, indirekte, zufällige oder Folgeschäden, die sich aus der Nutzung oder der Unmöglichkeit der Nutzung dieser Website ergeben.",
+    "section6": "6. Änderungen",
+    "section6Text": "Wir behalten uns das Recht vor, diese Bedingungen jederzeit zu ändern. Änderungen treten sofort nach ihrer Veröffentlichung auf der Website in Kraft.",
+    "lastUpdate": "Letzte Aktualisierung: Dezember 2025"
+  }
+}

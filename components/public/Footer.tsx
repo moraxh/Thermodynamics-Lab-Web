@@ -1,9 +1,14 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Github } from 'lucide-react';
 import { SITE_INFO, CREATORS } from '@/lib/constants';
+import { useTranslations } from 'next-intl';
 
 export default function Footer() {
+  const t = useTranslations('Footer');
+  
   return (
     <footer className="bg-lab-black border-t border-lab-white/5 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,23 +26,23 @@ export default function Footer() {
             </span>
           </div>
           <p className="text-lab-gray-400 text-sm text-center md:text-right max-w-md">
-            {SITE_INFO.description}
+            {t('description')}
           </p>
         </div>
         
-        <div className="border-t border-lab-white/5 pt-8 space-y-4">
+        <div className="border-t border-lab-white/5 pt-3 space-y-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-lab-gray-400 font-mono">
-            <p>&copy; {new Date().getFullYear()} {SITE_INFO.name}. Todos los derechos reservados.</p>
+            <p>&copy; {new Date().getFullYear()} {SITE_INFO.name}. {t('rights')}.</p>
             <div className="flex gap-6">
-              <Link href="/privacy" className="hover:text-lab-yellow transition-colors">Privacidad</Link>
-              <Link href="/terms" className="hover:text-lab-yellow transition-colors">Términos</Link>
-              <Link href="/accessibility" className="hover:text-lab-yellow transition-colors">Accesibilidad</Link>
+              <Link href="/privacy" className="hover:text-lab-yellow transition-colors">{t('privacy')}</Link>
+              <Link href="/terms" className="hover:text-lab-yellow transition-colors">{t('terms')}</Link>
+              <Link href="/accessibility" className="hover:text-lab-yellow transition-colors">{t('accessibility')}</Link>
             </div>
           </div>
           
           {/* Creators Section */}
           <div className="pt-6 border-t border-lab-white/5">
-            <p className="text-center text-xs text-lab-gray-400 mb-4">Desarrollado con 💙 por</p>
+            <p className="text-center text-xs text-lab-gray-400 mb-4">{t('developedBy')}</p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
               {CREATORS.map((creator) => (
                 <a 

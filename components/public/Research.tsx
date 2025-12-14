@@ -4,11 +4,12 @@ import React from 'react';
 import * as Icons from 'lucide-react';
 import { LucideProps } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useTranslations } from 'next-intl';
 
 export interface ResearchArea {
   id: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   iconName: string; // Mapping to Lucide icon name
   imageUrl: string;
 }
@@ -16,29 +17,29 @@ export interface ResearchArea {
 const RESEARCH_AREAS: ResearchArea[] = [
   {
     id: '1',
-    title: 'Termodinamica de Equilibrio y no Equilibrio',
-    description: 'Análisis de sistemas en equilibrio térmico y procesos irreversibles, estudiando la generación de entropía y fluctuaciones en escalas micro y nanométricas.',
+    titleKey: 'areas.equilibrium.title',
+    descriptionKey: 'areas.equilibrium.description',
     iconName: 'Flame',
     imageUrl: 'equilibrium_thermodynamics.webp',
   },
   {
     id: '2',
-    title: 'Reconocimiento de Patrones',
-    description: 'Aplicación de algoritmos de machine learning y redes neuronales para identificar patrones térmicos complejos y predecir comportamientos energéticos.',
+    titleKey: 'areas.patterns.title',
+    descriptionKey: 'areas.patterns.description',
     iconName: 'BrainCircuit',
     imageUrl: 'pattern_recognition.webp',
   },
   {
     id: '3',
-    title: 'Energías Renovables',
-    description: 'Investigación en tecnologías de energía limpia, optimización de sistemas solares, eólicos y desarrollo de materiales para almacenamiento energético eficiente.',
+    titleKey: 'areas.renewable.title',
+    descriptionKey: 'areas.renewable.description',
     iconName: 'Lightbulb',
     imageUrl: 'renewable_energies.webp',
   },
   {
     id: '4',
-    title: 'Transferencia de Calor',
-    description: 'Estudio de mecanismos de conducción, convección y radiación térmica en sistemas complejos, con aplicaciones en refrigeración avanzada e intercambiadores.',
+    titleKey: 'areas.heat.title',
+    descriptionKey: 'areas.heat.description',
     iconName: 'Thermometer',
     imageUrl: 'heat_transfer.webp',
   },
@@ -46,6 +47,8 @@ const RESEARCH_AREAS: ResearchArea[] = [
 
 
 const Research: React.FC = () => {
+  const t = useTranslations('Research');
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -106,10 +109,10 @@ const Research: React.FC = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-5xl font-serif font-bold text-lab-white mb-4">
-            Áreas de <span className="text-lab-yellow">Investigación</span>
+            {t('title')} <span className="text-lab-yellow">{t('titleHighlight')}</span>
           </h2>
           <p className="text-lab-gray-400 max-w-2xl mx-auto">
-            Explorando los límites de la física y la computación para resolver los desafíos energéticos del mañana.
+            {t('subtitle')}
           </p>
         </motion.div>
 
@@ -153,10 +156,10 @@ const Research: React.FC = () => {
                       <IconComponent size={24} />
                     </div>
                     <h3 className="text-xl font-serif font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mb-2 leading-tight group-hover:text-lab-yellow transition-colors">
-                      {area.title}
+                      {t(area.titleKey)}
                     </h3>
                     <p className="text-sm text-lab-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 transform translate-y-2 group-hover:translate-y-0">
-                      {area.description}
+                      {t(area.descriptionKey)}
                     </p>
                   </div>
                 </div>

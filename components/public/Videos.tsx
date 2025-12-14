@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Play, X, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 interface Video {
   id: string;
@@ -15,6 +16,7 @@ interface Video {
 }
 
 export default function Videos() {
+  const t = useTranslations('Videos');
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
@@ -76,7 +78,7 @@ export default function Videos() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-5xl font-serif font-bold text-lab-white mb-4">
-            Videos <span className="text-lab-yellow">Educativos</span>
+            {t('title')} <span className="text-lab-yellow">{t('titleHighlight')}</span>
           </h2>
         </motion.div>
 
@@ -103,11 +105,11 @@ export default function Videos() {
                 🎬
               </motion.div>
             </div>
-            <h3 className="text-2xl font-bold text-lab-white mb-3">¡El canal está en modo buffer!</h3>
+            <h3 className="text-2xl font-bold text-lab-white mb-3">{t('emptyTitle')}</h3>
             <p className="text-lab-gray-400 text-center max-w-xl">
-              Los videos están cargando... o tal vez están en otro laboratorio.
+              {t('emptySubtitle')}
               <br />
-              <span className="text-lab-yellow">¡Vuelve pronto para ver contenido increíble! 🎥✨</span>
+              <span className="text-lab-yellow">{t('emptyDetail')}</span>
             </p>
           </motion.div>
         ) : (

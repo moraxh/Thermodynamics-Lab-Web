@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, MapPin, Clock, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useTranslations } from 'next-intl';
 
 interface Event {
   id: string;
@@ -18,20 +19,21 @@ interface Event {
   uploadedAt: string;
 }
 
-const EVENT_TYPE_LABELS: Record<string, string> = {
-  conference: 'Conferencia',
-  workshop: 'Taller',
-  seminar: 'Seminario',
-  lecture: 'Clase Magistral',
-  symposium: 'Simposio',
-  meeting: 'Reunión',
-  other: 'Otro',
-};
-
 export default function Events() {
+  const t = useTranslations('Events');
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  
+  const EVENT_TYPE_LABELS: Record<string, string> = {
+    conference: t('types.conference'),
+    workshop: t('types.workshop'),
+    seminar: t('types.seminar'),
+    lecture: t('types.lecture'),
+    symposium: t('types.symposium'),
+    meeting: t('types.meeting'),
+    other: t('types.other'),
+  };
 
   const EVENTS_PER_PAGE = 6;
 
@@ -99,7 +101,7 @@ export default function Events() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-5xl font-serif font-bold text-lab-white mb-4">
-            Próximos <span className="text-lab-yellow">Eventos</span>
+            {t('title')} <span className="text-lab-yellow">{t('titleHighlight')}</span>
           </h2>
         </motion.div>
 
@@ -124,11 +126,11 @@ export default function Events() {
                 📅
               </motion.div>
             </div>
-            <h3 className="text-2xl font-bold text-lab-white mb-3">¡Nada en el calendario!</h3>
+            <h3 className="text-2xl font-bold text-lab-white mb-3">{t('emptyTitle')}</h3>
             <p className="text-lab-gray-400 text-center max-w-xl">
-              Los eventos están en una superposición cuántica... o simplemente en planificación.
+              {t('emptySubtitle')}
               <br />
-              <span className="text-lab-yellow">¡Vuelve pronto para descubrir qué hay! 🎪✨</span>
+              <span className="text-lab-yellow">{t('emptyDetail')}</span>
             </p>
           </motion.div>
         ) : (
@@ -160,7 +162,7 @@ export default function Events() {
                           </span>
                           {isUpcoming(event.startDate, event.endDate) && (
                             <span className="inline-block px-3 py-1 text-xs font-bold text-green-400 bg-green-500/20 rounded border border-green-500/30">
-                              Próximo
+                              {t('upcoming')}
                             </span>
                           )}
                         </div>
@@ -206,7 +208,7 @@ export default function Events() {
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg font-medium shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all duration-300 group/btn whitespace-nowrap"
                           >
-                            <span>Más información</span>
+                            <span>{t('viewLink')}</span>
                             <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                           </a>
                         </div>

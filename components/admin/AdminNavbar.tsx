@@ -18,13 +18,13 @@ import ThemeToggle from '@/components/common/ThemeToggle';
 
 const navItems = [
   { href: '/admin', label: 'Dashboard', icon: Home },
-  { href: '/admin/members', label: 'Members', icon: Users },
-  { href: '/admin/gallery', label: 'Gallery', icon: ImageIcon },
-  { href: '/admin/publications', label: 'Publications', icon: FileText },
+  { href: '/admin/members', label: 'Miembros', icon: Users },
+  { href: '/admin/gallery', label: 'Galería', icon: ImageIcon },
+  { href: '/admin/publications', label: 'Publicaciones', icon: FileText },
   { href: '/admin/videos', label: 'Videos', icon: Video },
-  { href: '/admin/educational-material', label: 'Educational', icon: GraduationCap },
-  { href: '/admin/events', label: 'Events', icon: Calendar },
-  { href: '/admin/settings', label: 'Settings', icon: Settings },
+  { href: '/admin/educational-material', label: 'Material Educativo', icon: GraduationCap },
+  { href: '/admin/events', label: 'Eventos', icon: Calendar },
+  { href: '/admin/settings', label: 'Configuración', icon: Settings },
 ];
 
 export default function AdminNavbar() {
