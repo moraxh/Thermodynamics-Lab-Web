@@ -44,7 +44,7 @@ export default function NavBar() {
             <div className="relative h-16">
               {/* Glow effect - blurred duplicate */}
               <Image 
-                src="/assets/logos/logo.webp" 
+                src="/assets/logos/logo.png" 
                 alt="" 
                 width={64} 
                 height={64} 
@@ -54,7 +54,7 @@ export default function NavBar() {
               />
               {/* Main logo */}
               <Image 
-                src="/assets/logos/logo.webp" 
+                src="/assets/logos/logo.png" 
                 alt="Logo LISTER" 
                 width={64} 
                 height={64} 

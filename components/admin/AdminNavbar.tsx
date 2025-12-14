@@ -44,7 +44,7 @@ export default function AdminNavbar() {
             className="shrink-0 flex items-center gap-2 group py-3"
           >
             <Image 
-              src="/assets/logos/logo.webp" 
+              src="/assets/logos/logo.png" 
               alt="LISTER Logo" 
               width={40} 
               height={40} 

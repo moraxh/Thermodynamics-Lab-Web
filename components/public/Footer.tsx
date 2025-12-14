@@ -15,7 +15,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-8">
           <div className="flex items-center gap-2">
             <Image 
-              src="/assets/logos/logo.webp" 
+              src="/assets/logos/logo.png" 
               alt="Logo LISTER" 
               width={120} 
               height={40}

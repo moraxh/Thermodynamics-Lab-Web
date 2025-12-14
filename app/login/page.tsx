@@ -96,7 +96,7 @@ export default function LoginPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <Image 
-                src="/assets/logos/logo.webp" 
+                src="/assets/logos/logo.png" 
                 alt="LISTER Logo" 
                 width={80} 
                 height={80} 
