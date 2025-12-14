@@ -3,6 +3,7 @@ import { Lato, Montserrat } from 'next/font/google'
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeProvider";
 import AuthProvider from "@/components/providers/AuthProvider";
+import { Analytics } from "@vercel/analytics/next"
 
 export const lato = Lato({
   subsets: ['latin'],
@@ -57,6 +58,7 @@ export default function RootLayout({
         <AuthProvider>
           <ThemeProvider>
             {children}
+            <Analytics />
           </ThemeProvider>
         </AuthProvider>
       </body>
