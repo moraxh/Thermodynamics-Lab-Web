@@ -70,7 +70,7 @@ export default function NavBar() {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="relative uppercase px-2 py-1 text-lg font-medium text-lab-gray-400 hover:text-lab-white transition-colors group whitespace-nowrap"
+                  className="relative uppercase px-2 py-1 font-medium text-lab-gray-400 hover:text-lab-white transition-colors group whitespace-nowrap"
                 >
                   {link.name}
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-lab-yellow transition-all duration-300 group-hover:w-full"></span>

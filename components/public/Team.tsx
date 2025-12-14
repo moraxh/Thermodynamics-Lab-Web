@@ -53,13 +53,8 @@ export default function Team() {
     }
   };
 
-  // Si no hay miembros y no está cargando, no mostrar la sección
-  if (!loading && members.length === 0) {
-    return null;
-  }
-
   const itemsPerPage = 4;
-  const totalPages = Math.ceil(members.length / itemsPerPage);
+  const totalPages = members.length > 0 ? Math.ceil(members.length / itemsPerPage) : 1;
   
   const nextSlide = () => {
     setDirection(1);
@@ -75,6 +70,10 @@ export default function Team() {
     currentIndex * itemsPerPage,
     (currentIndex + 1) * itemsPerPage
   );
+
+  // Mostrar mensaje si no hay miembros
+  const showEmptyState = !loading && members.length === 0;
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -149,6 +148,30 @@ export default function Team() {
           <div className="flex items-center justify-center py-12">
             <div className="w-12 h-12 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
           </div>
+        ) : showEmptyState ? (
+          <motion.div 
+            className="flex flex-col items-center justify-center py-20 px-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="relative mb-6">
+              <UserX className="w-24 h-24 text-lab-gray-400" />
+              <motion.div
+                className="absolute -right-2 -top-2 w-8 h-8 bg-lab-yellow rounded-full flex items-center justify-center text-lab-black text-xl font-bold"
+                animate={{ rotate: [0, 10, -10, 10, 0] }}
+                transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+              >
+                ?
+              </motion.div>
+            </div>
+            <h3 className="text-2xl font-bold text-lab-white mb-3">¡Aquí no hay nadie!</h3>
+            <p className="text-lab-gray-400 text-center max-w-md">
+              Parece que el equipo está en una dimensión paralela investigando.
+              <br />
+              <span className="text-lab-blue">O quizás están tomando café... ☕</span>
+            </p>
+          </motion.div>
         ) : (
           <div className="relative">
             {/* Navigation Buttons */}
