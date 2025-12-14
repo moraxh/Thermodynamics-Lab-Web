@@ -9,8 +9,15 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'picsum.photos'
+      },
+      {
+        protocol: 'https',
+        hostname: 'ugaxjotnixozmgazlzdu.supabase.co',
+        pathname: '/storage/v1/object/public/**'
       }
-    ]
+    ],
+    // Si quieres permitir cualquier dominio (menos seguro):
+    // unoptimized: true
   }
 };
 

@@ -9,6 +9,11 @@ const envSchema = z.object({
   // Database
   DATABASE_URL: z.string().url('DATABASE_URL debe ser una URL válida de PostgreSQL'),
 
+  // Supabase
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url('NEXT_PUBLIC_SUPABASE_URL debe ser una URL válida'),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1, 'NEXT_PUBLIC_SUPABASE_ANON_KEY es requerida'),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1, 'SUPABASE_SERVICE_ROLE_KEY es requerida'),
+
   // NextAuth
   AUTH_SECRET: z
     .string()
@@ -27,6 +32,9 @@ const parseEnv = () => {
   try {
     return envSchema.parse({
       DATABASE_URL: process.env.DATABASE_URL,
+      NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
       AUTH_SECRET: process.env.AUTH_SECRET,
       AUTH_URL: process.env.AUTH_URL,
       NODE_ENV: process.env.NODE_ENV,

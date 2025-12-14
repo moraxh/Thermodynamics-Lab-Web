@@ -124,8 +124,8 @@ export default function EventsPage() {
       setStartDate(undefined);
       setEndDate(undefined);
       setIsSameDay(true);
-      setStartTime('');
-      setEndTime('');
+      setStartTime('09:00');
+      setEndTime('10:00');
       setLocation('');
       setLink('');
     }
@@ -141,8 +141,8 @@ export default function EventsPage() {
     setStartDate(undefined);
     setEndDate(undefined);
     setIsSameDay(true);
-    setStartTime('');
-    setEndTime('');
+    setStartTime('09:00');
+    setEndTime('10:00');
     setLocation('');
     setLink('');
   };

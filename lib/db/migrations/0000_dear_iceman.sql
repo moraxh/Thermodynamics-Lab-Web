@@ -1,17 +1,4 @@
 CREATE TYPE "public"."publication_type" AS ENUM('article', 'book', 'thesis', 'technical_report', 'monograph', 'other');--> statement-breakpoint
-CREATE TABLE "articles" (
-	"id" varchar(255) PRIMARY KEY NOT NULL,
-	"title" text NOT NULL,
-	"description" text NOT NULL,
-	"authors" json NOT NULL,
-	"publication_date" timestamp NOT NULL,
-	"file_path" text NOT NULL,
-	"thumbnail_path" text,
-	CONSTRAINT "articles_title_unique" UNIQUE("title"),
-	CONSTRAINT "articles_file_path_unique" UNIQUE("file_path"),
-	CONSTRAINT "articles_thumbnail_path_unique" UNIQUE("thumbnail_path")
-);
---> statement-breakpoint
 CREATE TABLE "educational_material" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
@@ -27,7 +14,8 @@ CREATE TABLE "events" (
 	"title" text NOT NULL,
 	"description" text NOT NULL,
 	"type_of_event" varchar(255) NOT NULL,
-	"event_date" date NOT NULL,
+	"start_date" date NOT NULL,
+	"end_date" date,
 	"start_time" time NOT NULL,
 	"end_time" time NOT NULL,
 	"location" text NOT NULL,
@@ -57,11 +45,9 @@ CREATE TABLE "publications" (
 	"type" "publication_type" DEFAULT 'other' NOT NULL,
 	"authors" json NOT NULL,
 	"publication_date" timestamp NOT NULL,
-	"file_path" text NOT NULL,
-	"thumbnail_path" text,
-	CONSTRAINT "publications_title_unique" UNIQUE("title"),
-	CONSTRAINT "publications_file_path_unique" UNIQUE("file_path"),
-	CONSTRAINT "publications_thumbnail_path_unique" UNIQUE("thumbnail_path")
+	"file_path" text,
+	"link" text,
+	CONSTRAINT "publications_title_unique" UNIQUE("title")
 );
 --> statement-breakpoint
 CREATE TABLE "sessions" (
