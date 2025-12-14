@@ -35,7 +35,7 @@ export default function NavBar() {
   ];
 
   return (
-    <nav className={`fixed top-0 py-3 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-lab-black/40 backdrop-blur-md border-b border-lab-white/10' : 'bg-transparent border-b border-transparent'}`}>
+    <nav className={`fixed top-0 py-3 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-lab-black/70 backdrop-blur-md border-b border-lab-white/10' : 'bg-transparent border-b border-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
