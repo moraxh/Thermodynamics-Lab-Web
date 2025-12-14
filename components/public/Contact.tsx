@@ -80,46 +80,52 @@ export default function Contact() {
             <motion.div 
               variants={itemVariants}
               whileHover={{ y: -5, scale: 1.02 }}
-              className="flex flex-col items-center text-center gap-4 p-6 rounded-xl bg-lab-gray-200/50 border border-lab-white/5 hover:border-lab-blue/30 transition-colors"
+              className="flex flex-col p-6 rounded-xl bg-lab-gray-200/50 border border-lab-white/5 hover:border-lab-blue/30 transition-colors"
             >
-              <div className="w-14 h-14 rounded-full bg-lab-blue/10 flex items-center justify-center text-lab-blue">
-                <MapPin size={24} />
-              </div>
-              <div>
-                <h4 className="text-lab-white font-bold mb-2">{t('addressTitle')}</h4>
-                <p className="text-lab-gray-400 text-sm">
-                  {CONTACT_INFO.address.line1}<br/>
-                  {CONTACT_INFO.address.line2}<br/>
-                  <span className="text-lab-blue text-xs mt-1 inline-block">{CONTACT_INFO.address.line3}</span>
-                </p>
+              <div className="flex flex-col items-center text-center gap-3 flex-1">
+                <div className="w-14 h-14 rounded-full bg-lab-blue/10 flex items-center justify-center text-lab-blue flex-shrink-0">
+                  <MapPin size={24} />
+                </div>
+                <div className="flex-1 flex flex-col">
+                  <h4 className="text-lab-white font-bold mb-2">{t('addressTitle')}</h4>
+                  <p className="text-lab-gray-400 text-sm">
+                    {CONTACT_INFO.address.line1}<br/>
+                    {CONTACT_INFO.address.line2}<br/>
+                    <span className="text-lab-blue text-xs mt-1 inline-block">{CONTACT_INFO.address.line3}</span>
+                  </p>
+                </div>
               </div>
             </motion.div>
 
             <motion.div 
               variants={itemVariants}
               whileHover={{ y: -5, scale: 1.02 }}
-              className="flex flex-col items-center text-center gap-4 p-6 rounded-xl bg-lab-gray-200/50 border border-lab-white/5 hover:border-lab-blue/30 transition-colors"
+              className="flex flex-col p-6 rounded-xl bg-lab-gray-200/50 border border-lab-white/5 hover:border-lab-blue/30 transition-colors"
             >
-              <div className="w-14 h-14 rounded-full bg-lab-blue/10 flex items-center justify-center text-lab-blue">
-                <Mail size={24} />
-              </div>
-              <div>
-                <h4 className="text-lab-white font-bold mb-2">{t('emailTitle')}</h4>
-                <p className="text-lab-gray-400 text-sm">{CONTACT_INFO.emails.general}<br/>{CONTACT_INFO.emails.research}</p>
+              <div className="flex flex-col items-center text-center gap-3 flex-1">
+                <div className="w-14 h-14 rounded-full bg-lab-blue/10 flex items-center justify-center text-lab-blue flex-shrink-0">
+                  <Mail size={24} />
+                </div>
+                <div className="flex-1 flex flex-col">
+                  <h4 className="text-lab-white font-bold mb-2">{t('emailTitle')}</h4>
+                  <p className="text-lab-gray-400 text-sm break-all">{CONTACT_INFO.emails.general}<br/>{CONTACT_INFO.emails.research}</p>
+                </div>
               </div>
             </motion.div>
 
             <motion.div 
               variants={itemVariants}
               whileHover={{ y: -5, scale: 1.02 }}
-              className="flex flex-col items-center text-center gap-4 p-6 rounded-xl bg-lab-gray-200/50 border border-lab-white/5 hover:border-lab-blue/30 transition-colors"
+              className="flex flex-col p-6 rounded-xl bg-lab-gray-200/50 border border-lab-white/5 hover:border-lab-blue/30 transition-colors"
             >
-              <div className="w-14 h-14 rounded-full bg-lab-blue/10 flex items-center justify-center text-lab-blue">
-                <Phone size={24} />
-              </div>
-              <div>
-                <h4 className="text-lab-white font-bold mb-2">{t('phoneTitle')}</h4>
-                <p className="text-lab-gray-400 text-sm">{CONTACT_INFO.phones.main}<br/>{CONTACT_INFO.phones.secondary}</p>
+              <div className="flex flex-col items-center text-center gap-3 flex-1">
+                <div className="w-14 h-14 rounded-full bg-lab-blue/10 flex items-center justify-center text-lab-blue flex-shrink-0">
+                  <Phone size={24} />
+                </div>
+                <div className="flex-1 flex flex-col">
+                  <h4 className="text-lab-white font-bold mb-2">{t('phoneTitle')}</h4>
+                  <p className="text-lab-gray-400 text-sm">{CONTACT_INFO.phones.main}<br/>{CONTACT_INFO.phones.secondary}</p>
+                </div>
               </div>
             </motion.div>
           </motion.div>
