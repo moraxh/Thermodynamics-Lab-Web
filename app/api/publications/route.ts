@@ -53,14 +53,6 @@ export async function POST(request: NextRequest) {
       filePath = result.path;
     }
 
-    let thumbnailPath: string | undefined;
-    if (files.thumbnail) {
-      const { path } = await handleFileUpload(files.thumbnail, {
-        allowedTypes: ['image/jpeg', 'image/png', 'image/webp'],
-      });
-      thumbnailPath = path;
-    }
-
     const pubId = nanoid();
     const [newPublication] = await db
       .insert(publications)
@@ -72,7 +64,6 @@ export async function POST(request: NextRequest) {
         authors: (Array.isArray(authors) ? authors : [authors]) as string[],
         publicationDate: new Date(publicationDate as string),
         filePath,
-        thumbnailPath,
         link: link as string | undefined,
       })
       .returning();
@@ -109,13 +100,6 @@ export async function PUT(request: NextRequest) {
         allowedTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
       });
       updateData.filePath = filePath;
-    }
-
-    if (files.thumbnail) {
-      const { path } = await handleFileUpload(files.thumbnail, {
-        allowedTypes: ['image/jpeg', 'image/png', 'image/webp'],
-      });
-      updateData.thumbnailPath = path;
     }
 
     const [updated] = await db

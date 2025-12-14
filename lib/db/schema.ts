@@ -52,7 +52,6 @@ export const publications = pgTable('publications', {
   authors: json('authors').notNull().$type<string[]>(),
   publicationDate: timestamp('publication_date', { mode: 'date' }).notNull(),
   filePath: text('file_path'),
-  thumbnailPath: text('thumbnail_path'),
   link: text('link'),
 });
 

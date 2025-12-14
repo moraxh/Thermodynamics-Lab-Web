@@ -46,7 +46,6 @@ interface Publication {
   authors: string[];
   publicationDate: string;
   filePath: string | null;
-  thumbnailPath: string | null;
   link: string | null;
 }
 
@@ -76,7 +75,6 @@ export default function PublicationsPage() {
   const [publicationDate, setPublicationDate] = useState<Date | undefined>(undefined);
   const [link, setLink] = useState('');
   const [file, setFile] = useState<File | null>(null);
-  const [thumbnail, setThumbnail] = useState<File | null>(null);
 
   useEffect(() => {
     fetchPublications();
@@ -115,7 +113,6 @@ export default function PublicationsPage() {
       setPublicationDate(undefined);
       setLink('');
       setFile(null);
-      setThumbnail(null);
     }
     setDialogOpen(true);
   };
@@ -130,7 +127,6 @@ export default function PublicationsPage() {
     setPublicationDate(undefined);
     setLink('');
     setFile(null);
-    setThumbnail(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -157,7 +153,6 @@ export default function PublicationsPage() {
       formData.append('publicationDate', publicationDate.toISOString());
       if (link) formData.append('link', link);
       if (file) formData.append('file', file);
-      if (thumbnail) formData.append('thumbnail', thumbnail);
 
       const url = '/api/publications';
       const method = editingPublication ? 'PUT' : 'POST';
@@ -255,7 +250,7 @@ export default function PublicationsPage() {
 
       {/* Stats Card */}
       <Card className="bg-lab-gray-100/50 border-lab-white/10">
-        <CardContent className="pt-6">
+        <CardContent>
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-lab-gray-400 mb-1">Total de Publicaciones</p>
@@ -498,17 +493,6 @@ export default function PublicationsPage() {
                 <p className="text-xs text-lab-gray-400 mt-1">
                   {editingPublication ? 'Opcional: subir nuevo archivo' : 'Opcional si proporcionas un enlace'}
                 </p>
-              </Field>
-
-              <Field>
-                <Label className="text-lab-white">Miniatura</Label>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setThumbnail(e.target.files?.[0] || null)}
-                  className="bg-lab-gray-200/50 border-lab-white/10 text-lab-white py-0 file:mr-4 file:py-2 file:px-4 file:h-auto file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-500/20 file:text-blue-400 hover:file:bg-blue-500/30 cursor-pointer"
-                />
-                <p className="text-xs text-lab-gray-400 mt-1">Opcional: imagen representativa</p>
               </Field>
             </FieldGroup>
 
