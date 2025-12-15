@@ -1,0 +1,49 @@
+[
+  {
+    "id": "pub-1",
+    "title": "Análisis Termodinámico de Sistemas de Refrigeración",
+    "description": "Estudio detallado sobre la eficiencia de sistemas de refrigeración modernos utilizando análisis termodinámico avanzado.",
+    "type": "article",
+    "authors": [
+      "Dr. Juan García Martínez",
+      "Dra. María Elena Rodríguez"
+    ],
+    "publicationDate": "2024-03-15T00:00:00.000Z",
+    "filePath": "/uploads/publications/termodinamica-basica.pdf"
+  },
+  {
+    "id": "pub-2",
+    "title": "Transferencia de Calor en Intercambiadores de Flujo Cruzado",
+    "description": "Investigación experimental sobre la mejora de la transferencia de calor en intercambiadores de calor de flujo cruzado.",
+    "type": "article",
+    "authors": [
+      "Dr. Carlos Alberto Pérez",
+      "Luis Enrique Rocha Soto"
+    ],
+    "publicationDate": "2024-05-20T00:00:00.000Z",
+    "filePath": "/uploads/publications/transferencia-calor.pdf"
+  },
+  {
+    "id": "dev-pub-1",
+    "title": "Publicación de Prueba 1",
+    "description": "Esta es una publicación de prueba para el ambiente de desarrollo.",
+    "type": "article",
+    "authors": [
+      "Test Author 1",
+      "Test Author 2"
+    ],
+    "publicationDate": "2024-06-01T00:00:00.000Z",
+    "link": "https://example.com/test-publication-1"
+  },
+  {
+    "id": "dev-pub-2",
+    "title": "Tesis de Prueba - Sistemas Térmicos",
+    "description": "Tesis de prueba sobre sistemas térmicos avanzados.",
+    "type": "thesis",
+    "authors": [
+      "Estudiante de Prueba"
+    ],
+    "publicationDate": "2024-07-15T00:00:00.000Z",
+    "filePath": "/uploads/publications/test-thesis.pdf"
+  }
+]

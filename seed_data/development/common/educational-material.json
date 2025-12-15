@@ -1,0 +1,23 @@
+[
+  {
+    "id": "edu-1",
+    "title": "Manual de Prácticas de Laboratorio",
+    "description": "Guía completa de prácticas experimentales para el curso de termodinámica aplicada.",
+    "filePath": "/uploads/educational/manual-practicas-2024.pdf",
+    "uploadedAt": "2024-01-10T00:00:00.000Z"
+  },
+  {
+    "id": "edu-2",
+    "title": "Formulario de Termodinámica",
+    "description": "Compendio de fórmulas y ecuaciones fundamentales de termodinámica.",
+    "filePath": "/uploads/educational/formulario-termodinamica.pdf",
+    "uploadedAt": "2024-02-05T00:00:00.000Z"
+  },
+  {
+    "id": "dev-edu-1",
+    "title": "Material Educativo de Prueba",
+    "description": "Documento de prueba para el ambiente de desarrollo.",
+    "filePath": "/uploads/educational/test-material.pdf",
+    "uploadedAt": "2024-06-10T00:00:00.000Z"
+  }
+]

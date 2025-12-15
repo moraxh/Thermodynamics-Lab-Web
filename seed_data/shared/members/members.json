@@ -1,0 +1,86 @@
+[
+  {
+    "id": "member-1",
+    "fullName": "Juan Luis Bautista López",
+    "position": "Maestro en Ingenieria Mecánica",
+    "typeOfMember": "Colaborador",
+    "photo": "/uploads/members/juan_luis_bautista_lópez.png"
+  },
+  {
+    "id": "member-2",
+    "fullName": "Carlos Arturo Rabago Rubio ",
+    "position": "Estudiante de Ingenieria Mecánica",
+    "typeOfMember": "Miembro",
+    "photo": "/uploads/members/carlos_arturo_rabago_rubio.png"
+  },
+  {
+    "id": "member-3",
+    "fullName": "Luis Enrique Rocha Soto",
+    "position": "Estudiante de Doctorado en Mecánica",
+    "typeOfMember": "Miembro",
+    "photo": "/uploads/members/luis_enrique_rocha_soto.png"
+  },
+  {
+    "id": "member-4",
+    "fullName": "Cecilia Guadalupe López Barboza",
+    "position": "Estudiante de Ingenieria Mecánica",
+    "typeOfMember": "Miembro",
+    "photo": "/uploads/members/cecilia_guadalupe_lópez_barboza.png"
+  },
+  {
+    "id": "member-5",
+    "fullName": "Fatima Alejandra Zaragoza Gallaga",
+    "position": "Estudiante de Ingenieria Mecánica",
+    "typeOfMember": "Miembro",
+    "photo": "/uploads/members/fatima_alejandra_zaragoza_gallaga.png"
+  },
+  {
+    "id": "member-6",
+    "fullName": "Lia Azeneth Herrera Noria",
+    "position": "Estudiante de Ingenieria Mecánica",
+    "typeOfMember": "Miembro",
+    "photo": "/uploads/members/lia_azeneth_herrera_noria.png"
+  },
+  {
+    "id": "member-7",
+    "fullName": "Carlos Daniel López Chávez",
+    "position": "Estudiante de Ingenieria Mecánica",
+    "typeOfMember": "Miembro",
+    "photo": "/uploads/members/carlos_daniel_lópez_chávez.png"
+  },
+  {
+    "id": "member-8",
+    "fullName": "Pedro Razo Rosiles",
+    "position": "Estudiante de Ingenieria Mecánica",
+    "typeOfMember": "Miembro",
+    "photo": "/uploads/members/pedro_razo_rosiles.png"
+  },
+  {
+    "id": "member-9",
+    "fullName": "Juan Carlos Ramirez Troncoso",
+    "position": "Estudiante de Ingenieria Mecánica",
+    "typeOfMember": "Miembro",
+    "photo": "/uploads/members/juan_carlos_ramirez_troncoso.png"
+  },
+  {
+    "id": "member-10",
+    "fullName": "Cristopher Demian García Obregón",
+    "position": "Estudiante de Ingenieria Mecánica",
+    "typeOfMember": "Miembro",
+    "photo": "/uploads/members/cristopher_demian_garcía_obregón.png"
+  },
+  {
+    "id": "member-11",
+    "fullName": "Luis Alfredo Negrete Fuentes",
+    "position": "Estudiante de Ingenieria Mecánica",
+    "typeOfMember": "Miembro",
+    "photo": "/uploads/members/luis_alfredo_negrete_fuentes.png"
+  },
+  {
+    "id": "member-12",
+    "fullName": "Aranza de Guadalupe Miravalles Mares",
+    "position": "Estudiante de Licenciatura en Artes Digitales",
+    "typeOfMember": "Miembro",
+    "photo": "/uploads/members/aranza_de_guadalupe_miravalles_mares.png"
+  }
+]

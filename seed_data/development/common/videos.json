@@ -1,0 +1,26 @@
+[
+  {
+    "id": "video-1",
+    "title": "Introducción a la Termodinámica Básica",
+    "description": "Video tutorial que explica los conceptos fundamentales de la termodinámica para estudiantes de ingeniería.",
+    "thumbnailPath": "/uploads/videos/intro-termo-thumb.webp",
+    "videoPath": "/uploads/videos/intro-termodinamica.mp4",
+    "uploadedAt": "2024-02-10T00:00:00.000Z"
+  },
+  {
+    "id": "video-2",
+    "title": "Experimento: Ciclo de Carnot",
+    "description": "Demostración práctica del ciclo de Carnot en el laboratorio.",
+    "thumbnailPath": "/uploads/videos/experimento-carnot-thumb.webp",
+    "videoPath": "/uploads/videos/experimento-carnot.mp4",
+    "uploadedAt": "2024-04-15T00:00:00.000Z"
+  },
+  {
+    "id": "dev-video-1",
+    "title": "Video de Prueba - Experimento 1",
+    "description": "Video de prueba para desarrollo mostrando un experimento básico.",
+    "thumbnailPath": "/uploads/videos/webp (5).webp",
+    "videoPath": "/uploads/videos/mp4 (3).mp4",
+    "uploadedAt": "2024-06-05T00:00:00.000Z"
+  }
+]

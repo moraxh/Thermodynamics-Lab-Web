@@ -134,8 +134,7 @@ export default function Team() {
         <motion.div 
           className="text-center mb-16"
           initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-5xl font-serif font-bold text-lab-white mb-4">
@@ -198,7 +197,7 @@ export default function Team() {
 
             {/* Carousel Container */}
             <div className="overflow-hidden py-4">
-              <AnimatePresence initial={false} custom={direction} mode="wait">
+              <AnimatePresence initial={false} custom={direction} mode="popLayout">
                 <motion.div
                   key={currentIndex}
                   custom={direction}
@@ -207,8 +206,8 @@ export default function Team() {
                   animate="center"
                   exit="exit"
                   transition={{
-                    x: { type: "spring", stiffness: 300, damping: 30 },
-                    opacity: { duration: 0.2 }
+                    duration: 0.3,
+                    ease: "easeInOut"
                   }}
                   className="flex justify-center px-4"
                 >
@@ -223,9 +222,9 @@ export default function Team() {
                     <motion.div
                       key={member.id}
                       className="group relative"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.2 }}
                       whileHover={{ 
                         scale: 1.05,
                         rotateY: 5,
@@ -251,7 +250,9 @@ export default function Team() {
                               alt={member.fullName}
                               width={400}
                               height={400}
-                              className="w-full h-full object-cover filter grayscale contrast-125 group-hover:grayscale-0 transition-all duration-500"
+                              className="w-full h-full object-cover transition-all duration-500"
+                              priority={currentIndex === 0}
+                              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                             />
                           ) : (
                             <div className="w-full h-full bg-lab-gray-300/50 flex items-center justify-center">

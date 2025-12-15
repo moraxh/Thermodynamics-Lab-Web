@@ -1,0 +1,40 @@
+[
+  {
+    "id": "event-1",
+    "title": "Simposio Internacional de Termodinámica",
+    "description": "Evento académico donde se presentarán los últimos avances en investigación termodinámica.",
+    "typeOfEvent": "Conferencia",
+    "startDate": "2024-11-15",
+    "endDate": "2024-11-17",
+    "startTime": "09:00:00",
+    "endTime": "18:00:00",
+    "location": "Auditorio Principal, Campus Universitario",
+    "link": "https://example.com/events/symposium-2024",
+    "uploadedAt": "2024-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "event-2",
+    "title": "Taller de Análisis de Sistemas Térmicos",
+    "description": "Taller práctico sobre metodologías de análisis y optimización de sistemas térmicos.",
+    "typeOfEvent": "Taller",
+    "startDate": "2024-12-10",
+    "endDate": "2024-12-10",
+    "startTime": "10:00:00",
+    "endTime": "14:00:00",
+    "location": "Laboratorio de Termodinámica",
+    "uploadedAt": "2024-10-15T00:00:00.000Z"
+  },
+  {
+    "id": "dev-event-1",
+    "title": "Evento de Prueba - Seminario",
+    "description": "Evento de prueba para el ambiente de desarrollo.",
+    "typeOfEvent": "Seminario",
+    "startDate": "2025-01-20",
+    "endDate": "2025-01-20",
+    "startTime": "15:00:00",
+    "endTime": "17:00:00",
+    "location": "Sala de Conferencias Virtual",
+    "link": "https://example.com/test-seminar",
+    "uploadedAt": "2024-12-01T00:00:00.000Z"
+  }
+]

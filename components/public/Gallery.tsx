@@ -78,8 +78,7 @@ export default function Gallery() {
         <motion.div 
           className="text-center mb-16"
           initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           {loading ? (
@@ -158,8 +157,10 @@ export default function Gallery() {
                       src={images[imageIndex].path}
                       alt={`Imagen de galería ${imageIndex + 1}`}
                       fill
-                      className="object-cover transition-all duration-700 grayscale group-hover:grayscale-0 pointer-events-none"
+                      className="object-cover transition-all duration-700 pointer-events-none"
                       onClick={() => setLightboxImage(images[imageIndex])}
+                      priority
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                     />
                     
                     {/* Corner Accents */}
@@ -195,8 +196,7 @@ export default function Gallery() {
                 <motion.div 
                   className="mt-6 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4"
                   initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.4 }}
                 >
                   {images.map((image, index) => (
@@ -216,6 +216,8 @@ export default function Gallery() {
                         alt={`Miniatura ${index + 1}`}
                         fill
                         className="object-cover"
+                        sizes="(max-width: 768px) 33vw, (max-width: 1024px) 16vw, 150px"
+                        loading="lazy"
                       />
                     </motion.button>
                   ))}
@@ -277,6 +279,8 @@ export default function Gallery() {
                 alt={`Imagen de galería`}
                 fill
                 className="object-contain"
+                sizes="100vw"
+                priority
               />
             </motion.div>
           </motion.div>

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "gallery-1",
+    "path": "/uploads/gallery/IMG_1508.webp",
+    "uploadedAt": "2024-01-15T10:00:00.000Z"
+  },
+  {
+    "id": "gallery-2",
+    "path": "/uploads/gallery/IMG_1511.webp",
+    "uploadedAt": "2024-02-20T14:30:00.000Z"
+  },
+  {
+    "id": "gallery-3",
+    "path": "/uploads/gallery/IMG_1512.webp",
+    "uploadedAt": "2024-03-10T09:15:00.000Z"
+  },
+  {
+    "id": "gallery-4",
+    "path": "/uploads/gallery/IMG_1515.webp",
+    "uploadedAt": "2024-04-05T11:45:00.000Z"
+  },
+  {
+    "id": "gallery-5",
+    "path": "/uploads/gallery/IMG_1516.webp",
+    "uploadedAt": "2024-05-10T10:00:00.000Z"
+  },
+  {
+    "id": "gallery-6",
+    "path": "/uploads/gallery/IMG_1526.webp",
+    "uploadedAt": "2024-06-01T00:00:00.000Z"
+  }
+]
