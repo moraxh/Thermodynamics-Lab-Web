@@ -31,6 +31,7 @@ export default function Team() {
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     fetchMembers();
@@ -59,11 +60,15 @@ export default function Team() {
   const totalPages = members.length > 0 ? Math.ceil(members.length / itemsPerPage) : 1;
   
   const nextSlide = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
     setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % totalPages);
   };
 
   const prevSlide = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
     setDirection(-1);
     setCurrentIndex((prev) => (prev - 1 + totalPages) % totalPages);
   };
@@ -180,14 +185,16 @@ export default function Team() {
               <>
                 <button
                   onClick={prevSlide}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-lab-blue/20 hover:bg-lab-blue/40 text-lab-white p-3 rounded-full backdrop-blur-sm border border-lab-blue/50 transition-all hover:scale-110"
+                  disabled={isAnimating}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-lab-blue/20 hover:bg-lab-blue/40 text-lab-white p-3 rounded-full backdrop-blur-sm border border-lab-blue/50 transition-all hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                   aria-label={t('previous')}
                 >
                   <ChevronLeft className="w-6 h-6" />
                 </button>
                 <button
                   onClick={nextSlide}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-lab-blue/20 hover:bg-lab-blue/40 text-lab-white p-3 rounded-full backdrop-blur-sm border border-lab-blue/50 transition-all hover:scale-110"
+                  disabled={isAnimating}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-lab-blue/20 hover:bg-lab-blue/40 text-lab-white p-3 rounded-full backdrop-blur-sm border border-lab-blue/50 transition-all hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                   aria-label={t('next')}
                 >
                   <ChevronRight className="w-6 h-6" />
@@ -197,7 +204,7 @@ export default function Team() {
 
             {/* Carousel Container */}
             <div className="overflow-hidden py-4">
-              <AnimatePresence initial={false} custom={direction} mode="popLayout">
+              <AnimatePresence initial={false} custom={direction} mode="popLayout" onExitComplete={() => setIsAnimating(false)}>
                 <motion.div
                   key={currentIndex}
                   custom={direction}
