@@ -4,6 +4,20 @@ import { MapPin, Phone, Mail } from 'lucide-react';
 import { CONTACT_INFO } from '@lib/constants';
 import { motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
+
+// Carga dinámica del mapa para evitar problemas de SSR
+const MapComponent = dynamic(() => import('./MapComponent'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center bg-lab-gray-200">
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-12 h-12 border-4 border-lab-blue/30 border-t-lab-blue rounded-full animate-spin" />
+        <p className="text-lab-gray-400 text-sm">Cargando mapa...</p>
+      </div>
+    </div>
+  ),
+});
 
 export default function Contact() {
   const t = useTranslations('Contact');
@@ -50,7 +64,7 @@ export default function Contact() {
 
         {/* Info & Visual Map */}
         <div className="max-w-4xl mx-auto">
-          {/* Google Maps */}
+          {/* Interactive Map */}
           <motion.div 
             className="relative h-80 w-full rounded-xl overflow-hidden bg-lab-black border border-lab-white/10 mb-12 group"
             initial={{ opacity: 0, scale: 0.95 }}
@@ -58,15 +72,7 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <iframe
-              src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3733.5!2d${CONTACT_INFO.address.coordinates.lon}!3d${CONTACT_INFO.address.coordinates.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjDCsDMwJzI2LjMiTiAxMDHCsDExJzM2LjAiVw!5e0!3m2!1ses!2smx!4v1234567890`}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+            <MapComponent />
           </motion.div>
 
           {/* Contact Info Grid */}
