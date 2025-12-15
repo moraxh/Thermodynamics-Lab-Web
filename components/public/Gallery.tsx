@@ -194,7 +194,7 @@ export default function Gallery() {
               {/* Thumbnails */}
               {images.length > 1 && (
                 <motion.div 
-                  className="mt-6 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4"
+                  className="mt-6 flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-lab-gray-400 scrollbar-track-lab-gray-200"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.4 }}
@@ -203,7 +203,7 @@ export default function Gallery() {
                     <motion.button
                       key={image.id}
                       onClick={() => goToSlide(index)}
-                      className={`relative aspect-square overflow-hidden rounded-lg border-2 transition-all duration-300 ${
+                      className={`relative flex-shrink-0 w-24 h-24 overflow-hidden rounded-lg border-2 transition-all duration-300 ${
                         index === imageIndex
                           ? 'border-lab-yellow shadow-[0_0_15px_rgb(246_195_8/0.5)]'
                           : 'border-lab-white/10 hover:border-lab-blue/50 opacity-60 hover:opacity-100'
@@ -216,7 +216,7 @@ export default function Gallery() {
                         alt={`Miniatura ${index + 1}`}
                         fill
                         className="object-cover"
-                        sizes="(max-width: 768px) 33vw, (max-width: 1024px) 16vw, 150px"
+                        sizes="96px"
                         loading="lazy"
                       />
                     </motion.button>

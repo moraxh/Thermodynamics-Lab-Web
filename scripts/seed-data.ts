@@ -40,6 +40,35 @@ interface SeedRecord {
 type DbInstance = PostgresJsDatabase<Record<string, never>>;
 
 /**
+ * Sanitiza el nombre del archivo para Supabase Storage
+ * Remueve acentos y caracteres especiales
+ */
+function sanitizeFileName(fileName: string): string {
+  return fileName
+    .normalize('NFD') // Descomponer caracteres con acento
+    .replace(/[\u0300-\u036f]/g, '') // Remover marcas diacríticas
+    .replace(/ñ/g, 'n')
+    .replace(/Ñ/g, 'N')
+    .replace(/[^a-zA-Z0-9._-]/g, '_') // Reemplazar caracteres especiales con _
+    .replace(/_+/g, '_') // Reemplazar múltiples _ con uno solo
+    .toLowerCase();
+}
+
+/**
+ * Determina el bucket correcto según el tipo de archivo
+ */
+function getBucketName(filePath: string): string {
+  const ext = filePath.split('.').pop()?.toLowerCase();
+  
+  // Mapear extensiones a buckets
+  if (ext === 'pdf') return 'documents';
+  if (['mp4', 'webm', 'mov'].includes(ext || '')) return 'videos';
+  if (['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(ext || '')) return 'images';
+  
+  return 'documents'; // Default
+}
+
+/**
  * Sube un archivo a Supabase Storage
  */
 async function uploadToSupabase(localPath: string, remotePath: string): Promise<boolean> {
@@ -49,16 +78,22 @@ async function uploadToSupabase(localPath: string, remotePath: string): Promise<
   }
 
   try {
+    const bucket = getBucketName(localPath);
     const fileBuffer = readFileSync(localPath);
+    
+    // Extraer solo el nombre del archivo, sin la ruta uploads/tipo/
+    const originalFileName = remotePath.split('/').pop() || remotePath;
+    const sanitizedFileName = sanitizeFileName(originalFileName);
+    
     const { error } = await supabaseAdmin.storage
-      .from('uploads')
-      .upload(remotePath, fileBuffer, {
+      .from(bucket)
+      .upload(sanitizedFileName, fileBuffer, {
         contentType: getContentType(localPath),
         upsert: true,
       });
 
     if (error) {
-      console.error(`  ❌ Error subiendo a Supabase: ${error.message}`);
+      console.error(`  ❌ Error subiendo a Supabase (${bucket}): ${error.message}`);
       return false;
     }
     return true;
@@ -338,8 +373,25 @@ async function seedMembers(db: DbInstance, environment: Environment) {
   }
 
   try {
+    // En producción, sanitizar nombres de archivos en las rutas
+    const isProduction = environment === 'production';
+    const processedData = isProduction ? data.map(item => {
+      if (item.photo && typeof item.photo === 'string') {
+        const parts = item.photo.split('/');
+        const fileName = parts.pop() || '';
+        const sanitized = sanitizeFileName(fileName);
+        // Cambiar la ruta para que apunte a Supabase Storage
+        const bucket = getBucketName(fileName);
+        return {
+          ...item,
+          photo: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`
+        };
+      }
+      return item;
+    }) : data;
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await db.insert(members).values(data as any);
+    await db.insert(members).values(processedData as any);
     console.log(`✅ Sembrados ${data.length} members`);
   } catch (error) {
     console.error('❌ Error al sembrar members:', error);
@@ -359,11 +411,24 @@ async function seedGallery(db: DbInstance, environment: Environment) {
   }
 
   try {
+    const isProduction = environment === 'production';
     // Asegurar que las fechas se procesen correctamente
-    const processedData = data.map(item => ({
-      ...item,
-      uploadedAt: item.uploadedAt ? new Date(item.uploadedAt as string | number | Date) : new Date(),
-    }));
+    const processedData = data.map(item => {
+      let path = item.path as string;
+      
+      if (isProduction && path) {
+        const fileName = path.split('/').pop() || '';
+        const sanitized = sanitizeFileName(fileName);
+        const bucket = getBucketName(fileName);
+        path = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`;
+      }
+      
+      return {
+        ...item,
+        path,
+        uploadedAt: item.uploadedAt ? new Date(item.uploadedAt as string | number | Date) : new Date(),
+      };
+    });
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await db.insert(gallery).values(processedData as any);
@@ -386,11 +451,24 @@ async function seedPublications(db: DbInstance, environment: Environment) {
   }
 
   try {
+    const isProduction = environment === 'production';
     // Asegurar que las fechas se procesen correctamente
-    const processedData = data.map(item => ({
-      ...item,
-      publicationDate: new Date(item.publicationDate as string | number | Date),
-    }));
+    const processedData = data.map(item => {
+      let filePath = item.filePath as string | undefined;
+      
+      if (isProduction && filePath) {
+        const fileName = filePath.split('/').pop() || '';
+        const sanitized = sanitizeFileName(fileName);
+        const bucket = getBucketName(fileName);
+        filePath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`;
+      }
+      
+      return {
+        ...item,
+        filePath,
+        publicationDate: new Date(item.publicationDate as string | number | Date),
+      };
+    });
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await db.insert(publications).values(processedData as any);
@@ -413,11 +491,34 @@ async function seedVideos(db: DbInstance, environment: Environment) {
   }
 
   try {
+    const isProduction = environment === 'production';
     // Asegurar que las fechas se procesen correctamente
-    const processedData = data.map(item => ({
-      ...item,
-      uploadedAt: item.uploadedAt ? new Date(item.uploadedAt as string | number | Date) : new Date(),
-    }));
+    const processedData = data.map(item => {
+      let videoPath = item.videoPath as string;
+      let thumbnailPath = item.thumbnailPath as string | undefined;
+      
+      if (isProduction) {
+        if (videoPath) {
+          const fileName = videoPath.split('/').pop() || '';
+          const sanitized = sanitizeFileName(fileName);
+          const bucket = getBucketName(fileName);
+          videoPath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`;
+        }
+        if (thumbnailPath) {
+          const fileName = thumbnailPath.split('/').pop() || '';
+          const sanitized = sanitizeFileName(fileName);
+          const bucket = getBucketName(fileName);
+          thumbnailPath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`;
+        }
+      }
+      
+      return {
+        ...item,
+        videoPath,
+        thumbnailPath,
+        uploadedAt: item.uploadedAt ? new Date(item.uploadedAt as string | number | Date) : new Date(),
+      };
+    });
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await db.insert(videos).values(processedData as any);
@@ -440,11 +541,24 @@ async function seedEducationalMaterial(db: DbInstance, environment: Environment)
   }
 
   try {
+    const isProduction = environment === 'production';
     // Asegurar que las fechas se procesen correctamente
-    const processedData = data.map(item => ({
-      ...item,
-      uploadedAt: item.uploadedAt ? new Date(item.uploadedAt as string | number | Date) : new Date(),
-    }));
+    const processedData = data.map(item => {
+      let filePath = item.filePath as string;
+      
+      if (isProduction && filePath) {
+        const fileName = filePath.split('/').pop() || '';
+        const sanitized = sanitizeFileName(fileName);
+        const bucket = getBucketName(fileName);
+        filePath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`;
+      }
+      
+      return {
+        ...item,
+        filePath,
+        uploadedAt: item.uploadedAt ? new Date(item.uploadedAt as string | number | Date) : new Date(),
+      };
+    });
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await db.insert(educationalMaterial).values(processedData as any);

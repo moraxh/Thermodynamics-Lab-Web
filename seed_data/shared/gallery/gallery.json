@@ -1,1 +1,57 @@
-[]
+[
+  {
+    "id": "gallery-1",
+    "path": "/uploads/gallery/IMG_1508.webp",
+    "uploadedAt": "2024-08-03T15:26:00Z"
+  },
+  {
+    "id": "gallery-2",
+    "path": "/uploads/gallery/IMG_1511.webp",
+    "uploadedAt": "2024-08-03T15:26:00Z"
+  },
+  {
+    "id": "gallery-3",
+    "path": "/uploads/gallery/IMG_1512.webp",
+    "uploadedAt": "2024-08-03T15:26:00Z"
+  },
+  {
+    "id": "gallery-4",
+    "path": "/uploads/gallery/IMG_1515.webp",
+    "uploadedAt": "2024-08-03T15:26:00Z"
+  },
+  {
+    "id": "gallery-5",
+    "path": "/uploads/gallery/IMG_1516.webp",
+    "uploadedAt": "2024-08-03T15:26:00Z"
+  },
+  {
+    "id": "gallery-6",
+    "path": "/uploads/gallery/IMG_1526.webp",
+    "uploadedAt": "2024-08-03T15:26:00Z"
+  },
+  {
+    "id": "gallery-7",
+    "path": "/uploads/gallery/IMG_1528.webp",
+    "uploadedAt": "2024-08-03T15:26:00Z"
+  },
+  {
+    "id": "gallery-8",
+    "path": "/uploads/gallery/IMG_1529.webp",
+    "uploadedAt": "2024-08-03T15:26:00Z"
+  },
+  {
+    "id": "gallery-9",
+    "path": "/uploads/gallery/IMG_1531.webp",
+    "uploadedAt": "2024-08-03T15:26:00Z"
+  },
+  {
+    "id": "gallery-10",
+    "path": "/uploads/gallery/IMG_1534.webp",
+    "uploadedAt": "2024-08-03T15:26:00Z"
+  },
+  {
+    "id": "gallery-11",
+    "path": "/uploads/gallery/IMG_1535.webp",
+    "uploadedAt": "2024-08-03T15:26:00Z"
+  }
+]
