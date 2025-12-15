@@ -82,12 +82,12 @@ export default function Gallery() {
           transition={{ duration: 0.6 }}
         >
           {loading ? (
-            <div className="relative aspect-video overflow-hidden rounded-xl bg-lab-gray-200 border border-lab-white/10 flex items-center justify-center">
+            <div className="relative aspect-video overflow-hidden rounded-xl bg-lab-gray-200 border border-lab-white/10 flex items-center justify-center min-h-[480px]">
               <div className="w-12 h-12 border-4 border-lab-gray-400/30 border-t-lab-yellow rounded-full animate-spin" />
             </div>
           ) : showEmptyState ? (
             <motion.div 
-              className="relative aspect-video overflow-hidden rounded-xl bg-lab-gray-200 border border-lab-white/10 flex flex-col items-center justify-center p-8"
+              className="relative aspect-video overflow-hidden rounded-xl bg-lab-gray-200 border border-lab-white/10 flex flex-col items-center justify-center p-8 min-h-[480px]"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}

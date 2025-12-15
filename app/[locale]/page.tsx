@@ -11,8 +11,11 @@ import Publications from "@components/public/Publications";
 import Research from "@components/public/Research";
 import Team from "@components/public/Team";
 import Videos from "@components/public/Videos";
+import { useScrollRestoration } from "@/hooks/use-scroll-restoration";
 
 export default function Home() {
+  useScrollRestoration();
+  
   return (
     <>
       <NavBar />

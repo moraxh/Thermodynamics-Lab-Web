@@ -47,6 +47,27 @@ export default function RootLayout({
                 } catch (e) {
                   document.documentElement.classList.add('dark');
                 }
+
+                // Preservar posición de scroll en recargas
+                if ('scrollRestoration' in history) {
+                  history.scrollRestoration = 'manual';
+                }
+                
+                // Restaurar scroll guardado
+                window.addEventListener('load', function() {
+                  var scrollPos = sessionStorage.getItem('scrollPos');
+                  if (scrollPos) {
+                    setTimeout(function() {
+                      window.scrollTo(0, parseInt(scrollPos));
+                      sessionStorage.removeItem('scrollPos');
+                    }, 100);
+                  }
+                });
+                
+                // Guardar posición antes de recargar
+                window.addEventListener('beforeunload', function() {
+                  sessionStorage.setItem('scrollPos', window.scrollY.toString());
+                });
               })();
             `,
           }}

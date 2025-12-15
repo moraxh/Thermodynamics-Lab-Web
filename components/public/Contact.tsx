@@ -67,6 +67,7 @@ export default function Contact() {
           {/* Interactive Map */}
           <motion.div 
             className="relative h-80 w-full rounded-xl overflow-hidden bg-lab-black border border-lab-white/10 mb-12 group"
+            style={{ minHeight: '320px' }}
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}

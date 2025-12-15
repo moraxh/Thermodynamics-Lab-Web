@@ -21,6 +21,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Prevenir layout shift durante carga */
+  overflow-anchor: auto;
 }
 
 body {
@@ -28,6 +30,16 @@ body {
   color: var(--color-lab-white);
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Estabilizar layout durante carga de imágenes */
+img {
+  content-visibility: auto;
+}
+
+/* Prevenir layout shift en elementos con animación */
+[data-loading="true"] {
+  min-height: 200px;
 }
 
 /* Light Theme */
