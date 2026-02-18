@@ -4,7 +4,11 @@
     "title": "Primera Ley de la Termodinámica",
     "description": "Infografía explicativa sobre el principio de conservación de la energía y su aplicación en sistemas termodinámicos cerrados y abiertos.",
     "imagePath": "https://picsum.photos/seed/thermo1/1200/800",
-    "categories": ["Leyes Fundamentales", "Energía", "Sistemas Cerrados"],
+    "categories": [
+      "Leyes Fundamentales",
+      "Energía",
+      "Sistemas Cerrados"
+    ],
     "uploadedAt": "2024-01-15T10:00:00.000Z"
   },
   {
@@ -12,7 +16,11 @@
     "title": "Segunda Ley de la Termodinámica",
     "description": "Explicación visual del concepto de entropía, procesos reversibles e irreversibles, y el principio de aumento de entropía.",
     "imagePath": "https://picsum.photos/seed/thermo2/1200/800",
-    "categories": ["Leyes Fundamentales", "Entropía", "Procesos"],
+    "categories": [
+      "Leyes Fundamentales",
+      "Entropía",
+      "Procesos"
+    ],
     "uploadedAt": "2024-02-10T14:30:00.000Z"
   },
   {
@@ -20,7 +28,11 @@
     "title": "Ciclo de Carnot",
     "description": "Diagrama detallado del ciclo térmico ideal de Carnot, mostrando las cuatro etapas del proceso y su eficiencia máxima teórica.",
     "imagePath": "https://picsum.photos/seed/carnot/1200/800",
-    "categories": ["Ciclos Termodinámicos", "Eficiencia", "Máquinas Térmicas"],
+    "categories": [
+      "Ciclos Termodinámicos",
+      "Eficiencia",
+      "Máquinas Térmicas"
+    ],
     "uploadedAt": "2024-03-05T09:15:00.000Z"
   },
   {
@@ -28,7 +40,11 @@
     "title": "Propiedades de los Gases Ideales",
     "description": "Infografía sobre las propiedades fundamentales de los gases ideales, la ecuación de estado y las variables termodinámicas principales.",
     "imagePath": "https://picsum.photos/seed/gases/1200/800",
-    "categories": ["Gases", "Propiedades", "Ecuaciones de Estado"],
+    "categories": [
+      "Gases",
+      "Propiedades",
+      "Ecuaciones de Estado"
+    ],
     "uploadedAt": "2024-04-01T11:45:00.000Z"
   },
   {
@@ -36,7 +52,12 @@
     "title": "Transferencia de Calor",
     "description": "Resumen visual de los tres mecanismos de transferencia de calor: conducción, convección y radiación, con ejemplos prácticos.",
     "imagePath": "https://picsum.photos/seed/heat/1200/800",
-    "categories": ["Transferencia de Calor", "Conducción", "Convección", "Radiación"],
+    "categories": [
+      "Transferencia de Calor",
+      "Conducción",
+      "Convección",
+      "Radiación"
+    ],
     "uploadedAt": "2024-05-10T10:00:00.000Z"
   },
   {
@@ -44,7 +65,11 @@
     "title": "Diagrama de Mollier",
     "description": "Guía para interpretar diagramas de Mollier (entalpía-entropía) utilizados en el análisis de sistemas de vapor y refrigeración.",
     "imagePath": "https://picsum.photos/seed/mollier/1200/800",
-    "categories": ["Diagramas", "Vapor", "Entalpía"],
+    "categories": [
+      "Diagramas",
+      "Vapor",
+      "Entalpía"
+    ],
     "uploadedAt": "2024-06-15T16:20:00.000Z"
   },
   {
@@ -52,7 +77,11 @@
     "title": "Ciclo de Refrigeración por Compresión",
     "description": "Esquema completo del ciclo de refrigeración por compresión de vapor, incluyendo componentes y transformaciones de estado.",
     "imagePath": "https://picsum.photos/seed/refrigeration/1200/800",
-    "categories": ["Ciclos Termodinámicos", "Refrigeración", "Sistemas"],
+    "categories": [
+      "Ciclos Termodinámicos",
+      "Refrigeración",
+      "Sistemas"
+    ],
     "uploadedAt": "2024-07-20T13:00:00.000Z"
   },
   {
@@ -60,7 +89,11 @@
     "title": "Ecuaciones de Maxwell",
     "description": "Representación visual de las relaciones de Maxwell en termodinámica y su aplicación en el análisis de propiedades termodinámicas.",
     "imagePath": "https://picsum.photos/seed/maxwell/1200/800",
-    "categories": ["Ecuaciones de Estado", "Propiedades", "Matemáticas"],
+    "categories": [
+      "Ecuaciones de Estado",
+      "Propiedades",
+      "Matemáticas"
+    ],
     "uploadedAt": "2024-08-05T10:30:00.000Z"
   },
   {
@@ -68,7 +101,11 @@
     "title": "Turbinas de Vapor",
     "description": "Funcionamiento y tipos de turbinas de vapor utilizadas en plantas de generación de energía, con análisis termodinámico.",
     "imagePath": "https://picsum.photos/seed/turbine/1200/800",
-    "categories": ["Máquinas Térmicas", "Vapor", "Energía"],
+    "categories": [
+      "Máquinas Térmicas",
+      "Vapor",
+      "Energía"
+    ],
     "uploadedAt": "2024-09-12T15:45:00.000Z"
   },
   {
@@ -76,7 +113,11 @@
     "title": "Balance de Energía en Sistemas Abiertos",
     "description": "Metodología para realizar balances de energía en volúmenes de control con flujo másico, aplicado a intercambiadores y turbinas.",
     "imagePath": "https://picsum.photos/seed/balance/1200/800",
-    "categories": ["Sistemas Abiertos", "Energía", "Análisis"],
+    "categories": [
+      "Sistemas Abiertos",
+      "Energía",
+      "Análisis"
+    ],
     "uploadedAt": "2024-10-18T09:00:00.000Z"
   }
 ]

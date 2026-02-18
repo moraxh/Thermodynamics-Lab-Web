@@ -1,15 +1,15 @@
-import { config } from 'dotenv';
-import { resolve, join } from 'path';
-import { readFileSync, existsSync, copyFileSync, mkdirSync } from 'fs';
+import { config } from "dotenv";
+import { resolve, join } from "path";
+import { readFileSync, existsSync, copyFileSync, mkdirSync } from "fs";
 
 // Load .env.local before importing other modules
-config({ path: resolve(process.cwd(), '.env.local') });
+config({ path: resolve(process.cwd(), ".env.local") });
 
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
-import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
-import { env } from '@/lib/env';
-import { supabaseAdmin } from '@/lib/supabase';
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import { env } from "@/lib/env";
+import { supabaseAdmin } from "@/lib/supabase";
 import {
   members,
   gallery,
@@ -19,10 +19,10 @@ import {
   events,
   infographics,
   users,
-} from '@/lib/db/schema';
-import { seedDefaultAdmin } from '@/lib/db/seed';
+} from "@/lib/db/schema";
+import { seedDefaultAdmin } from "@/lib/db/seed";
 
-type Environment = 'development' | 'production';
+type Environment = "development" | "production";
 
 interface SeedConfig {
   environment: Environment;
@@ -48,12 +48,12 @@ type DbInstance = PostgresJsDatabase<Record<string, never>>;
  */
 function sanitizeFileName(fileName: string): string {
   return fileName
-    .normalize('NFD') // Descomponer caracteres con acento
-    .replace(/[\u0300-\u036f]/g, '') // Remover marcas diacríticas
-    .replace(/ñ/g, 'n')
-    .replace(/Ñ/g, 'N')
-    .replace(/[^a-zA-Z0-9._-]/g, '_') // Reemplazar caracteres especiales con _
-    .replace(/_+/g, '_') // Reemplazar múltiples _ con uno solo
+    .normalize("NFD") // Descomponer caracteres con acento
+    .replace(/[\u0300-\u036f]/g, "") // Remover marcas diacríticas
+    .replace(/ñ/g, "n")
+    .replace(/Ñ/g, "N")
+    .replace(/[^a-zA-Z0-9._-]/g, "_") // Reemplazar caracteres especiales con _
+    .replace(/_+/g, "_") // Reemplazar múltiples _ con uno solo
     .toLowerCase();
 }
 
@@ -61,33 +61,37 @@ function sanitizeFileName(fileName: string): string {
  * Determina el bucket correcto según el tipo de archivo
  */
 function getBucketName(filePath: string): string {
-  const ext = filePath.split('.').pop()?.toLowerCase();
-  
+  const ext = filePath.split(".").pop()?.toLowerCase();
+
   // Mapear extensiones a buckets
-  if (ext === 'pdf') return 'documents';
-  if (['mp4', 'webm', 'mov'].includes(ext || '')) return 'videos';
-  if (['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(ext || '')) return 'images';
-  
-  return 'documents'; // Default
+  if (ext === "pdf") return "documents";
+  if (["mp4", "webm", "mov"].includes(ext || "")) return "videos";
+  if (["png", "jpg", "jpeg", "webp", "gif"].includes(ext || ""))
+    return "images";
+
+  return "documents"; // Default
 }
 
 /**
  * Sube un archivo a Supabase Storage
  */
-async function uploadToSupabase(localPath: string, remotePath: string): Promise<boolean> {
+async function uploadToSupabase(
+  localPath: string,
+  remotePath: string,
+): Promise<boolean> {
   if (!supabaseAdmin) {
-    console.error('  ⚠️  Supabase admin client no está disponible');
+    console.error("  ⚠️  Supabase admin client no está disponible");
     return false;
   }
 
   try {
     const bucket = getBucketName(localPath);
     const fileBuffer = readFileSync(localPath);
-    
+
     // Extraer solo el nombre del archivo, sin la ruta uploads/tipo/
-    const originalFileName = remotePath.split('/').pop() || remotePath;
+    const originalFileName = remotePath.split("/").pop() || remotePath;
     const sanitizedFileName = sanitizeFileName(originalFileName);
-    
+
     const { error } = await supabaseAdmin.storage
       .from(bucket)
       .upload(sanitizedFileName, fileBuffer, {
@@ -96,7 +100,9 @@ async function uploadToSupabase(localPath: string, remotePath: string): Promise<
       });
 
     if (error) {
-      console.error(`  ❌ Error subiendo a Supabase (${bucket}): ${error.message}`);
+      console.error(
+        `  ❌ Error subiendo a Supabase (${bucket}): ${error.message}`,
+      );
       return false;
     }
     return true;
@@ -110,86 +116,93 @@ async function uploadToSupabase(localPath: string, remotePath: string): Promise<
  * Obtiene el content type basado en la extensión del archivo
  */
 function getContentType(filePath: string): string {
-  const ext = filePath.split('.').pop()?.toLowerCase();
+  const ext = filePath.split(".").pop()?.toLowerCase();
   const contentTypes: Record<string, string> = {
-    'pdf': 'application/pdf',
-    'mp4': 'video/mp4',
-    'webp': 'image/webp',
-    'png': 'image/png',
-    'jpg': 'image/jpeg',
-    'jpeg': 'image/jpeg',
+    pdf: "application/pdf",
+    mp4: "video/mp4",
+    webp: "image/webp",
+    png: "image/png",
+    jpg: "image/jpeg",
+    jpeg: "image/jpeg",
   };
-  return contentTypes[ext || ''] || 'application/octet-stream';
+  return contentTypes[ext || ""] || "application/octet-stream";
 }
 
 /**
  * Copia archivos específicos basándose en las rutas en los JSON
  */
-async function copySpecificFiles(environment: Environment, dataType: string): Promise<FileCopyResult> {
+async function copySpecificFiles(
+  environment: Environment,
+  dataType: string,
+): Promise<FileCopyResult> {
   const result: FileCopyResult = { copied: 0, skipped: 0, errors: 0 };
-  
+
   // Cargar los datos JSON para saber qué archivos copiar
   const data = loadSeedData(environment, dataType);
   if (data.length === 0) return result;
 
   // Determinar el campo que contiene la ruta del archivo
   const fileFields: Record<string, string[]> = {
-    'members': ['photo'],
-    'gallery': ['path'],
-    'publications': ['filePath'],
-    'videos': ['videoPath', 'thumbnailPath'],
-    'educational-material': ['filePath'],
-    'infographics': ['imagePath'],
+    members: ["photo"],
+    gallery: ["path"],
+    publications: ["filePath"],
+    videos: ["videoPath", "thumbnailPath"],
+    "educational-material": ["filePath"],
+    infographics: ["imagePath"],
   };
 
-  const isProduction = environment === 'production';
+  const isProduction = environment === "production";
   const fields = fileFields[dataType] || [];
   const filesToCopy = new Set<string>();
 
   // Recopilar todos los archivos que necesitamos
-  data.forEach(item => {
-    fields.forEach(field => {
+  data.forEach((item) => {
+    fields.forEach((field) => {
       const fieldValue = item[field];
-      if (fieldValue && typeof fieldValue === 'string') {
+      if (fieldValue && typeof fieldValue === "string") {
         // Extraer la ruta del archivo desde public/
-        const filePath = fieldValue.replace(/^\//, ''); // Quitar / inicial
+        const filePath = fieldValue.replace(/^\//, ""); // Quitar / inicial
         filesToCopy.add(filePath);
       }
     });
   });
 
   // Copiar cada archivo
-  const sharedPath = join(process.cwd(), 'seed_data', 'shared');
-  const commonPath = join(process.cwd(), 'seed_data', environment, 'common');
+  const sharedPath = join(process.cwd(), "seed_data", "shared");
+  const commonPath = join(process.cwd(), "seed_data", environment, "common");
 
   for (const relativeDestPath of filesToCopy) {
-    const fileName = relativeDestPath.split('/').pop() || '';
-    const destPath = join(process.cwd(), 'public', relativeDestPath);
-    const destDir = join(process.cwd(), 'public', relativeDestPath.substring(0, relativeDestPath.lastIndexOf('/')));
-    
+    const fileName = relativeDestPath.split("/").pop() || "";
+    const destPath = join(process.cwd(), "public", relativeDestPath);
+    const destDir = join(
+      process.cwd(),
+      "public",
+      relativeDestPath.substring(0, relativeDestPath.lastIndexOf("/")),
+    );
+
     // Buscar el archivo en las carpetas source
     let found = false;
-    
+
     // Buscar en múltiples ubicaciones posibles
     const possibleLocations = [
       // En la carpeta específica del tipo de datos (ej: shared/gallery/IMG_1508.webp)
       join(sharedPath, dataType, fileName),
       join(commonPath, fileName),
       // En subcarpetas comunes
-      join(sharedPath, dataType, 'images', fileName),
-      join(commonPath, 'pdf', fileName),
-      join(commonPath, 'mp4', fileName),
-      join(commonPath, 'webp', fileName),
-      join(commonPath, 'images', fileName),
+      join(sharedPath, dataType, "images", fileName),
+      join(commonPath, "pdf", fileName),
+      join(commonPath, "mp4", fileName),
+      join(commonPath, "webp", fileName),
+      join(commonPath, "images", fileName),
     ];
-    
+
     for (const sourceFile of possibleLocations) {
       if (existsSync(sourceFile)) {
-        const normalizedFileName = fileName.normalize('NFC');
-        
+        const normalizedFileName = fileName.normalize("NFC");
+
         if (isProduction) {
           // En producción, subir a Supabase Storage
-          const remotePath = relativeDestPath.replace(/^uploads\//, '');
+          const remotePath = relativeDestPath.replace(/^uploads\//, "");
           const uploaded = await uploadToSupabase(sourceFile, remotePath);
           if (uploaded) {
             result.copied++;
@@ -203,9 +216,12 @@ async function copySpecificFiles(environment: Environment, dataType: string): Pr
           if (!existsSync(destDir)) {
             mkdirSync(destDir, { recursive: true });
           }
-          
-          const normalizedDestPath = destPath.replace(fileName, normalizedFileName);
-          
+
+          const normalizedDestPath = destPath.replace(
+            fileName,
+            normalizedFileName,
+          );
+
           if (!existsSync(normalizedDestPath)) {
             try {
               copyFileSync(sourceFile, normalizedDestPath);
@@ -224,7 +240,7 @@ async function copySpecificFiles(environment: Environment, dataType: string): Pr
         }
       }
     }
-    
+
     if (!found && !existsSync(destPath)) {
       console.warn(`  ⚠️  Archivo no encontrado: ${fileName}`);
     }
@@ -237,13 +253,20 @@ async function copySpecificFiles(environment: Environment, dataType: string): Pr
  * Copia todos los archivos necesarios para el seed
  */
 async function copyAllSeedFiles(environment: Environment): Promise<void> {
-  console.log('\n📂 Copiando archivos de seed...\n');
+  console.log("\n📂 Copiando archivos de seed...\n");
 
   let totalCopied = 0;
   let totalSkipped = 0;
   let totalErrors = 0;
 
-  const dataTypes = ['members', 'gallery', 'publications', 'videos', 'educational-material', 'infographics'];
+  const dataTypes = [
+    "members",
+    "gallery",
+    "publications",
+    "videos",
+    "educational-material",
+    "infographics",
+  ];
 
   for (const dataType of dataTypes) {
     console.log(`\n🔄 Procesando archivos de ${dataType}`);
@@ -251,7 +274,7 @@ async function copyAllSeedFiles(environment: Environment): Promise<void> {
     totalCopied += result.copied;
     totalSkipped += result.skipped;
     totalErrors += result.errors;
-    
+
     if (result.copied > 0) {
       console.log(`  ✅ ${result.copied} archivos copiados`);
     }
@@ -260,14 +283,14 @@ async function copyAllSeedFiles(environment: Environment): Promise<void> {
     }
   }
 
-  console.log('\n' + '─'.repeat(60));
+  console.log("\n" + "─".repeat(60));
   console.log(`📊 Resumen de archivos:`);
   console.log(`  ✅ Copiados: ${totalCopied}`);
   console.log(`  ⏭️  Omitidos: ${totalSkipped}`);
   if (totalErrors > 0) {
     console.log(`  ❌ Errores: ${totalErrors}`);
   }
-  console.log('─'.repeat(60) + '\n');
+  console.log("─".repeat(60) + "\n");
 }
 
 /**
@@ -275,13 +298,29 @@ async function copyAllSeedFiles(environment: Environment): Promise<void> {
  */
 function validateData(dataType: string, items: SeedRecord[]): boolean {
   const requiredFields: Record<string, string[]> = {
-    members: ['id', 'fullName', 'position', 'typeOfMember'],
-    gallery: ['id', 'path'],
-    publications: ['id', 'title', 'description', 'type', 'authors', 'publicationDate'],
-    videos: ['id', 'title', 'description', 'videoPath'],
-    'educational-material': ['id', 'title', 'description', 'filePath'],
-    events: ['id', 'title', 'description', 'typeOfEvent', 'startDate', 'startTime', 'endTime', 'location'],
-    infographics: ['id', 'title', 'description', 'imagePath', 'categories'],
+    members: ["id", "fullName", "position", "typeOfMember"],
+    gallery: ["id", "path"],
+    publications: [
+      "id",
+      "title",
+      "description",
+      "type",
+      "authors",
+      "publicationDate",
+    ],
+    videos: ["id", "title", "description", "videoPath"],
+    "educational-material": ["id", "title", "description", "filePath"],
+    events: [
+      "id",
+      "title",
+      "description",
+      "typeOfEvent",
+      "startDate",
+      "startTime",
+      "endTime",
+      "location",
+    ],
+    infographics: ["id", "title", "description", "imagePath", "categories"],
   };
 
   const required = requiredFields[dataType];
@@ -289,17 +328,27 @@ function validateData(dataType: string, items: SeedRecord[]): boolean {
 
   for (const item of items) {
     for (const field of required) {
-      if (!(field in item) || item[field] === null || item[field] === undefined) {
-        console.error(`❌ Campo requerido faltante: "${field}" en ${dataType}`, item);
+      if (
+        !(field in item) ||
+        item[field] === null ||
+        item[field] === undefined
+      ) {
+        console.error(
+          `❌ Campo requerido faltante: "${field}" en ${dataType}`,
+          item,
+        );
         return false;
       }
     }
-    
+
     // Validaciones especiales
-    if (dataType === 'publications') {
+    if (dataType === "publications") {
       // Debe tener filePath O link (al menos uno)
       if (!item.filePath && !item.link) {
-        console.error(`❌ Publications debe tener al menos filePath o link`, item);
+        console.error(
+          `❌ Publications debe tener al menos filePath o link`,
+          item,
+        );
         return false;
       }
       // Authors debe ser un array
@@ -316,12 +365,15 @@ function validateData(dataType: string, items: SeedRecord[]): boolean {
 /**
  * Carga archivos JSON del directorio de seed data
  */
-function loadSeedData(environment: Environment, dataType: string): SeedRecord[] {
+function loadSeedData(
+  environment: Environment,
+  dataType: string,
+): SeedRecord[] {
   const paths = [
     // Datos compartidos (van en todos los ambientes)
-    join(process.cwd(), 'seed_data', 'shared', dataType, `${dataType}.json`),
+    join(process.cwd(), "seed_data", "shared", dataType, `${dataType}.json`),
     // Datos específicos del ambiente
-    join(process.cwd(), 'seed_data', environment, 'common', `${dataType}.json`),
+    join(process.cwd(), "seed_data", environment, "common", `${dataType}.json`),
   ];
 
   const allData: SeedRecord[] = [];
@@ -330,10 +382,10 @@ function loadSeedData(environment: Environment, dataType: string): SeedRecord[] 
   for (const path of paths) {
     if (existsSync(path)) {
       try {
-        const fileContent = readFileSync(path, 'utf-8');
+        const fileContent = readFileSync(path, "utf-8");
         const data = JSON.parse(fileContent);
         const arrayData = Array.isArray(data) ? data : [data];
-        
+
         // Filtrar arrays vacíos
         if (arrayData.length === 0) {
           continue;
@@ -350,7 +402,7 @@ function loadSeedData(environment: Environment, dataType: string): SeedRecord[] 
           }
           allData.push(item);
         }
-        
+
         console.log(`✅ Cargados ${arrayData.length} registros desde: ${path}`);
       } catch (error) {
         console.error(`❌ Error al cargar ${path}:`, error);
@@ -366,41 +418,45 @@ function loadSeedData(environment: Environment, dataType: string): SeedRecord[] 
  * Seed members
  */
 async function seedMembers(db: DbInstance, environment: Environment) {
-  const data = loadSeedData(environment, 'members');
-  
+  const data = loadSeedData(environment, "members");
+
   if (data.length === 0) {
-    console.log('⏭️  Sin datos de members para sembrar');
+    console.log("⏭️  Sin datos de members para sembrar");
     return;
   }
 
-  if (!validateData('members', data)) {
-    throw new Error('Validación fallida para members');
+  if (!validateData("members", data)) {
+    throw new Error("Validación fallida para members");
   }
 
   try {
     // En producción, sanitizar nombres de archivos en las rutas
-    const isProduction = environment === 'production';
-    const processedData = isProduction ? data.map(item => {
-      if (item.photo && typeof item.photo === 'string') {
-        const parts = item.photo.split('/');
-        const fileName = parts.pop() || '';
-        const sanitized = sanitizeFileName(fileName);
-        // Cambiar la ruta para que apunte a Supabase Storage
-        const bucket = getBucketName(fileName);
-        return {
-          ...item,
-          photo: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`
-        };
-      }
-      return item;
-    }) : data;
+    const isProduction = environment === "production";
+    const processedData = isProduction
+      ? data.map((item) => {
+          if (item.photo && typeof item.photo === "string") {
+            const parts = item.photo.split("/");
+            const fileName = parts.pop() || "";
+            const sanitized = sanitizeFileName(fileName);
+            // Cambiar la ruta para que apunte a Supabase Storage
+            const bucket = getBucketName(fileName);
+            return {
+              ...item,
+              photo: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`,
+            };
+          }
+          return item;
+        })
+      : data;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await db.insert(members).values(processedData as any)
+    await db
+      .insert(members)
+      .values(processedData as any)
       .onConflictDoNothing();
     console.log(`✅ Sembrados ${data.length} members`);
   } catch (error) {
-    console.error('❌ Error al sembrar members:', error);
+    console.error("❌ Error al sembrar members:", error);
     throw error;
   }
 }
@@ -409,39 +465,43 @@ async function seedMembers(db: DbInstance, environment: Environment) {
  * Seed gallery
  */
 async function seedGallery(db: DbInstance, environment: Environment) {
-  const data = loadSeedData(environment, 'gallery');
-  
+  const data = loadSeedData(environment, "gallery");
+
   if (data.length === 0) {
-    console.log('⏭️  Sin datos de gallery para sembrar');
+    console.log("⏭️  Sin datos de gallery para sembrar");
     return;
   }
 
   try {
-    const isProduction = environment === 'production';
+    const isProduction = environment === "production";
     // Asegurar que las fechas se procesen correctamente
-    const processedData = data.map(item => {
+    const processedData = data.map((item) => {
       let path = item.path as string;
-      
+
       if (isProduction && path) {
-        const fileName = path.split('/').pop() || '';
+        const fileName = path.split("/").pop() || "";
         const sanitized = sanitizeFileName(fileName);
         const bucket = getBucketName(fileName);
         path = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`;
       }
-      
+
       return {
         ...item,
         path,
-        uploadedAt: item.uploadedAt ? new Date(item.uploadedAt as string | number | Date) : new Date(),
+        uploadedAt: item.uploadedAt
+          ? new Date(item.uploadedAt as string | number | Date)
+          : new Date(),
       };
     });
-    
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await db.insert(gallery).values(processedData as any)
+    await db
+      .insert(gallery)
+      .values(processedData as any)
       .onConflictDoNothing();
     console.log(`✅ Sembrados ${data.length} items de gallery`);
   } catch (error) {
-    console.error('❌ Error al sembrar gallery:', error);
+    console.error("❌ Error al sembrar gallery:", error);
     throw error;
   }
 }
@@ -450,39 +510,43 @@ async function seedGallery(db: DbInstance, environment: Environment) {
  * Seed publications
  */
 async function seedPublications(db: DbInstance, environment: Environment) {
-  const data = loadSeedData(environment, 'publications');
-  
+  const data = loadSeedData(environment, "publications");
+
   if (data.length === 0) {
-    console.log('⏭️  Sin datos de publications para sembrar');
+    console.log("⏭️  Sin datos de publications para sembrar");
     return;
   }
 
   try {
-    const isProduction = environment === 'production';
+    const isProduction = environment === "production";
     // Asegurar que las fechas se procesen correctamente
-    const processedData = data.map(item => {
+    const processedData = data.map((item) => {
       let filePath = item.filePath as string | undefined;
-      
+
       if (isProduction && filePath) {
-        const fileName = filePath.split('/').pop() || '';
+        const fileName = filePath.split("/").pop() || "";
         const sanitized = sanitizeFileName(fileName);
         const bucket = getBucketName(fileName);
         filePath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`;
       }
-      
+
       return {
         ...item,
         filePath,
-        publicationDate: new Date(item.publicationDate as string | number | Date),
+        publicationDate: new Date(
+          item.publicationDate as string | number | Date,
+        ),
       };
     });
-    
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await db.insert(publications).values(processedData as any)
+    await db
+      .insert(publications)
+      .values(processedData as any)
       .onConflictDoNothing();
     console.log(`✅ Sembrados ${data.length} publications`);
   } catch (error) {
-    console.error('❌ Error al sembrar publications:', error);
+    console.error("❌ Error al sembrar publications:", error);
     throw error;
   }
 }
@@ -491,49 +555,53 @@ async function seedPublications(db: DbInstance, environment: Environment) {
  * Seed videos
  */
 async function seedVideos(db: DbInstance, environment: Environment) {
-  const data = loadSeedData(environment, 'videos');
-  
+  const data = loadSeedData(environment, "videos");
+
   if (data.length === 0) {
-    console.log('⏭️  Sin datos de videos para sembrar');
+    console.log("⏭️  Sin datos de videos para sembrar");
     return;
   }
 
   try {
-    const isProduction = environment === 'production';
+    const isProduction = environment === "production";
     // Asegurar que las fechas se procesen correctamente
-    const processedData = data.map(item => {
+    const processedData = data.map((item) => {
       let videoPath = item.videoPath as string;
       let thumbnailPath = item.thumbnailPath as string | undefined;
-      
+
       if (isProduction) {
         if (videoPath) {
-          const fileName = videoPath.split('/').pop() || '';
+          const fileName = videoPath.split("/").pop() || "";
           const sanitized = sanitizeFileName(fileName);
           const bucket = getBucketName(fileName);
           videoPath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`;
         }
         if (thumbnailPath) {
-          const fileName = thumbnailPath.split('/').pop() || '';
+          const fileName = thumbnailPath.split("/").pop() || "";
           const sanitized = sanitizeFileName(fileName);
           const bucket = getBucketName(fileName);
           thumbnailPath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`;
         }
       }
-      
+
       return {
         ...item,
         videoPath,
         thumbnailPath,
-        uploadedAt: item.uploadedAt ? new Date(item.uploadedAt as string | number | Date) : new Date(),
+        uploadedAt: item.uploadedAt
+          ? new Date(item.uploadedAt as string | number | Date)
+          : new Date(),
       };
     });
-    
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await db.insert(videos).values(processedData as any)
+    await db
+      .insert(videos)
+      .values(processedData as any)
       .onConflictDoNothing();
     console.log(`✅ Sembrados ${data.length} videos`);
   } catch (error) {
-    console.error('❌ Error al sembrar videos:', error);
+    console.error("❌ Error al sembrar videos:", error);
     throw error;
   }
 }
@@ -541,40 +609,47 @@ async function seedVideos(db: DbInstance, environment: Environment) {
 /**
  * Seed educational material
  */
-async function seedEducationalMaterial(db: DbInstance, environment: Environment) {
-  const data = loadSeedData(environment, 'educational-material');
-  
+async function seedEducationalMaterial(
+  db: DbInstance,
+  environment: Environment,
+) {
+  const data = loadSeedData(environment, "educational-material");
+
   if (data.length === 0) {
-    console.log('⏭️  Sin datos de educational material para sembrar');
+    console.log("⏭️  Sin datos de educational material para sembrar");
     return;
   }
 
   try {
-    const isProduction = environment === 'production';
+    const isProduction = environment === "production";
     // Asegurar que las fechas se procesen correctamente
-    const processedData = data.map(item => {
+    const processedData = data.map((item) => {
       let filePath = item.filePath as string;
-      
+
       if (isProduction && filePath) {
-        const fileName = filePath.split('/').pop() || '';
+        const fileName = filePath.split("/").pop() || "";
         const sanitized = sanitizeFileName(fileName);
         const bucket = getBucketName(fileName);
         filePath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`;
       }
-      
+
       return {
         ...item,
         filePath,
-        uploadedAt: item.uploadedAt ? new Date(item.uploadedAt as string | number | Date) : new Date(),
+        uploadedAt: item.uploadedAt
+          ? new Date(item.uploadedAt as string | number | Date)
+          : new Date(),
       };
     });
-    
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await db.insert(educationalMaterial).values(processedData as any)
+    await db
+      .insert(educationalMaterial)
+      .values(processedData as any)
       .onConflictDoNothing();
     console.log(`✅ Sembrados ${data.length} educational materials`);
   } catch (error) {
-    console.error('❌ Error al sembrar educational material:', error);
+    console.error("❌ Error al sembrar educational material:", error);
     throw error;
   }
 }
@@ -583,39 +658,43 @@ async function seedEducationalMaterial(db: DbInstance, environment: Environment)
  * Seed infographics
  */
 async function seedInfographics(db: DbInstance, environment: Environment) {
-  const data = loadSeedData(environment, 'infographics');
-  
+  const data = loadSeedData(environment, "infographics");
+
   if (data.length === 0) {
-    console.log('⏭️  Sin datos de infographics para sembrar');
+    console.log("⏭️  Sin datos de infographics para sembrar");
     return;
   }
 
   try {
-    const isProduction = environment === 'production';
+    const isProduction = environment === "production";
     // Asegurar que las fechas se procesen correctamente
-    const processedData = data.map(item => {
+    const processedData = data.map((item) => {
       let imagePath = item.imagePath as string;
-      
+
       if (isProduction && imagePath) {
-        const fileName = imagePath.split('/').pop() || '';
+        const fileName = imagePath.split("/").pop() || "";
         const sanitized = sanitizeFileName(fileName);
         const bucket = getBucketName(fileName);
         imagePath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`;
       }
-      
+
       return {
         ...item,
         imagePath,
-        uploadedAt: item.uploadedAt ? new Date(item.uploadedAt as string | number | Date) : new Date(),
+        uploadedAt: item.uploadedAt
+          ? new Date(item.uploadedAt as string | number | Date)
+          : new Date(),
       };
     });
-    
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await db.insert(infographics).values(processedData as any)
+    await db
+      .insert(infographics)
+      .values(processedData as any)
       .onConflictDoNothing();
     console.log(`✅ Sembrados ${data.length} infographics`);
   } catch (error) {
-    console.error('❌ Error al sembrar infographics:', error);
+    console.error("❌ Error al sembrar infographics:", error);
     throw error;
   }
 }
@@ -624,26 +703,30 @@ async function seedInfographics(db: DbInstance, environment: Environment) {
  * Seed events
  */
 async function seedEvents(db: DbInstance, environment: Environment) {
-  const data = loadSeedData(environment, 'events');
-  
+  const data = loadSeedData(environment, "events");
+
   if (data.length === 0) {
-    console.log('⏭️  Sin datos de events para sembrar');
+    console.log("⏭️  Sin datos de events para sembrar");
     return;
   }
 
   try {
     // Asegurar que las fechas se procesen correctamente
-    const processedData = data.map(item => ({
+    const processedData = data.map((item) => ({
       ...item,
-      uploadedAt: item.uploadedAt ? new Date(item.uploadedAt as string | number | Date) : new Date(),
+      uploadedAt: item.uploadedAt
+        ? new Date(item.uploadedAt as string | number | Date)
+        : new Date(),
     }));
-    
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await db.insert(events).values(processedData as any)
+    await db
+      .insert(events)
+      .values(processedData as any)
       .onConflictDoNothing();
     console.log(`✅ Sembrados ${data.length} events`);
   } catch (error) {
-    console.error('❌ Error al sembrar events:', error);
+    console.error("❌ Error al sembrar events:", error);
     throw error;
   }
 }
@@ -652,8 +735,8 @@ async function seedEvents(db: DbInstance, environment: Environment) {
  * Limpia todas las tablas
  */
 async function clearAllTables(db: DbInstance) {
-  console.log('\n🗑️  Limpiando tablas existentes...');
-  
+  console.log("\n🗑️  Limpiando tablas existentes...");
+
   try {
     await db.delete(events);
     await db.delete(infographics);
@@ -663,9 +746,9 @@ async function clearAllTables(db: DbInstance) {
     await db.delete(gallery);
     await db.delete(members);
     await db.delete(users);
-    console.log('✅ Tablas limpiadas (incluyendo usuarios)\n');
+    console.log("✅ Tablas limpiadas (incluyendo usuarios)\n");
   } catch (error) {
-    console.error('❌ Error al limpiar tablas:', error);
+    console.error("❌ Error al limpiar tablas:", error);
     throw error;
   }
 }
@@ -678,12 +761,12 @@ async function seedDatabase(config: SeedConfig) {
   const db = drizzle(seedClient);
 
   try {
-    console.log('\n' + '='.repeat(60));
-    console.log('🌱 INICIANDO SEED DE BASE DE DATOS');
-    console.log('='.repeat(60));
+    console.log("\n" + "=".repeat(60));
+    console.log("🌱 INICIANDO SEED DE BASE DE DATOS");
+    console.log("=".repeat(60));
     console.log(`Ambiente: ${config.environment.toUpperCase()}`);
-    console.log(`Limpiar existentes: ${config.clearExisting ? 'SÍ' : 'NO'}`);
-    console.log('='.repeat(60) + '\n');
+    console.log(`Limpiar existentes: ${config.clearExisting ? "SÍ" : "NO"}`);
+    console.log("=".repeat(60) + "\n");
 
     // Paso 1: Copiar archivos físicos
     await copyAllSeedFiles(config.environment);
@@ -704,11 +787,11 @@ async function seedDatabase(config: SeedConfig) {
     await seedInfographics(db, config.environment);
     await seedEvents(db, config.environment);
 
-    console.log('\n' + '='.repeat(60));
-    console.log('✅ SEED COMPLETADO EXITOSAMENTE');
-    console.log('='.repeat(60) + '\n');
+    console.log("\n" + "=".repeat(60));
+    console.log("✅ SEED COMPLETADO EXITOSAMENTE");
+    console.log("=".repeat(60) + "\n");
   } catch (error) {
-    console.error('\n❌ Error durante el seed:', error);
+    console.error("\n❌ Error durante el seed:", error);
     throw error;
   } finally {
     await seedClient.end();
@@ -718,13 +801,13 @@ async function seedDatabase(config: SeedConfig) {
 // Ejecutar el script
 async function main() {
   // Determinar el ambiente
-  const environment: Environment = 
-    (process.env.NODE_ENV as Environment) === 'production' 
-      ? 'production' 
-      : 'development';
-  
+  const environment: Environment =
+    (process.env.NODE_ENV as Environment) === "production"
+      ? "production"
+      : "development";
+
   // Opción para limpiar datos existentes (pasar --clear como argumento)
-  const clearExisting = process.argv.includes('--clear');
+  const clearExisting = process.argv.includes("--clear");
 
   await seedDatabase({
     environment,
@@ -733,6 +816,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error('Error fatal:', error);
+  console.error("Error fatal:", error);
   process.exit(1);
 });
