@@ -23,6 +23,7 @@ html {
   scroll-behavior: smooth;
   /* Prevenir layout shift durante carga */
   overflow-anchor: auto;
+  overflow-x: hidden;
 }
 
 body {
@@ -30,6 +31,7 @@ body {
   color: var(--color-lab-white);
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
+  max-width: 100vw;
 }
 
 /* Estabilizar layout durante carga de imágenes */
@@ -110,6 +112,16 @@ html.light .leaflet-popup-tip {
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* Gallery section - prevent overflow */
+#gallery {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+#gallery * {
+  max-width: 100%;
 }
 
 .text-glow {

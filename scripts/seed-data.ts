@@ -17,7 +17,9 @@ import {
   videos,
   educationalMaterial,
   events,
+  users,
 } from '@/lib/db/schema';
+import { seedDefaultAdmin } from '@/lib/db/seed';
 
 type Environment = 'development' | 'production';
 
@@ -391,7 +393,8 @@ async function seedMembers(db: DbInstance, environment: Environment) {
     }) : data;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await db.insert(members).values(processedData as any);
+    await db.insert(members).values(processedData as any)
+      .onConflictDoNothing();
     console.log(`✅ Sembrados ${data.length} members`);
   } catch (error) {
     console.error('❌ Error al sembrar members:', error);
@@ -431,7 +434,8 @@ async function seedGallery(db: DbInstance, environment: Environment) {
     });
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await db.insert(gallery).values(processedData as any);
+    await db.insert(gallery).values(processedData as any)
+      .onConflictDoNothing();
     console.log(`✅ Sembrados ${data.length} items de gallery`);
   } catch (error) {
     console.error('❌ Error al sembrar gallery:', error);
@@ -471,7 +475,8 @@ async function seedPublications(db: DbInstance, environment: Environment) {
     });
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await db.insert(publications).values(processedData as any);
+    await db.insert(publications).values(processedData as any)
+      .onConflictDoNothing();
     console.log(`✅ Sembrados ${data.length} publications`);
   } catch (error) {
     console.error('❌ Error al sembrar publications:', error);
@@ -521,7 +526,8 @@ async function seedVideos(db: DbInstance, environment: Environment) {
     });
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await db.insert(videos).values(processedData as any);
+    await db.insert(videos).values(processedData as any)
+      .onConflictDoNothing();
     console.log(`✅ Sembrados ${data.length} videos`);
   } catch (error) {
     console.error('❌ Error al sembrar videos:', error);
@@ -561,7 +567,8 @@ async function seedEducationalMaterial(db: DbInstance, environment: Environment)
     });
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await db.insert(educationalMaterial).values(processedData as any);
+    await db.insert(educationalMaterial).values(processedData as any)
+      .onConflictDoNothing();
     console.log(`✅ Sembrados ${data.length} educational materials`);
   } catch (error) {
     console.error('❌ Error al sembrar educational material:', error);
@@ -588,7 +595,8 @@ async function seedEvents(db: DbInstance, environment: Environment) {
     }));
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await db.insert(events).values(processedData as any);
+    await db.insert(events).values(processedData as any)
+      .onConflictDoNothing();
     console.log(`✅ Sembrados ${data.length} events`);
   } catch (error) {
     console.error('❌ Error al sembrar events:', error);
@@ -609,7 +617,8 @@ async function clearAllTables(db: DbInstance) {
     await db.delete(publications);
     await db.delete(gallery);
     await db.delete(members);
-    console.log('✅ Tablas limpiadas\n');
+    await db.delete(users);
+    console.log('✅ Tablas limpiadas (incluyendo usuarios)\n');
   } catch (error) {
     console.error('❌ Error al limpiar tablas:', error);
     throw error;
@@ -637,6 +646,8 @@ async function seedDatabase(config: SeedConfig) {
     // Paso 2: Limpiar tablas si es necesario
     if (config.clearExisting) {
       await clearAllTables(db);
+      // Crear usuario admin después de limpiar
+      await seedDefaultAdmin();
     }
 
     // Paso 3: Sembrar datos en orden
