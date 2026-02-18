@@ -116,12 +116,7 @@ html.light .leaflet-popup-tip {
 
 /* Gallery section - prevent overflow */
 #gallery {
-  max-width: 100vw;
   overflow-x: hidden;
-}
-
-#gallery * {
-  max-width: 100%;
 }
 
 .text-glow {

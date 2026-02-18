@@ -20,6 +20,7 @@ const navItems = [
   { href: '/admin', label: 'Dashboard', icon: Home },
   { href: '/admin/members', label: 'Miembros', icon: Users },
   { href: '/admin/gallery', label: 'Galería', icon: ImageIcon },
+  { href: '/admin/infographics', label: 'Infografías', icon: ImageIcon },
   { href: '/admin/publications', label: 'Publicaciones', icon: FileText },
   { href: '/admin/videos', label: 'Videos', icon: Video },
   { href: '/admin/educational-material', label: 'Material Educativo', icon: GraduationCap },

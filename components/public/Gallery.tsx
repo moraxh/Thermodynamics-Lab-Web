@@ -15,7 +15,8 @@ interface GalleryImage {
 const slideVariants = {
   enter: (direction: number) => ({
     x: direction > 0 ? '100%' : '-100%',
-    opacity: 0
+    opacity: 0,
+    zIndex: 0
   }),
   center: {
     zIndex: 1,
@@ -25,7 +26,7 @@ const slideVariants = {
   exit: (direction: number) => ({
     zIndex: 0,
     x: direction < 0 ? '100%' : '-100%',
-    opacity: 0
+    opacity: 1
   })
 };
 
@@ -49,7 +50,7 @@ export default function Gallery() {
           const data = await response.json();
           setImages(data.data || []);
         }
-      } catch (error) {
+      } catch {
         // Error fetching gallery images
       } finally {
         setLoading(false);
@@ -58,6 +59,16 @@ export default function Gallery() {
 
     fetchImages();
   }, []);
+
+  // Preload all images when they are loaded
+  useEffect(() => {
+    if (images.length > 0) {
+      images.forEach((image) => {
+        const img = new window.Image();
+        img.src = image.path;
+      });
+    }
+  }, [images]);
 
   const showEmptyState = !loading && images.length === 0;
   const imageIndex = images.length > 0 ? ((page % images.length) + images.length) % images.length : 0;
@@ -73,7 +84,7 @@ export default function Gallery() {
 
   return (
     <section id="gallery" className="py-16 md:py-24 bg-lab-gray-100 relative border-t border-lab-white/5 overflow-x-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
         {/* Header */}
         <motion.div 
           className="text-center mb-16 overflow-x-hidden"
@@ -126,8 +137,8 @@ export default function Gallery() {
             </motion.div>
           ) : (
             <>
-              <div className="relative w-full max-w-full aspect-video overflow-hidden rounded-xl bg-lab-gray-200 border border-lab-white/10 min-h-[280px] md:min-h-[480px] touch-pan-y isolate">
-                <AnimatePresence initial={false} custom={direction} mode="wait">
+              <div className="relative w-full aspect-video overflow-hidden rounded-xl bg-lab-gray-200 border border-lab-white/10 min-h-[280px] md:min-h-[480px] touch-pan-y isolate">
+                <AnimatePresence initial={false} custom={direction}>
                   <motion.div
                     key={page}
                     custom={direction}
@@ -136,8 +147,8 @@ export default function Gallery() {
                     animate="center"
                     exit="exit"
                     transition={{
-                      x: { type: "spring", stiffness: 300, damping: 30 },
-                      opacity: { duration: 0.2 }
+                      x: { type: "spring", stiffness: 500, damping: 50 },
+                      opacity: { duration: 0.1 }
                     }}
                     drag="x"
                     dragConstraints={{ left: 0, right: 0 }}
@@ -160,7 +171,7 @@ export default function Gallery() {
                       className="object-cover transition-all duration-700 pointer-events-none"
                       onClick={() => setLightboxImage(images[imageIndex])}
                       priority
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1536px"
                     />
                     
                     {/* Corner Accents */}
@@ -193,19 +204,19 @@ export default function Gallery() {
 
               {/* Thumbnails */}
               {images.length > 1 && (
-                <div className="mt-6 -mx-4 sm:mx-0 overflow-x-hidden">
+                <div className="mt-6 overflow-x-hidden">
                   <motion.div 
                     className="px-4 sm:px-0"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.4 }}
                   >
-                    <div className="flex gap-2 sm:gap-3 md:gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-lab-gray-400 scrollbar-track-lab-gray-200 scroll-smooth snap-x snap-mandatory -mr-4 pr-4 sm:mr-0 sm:pr-0">
+                    <div className="flex gap-2 sm:gap-3 md:gap-4 justify-center overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-lab-gray-400 scrollbar-track-lab-gray-200 scroll-smooth snap-x snap-mandatory">
                     {images.map((image, index) => (
                       <motion.button
                         key={image.id}
                         onClick={() => goToSlide(index)}
-                        className={`relative flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 overflow-hidden rounded-lg border-2 transition-all duration-300 snap-start ${
+                        className={`relative shrink-0 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 overflow-hidden rounded-lg border-2 transition-all duration-300 snap-start ${
                           index === imageIndex
                             ? 'border-lab-yellow shadow-[0_0_15px_rgb(246_195_8/0.5)]'
                             : 'border-lab-white/10 hover:border-lab-blue/50 opacity-60 hover:opacity-100'

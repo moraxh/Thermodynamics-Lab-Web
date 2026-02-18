@@ -90,7 +90,7 @@ export default function Events() {
   return (
     <section id="events" className="py-24 bg-lab-gray-100 relative border-t border-lab-white/5">
       {/* Background Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgb(255_255_255/0.02)_1px,transparent_1px),linear-gradient(90deg,rgb(255_255_255/0.02)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgb(255_255_255/0.02)_1px,transparent_1px),linear-gradient(90deg,rgb(255_255_255/0.02)_1px,transparent_1px)] bg-size-[40px_40px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div 
@@ -178,7 +178,7 @@ export default function Events() {
                         {/* Event Details */}
                         <div className="grid sm:grid-cols-2 gap-3 text-sm">
                           <div className="flex items-center gap-2 text-lab-gray-400">
-                            <CalendarIcon className="w-4 h-4 flex-shrink-0" />
+                            <CalendarIcon className="w-4 h-4 shrink-0" />
                             <span>
                               {formatDate(event.startDate)}
                               {event.endDate && event.startDate !== event.endDate && (
@@ -188,12 +188,12 @@ export default function Events() {
                           </div>
                           
                           <div className="flex items-center gap-2 text-lab-gray-400">
-                            <Clock className="w-4 h-4 flex-shrink-0" />
+                            <Clock className="w-4 h-4 shrink-0" />
                             <span>{formatTime(event.startTime)} - {formatTime(event.endTime)}</span>
                           </div>
                           
                           <div className="flex items-center gap-2 text-lab-gray-400 sm:col-span-2">
-                            <MapPin className="w-4 h-4 flex-shrink-0" />
+                            <MapPin className="w-4 h-4 shrink-0" />
                             <span>{event.location}</span>
                           </div>
                         </div>
@@ -206,7 +206,7 @@ export default function Events() {
                             href={event.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg font-medium shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all duration-300 group/btn whitespace-nowrap"
+                            className="flex items-center gap-2 px-6 py-3 bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg font-medium shadow-lg shadow-purple-500/25 transition-all duration-300 group"
                           >
                             <span>{t('viewLink')}</span>
                             <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />

@@ -110,6 +110,18 @@
     "next": "Siguiente",
     "openLightbox": "Ver imagen completa"
   },
+  "Infographics": {
+    "title": "Infografías",
+    "titleHighlight": "Visuales",
+    "filterAll": "Todas las Categorías",
+    "emptyTitle": "¡Los datos se están graficando solos!",
+    "emptySubtitle": "Las infografías se están diseñando en otra dimensión.",
+    "emptyDetail": "¡Vuelve pronto para visualizaciones increíbles! 📊✨",
+    "view": "Ver",
+    "categories": "Categorías",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
   "Contact": {
     "title": "Contacto",
     "subtitle": "Inicie una colaboración o solicite información sobre nuestros proyectos.",

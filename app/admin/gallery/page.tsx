@@ -157,7 +157,7 @@ export default function GalleryPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30">
+          <div className="p-3 rounded-xl bg-linear-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30">
             <ImageIcon className="w-6 h-6 text-purple-400" />
           </div>
           <div>
@@ -167,7 +167,7 @@ export default function GalleryPage() {
         </div>
         <Button
           onClick={handleOpenDialog}
-          className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/25"
+          className="bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/25"
         >
           <Plus className="w-4 h-4 mr-2" />
           Subir Imagen
@@ -234,7 +234,7 @@ export default function GalleryPage() {
                   />
                   
                   {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-lab-black via-lab-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute inset-0 bg-linear-to-t from-lab-black via-lab-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="absolute bottom-0 left-0 right-0 p-4">
                       <div className="flex items-center gap-2 text-xs text-lab-gray-400 mb-3">
                         <Calendar className="w-3 h-3" />
@@ -320,7 +320,7 @@ export default function GalleryPage() {
               <Button
                 type="submit"
                 disabled={submitting || !imageFile}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/25"
+                className="bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/25"
               >
                 {submitting ? (
                   <>

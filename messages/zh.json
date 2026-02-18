@@ -110,6 +110,18 @@
     "next": "下一个",
     "openLightbox": "查看完整图片"
   },
+  "Infographics": {
+    "title": "可视化",
+    "titleHighlight": "信息图",
+    "filterAll": "所有类别",
+    "emptyTitle": "数据正在自我绘制！",
+    "emptySubtitle": "信息图正在另一个维度设计中。",
+    "emptyDetail": "即将回来查看惊人的可视化！ 📊✨",
+    "view": "查看",
+    "categories": "类别",
+    "previous": "上一个",
+    "next": "下一个"
+  },
   "Contact": {
     "title": "联系",
     "subtitle": "开始合作或询问有关我们项目的信息。",

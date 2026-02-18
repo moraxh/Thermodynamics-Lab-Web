@@ -17,6 +17,7 @@ import {
   videos,
   educationalMaterial,
   events,
+  infographics,
   users,
 } from '@/lib/db/schema';
 import { seedDefaultAdmin } from '@/lib/db/seed';
@@ -138,6 +139,7 @@ async function copySpecificFiles(environment: Environment, dataType: string): Pr
     'publications': ['filePath'],
     'videos': ['videoPath', 'thumbnailPath'],
     'educational-material': ['filePath'],
+    'infographics': ['imagePath'],
   };
 
   const isProduction = environment === 'production';
@@ -241,7 +243,7 @@ async function copyAllSeedFiles(environment: Environment): Promise<void> {
   let totalSkipped = 0;
   let totalErrors = 0;
 
-  const dataTypes = ['members', 'gallery', 'publications', 'videos', 'educational-material'];
+  const dataTypes = ['members', 'gallery', 'publications', 'videos', 'educational-material', 'infographics'];
 
   for (const dataType of dataTypes) {
     console.log(`\n🔄 Procesando archivos de ${dataType}`);
@@ -279,6 +281,7 @@ function validateData(dataType: string, items: SeedRecord[]): boolean {
     videos: ['id', 'title', 'description', 'videoPath'],
     'educational-material': ['id', 'title', 'description', 'filePath'],
     events: ['id', 'title', 'description', 'typeOfEvent', 'startDate', 'startTime', 'endTime', 'location'],
+    infographics: ['id', 'title', 'description', 'imagePath', 'categories'],
   };
 
   const required = requiredFields[dataType];
@@ -577,6 +580,47 @@ async function seedEducationalMaterial(db: DbInstance, environment: Environment)
 }
 
 /**
+ * Seed infographics
+ */
+async function seedInfographics(db: DbInstance, environment: Environment) {
+  const data = loadSeedData(environment, 'infographics');
+  
+  if (data.length === 0) {
+    console.log('⏭️  Sin datos de infographics para sembrar');
+    return;
+  }
+
+  try {
+    const isProduction = environment === 'production';
+    // Asegurar que las fechas se procesen correctamente
+    const processedData = data.map(item => {
+      let imagePath = item.imagePath as string;
+      
+      if (isProduction && imagePath) {
+        const fileName = imagePath.split('/').pop() || '';
+        const sanitized = sanitizeFileName(fileName);
+        const bucket = getBucketName(fileName);
+        imagePath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${sanitized}`;
+      }
+      
+      return {
+        ...item,
+        imagePath,
+        uploadedAt: item.uploadedAt ? new Date(item.uploadedAt as string | number | Date) : new Date(),
+      };
+    });
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await db.insert(infographics).values(processedData as any)
+      .onConflictDoNothing();
+    console.log(`✅ Sembrados ${data.length} infographics`);
+  } catch (error) {
+    console.error('❌ Error al sembrar infographics:', error);
+    throw error;
+  }
+}
+
+/**
  * Seed events
  */
 async function seedEvents(db: DbInstance, environment: Environment) {
@@ -612,6 +656,7 @@ async function clearAllTables(db: DbInstance) {
   
   try {
     await db.delete(events);
+    await db.delete(infographics);
     await db.delete(educationalMaterial);
     await db.delete(videos);
     await db.delete(publications);
@@ -656,6 +701,7 @@ async function seedDatabase(config: SeedConfig) {
     await seedPublications(db, config.environment);
     await seedVideos(db, config.environment);
     await seedEducationalMaterial(db, config.environment);
+    await seedInfographics(db, config.environment);
     await seedEvents(db, config.environment);
 
     console.log('\n' + '='.repeat(60));

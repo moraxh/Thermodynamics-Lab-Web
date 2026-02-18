@@ -271,7 +271,7 @@ export default function EventsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30">
+          <div className="p-3 rounded-xl bg-linear-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30">
             <CalendarIcon className="w-6 h-6 text-purple-400" />
           </div>
           <div>
@@ -281,7 +281,7 @@ export default function EventsPage() {
         </div>
         <Button
           onClick={() => handleOpenDialog()}
-          className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/25"
+          className="bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/25"
         >
           <Plus className="w-4 h-4 mr-2" />
           Crear Evento
@@ -424,7 +424,7 @@ export default function EventsPage() {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="bg-lab-gray-100 border-lab-white/20 text-lab-white sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <DialogTitle className="text-2xl font-bold bg-linear-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
               {editingEvent ? 'Editar Evento' : 'Crear Evento'}
             </DialogTitle>
             <DialogDescription className="text-lab-gray-400">
@@ -702,7 +702,7 @@ export default function EventsPage() {
               <Button
                 type="submit"
                 disabled={submitting}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/25"
+                className="bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/25"
               >
                 {submitting ? (
                   <>

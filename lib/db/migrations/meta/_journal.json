@@ -8,6 +8,13 @@
       "when": 1765745295342,
       "tag": "0000_dear_iceman",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771374370072,
+      "tag": "0001_white_meteorite",
+      "breakpoints": true
     }
   ]
 }

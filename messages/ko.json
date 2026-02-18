@@ -110,6 +110,18 @@
     "next": "다음",
     "openLightbox": "전체 이미지 보기"
   },
+  "Infographics": {
+    "title": "시각적",
+    "titleHighlight": "인포그래픽",
+    "filterAll": "모든 카테고리",
+    "emptyTitle": "데이터가 스스로 그려지고 있습니다!",
+    "emptySubtitle": "인포그래픽이 다른 차원에서 디자인되고 있습니다.",
+    "emptyDetail": "놀라운 시각화를 위해 곳 돌아오세요! 📊✨",
+    "view": "보기",
+    "categories": "카테고리",
+    "previous": "이전",
+    "next": "다음"
+  },
   "Contact": {
     "title": "연락처",
     "subtitle": "협력을 시작하거나 프로젝트에 대한 정보를 요청하세요.",

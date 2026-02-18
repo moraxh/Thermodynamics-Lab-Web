@@ -110,6 +110,18 @@
     "next": "Next",
     "openLightbox": "View full image"
   },
+  "Infographics": {
+    "title": "Visual",
+    "titleHighlight": "Infographics",
+    "filterAll": "All Categories",
+    "emptyTitle": "The data is plotting itself!",
+    "emptySubtitle": "Infographics are being designed in another dimension.",
+    "emptyDetail": "Come back soon for amazing visualizations! 📊✨",
+    "view": "View",
+    "categories": "Categories",
+    "previous": "Previous",
+    "next": "Next"
+  },
   "Contact": {
     "title": "Contact",
     "subtitle": "Start a collaboration or request information about our projects.",

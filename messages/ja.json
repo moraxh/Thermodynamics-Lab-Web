@@ -110,6 +110,18 @@
     "next": "次へ",
     "openLightbox": "フルイメージを見る"
   },
+  "Infographics": {
+    "title": "ビジュアル",
+    "titleHighlight": "インフォグラフィック",
+    "filterAll": "すべてのカテゴリ",
+    "emptyTitle": "データが自分自身をプロットしています！",
+    "emptySubtitle": "インフォグラフィックは別の次元で設計されています。",
+    "emptyDetail": "素晴らしい視覚化のためにすぐに戻ってきてください！ 📊✨",
+    "view": "表示",
+    "categories": "カテゴリ",
+    "previous": "前へ",
+    "next": "次へ"
+  },
   "Contact": {
     "title": "お問い合わせ",
     "subtitle": "コラボレーションを開始するか、プロジェクトに関する情報をリクエストしてください。",

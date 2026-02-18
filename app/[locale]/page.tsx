@@ -6,6 +6,7 @@ import Events from "@components/public/Events";
 import Footer from "@components/public/Footer";
 import Gallery from "@components/public/Gallery";
 import Hero from "@components/public/Hero";
+import Infographics from "@components/public/Infographics";
 import NavBar from "@components/public/Navbar";
 import Publications from "@components/public/Publications";
 import Research from "@components/public/Research";
@@ -26,6 +27,7 @@ export default function Home() {
         <Publications />
         <Videos />
         <EducationalMaterial />
+        <Infographics />
         <Events />
         <Gallery />
         <Contact />
