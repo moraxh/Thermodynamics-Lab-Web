@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Camera, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTranslations } from 'next-intl';
 
@@ -117,14 +117,14 @@ export default function Gallery() {
               >
                 <div className="relative">
                   <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-xl bg-lab-gray-300/50 border-2 border-dashed border-lab-gray-400 flex items-center justify-center">
-                    <span className="text-2xl sm:text-4xl">📸</span>
+                    <Camera className="w-8 h-8 sm:w-12 sm:h-12 text-lab-gray-400" />
                   </div>
                   <motion.div
-                    className="absolute -right-2 -top-2 sm:-right-3 sm:-top-3 w-8 h-8 sm:w-12 sm:h-12 bg-lab-yellow rounded-full flex items-center justify-center text-lg sm:text-2xl"
+                    className="absolute -right-2 -top-2 sm:-right-3 sm:-top-3 w-8 h-8 sm:w-12 sm:h-12 bg-lab-yellow rounded-full flex items-center justify-center"
                     animate={{ rotate: 360 }}
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                   >
-                    🔍
+                    <Search className="w-4 h-4 sm:w-6 sm:h-6 text-lab-black" />
                   </motion.div>
                 </div>
               </motion.div>

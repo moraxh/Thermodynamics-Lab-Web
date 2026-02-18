@@ -119,11 +119,11 @@ export default function Events() {
             <div className="relative mb-6">
               <CalendarIcon className="w-24 h-24 text-lab-gray-400" />
               <motion.div
-                className="absolute -right-2 -top-2 w-12 h-12 bg-lab-yellow rounded-full flex items-center justify-center text-2xl"
+                className="absolute -right-2 -top-2 w-12 h-12 bg-lab-yellow rounded-full flex items-center justify-center"
                 animate={{ rotate: [0, 10, -10, 10, 0] }}
                 transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
               >
-                📅
+                <CalendarIcon className="w-6 h-6 text-lab-black" />
               </motion.div>
             </div>
             <h3 className="text-2xl font-bold text-lab-white mb-3">{t('emptyTitle')}</h3>

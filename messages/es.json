@@ -55,7 +55,7 @@
     },
     "emptyTitle": "¡Nada por aquí todavía!",
     "emptySubtitle": "Parece que las publicaciones están en proceso de revisión por pares.",
-    "emptyDetail": "O tal vez están en otra dimensión temporal... ⏰📚",
+    "emptyDetail": "O tal vez están en otra dimensión temporal...",
     "authors": "Autores:",
     "download": "Descargar PDF",
     "viewLink": "Ver Enlace",
@@ -67,7 +67,7 @@
     "titleHighlight": "Educativos",
     "emptyTitle": "¡El canal está en modo buffer!",
     "emptySubtitle": "Los videos están cargando... o tal vez están en otro laboratorio.",
-    "emptyDetail": "¡Vuelve pronto para ver contenido increíble! 🎥✨",
+    "emptyDetail": "¡Vuelve pronto para ver contenido increíble!",
     "watchVideo": "Ver Video",
     "previous": "Anterior",
     "next": "Siguiente"
@@ -77,7 +77,7 @@
     "titleHighlight": "Educativo",
     "emptyTitle": "¡La biblioteca está vacía!",
     "emptySubtitle": "Los libros de texto están tomando un descanso termodinámico.",
-    "emptyDetail": "¡Pronto habrá contenido para expandir tu conocimiento! 🔬📖",
+    "emptyDetail": "¡Pronto habrá contenido para expandir tu conocimiento!",
     "download": "Descargar",
     "previous": "Anterior",
     "next": "Siguiente"
@@ -87,7 +87,7 @@
     "titleHighlight": "Eventos",
     "emptyTitle": "¡Nada en el calendario!",
     "emptySubtitle": "Los eventos están en una superposición cuántica... o simplemente en planificación.",
-    "emptyDetail": "¡Vuelve pronto para descubrir qué hay! 🎪✨",
+    "emptyDetail": "¡Vuelve pronto para descubrir qué hay!",
     "upcoming": "Próximo",
     "types": {
       "conference": "Conferencia",
@@ -105,7 +105,7 @@
   "Gallery": {
     "emptyTitle": "¡La galería está en el vacío cuántico!",
     "emptySubtitle": "Parece que las imágenes decidieron entrar en un estado de superposición.",
-    "emptyDetail": "Schödinger aprobaría esto... 🐱📦",
+    "emptyDetail": "Schödinger aprobaría esto...",
     "previous": "Anterior",
     "next": "Siguiente",
     "openLightbox": "Ver imagen completa"
@@ -116,7 +116,7 @@
     "filterAll": "Todas las Categorías",
     "emptyTitle": "¡Los datos se están graficando solos!",
     "emptySubtitle": "Las infografías se están diseñando en otra dimensión.",
-    "emptyDetail": "¡Vuelve pronto para visualizaciones increíbles! 📊✨",
+    "emptyDetail": "¡Vuelve pronto para visualizaciones increíbles!",
     "view": "Ver",
     "categories": "Categorías",
     "previous": "Anterior",

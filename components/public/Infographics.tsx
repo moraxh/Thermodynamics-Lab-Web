@@ -1,6 +1,6 @@
 "use client"
 
-import { Eye, X } from 'lucide-react';
+import { Eye, X, BarChart3, Search } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTranslations } from 'next-intl';
@@ -142,14 +142,14 @@ export default function Infographics() {
               }}
             >
               <div className="w-24 h-24 rounded-xl bg-lab-gray-300/50 border-2 border-dashed border-lab-gray-400 flex items-center justify-center">
-                <span className="text-5xl">📊</span>
+                <BarChart3 className="w-12 h-12 text-lab-gray-400" />
               </div>
               <motion.div
-                className="absolute -right-3 -top-3 w-12 h-12 bg-lab-yellow rounded-full flex items-center justify-center text-2xl"
+                className="absolute -right-3 -top-3 w-12 h-12 bg-lab-yellow rounded-full flex items-center justify-center"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               >
-                🔍
+                <Search className="w-6 h-6 text-lab-black" />
               </motion.div>
             </motion.div>
             <h3 className="text-2xl font-bold text-lab-white mb-3">{t('emptyTitle')}</h3>

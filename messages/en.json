@@ -55,7 +55,7 @@
     },
     "emptyTitle": "Nothing here yet!",
     "emptySubtitle": "Seems like publications are under peer review.",
-    "emptyDetail": "Or maybe they're in another temporal dimension... ⏰📚",
+    "emptyDetail": "Or maybe they're in another temporal dimension...",
     "authors": "Authors:",
     "download": "Download PDF",
     "viewLink": "View Link",
@@ -67,7 +67,7 @@
     "titleHighlight": "Educational",
     "emptyTitle": "The channel is in buffer mode!",
     "emptySubtitle": "Videos are loading... or maybe they're in another lab.",
-    "emptyDetail": "Come back soon for amazing content! 🎥✨",
+    "emptyDetail": "Come back soon for amazing content!",
     "watchVideo": "Watch Video",
     "previous": "Previous",
     "next": "Next"
@@ -77,7 +77,7 @@
     "titleHighlight": "Educational",
     "emptyTitle": "The library is empty!",
     "emptySubtitle": "The textbooks are taking a thermodynamic break.",
-    "emptyDetail": "Soon there will be content to expand your knowledge! 🔬📖",
+    "emptyDetail": "Soon there will be content to expand your knowledge!",
     "download": "Download",
     "previous": "Previous",
     "next": "Next"
@@ -87,7 +87,7 @@
     "titleHighlight": "Events",
     "emptyTitle": "Nothing on the calendar!",
     "emptySubtitle": "Events are in quantum superposition... or simply in planning.",
-    "emptyDetail": "Come back soon to discover what's coming! 🎪✨",
+    "emptyDetail": "Come back soon to discover what's coming!",
     "upcoming": "Upcoming",
     "types": {
       "conference": "Conference",
@@ -105,7 +105,7 @@
   "Gallery": {
     "emptyTitle": "The gallery is in a quantum vacuum!",
     "emptySubtitle": "Seems like the images decided to enter a state of superposition.",
-    "emptyDetail": "Schrödinger would approve this... 🐱📦",
+    "emptyDetail": "Schrödinger would approve this...",
     "previous": "Previous",
     "next": "Next",
     "openLightbox": "View full image"
@@ -116,7 +116,7 @@
     "filterAll": "All Categories",
     "emptyTitle": "The data is plotting itself!",
     "emptySubtitle": "Infographics are being designed in another dimension.",
-    "emptyDetail": "Come back soon for amazing visualizations! 📊✨",
+    "emptyDetail": "Come back soon for amazing visualizations!",
     "view": "View",
     "categories": "Categories",
     "previous": "Previous",

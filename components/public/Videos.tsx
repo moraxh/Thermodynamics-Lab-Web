@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { Play, X, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Play, X, Calendar, ChevronLeft, ChevronRight, Clapperboard } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
@@ -98,11 +98,11 @@ export default function Videos() {
                 <Play className="w-12 h-12 text-lab-gray-400" />
               </div>
               <motion.div
-                className="absolute -right-2 -top-2 w-12 h-12 bg-lab-yellow rounded-full flex items-center justify-center text-2xl"
+                className="absolute -right-2 -top-2 w-12 h-12 bg-lab-yellow rounded-full flex items-center justify-center"
                 animate={{ rotate: [0, 10, -10, 10, 0] }}
                 transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
               >
-                🎬
+                <Clapperboard className="w-6 h-6 text-lab-black" />
               </motion.div>
             </div>
             <h3 className="text-2xl font-bold text-lab-white mb-3">{t('emptyTitle')}</h3>

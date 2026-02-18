@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Users, Image, FileText, Video, BookOpen, GraduationCap, Calendar } from 'lucide-react';
+import { Users, Image, FileText, Video, BookOpen, GraduationCap, Calendar, BarChart3 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const sections = [
@@ -44,6 +44,12 @@ const sections = [
     description: 'Manage events',
     href: '/admin/events',
     icon: Calendar,
+  },
+  {
+    title: 'Infographics',
+    description: 'Manage infographics',
+    href: '/admin/infographics',
+    icon: BarChart3,
   },
 ];
 

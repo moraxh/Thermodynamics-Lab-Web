@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { Download, Calendar, ChevronLeft, ChevronRight, FileText, BookOpen } from 'lucide-react';
+import { Download, Calendar, ChevronLeft, ChevronRight, FileText, BookOpen, File, Presentation, Archive } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTranslations } from 'next-intl';
 
@@ -59,19 +59,20 @@ export default function EducationalMaterial() {
 
   const getFileIcon = (filePath: string) => {
     const ext = filePath.split('.').pop()?.toLowerCase();
+    const iconClass = "w-6 h-6";
     switch (ext) {
       case 'pdf':
-        return '📄';
+        return <FileText className={iconClass} />;
       case 'doc':
       case 'docx':
-        return '📝';
+        return <File className={iconClass} />;
       case 'ppt':
       case 'pptx':
-        return '📊';
+        return <Presentation className={iconClass} />;
       case 'zip':
-        return '🗜️';
+        return <Archive className={iconClass} />;
       default:
-        return '📁';
+        return <FileText className={iconClass} />;
     }
   };
 
@@ -118,11 +119,11 @@ export default function EducationalMaterial() {
             <div className="relative mb-6">
               <BookOpen className="w-24 h-24 text-lab-gray-400" />
               <motion.div
-                className="absolute -right-2 -top-2 w-12 h-12 bg-lab-yellow rounded-full flex items-center justify-center text-2xl"
+                className="absolute -right-2 -top-2 w-12 h-12 bg-lab-yellow rounded-full flex items-center justify-center"
                 animate={{ rotate: [0, 10, -10, 10, 0] }}
                 transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
               >
-                📚
+                <BookOpen className="w-6 h-6 text-lab-black" />
               </motion.div>
             </div>
             <h3 className="text-2xl font-bold text-lab-white mb-3">{t('emptyTitle')}</h3>
